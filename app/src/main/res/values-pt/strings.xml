@@ -830,7 +830,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="htc_person_name_mandatory">Nome é obrigatório, e não pode conter símbolos ou nũmeros</string>
     <string name="htc_person_surname_mandatory">Apelido é obrigatório, e não pode conter símbolos ou nũmeros</string>
     <string name="htc_person_phone_number_error">O telefone deve conter 9 dígitos numéricos, com o primeiro dígito 8</string>
-    <string name="htc_person_age_error">Idade deve conter no máximo 3 dígitos</string>
+    <string name="htc_person_age_error">Idade deve conter no máximo 3 dígitos e deve estar entre 0 e 100</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Sim</item>

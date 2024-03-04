@@ -33,7 +33,6 @@ public class HTCPersonController {
         }
         return new ArrayList<>();
     }
-
     public void saveHTCPerson(HTCPerson htcPerson) {
         try {
             htcPersonService.saveHTCPerson(htcPerson);
@@ -60,36 +59,11 @@ public class HTCPersonController {
         }
         return new ArrayList<>();
     }
-    public static class HTCPersonDownloadException extends Throwable {
-        HTCPersonDownloadException(Throwable throwable) {
-            super(throwable);
-        }
-    }
-
-    public static class HTCPersonSaveException extends Throwable {
-        HTCPersonSaveException(Throwable throwable) {
-            super(throwable);
-        }
-    }
-
-    public static class HTCPersonFetchException extends Throwable {
-        HTCPersonFetchException(Throwable throwable) {
-            super(throwable);
-        }
-    }
-
-    public static class HTCPersonDeleteException extends Throwable {
-        HTCPersonDeleteException(Throwable throwable) {
-            super(throwable);
-        }
-    }
-
-    public static class ParseHTCPersonException extends Throwable {
-        public ParseHTCPersonException(Throwable e) {
-            super(e);
-        }
-        public ParseHTCPersonException(String message) {
-            super(message);
+    public void updateHTCPerson(HTCPerson htcPerson) {
+        try {
+            htcPersonService.updateHTCPerson(htcPerson);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while updating person "+htcPerson.getUuid(), e);
         }
     }
 }

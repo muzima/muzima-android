@@ -836,7 +836,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="htc_person_name_mandatory">Name is required and can not contain symbols ou numbers</string>
     <string name="htc_person_surname_mandatory">Surname is required and can not contain symbols ou numbers</string>
     <string name="htc_person_phone_number_error">Phone number must contain 9 digits with the first digit 8</string>
-    <string name="htc_person_age_error">Age must contain less or 3 digits</string>
+    <string name="htc_person_age_error">Age must contain less or 3 digits and must be between 0 and 100</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Yes</item>
