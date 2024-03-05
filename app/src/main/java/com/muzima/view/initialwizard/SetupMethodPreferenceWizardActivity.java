@@ -153,6 +153,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         activeNextButton.setVisibility(View.VISIBLE);
         setupConfigurationAdapter.setSelectedConfigurationUuid(setupConfigurationList.get(position).getUuid());
         setupConfigurationAdapter.notifyDataSetChanged();
+        hideKeyboard();
     }
 
     @Override
