@@ -41,8 +41,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import android.widget.Toast;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.muzima.MuzimaApplication;
@@ -418,7 +416,7 @@ public class MuzimaJobScheduler extends JobService {
                 configSettings.add(muzimaSetting.getProperty());
                if (MuzimaSettingUtils.isOnlineOnlyModeSetting(muzimaSetting)) {
                     if(onlineModeBeforeConfigUpdate != muzimaSetting.getValueBoolean()){
-                        muzimaSettingController.updateTheme();
+                        muzimaSettingController.toggleTheme();
                         if(muzimaSetting.getValueBoolean()) {
                             Intent intent;
                             intent = new Intent(((MuzimaApplication) context), MainDashboardActivity.class);

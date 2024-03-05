@@ -1218,10 +1218,10 @@ public class MuzimaSyncService {
                 setupConfigurationController.saveSetupConfigurationTemplate(setupConfigurationTemplate);
             }
         } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to download setup configs");
+            Log.e(getClass().getSimpleName(), "Exception when trying to download setup config",e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (SetupConfigurationController.SetupConfigurationSaveException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
+            Log.e(getClass().getSimpleName(), "Exception when trying to save setup config",e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;
