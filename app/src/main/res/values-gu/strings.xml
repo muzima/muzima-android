@@ -842,7 +842,7 @@
     <string name="htc_person_no_identifier">Sem Identificador</string>
     <string name="htc_search_persons_or_patients">Pesquisa de pessoas/pacientes</string>
     <string name="welcome_message">Bem vindo, </string>
-    <string name="fill_the_intended_name_to_search_on_sesp">Indique o nome da pessoa que pretende pesquisar no SESP!</string>
+    <string name="fill_the_intended_name_to_search_on_sesp">Indique o nome ou identificador da pessoa que pretende pesquisar no SESP!</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Yes</item>

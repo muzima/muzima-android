@@ -856,7 +856,7 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="htc_person_no_identifier">No Identifier</string>
     <string name="htc_search_persons_or_patients">Search persons/patients</string>
     <string name="welcome_message">Welcome, </string>
-    <string name="fill_the_intended_name_to_search_on_sesp">Fill the intended name of the person aimed to search on SESP!</string>
+    <string name="fill_the_intended_name_to_search_on_sesp">Fill the intended name or identifier of the person aimed to search on SESP!</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Yes</item>
