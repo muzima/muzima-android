@@ -40,6 +40,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.view.main.HTCMainActivity;
+import com.muzima.view.person.SearchSESPPersonActivity;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -89,6 +90,7 @@ public class HTCFormActivity extends AppCompatActivity {
     private HTCPerson htcPerson;
     private MuzimaHtcForm htcForm;
     private boolean isEditionFlow;
+    private boolean isAddATSForSESPExistingPerson;
     private List<PatientItem> searchResults;
     private HTCPersonController htcPersonController;
     private MuzimaHTCFormController htcFormController;
@@ -105,22 +107,21 @@ public class HTCFormActivity extends AppCompatActivity {
 
         initViews();
         initController();
+        setListners();
+        isAddATSForSESPExistingPerson = (Boolean) getIntent().getSerializableExtra("isAddATSForSESPExistingPerson");
         searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
         htcPerson = (HTCPerson) getIntent().getSerializableExtra("htcPerson");
         if(htcPerson.isPatient()) {
             identifier.setText(htcPerson.getSespUuid());
         }
-        if (getIntent().getSerializableExtra("isEditionFlow") != null) {
-            isEditionFlow = (Boolean) getIntent().getSerializableExtra("isEditionFlow");
-        }
+        isEditionFlow = (Boolean) getIntent().getSerializableExtra("isEditionFlow");
         if(isEditionFlow) {
-            htcForm = htcFormController.getHTCFormByHTCPersonUuid(htcPerson.getUuid()); // ver bug aqui
+            htcForm = htcFormController.getHTCFormByHTCPersonUuid(htcPerson.getUuid());
         }
         setHtcPersonIdentificationData(htcPerson);
         testResult.setText(setHivResult(htcPerson));
         testResult.setEnabled(false);
         setHTCFormData();
-        setListners();
     }
 
     private void setListners() {
@@ -232,7 +233,7 @@ public class HTCFormActivity extends AppCompatActivity {
                             builder.setCancelable(false)
                                     .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
                                     .setTitle(getResources().getString(R.string.general_success))
-                                    .setMessage("Registo actualizado com sucesso!")
+                                    .setMessage(getResources().getString(R.string.record_updated_successful))
                                     .setPositiveButton(R.string.general_ok, launchDashboard())
                                     .show();
                             goToMainActivity(searchResults);
@@ -260,7 +261,7 @@ public class HTCFormActivity extends AppCompatActivity {
                         builder.setCancelable(false)
                                 .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
                                 .setTitle(getResources().getString(R.string.general_error))
-                                .setMessage("Erro ao gravar ATS!")
+                                .setMessage(getResources().getString(R.string.htc_save_error))
                                 .setPositiveButton(R.string.general_ok, launchDashboard())
                                 .show();
                     }
@@ -300,6 +301,7 @@ public class HTCFormActivity extends AppCompatActivity {
         dateOfCreation = findViewById(R.id.dateOfCreation);
         healthFacility = findViewById(R.id.healthFacility);
         saveHtcForm = findViewById(R.id.saveHtcForm);
+        firstTimeTestedOption.setChecked(true);
         setPopKeyMinersOptions();
         setIndexCaseContactsOptions();
         setTestingSectorsOptions();
@@ -418,7 +420,7 @@ public class HTCFormActivity extends AppCompatActivity {
             int htcPersonAge = DateUtils.calculateAge(htcPerson.getBirthdate());
             age.setText(htcPersonAge+" Anos");
         }
-        identifier.setText(!StringUtils.isEmpty(htcPerson.getIdentifier()) ? htcPerson.getIdentifier() : "Sem Identificador"); //validar para pessoa que vem do SESP
+        identifier.setText(!StringUtils.isEmpty(htcPerson.getIdentifier()) ? htcPerson.getIdentifier() : getResources().getString(R.string.htc_person_no_identifier));
     }
 
     private MuzimaHtcForm createHTCFormInstance(HTCPerson htcPerson) {
@@ -531,7 +533,8 @@ public class HTCFormActivity extends AppCompatActivity {
     }
 
     private void goToMainActivity(List<PatientItem> searchResults) {
-        Intent intent = new Intent(getApplicationContext(), HTCMainActivity.class);
+        Intent intent;
+        intent = new Intent(getApplicationContext(), HTCMainActivity.class);
         intent.putExtra("searchResults", (Serializable) searchResults);
         startActivity(intent);
         finish();
@@ -559,10 +562,10 @@ public class HTCFormActivity extends AppCompatActivity {
 
     private void setHTCFormData() {
         if(htcForm!=null) {
-            bookNumber.setText(htcForm.getBookNumber());
-            bookPageNumber.setText(htcForm.getBookPageNumber());
-            bookPageLine.setText(htcForm.getBookPageLineNumber());
-            testingDate.setText(htcForm.getTestingDate().toString());
+            bookNumber.setText(htcForm.getBookNumber()+"");
+            bookPageNumber.setText(htcForm.getBookPageNumber()+"");
+            bookPageLine.setText(htcForm.getBookPageLineNumber()+"");
+            testingDate.setText(DateUtils.convertDateToDayMonthYearString(htcForm.getTestingDate()));
             int countTestingSectors = testingSectors.getAdapter().getCount();
             for(int i=0; i< countTestingSectors; i++) {
                 if(testingSectors.getAdapter().getItem(i).toString().equalsIgnoreCase(htcForm.getTestingSector())){
