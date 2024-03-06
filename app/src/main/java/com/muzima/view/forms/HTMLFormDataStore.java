@@ -1402,7 +1402,7 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public String getApplicationLanguage() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
-        String applicationLanguage = preferences.getString(formWebViewActivity.getResources().getString(R.string.preference_app_language), formWebViewActivity.getResources().getString(R.string.language_english));
+        String applicationLanguage = preferences.getString(formWebViewActivity.getResources().getString(R.string.preference_app_language), formWebViewActivity.getResources().getString(R.string.language_portuguese));
         return applicationLanguage;
     }
 

@@ -25,6 +25,7 @@ import com.muzima.api.model.PersonAttribute;
 import com.muzima.listners.LoadMoreListener;
 import com.muzima.model.patient.PatientItem;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.view.main.HTCMainActivity;
 import com.muzima.view.person.PersonRegisterActivity;
@@ -118,16 +119,19 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             Date dob = patient.getBirthdate();
             if(dob != null) {
-                personViewHolder.age.setText(DateUtils.calculateAge(dob)+"");
+                personViewHolder.age.setText(DateUtils.calculateAge(dob)+" Anos");
                 //personViewHolder.age.setText(context.createConfigurationContext(configuration).getResources().getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(dob))));
             }else{
                 personViewHolder.age.setText("");
             }
 
-            personViewHolder.identifier.setText(patient.getIdentifier());
+            personViewHolder.identifier.setText( !StringUtils.isEmpty(patient.getIdentifier()) ? patient.getIdentifier() : "Sem Identifacor");
             if (patient.getGender() != null) {
                 personViewHolder.sex.setImageResource(patient.getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female);
             }
+
+            personViewHolder.migrationState.setImageResource(((HTCPerson)patient).getSyncStatus().equals("uploaded") ? R.drawable.filled_cloud : R.drawable.empty_cloud);
+
             for (PersonAddress address : patient.getAddresses()){
                 if (address.isPreferred()) {
                     personViewHolder.address.setText(address.getAddress1()+", "+address.getAddress3()+", "+address.getAddress5()+", "+address.getAddress6());

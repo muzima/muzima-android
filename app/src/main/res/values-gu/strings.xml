@@ -843,6 +843,8 @@
     <string name="htc_search_persons_or_patients">Pesquisa de pessoas/pacientes</string>
     <string name="welcome_message">Bem vindo, </string>
     <string name="fill_the_intended_name_to_search_on_sesp">Indique o nome ou identificador da pessoa que pretende pesquisar no SESP!</string>
+    <string name="person_search">Pesquisa de Pessoas/Utentes</string>
+    <string name="no_search_results">Nenhum resultado foi encontrado.</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Yes</item>
@@ -851,6 +853,7 @@
     </string-array>
 
     <string-array name="testingSectors">
+        <item></item>
         <item>UATS</item>
         <item>Consultas Externas</item>
         <item>Triagem</item>
@@ -864,6 +867,7 @@
     </string-array>
 
     <string-array name="popKeysMiners">
+        <item></item>
         <item>MTS</item>
         <item>HSH</item>
         <item>PID</item>
@@ -873,11 +877,9 @@
     </string-array>
 
     <string-array name="indexCaseContacts">
+        <item></item>
         <item>Par. Sex</item>
         <item>Filho &lt;15</item>
         <item>Mãe/Pai do CI (&lt;15)</item>
-        <item>REC</item>
-        <item>TG</item>
-        <item>MIN</item>
     </string-array>
 </resources>

@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -122,6 +125,16 @@ public class HTCFormActivity extends AppCompatActivity {
         testResult.setText(setHivResult(htcPerson));
         testResult.setEnabled(false);
         setHTCFormData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setListners() {
@@ -301,7 +314,7 @@ public class HTCFormActivity extends AppCompatActivity {
         dateOfCreation = findViewById(R.id.dateOfCreation);
         healthFacility = findViewById(R.id.healthFacility);
         saveHtcForm = findViewById(R.id.saveHtcForm);
-        firstTimeTestedOption.setChecked(true);
+        //firstTimeTestedOption.setChecked(true);
         setPopKeyMinersOptions();
         setIndexCaseContactsOptions();
         setTestingSectorsOptions();
@@ -432,15 +445,15 @@ public class HTCFormActivity extends AppCompatActivity {
         }
         muzimaHtcForm.setHtcPerson(htcPerson);
         if(!StringUtils.isEmpty(bookNumber.getText().toString())) {
-            int book = Integer.parseInt(bookNumber.getText().toString());
+            Integer book = Integer.parseInt(bookNumber.getText().toString());
             muzimaHtcForm.setBookNumber(book);
         }
         if(!StringUtils.isEmpty(bookPageNumber.getText().toString())) {
-            int pageNumber = Integer.parseInt(bookPageNumber.getText().toString());
+            Integer pageNumber = Integer.parseInt(bookPageNumber.getText().toString());
             muzimaHtcForm.setBookPageNumber(pageNumber);
         }
         if(!StringUtils.isEmpty(bookPageLine.getText().toString())) {
-            int pageLineNumber = Integer.parseInt(bookPageLine.getText().toString());
+            Integer pageLineNumber = Integer.parseInt(bookPageLine.getText().toString());
             muzimaHtcForm.setBookPageLineNumber(pageLineNumber);
         }
         if(testingSectors.getSelectedItem()!=null) {
@@ -475,7 +488,6 @@ public class HTCFormActivity extends AppCompatActivity {
         if(pastPositiveOption.isChecked()) {
             muzimaHtcForm.setTestHistory("PAST_POSITIVE");
         }
-        muzimaHtcForm.setOthers("");
         muzimaHtcForm.setSelfTestConfirmation(selfTestConfirmation.isChecked());
         muzimaHtcForm.setHtcRetesting(false); // update
         if(!StringUtils.isEmpty(testResult.getText().toString())) {

@@ -34,11 +34,9 @@ import com.muzima.api.model.User;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LocationService;
-import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.NotificationTokenService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PersonService;
-import com.muzima.api.service.PersonTagService;
 import com.muzima.api.service.ProviderService;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.AppReleaseController;
@@ -781,7 +779,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public HTCPersonController getHtcPersonController() {
         if(htcPersonController == null){
             try{
-                htcPersonController = new HTCPersonController(muzimaContext.getHtcPersonService(), this);
+                htcPersonController = new HTCPersonController(muzimaContext.getHtcPersonService(), muzimaContext.getMuzimaHtcService(), this);
             }catch (IOException e){
                 throw new RuntimeException(e);
             }

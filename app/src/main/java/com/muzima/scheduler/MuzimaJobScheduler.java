@@ -194,27 +194,30 @@ public class MuzimaJobScheduler extends JobService {
         return START_NOT_STICKY;
     }
 
+    private boolean isHtcUser() {
+        try {
+            return muzimaApplication.getSetupConfigurationController().getAllSetupConfigurations().get(0).getUuid().equals("1eaa9574-fa5a-4655-bd63-466b538c5b5d");
+        } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void handleBackgroundWork(JobParameters parameters) {
         if (parameters == null) {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
             new SyncSetupConfigTemplatesBackgroundTask().execute();
-
-            try {
-                muzimaApplication.getSetupConfigurationController().getAllSetupConfigurations().get(0).getUuid();
-            } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
-                throw new RuntimeException(e);
-            }
-
-            new CohortsAndPatientFullDataSyncBackgroundTask().execute();
-            new FormDataUploadBackgroundTask().execute();
-            new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
             new SyncSettingsBackgroundTask().execute();
-            new HtcPersonAndFormsDataSyncBackgroundTask().execute();
-            if(muzimaSettingController.isClinicalSummaryEnabled()) {
-                new SyncAllPatientReportsBackgroundTask().execute();
+            if (!isHtcUser()) {
+                new CohortsAndPatientFullDataSyncBackgroundTask().execute();
+                new FormDataUploadBackgroundTask().execute();
+                new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
+                if (muzimaSettingController.isClinicalSummaryEnabled()) {
+                    new SyncAllPatientReportsBackgroundTask().execute();
+                }
+                new FormMetaDataSyncBackgroundTask().execute();
             }
-            new FormMetaDataSyncBackgroundTask().execute();
+            new HtcPersonAndFormsDataSyncBackgroundTask().execute();
         }
     }
 

@@ -62,7 +62,7 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
     @Override
     public void onBindViewHolder(@NonNull final ClientDynamicObsFormsAdapter.ViewHolder holder, int position) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
 
         final SingleObsForm form = singleObsFormList.get(position);
         holder.readingCountTextView.setText(String.format(Locale.getDefault(), "%s %d", context.getResources().getString(R.string.general_reading), form.getReadingCount()));

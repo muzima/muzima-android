@@ -516,7 +516,7 @@ public class LoginActivity extends BaseActivity {
                     LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
 
                     String languageKey = getApplicationContext().getResources().getString(R.string.preference_app_language);
-                    String defaultLanguage = getApplicationContext().getString(R.string.language_english);
+                    String defaultLanguage = getApplicationContext().getString(R.string.language_portuguese);
                     String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey, defaultLanguage);
 
                     localePreferenceService.setPreferredLocale(preferredLocale);
@@ -1209,7 +1209,7 @@ public class LoginActivity extends BaseActivity {
             LocalePreferenceService localePreferenceService = muzimaApplication.getLocalePreferenceService();
 
             String languageKey = getApplicationContext().getResources().getString(R.string.preference_app_language);
-            String defaultLanguage = getApplicationContext().getString(R.string.language_english);
+            String defaultLanguage = getApplicationContext().getString(R.string.language_portuguese);
             String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey, defaultLanguage);
 
             localePreferenceService.setPreferredLocale(preferredLocale);

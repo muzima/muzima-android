@@ -54,7 +54,7 @@ public class LanguageUtil {
 
     public Locale getSelectedLocale(Context context) {
         String languageKey = context.getResources().getString(R.string.preference_app_language);
-        String defaultLanguage = context.getString(R.string.language_english);
+        String defaultLanguage = context.getString(R.string.language_portuguese);
         String preferredLocale = PreferenceManager.getDefaultSharedPreferences(context).getString(languageKey,defaultLanguage);
         return new Locale(preferredLocale);
     }

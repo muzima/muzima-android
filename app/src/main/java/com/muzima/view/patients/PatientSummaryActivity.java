@@ -316,7 +316,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         }
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        applicationLanguage = preferences.getString(getResources().getString(R.string.preference_app_language), getResources().getString(R.string.language_english));
+        applicationLanguage = preferences.getString(getResources().getString(R.string.preference_app_language), getResources().getString(R.string.language_portuguese));
 
         conceptController = ((MuzimaApplication) getApplicationContext()).getConceptController();
         observationController = ((MuzimaApplication) getApplicationContext()).getObservationController();

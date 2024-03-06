@@ -374,10 +374,13 @@ public class PersonRegisterActivity extends BaseActivity {
                birthDate.setText(DateUtils.convertDateToDayMonthYearString( patient.getBirthdate()).toString());
            } }
            if(!patient.getAddresses().isEmpty()) {
-               street.setText(patient.getAddresses().get(0).getAddress1());
-               locality.setText(patient.getAddresses().get(0).getAddress6());
-               block.setText(patient.getAddresses().get(0).getAddress3());
-               neighbourhood.setText(patient.getAddresses().get(0).getAddress5());
+               PersonAddress address = patient.getPreferredAddress();
+               if (address != null) {
+                   street.setText(address.getAddress1());
+                   locality.setText(address.getAddress6());
+                   block.setText(address.getAddress3());
+                   neighbourhood.setText(address.getAddress5());
+               }
            }
            personExistsInSESP.setSelection(0);
            detailsTextView.setVisibility(View.VISIBLE);
@@ -413,17 +416,27 @@ public class PersonRegisterActivity extends BaseActivity {
         }
         HTCPerson htcPerson = null;
         if(this.patient!=null) {
+
             if (isEditionFlow && isAddATSForSESPExistingPerson) {
                 htcPerson = (HTCPerson) this.patient;
                 htcPerson.setSespUuid(this.patient.getUuid());
                 htcPerson.setPatient(Boolean.TRUE);
+                htcPerson.setIdentifiers(this.patient.getIdentifiers());
+                htcPerson.setAddresses(this.patient.getAddresses());
+                htcPerson.setAttributes(this.patient.getAtributes());
             } else if (isEditionFlow && !isAddATSForSESPExistingPerson) {
                 htcPerson = (HTCPerson) this.patient;
                 htcPerson.setPatient(Boolean.FALSE);
+                htcPerson.setIdentifiers(this.patient.getIdentifiers());
+                htcPerson.setAddresses(this.patient.getAddresses());
+                htcPerson.setAttributes(this.patient.getAtributes());
             } else if(!isEditionFlow && isAddATSForSESPExistingPerson) {
                 htcPerson = new HTCPerson();
                 htcPerson.setSespUuid(this.patient.getUuid());
                 htcPerson.setPatient(Boolean.TRUE);
+                htcPerson.setIdentifiers(this.patient.getIdentifiers());
+                htcPerson.setAddresses(this.patient.getAddresses());
+                htcPerson.setAttributes(this.patient.getAtributes());
             } else {
                 htcPerson = new HTCPerson();
                 htcPerson.setPatient(Boolean.FALSE);
@@ -464,6 +477,7 @@ public class PersonRegisterActivity extends BaseActivity {
         PersonName personName = new PersonName();
         personName.setGivenName(name.getText().toString());
         personName.setFamilyName(surname.getText().toString());
+        personName.setPreferred(true);
         names.add(personName);
         htcPerson.setNames(names);
         List<PersonAddress> addresses = new ArrayList<>();
@@ -592,7 +606,7 @@ public class PersonRegisterActivity extends BaseActivity {
             return false;
         }
         String htcPersonSurname = surname.getText().toString();
-        if(!StringUtils.isEmpty(htcPersonSurname) && htcPersonSurname!=null && !htcPersonSurname.matches("^[a-zA-Z]*$")) {
+        if(StringUtils.isEmpty(htcPersonSurname) && htcPersonSurname.matches("^[a-zA-Z]*$")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
             builder.setCancelable(false)
                     .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))

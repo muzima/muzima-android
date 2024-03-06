@@ -47,12 +47,52 @@
             android:layout_height="match_parent"
             android:layout_marginTop="15dp"
             android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/person_rv"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/person_rv"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/no_search_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_search_results"
+                    android:textColor="@color/primary_black"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    android:drawableLeft="@drawable/baseline_info_green"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="10dp"/>
+                <LinearLayout
+                    android:id="@+id/seach_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+                    <ProgressBar
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:layout_gravity="right|bottom"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="Pesquisando, por favor aguarde ..."
+                        android:layout_weight="3"
+                        android:textSize="16sp"
+                        android:textColor="@color/primary_black"
+                        android:gravity="center_vertical"/>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/new_person"

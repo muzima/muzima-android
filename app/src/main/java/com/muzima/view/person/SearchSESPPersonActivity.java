@@ -5,10 +5,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +32,7 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.VerticalSpaceItemDecoration;
+import com.muzima.utils.ViewUtil;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.main.HTCMainActivity;
 
@@ -39,9 +46,13 @@ public class SearchSESPPersonActivity extends BaseActivity {
     private SespPersonSearchAdapter personSearchAdapter;
     private List<PatientItem> searchResults;
     private EditText editTextSearch;
+
+    private TextView noSearchResultTv;
     private ImageButton searchButton;
     private HTCPersonController htcPersonController;
     Toolbar toolbar;
+    private LinearLayout seachProgress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +60,16 @@ public class SearchSESPPersonActivity extends BaseActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(getResources().getString(R.string.htc_search_persons_or_patients));
+        getSupportActionBar().setTitle(R.string.person_search);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         this.searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
         this.searchResults = this.searchResults==null?new ArrayList<>():this.searchResults;
         searchButton = findViewById(R.id.buttonSearch);
         editTextSearch = findViewById(R.id.search);
+        noSearchResultTv = findViewById(R.id.no_search_result);
+        seachProgress = findViewById(R.id.seach_progress);
 
         recyclerView = findViewById(R.id.person_rv);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -64,8 +79,6 @@ public class SearchSESPPersonActivity extends BaseActivity {
 
         initController();
 
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         setListners();
 
         newPersonButton = findViewById(R.id.new_person);
@@ -86,6 +99,16 @@ public class SearchSESPPersonActivity extends BaseActivity {
         searchButton.setOnClickListener(view -> {
             new ServerHTCPersonSearchBackgroundTask().execute(editTextSearch.getText().toString());
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initController() {
@@ -109,10 +132,13 @@ public class SearchSESPPersonActivity extends BaseActivity {
         protected Object doInBackground(String... strings) {
             MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
 
+
             Credentials credentials = new Credentials(applicationContext);
             try {
                 Constants.SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(applicationContext, credentials.getServerUrl());
                 if(serverStatus == Constants.SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE) {
+                    runOnUiThread(() -> seachProgress.setVisibility(View.VISIBLE));
+
                     int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
                     if (authenticateResult == Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                         return htcPersonController.searchPersonOnServer(strings[0]);
@@ -140,9 +166,17 @@ public class SearchSESPPersonActivity extends BaseActivity {
     }
 
     private void onPostExecuteUpdate(List<HTCPerson> htcPersonList) {
+        runOnUiThread(() -> seachProgress.setVisibility(View.GONE));
         if (htcPersonList == null) {
             Toast.makeText(this, getApplicationContext().getString(R.string.error_patient_repo_fetch), Toast.LENGTH_SHORT).show();
             return;
+        }
+        if (htcPersonList.size() <= 0) {
+            noSearchResultTv.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            noSearchResultTv.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
         this.searchResults.clear();
 

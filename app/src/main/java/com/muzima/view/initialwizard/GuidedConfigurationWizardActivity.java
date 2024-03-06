@@ -1264,7 +1264,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     if (result[1] == 1) {
                         resultDescription = getString(R.string.info_htc_person_downloaded);
                     } else {
-                        resultDescription = getString(R.string.info_htc_persons_downloaded, result[1]);
+                        resultDescription = getString(R.string.info_htc_persons_downloaded, result[3]);
                     }
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else  {

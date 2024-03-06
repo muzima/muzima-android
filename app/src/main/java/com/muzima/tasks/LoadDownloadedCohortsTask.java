@@ -107,7 +107,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                             DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
                                             if (derivedConcept != null) {
                                                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                                                String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+                                                String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
                                                 String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
                                                 cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName, StringUtils.EMPTY, StringUtils.EMPTY));
                                             }
@@ -125,7 +125,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                                 DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
                                                 if (derivedConcept != null) {
                                                     SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                                                    String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+                                                    String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
                                                     String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
                                                     cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName, StringUtils.EMPTY, StringUtils.EMPTY));
                                                 }
@@ -142,7 +142,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                         DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
                                         if (derivedConcept != null) {
                                             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                                            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+                                            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
                                             String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
                                             cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName, StringUtils.EMPTY, StringUtils.EMPTY));
                                         }
@@ -160,7 +160,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                             DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
                                             if (derivedConcept != null) {
                                                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                                                String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+                                                String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
                                                 String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
                                                 cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName,StringUtils.EMPTY ,StringUtils.EMPTY));
                                             }

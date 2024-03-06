@@ -141,7 +141,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
         String getConceptDisplay(Concept concept) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
-            String applicationLanguage = preferences.getString(activity.getResources().getString(R.string.preference_app_language), activity.getResources().getString(R.string.language_english));
+            String applicationLanguage = preferences.getString(activity.getResources().getString(R.string.preference_app_language), activity.getResources().getString(R.string.language_portuguese));
 
             String text = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage);
             if (concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)) {
