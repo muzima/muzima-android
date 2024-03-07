@@ -188,15 +188,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     Toast.makeText(GuidedConfigurationWizardActivity.this,
                             getString(R.string.error_setup_configuration_template_download), Toast.LENGTH_SHORT).show();
                 } else {
-                    try {
-                        LastSyncTimeService lastSyncTimeService =
-                                ((MuzimaApplication) getApplicationContext()).getMuzimaContext().getLastSyncTimeService();
-                        SntpService sntpService = ((MuzimaApplication) getApplicationContext()).getSntpService();
-                        LastSyncTime lastSyncTime = new LastSyncTime(DOWNLOAD_SETUP_CONFIGURATIONS, sntpService.getTimePerDeviceTimeZone());
-                        lastSyncTimeService.saveLastSyncTime(lastSyncTime);
-                    } catch (IOException e) {
-                        Log.i(getClass().getSimpleName(), "Error setting Setup Configuration sync time.");
-                    }
                     keepPhoneAwake(false);
                     initiateSetupConfiguration();
                 }
@@ -314,7 +305,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 if (result == null) {
                     resultDescription = getString(R.string.info_cohort_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                } else if (result[0] == SUCCESS) {
                     if (result[1] == 0) {
                         resultDescription = getString(R.string.info_settings_not_download);
                     } else if (result[1] == 1) {

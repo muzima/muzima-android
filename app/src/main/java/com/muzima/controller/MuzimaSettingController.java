@@ -22,7 +22,6 @@ import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
@@ -225,10 +224,12 @@ public class MuzimaSettingController {
 
     public void saveOrUpdateSetting(MuzimaSetting setting) throws MuzimaSettingSaveException {
         try {
-            if (settingService.getSettingByProperty(setting.getProperty()) != null) {
+            MuzimaSetting preExistingSetting = settingService.getSettingByProperty(setting.getProperty());
+            if (preExistingSetting != null) {
                 settingService.updateSetting(setting);
-                if(setting.getProperty().equals(ONLINE_ONLY_MODE_ENABLED_SETTING)){
-                    updateTheme();
+                if(setting.getProperty().equals(ONLINE_ONLY_MODE_ENABLED_SETTING) &&
+                preExistingSetting.getValueBoolean() != setting.getValueBoolean()){
+                    toggleTheme();
                     if(!setting.getValueBoolean()) {
                         ActivityManager am = (ActivityManager) muzimaApplication.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
@@ -261,7 +262,7 @@ public class MuzimaSettingController {
         }
     }
 
-    public void updateTheme(){
+    public void toggleTheme(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
         String lightModeKey = muzimaApplication.getApplicationContext().getResources().getString(R.string.preference_light_mode);
         boolean isLightThemeEnabled = preferences.getBoolean(lightModeKey, false);
