@@ -268,7 +268,7 @@ public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavi
         dialog.setContentView(view);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        String applicationLanguage = preferences.getString(this.getResources().getString(R.string.preference_app_language), this.getResources().getString(R.string.language_english));
+        String applicationLanguage = preferences.getString(this.getResources().getString(R.string.preference_app_language), this.getResources().getString(R.string.language_portuguese));
 
 
         bottomSheetConceptTitleTextView = view.findViewById(R.id.cohort_name_text_view);

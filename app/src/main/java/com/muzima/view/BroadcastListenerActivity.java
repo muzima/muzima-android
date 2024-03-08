@@ -29,7 +29,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -172,50 +174,60 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
                 int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
                 int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
 
-                switch (syncType) {
-                    case DataSyncServiceConstants.SYNC_FORMS:
-                        int deletedFormCount = intent.getIntExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
-                        msg = getString(R.string.info_forms_downloaded, downloadCount);
-                        if (deletedFormCount > 0) {
-                            msg = getString(R.string.info_form_download_delete, downloadCount, deletedFormCount);
+                if (isAtsUser()) {
+                    switch (syncType) {
+                        case DataSyncServiceConstants.SYNC_HTC_PERSONS:
+                            msg = getString(R.string.info_real_time_upload_success);
+                            break;
+                    }
+                } else {
+                    switch (syncType) {
+                        case DataSyncServiceConstants.SYNC_FORMS:
+                            int deletedFormCount = intent.getIntExtra(DataSyncServiceConstants.DELETED_COUNT_PRIMARY, 0);
+                            msg = getString(R.string.info_forms_downloaded, downloadCount);
+                            if (deletedFormCount > 0) {
+                                msg = getString(R.string.info_form_download_delete, downloadCount, deletedFormCount);
+                            }
+                            break;
+                        case DataSyncServiceConstants.SYNC_TEMPLATES:
+                            msg = getString(R.string.info_form_template_concept_download, downloadCount, intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0));
+                            break;
+                        case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
+                            msg = getString(R.string.info_new_cohort_download, downloadCount);
+                            break;
+                        case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA: {
+                            int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
+                            msg = getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec) + getString(R.string.info_patient_data_download);
+                            break;
                         }
-                        break;
-                    case DataSyncServiceConstants.SYNC_TEMPLATES:
-                        msg = getString(R.string.info_form_template_concept_download, downloadCount, intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0));
-                        break;
-                    case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
-                        msg = getString(R.string.info_new_cohort_download, downloadCount);
-                        break;
-                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA: {
-                        int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                        msg = getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec) + getString(R.string.info_patient_data_download);
-                        break;
+                        case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_ONLY: {
+                            int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
+                            msg = getString(R.string.info_cohorts_patients_download, downloadCount, downloadCountSec);
+                            break;
+                        }
+                        case DataSyncServiceConstants.SYNC_OBSERVATIONS:
+                            msg = getString(R.string.info_new_observation_download, downloadCount);
+                            break;
+                        case DataSyncServiceConstants.SYNC_ENCOUNTERS:
+                            msg = getString(R.string.info_new_encounter_download, downloadCount);
+                            break;
+                        case DataSyncServiceConstants.SYNC_UPLOAD_FORMS:
+                            msg = getString(R.string.info_form_data_upload_sucess);
+                            break;
+                        case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
+                            msg = getString(R.string.info_real_time_upload_success);
+                            break;
+                        case DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS:
+                            msg = getString(R.string.info_patient_reports_downloaded, downloadCount);
+                            break;
+                        case DataSyncServiceConstants.SYNC_PATIENT_REPORTS:
+                            msg = getString(R.string.info_patient_reports_downloaded, downloadCount);
+                            break;
+                        case DataSyncServiceConstants.SYNC_HTC_PERSONS:
+                            msg = getString(R.string.info_real_time_upload_success);
                     }
-                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_ONLY: {
-                        int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
-                        msg = getString(R.string.info_cohorts_patients_download, downloadCount, downloadCountSec);
-                        break;
-                    }
-                    case DataSyncServiceConstants.SYNC_OBSERVATIONS:
-                        msg = getString(R.string.info_new_observation_download, downloadCount);
-                        break;
-                    case DataSyncServiceConstants.SYNC_ENCOUNTERS:
-                        msg = getString(R.string.info_new_encounter_download, downloadCount);
-                        break;
-                    case DataSyncServiceConstants.SYNC_UPLOAD_FORMS:
-                        msg = getString(R.string.info_form_data_upload_sucess);
-                        break;
-                    case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
-                        msg = getString(R.string.info_real_time_upload_success);
-                        break;
-                    case DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS:
-                        msg = getString(R.string.info_patient_reports_downloaded, downloadCount);
-                        break;
-                    case DataSyncServiceConstants.SYNC_PATIENT_REPORTS:
-                        msg = getString(R.string.info_patient_reports_downloaded, downloadCount);
-                        break;
+                    break;
                 }
-                break;
         }
 
         if(StringUtils.isEmpty(msg)){
@@ -226,6 +238,14 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
         dataSyncProgressLog.add(msg);
         if(dataSyncProgressMessageArrayAdapter != null) {
             dataSyncProgressMessageArrayAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private boolean isAtsUser() {
+        try {
+            return ((MuzimaApplication)getApplication()).getSetupConfigurationController().getAllSetupConfigurations().get(0).getUuid().equals("1eaa9574-fa5a-4655-bd63-466b538c5b5d");
+        } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
+            throw new RuntimeException(e);
         }
     }
 

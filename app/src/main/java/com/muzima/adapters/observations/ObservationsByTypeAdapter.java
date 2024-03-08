@@ -86,7 +86,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
 
     private void bindViews(@NotNull ViewHolder holder, int position) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
 
         ConceptWithObservations conceptWithObservations = conceptWithObservationsList.get(position);
 
@@ -113,7 +113,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
 
     String getConceptDisplay(Concept concept) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
 
         String text = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage);
         if (concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)) {

@@ -112,7 +112,8 @@ public class SespPersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             Date dob = patient.getBirthdate();
             if(dob != null) {
-                personViewHolder.age.setText(DateUtils.calculateAge(dob)+"");
+
+                personViewHolder.age.setText(DateUtils.calculateAge(dob)+" Anos");
                 //personViewHolder.age.setText(context.createConfigurationContext(configuration).getResources().getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(dob))));
             }else{
                 personViewHolder.age.setText("");
@@ -224,6 +225,8 @@ public class SespPersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
             details = itemView.findViewById(R.id.details);
             divider = itemView.findViewById(R.id.divider);
             moreDetailsLyt = itemView.findViewById(R.id.person_more_details);
+
+            migrationState.setVisibility(View.GONE);
         }
     }
 

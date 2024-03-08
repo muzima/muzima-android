@@ -14,7 +14,7 @@
         <ImageView
             android:id="@+id/person_sex"
             android:layout_width="0dp"
-            android:layout_weight="1.5"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
             bind:srcCompat="@drawable/gender_female"/>
         <LinearLayout
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Antonia Luis Matos"
-                android:textSize="12dp"
+                android:textSize="14dp"
                 android:textColor="#424242"
                 android:layout_marginBottom="6dp"
                 android:textStyle="bold"/>
@@ -36,27 +36,11 @@
                 android:id="@+id/identifier"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0269010879/3008/12222"
-                android:textSize="11dp"
+                android:text="Sem Identifacor"
+                android:textSize="13dp"
                 android:textColor="#389b3c"
                 android:textStyle="bold"/>
 
-        </LinearLayout>
-        <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1.5"
-                android:layout_height="wrap_content"
-                android:paddingVertical="5dp"
-                android:orientation="vertical">
-            <ImageView
-                    android:id="@+id/migration_state"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:background="@android:color/transparent"
-                    android:layout_gravity="end"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_refresh"
-                    android:layout_marginRight="@dimen/dimen_2dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -64,15 +48,29 @@
             android:layout_height="wrap_content"
             android:paddingVertical="5dp"
             android:orientation="vertical">
-        <ImageButton
-            android:id="@+id/create_htc"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:background="@android:color/transparent"
-            android:layout_gravity="end"
-            android:scaleType="fitXY"
-            android:src="@drawable/baseline_local_hospital_24"
-            android:layout_marginRight="@dimen/dimen_2dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/migration_state"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="end"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/empty_cloud"
+                    android:layout_marginRight="@dimen/dimen_2dp"/>
+                <ImageButton
+                    android:id="@+id/create_htc"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@android:color/transparent"
+                    android:layout_gravity="end"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/baseline_local_hospital_24"
+                    android:layout_marginRight="@dimen/dimen_2dp"/>
+            </RelativeLayout>
+
         </LinearLayout>
 
     </LinearLayout>
@@ -84,10 +82,10 @@
         <TextView
             android:id="@+id/person_age"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
             android:text=""
-            android:textSize="12dp"
+            android:textSize="14dp"
             android:textColor="#424242"/>
 
         <View

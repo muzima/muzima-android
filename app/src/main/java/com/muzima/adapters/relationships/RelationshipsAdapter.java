@@ -188,7 +188,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
             holder.hivCareDetails.setVisibility(View.GONE);
         }else {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
 
             try {
                 holder.testDate.setText(getObsDateTimeByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));

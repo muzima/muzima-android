@@ -8,6 +8,7 @@ import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.HTCPerson;
 import com.muzima.api.service.HTCPersonService;
+import com.muzima.api.service.MuzimaHtcFormService;
 import com.muzima.service.MuzimaLoggerService;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -18,10 +19,12 @@ import java.util.List;
 
 public class HTCPersonController {
     private final HTCPersonService htcPersonService;
+    private final MuzimaHtcFormService htcFormService;
 
     private MuzimaApplication muzimaApplication;
-    public HTCPersonController(HTCPersonService htcPersonService, MuzimaApplication muzimaApplication) {
+    public HTCPersonController(HTCPersonService htcPersonService, MuzimaHtcFormService htcFormService, MuzimaApplication muzimaApplication) {
         this.htcPersonService = htcPersonService;
+        this.htcFormService = htcFormService;
         this.muzimaApplication = muzimaApplication;
     }
     public HTCPerson getHTCPerson(String uuid) {
@@ -44,7 +47,7 @@ public class HTCPersonController {
     }
     public void saveHTCPerson(HTCPerson htcPerson) {
         try {
-            htcPerson.setSysnStatus(STATUS_COMPLETE);
+            htcPerson.setSyncStatus(STATUS_COMPLETE);
             htcPersonService.saveHTCPerson(htcPerson);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while searching for person in the server", e);
@@ -98,8 +101,10 @@ public class HTCPersonController {
         try {
         List<HTCPerson> htcPersonList = htcPersonService.getBySyncStatus(STATUS_COMPLETE);
             for (HTCPerson person : htcPersonList) {
+                person.setHtcForm(htcFormService.getHTCFormByHTCPersonUuid(person.getUuid()));
                 if (htcPersonService.syncHtcData(person)) {
-                    person.setSysnStatus(STATUS_UPLOADED);
+                    person.setSyncStatus(STATUS_UPLOADED);
+                    htcPersonService.updateHTCPerson(person);
                     result = true;
                     MuzimaLoggerService.log(muzimaApplication, "SYNCED_HTC_DATA", "{\"htcPersonUuid\":\"" + person.getUuid() + "\"}");
                 } else {

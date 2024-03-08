@@ -1,49 +1,46 @@
 package com.muzima.view.main;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.PorterDuff;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.adapters.person.PersonSearchAdapter;
 import com.muzima.api.model.HTCPerson;
-import com.muzima.api.model.Location;
-import com.muzima.api.model.MuzimaSetting;
-import com.muzima.api.model.Patient;
 import com.muzima.api.model.User;
+import com.muzima.controller.FormController;
 import com.muzima.controller.HTCPersonController;
-import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.domain.Credentials;
 import com.muzima.model.patient.PatientItem;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.utils.Constants;
@@ -51,9 +48,11 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.VerticalSpaceItemDecoration;
+import com.muzima.utils.ViewUtil;
 import com.muzima.view.BaseActivity;
+import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
-import com.muzima.view.htc.HTCFormActivity;
+import com.muzima.view.login.LoginActivity;
 import com.muzima.view.person.PersonRegisterActivity;
 import com.muzima.view.person.SearchSESPPersonActivity;
 
@@ -61,10 +60,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
-import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
-
-public class HTCMainActivity extends BaseActivity {
+public class HTCMainActivity extends BroadcastListenerActivity {
     private FloatingActionButton newPersonButton;
     private RecyclerView recyclerView;
     private PersonSearchAdapter personSearchAdapter;
@@ -74,11 +70,16 @@ public class HTCMainActivity extends BaseActivity {
     Toolbar toolbar;
     private HTCPersonController htcPersonController;
 
+    private androidx.appcompat.app.AlertDialog syncDialog;
     private TextView userName;
 
     private User user;
+    private Animation refreshIconRotateAnimation;
 
-    private static boolean isSyncRunning;
+
+
+    private ActionMenuItemView syncMenuAction;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,8 @@ public class HTCMainActivity extends BaseActivity {
         getLatestHTCPersons();
 
 
+
+
         newPersonButton = findViewById(R.id.new_person);
         newPersonButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), PersonRegisterActivity.class);
@@ -123,7 +126,7 @@ public class HTCMainActivity extends BaseActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(HTCMainActivity.this);
                 builder.setCancelable(false)
                         .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                        .setTitle(getResources().getString(R.string.general_success))
+                        .setTitle(getResources().getString(R.string.general_error))
                         .setMessage(getResources().getString(R.string.fill_the_intended_name_to_search_on_sesp))
                         .setPositiveButton(R.string.general_ok, launchDashboard())
                         .show();
@@ -139,29 +142,66 @@ public class HTCMainActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_htc_main, menu);
+
+        syncMenuAction = findViewById(R.id.menu_sync_htc);
         return true;
     }
 
-    public boolean isDataSyncRunning(){
-        return isSyncRunning;
+    private void logout() {
+        if(((MuzimaApplication) getApplication()).getAuthenticatedUser() != null) {
+            ((MuzimaApplication) getApplication()).logOut();
+            launchLoginActivity();
+        }
     }
 
+    private void launchLoginActivity() {
+        Intent intent = new Intent(getApplication(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(LoginActivity.isFirstLaunch, false);
+        intent.putExtra(LoginActivity.sessionTimeOut, false);
+        getApplication().startActivity(intent);
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_sync_htc:
-                processSync();
+                refreshIconRotateAnimation = AnimationUtils.loadAnimation(HTCMainActivity.this, R.anim.rotate_refresh);
+                refreshIconRotateAnimation.setRepeatCount(Animation.INFINITE);
+                processSync(refreshIconRotateAnimation);
+                return true;
+            case R.id.menu_log_out:
+                showExitAlertDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private void processSync(){
+    private void processSync(Animation refreshIconRotateAnimation){
+        syncDialog = ViewUtil.displayAlertDialog(HTCMainActivity.this, "Envio de novos dados de ATS para o servidor em curso...");
         if(!isDataSyncRunning()) {
+            syncMenuAction.startAnimation(refreshIconRotateAnimation);
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
             new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
+            syncDialog.show();
+            //showBackgroundSyncProgressDialog(HTCMainActivity.this);
+        } else {
+            syncDialog.show();
+            //showBackgroundSyncProgressDialog(HTCMainActivity.this);
+        }
+    }
 
+    protected void updateSyncProgressWidgets(boolean isSyncRunning){
+        if(!isSyncRunning){
+            syncMenuAction.clearAnimation();
+            getLatestHTCPersons();
+            personSearchAdapter.notifyDataSetChanged();
+            if (syncDialog.isShowing()) syncDialog.dismiss();
+            ViewUtil.displayAlertDialog(HTCMainActivity.this, "Envio de novos dados de ATS para o servidor efectuado com sucesso.").show();
+
+        } else{
+            syncMenuAction.startAnimation(refreshIconRotateAnimation);
         }
     }
 
@@ -186,6 +226,27 @@ public class HTCMainActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }
+        };
+    }
+
+    private void showExitAlertDialog() {
+        String message = getResources().getString(R.string.warning_logout_confirm);
+
+        new AlertDialog.Builder(HTCMainActivity.this)
+                .setCancelable(true)
+                .setIcon(ThemeUtils.getIconWarning(this))
+                .setTitle(getResources().getString(R.string.title_logout_confirm))
+                .setMessage(message)
+                .setPositiveButton(getString(R.string.general_yes), exitApplication())
+                .setNegativeButton(getString(R.string.general_no), null)
+                .create()
+                .show();
+    }
+
+    private Dialog.OnClickListener exitApplication() {
+        return (dialog, which) -> {
+            ((MuzimaApplication) getApplication()).logOut();
+            launchLoginActivity();
         };
     }
 }

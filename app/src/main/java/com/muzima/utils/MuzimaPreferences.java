@@ -144,6 +144,6 @@ public class MuzimaPreferences {
     }
 
     public static String getAppLocalePreference(Context context) {
-        return getStringPreference(context, APP_LOCALE_PREFERENCE, context.getString(R.string.language_english));
+        return getStringPreference(context, APP_LOCALE_PREFERENCE, context.getString(R.string.language_portuguese));
     }
 }

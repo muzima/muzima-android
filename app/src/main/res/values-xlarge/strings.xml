@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="todos_utentes">Todos os Utentes</string>
+    <string name="person_search">Pesquisa de Pessoas/Utentes</string>
+    <string name="no_search_results">Nenhum resultado foi encontrado.</string>
 </resources>

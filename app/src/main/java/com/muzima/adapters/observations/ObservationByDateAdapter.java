@@ -82,7 +82,7 @@ public class ObservationByDateAdapter extends RecyclerAdapter<ObservationsByType
 
     private void bindViews(@NotNull ObservationByDateAdapter.ViewHolder holder, int position) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
 
         String date = dates.get(position);
         Calendar calendar = Calendar.getInstance();

@@ -65,9 +65,10 @@
                 android:background="@drawable/fields_background"
                 android:inputType="text"
                 android:textColor="#000"
-                android:hint="Pesquisar"
+                android:textSize="14dp"
+                android:hint="Pesquisar por Nome/Identificador"
                 android:textColorHint="#000"
-                android:padding="10dp"/>
+                android:padding="9dp"/>
             <ImageButton
                 android:id="@+id/buttonSearch"
                 android:layout_width="0dp"
