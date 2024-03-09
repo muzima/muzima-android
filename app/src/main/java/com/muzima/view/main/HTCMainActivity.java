@@ -55,6 +55,7 @@ import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.person.PersonRegisterActivity;
 import com.muzima.view.person.SearchSESPPersonActivity;
+import com.muzima.view.preferences.SettingsActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -173,9 +174,18 @@ public class HTCMainActivity extends BroadcastListenerActivity {
             case R.id.menu_log_out:
                 showExitAlertDialog();
                 return true;
+            case R.id.menu_language:
+                openLanguageDialog();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void openLanguageDialog() {
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        intent.putExtra("MODULE", "ATS");
+        startActivity(intent);
     }
 
     private void processSync(Animation refreshIconRotateAnimation){
@@ -197,7 +207,7 @@ public class HTCMainActivity extends BroadcastListenerActivity {
             syncMenuAction.clearAnimation();
             getLatestHTCPersons();
             personSearchAdapter.notifyDataSetChanged();
-            if (syncDialog.isShowing()) syncDialog.dismiss();
+            if (syncDialog != null && syncDialog.isShowing()) syncDialog.dismiss();
             ViewUtil.displayAlertDialog(HTCMainActivity.this, "Envio de novos dados de ATS para o servidor efectuado com sucesso.").show();
 
         } else{

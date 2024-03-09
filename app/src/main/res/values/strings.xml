@@ -831,7 +831,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="person_exist_in_sesp_field">Pessoa existe no SESP?</string>
 
     <string name="htc_person_name_mandatory">Nome é obrigatório, e não pode conter símbolos ou nũmeros</string>
-    <string name="htc_person_surname_mandatory">Apelido é obrigatório, e não pode conter símbolos ou nũmeros</string>
+    <string name="htc_person_surname_mandatory">Apelido é obrigatório, e não pode conter símbolos ou números</string>
     <string name="htc_person_phone_number_error">O telefone deve conter 9 dígitos numéricos, com o primeiro dígito 8</string>
     <string name="info_htc_person_download">Baixando registos de pessoas testadas</string>
     <string name="info_htc_persons_download">Baixando Pessoas Testadas</string>
@@ -856,6 +856,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="fill_the_intended_name_to_search_on_sesp">Indique o nome ou identificador da pessoa que pretende pesquisar no SESP!</string>
     <string name="person_search">Pesquisa de Pessoas/Utentes</string>
     <string name="no_search_results">Nenhum resultado foi encontrado.</string>
+    <string name="htc_person_gender_mandatory">Por favor Indicar o género.</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Sim</item>

@@ -28,12 +28,15 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.LoginActivity;
+import com.muzima.view.main.HTCMainActivity;
 import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private AppCompatDelegate delegate;
     private final LanguageUtil languageUtil = new LanguageUtil();
+
+    private String currModule;
 
     @Override
     public void onUserInteraction() {
@@ -45,6 +48,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
+        currModule = getIntent().getStringExtra("MODULE");
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
@@ -68,6 +72,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
     }
 
+    private boolean isATS() {
+        return !StringUtils.isEmpty(this.currModule) && this.currModule.equals("ATS");
+    }
     /**
      * Set up the {@link android.app.ActionBar}.
      */
@@ -100,7 +107,9 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     }
 
     private void launchDashboard() {
-        Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+        Class mainClass = isATS() ? HTCMainActivity.class : MainDashboardActivity.class;
+
+        Intent intent = new Intent(getApplicationContext(), mainClass);
         startActivity(intent);
         finish();
     }

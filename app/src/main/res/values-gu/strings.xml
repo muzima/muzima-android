@@ -845,6 +845,7 @@
     <string name="fill_the_intended_name_to_search_on_sesp">Indique o nome ou identificador da pessoa que pretende pesquisar no SESP!</string>
     <string name="person_search">Pesquisa de Pessoas/Utentes</string>
     <string name="no_search_results">Nenhum resultado foi encontrado.</string>
+    <string name="htc_person_gender_mandatory">O sexo é obrigatório.</string>
 
     <string-array name="personExistsInSESPOptions">
         <item>Yes</item>
