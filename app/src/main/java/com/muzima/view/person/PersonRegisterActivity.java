@@ -332,7 +332,22 @@ public class PersonRegisterActivity extends BaseActivity {
 
     private void setDataFieldsForExistingSESPPersons() {
        if(this.patient!=null) {
-
+           String existInSESP = ((HTCPerson) patient).getPersonExistInSESP();
+           int countPopKeyMiners = personExistsInSESP.getAdapter().getCount();
+           for(int i=0; i< countPopKeyMiners; i++) {
+               if(personExistsInSESP.getAdapter().getItem(i).toString().equalsIgnoreCase(existInSESP)){
+                   personExistsInSESP.setSelection(i);
+                   break;
+               }
+           }
+           if("Sim".equalsIgnoreCase(existInSESP)) {
+               String existInSESPDetails = ((HTCPerson) patient).getPersonExistInSESPDetails();
+               hideDetailsFields(View.VISIBLE);
+               details.setText(existInSESPDetails);
+           } else {
+               hideDetailsFields(View.INVISIBLE);
+               details.setText("");
+           }
            name.setText(patient.getName().getGivenName());
            surname.setText(patient.getName().getFamilyName());
            if(StringUtils.stringHasValue(patient.getGender())) {
@@ -536,6 +551,11 @@ public class PersonRegisterActivity extends BaseActivity {
                 ViewUtil.displayAlertDialog(PersonRegisterActivity.this,getResources().getString(R.string.htc_person_phone_number_error) ).show();
                 return false;
             }
+        }
+        String personExistsInSESPValue = personExistsInSESP.getSelectedItem().toString();
+        if(StringUtils.isEmpty(personExistsInSESPValue)) {
+            ViewUtil.displayAlertDialog(PersonRegisterActivity.this,getResources().getString(R.string.htc_person_exist_in_sesp_error) ).show();
+            return false;
         }
         return true;
     }

@@ -305,6 +305,7 @@ public class HTCFormActivity extends AppCompatActivity {
             String currentDate = DateUtils.getCurrentDateAsString();
             dateOfCreation.setText(currentDate);
             dateOfCreation.setEnabled(false);
+            testingDate.setText(currentDate);
 
             Location location = getLocation();
             healthFacility.setText(location.getName());
@@ -365,15 +366,15 @@ public class HTCFormActivity extends AppCompatActivity {
         }
         if(testingSectors.getSelectedItem()!=null) {
             String sector = testingSectors.getSelectedItem().toString();
-            muzimaHtcForm.setTestingSector(sector);
+            muzimaHtcForm.setTestingSector(!StringUtils.isEmpty(sector)?sector:null);
         }
         if(popKeysMiners.getSelectedItem()!=null) {
             String popKeysMinersValue = popKeysMiners.getSelectedItem().toString();
-            muzimaHtcForm.setPopKeysMiners(popKeysMinersValue);
+            muzimaHtcForm.setPopKeysMiners(!StringUtils.isEmpty(popKeysMinersValue)?popKeysMinersValue:null);
         }
         if(indexCaseContacts.getSelectedItem()!=null) {
             String indexCaseContact = indexCaseContacts.getSelectedItem().toString();
-            muzimaHtcForm.setIndexCaseContact(indexCaseContact);
+            muzimaHtcForm.setIndexCaseContact(!StringUtils.isEmpty(indexCaseContact)?indexCaseContact:null);
         }
         if(!StringUtils.isEmpty(testingDate.getText().toString())) {
             try {

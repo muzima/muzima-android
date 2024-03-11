@@ -854,8 +854,10 @@
     <string name="person_search">Pesquisa de Pessoas/Utentes</string>
     <string name="no_search_results">Nenhum resultado foi encontrado.</string>
     <string name="htc_person_gender_mandatory">O sexo é obrigatório.</string>
+    <string name="htc_person_exist_in_sesp_error">Deve indicar a secção ´Pessoa existe no SESP?´</string>
 
     <string-array name="personExistsInSESPOptions">
+        <item></item>
         <item>Yes</item>
         <item>No</item>
         <item>I don`t know</item>
