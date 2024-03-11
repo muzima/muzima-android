@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
+import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class HTCFormActivity extends AppCompatActivity {
     private ImageButton identificationDataBtn;
@@ -508,6 +509,25 @@ public class HTCFormActivity extends AppCompatActivity {
             }
             selfTestConfirmation.setChecked(htcForm.isSelfTestConfirmation());
             healthFacility.setText(htcForm.getTestingLocation().getName());
+            if(htcPerson.getSyncStatus().equalsIgnoreCase(STATUS_UPLOADED)){
+                enableOrDisableFields(false);
+            }
         }
+    }
+
+    private void enableOrDisableFields(boolean enable) {
+        bookNumber.setEnabled(enable);
+        bookPageNumber.setEnabled(enable);
+        bookPageLine.setEnabled(enable);
+        testingDate.setEnabled(enable);
+        testingSectors.setEnabled(enable);
+        popKeysMiners.setEnabled(enable);
+        indexCaseContacts.setEnabled(enable);
+        firstTimeTestedOption.setEnabled(enable);
+        pastPositiveOption.setEnabled(enable);
+        selfTestConfirmation.setEnabled(enable);
+        healthFacility.setEnabled(enable);
+        dateOfCreation.setEnabled(enable);
+        saveHtcForm.setVisibility(enable?View.VISIBLE:View.INVISIBLE);
     }
 }
