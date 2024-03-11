@@ -24,6 +24,40 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/personExistsInSESPTxtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pessoa existe no SESP?"
+                    style="@style/input_labels"
+                    />
+                <Spinner
+                    android:id="@+id/personExistsInSESP"
+                    android:layout_below="@+id/personExistsInSESPTxtView"
+                    android:layout_width="match_parent"
+                    style="@style/bottom_spinner_style"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/detailsTextView"
+                    android:layout_below="@+id/personExistsInSESP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Detalhes"
+                    style="@style/input_labels"
+                    />
+                <EditText
+                    android:id="@+id/details"
+                    android:layout_below="@+id/detailsTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="#000"
+                    android:padding="6dp"
+                    android:background="@drawable/fields_background" />
+                </RelativeLayout>
                 <LinearLayout
                     android:id="@+id/identification_data"
                     android:layout_width="match_parent"
@@ -401,32 +435,6 @@
                         android:textColor="#000"
                         android:padding="6dp"
                         android:background="@drawable/fields_background" />
-                    <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Pessoa existe no SESP?"
-                            style="@style/input_labels"
-                    />
-                    <Spinner
-                            android:id="@+id/personExistsInSESP"
-                            android:layout_width="match_parent"
-                            style="@style/bottom_spinner_style"
-                            android:layout_height="wrap_content"/>
-                    <TextView
-                            android:id="@+id/detailsTextView"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Detalhes"
-                            style="@style/input_labels"
-                    />
-                    <EditText
-                            android:id="@+id/details"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textColor="#000"
-                            android:padding="6dp"
-                            android:background="@drawable/fields_background" />
                 </LinearLayout>
                 <LinearLayout
                         android:id="@+id/additional_information_data"

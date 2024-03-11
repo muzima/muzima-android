@@ -56,6 +56,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
+import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class PersonRegisterActivity extends BaseActivity {
     private ImageButton identificationDataBtn;
@@ -332,7 +333,22 @@ public class PersonRegisterActivity extends BaseActivity {
 
     private void setDataFieldsForExistingSESPPersons() {
        if(this.patient!=null) {
-
+           String existInSESP = ((HTCPerson) patient).getPersonExistInSESP();
+           int countPopKeyMiners = personExistsInSESP.getAdapter().getCount();
+           for(int i=0; i< countPopKeyMiners; i++) {
+               if(personExistsInSESP.getAdapter().getItem(i).toString().equalsIgnoreCase(existInSESP)){
+                   personExistsInSESP.setSelection(i);
+                   break;
+               }
+           }
+           if("Sim".equalsIgnoreCase(existInSESP)) {
+               String existInSESPDetails = ((HTCPerson) patient).getPersonExistInSESPDetails();
+               hideDetailsFields(View.VISIBLE);
+               details.setText(existInSESPDetails);
+           } else {
+               hideDetailsFields(View.INVISIBLE);
+               details.setText("");
+           }
            name.setText(patient.getName().getGivenName());
            surname.setText(patient.getName().getFamilyName());
            if(StringUtils.stringHasValue(patient.getGender())) {
@@ -371,6 +387,9 @@ public class PersonRegisterActivity extends BaseActivity {
            String phoneNumber = ((HTCPerson) patient).getPhoneNumber();
            if(!StringUtils.isEmpty(phoneNumber)) {
                contact.setText(phoneNumber);
+           }
+           if(((HTCPerson) patient).getSyncStatus().equalsIgnoreCase(STATUS_UPLOADED)){
+               enableOrDisableFields(false);
            }
        }
     }
@@ -537,6 +556,11 @@ public class PersonRegisterActivity extends BaseActivity {
                 return false;
             }
         }
+        String personExistsInSESPValue = personExistsInSESP.getSelectedItem().toString();
+        if(StringUtils.isEmpty(personExistsInSESPValue)) {
+            ViewUtil.displayAlertDialog(PersonRegisterActivity.this,getResources().getString(R.string.htc_person_exist_in_sesp_error) ).show();
+            return false;
+        }
         return true;
     }
     private Location getLocation() {
@@ -558,5 +582,25 @@ public class PersonRegisterActivity extends BaseActivity {
             Log.e(getClass().getSimpleName(), "Encountered an error while fetching location ",e);
         }
         return null;
+    }
+
+    private void enableOrDisableFields(boolean enable) {
+        name.setEnabled(enable);
+        surname.setEnabled(enable);
+        optMale.setEnabled(enable);
+        optFemale.setEnabled(enable);
+        birthDateAge.setEnabled(enable);
+        birthDateDate.setEnabled(enable);
+        birthDate.setEnabled(enable);
+        htcPersonAge.setEnabled(enable);
+        contact.setEnabled(enable);
+        street.setEnabled(enable);
+        locality.setEnabled(enable);
+        block.setEnabled(enable);
+        neighbourhood.setEnabled(enable);
+        personExistsInSESP.setEnabled(enable);
+        details.setEnabled(enable);
+        dateOfCreation.setEnabled(enable);
+        healthFacility.setEnabled(enable);
     }
 }
