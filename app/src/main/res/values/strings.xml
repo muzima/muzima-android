@@ -815,7 +815,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="pop_keys_miners">Pop Chaves e Mineiros</string>
     <string name="index_case_contacts">Contacto de Casos Índice</string>
     <string name="self_test_confirmation">Confirmação de Autoteste</string>
-    <string name="hiv_positive_results">Resultados Positivos para o HIV</string>
+    <string name="hiv_positive_results">Resultado HIV</string>
 
     <string name="historical_testing_data">Historial de Testagem</string>
     <string name="first_time_testing">Testado pela 1ª vez</string>

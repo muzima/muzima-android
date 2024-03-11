@@ -791,38 +791,38 @@
     <string name="visit_made_sucessfully">Tembelea tayari imefanywa kwa mafanikio!</string>
     <string name="todos_utentes">Todos os Utentes</string>
 
-    <string name="htc_identification_data">Utambulisho wa mgonjwa</string>
-    <string name="htc_retesting">HTC inajaribu tena</string>
+    <string name="htc_identification_data">Identificação do Utente</string>
+    <string name="htc_retesting">Retestagem do ATS</string>
 
-    <string name="htc_book_info">Maelezo ya kitabu</string>
-    <string name="book_number">Nambari ya kitabu</string>
-    <string name="book_page_number">Nambari ya ukurasa</string>
-    <string name="book_page_line">Mstari</string>
-    <string name="testing_sector">Sekta ya majaribio</string>
+    <string name="htc_book_info">Informação do Livro</string>
+    <string name="book_number">Número do livro</string>
+    <string name="book_page_number">Página do livro</string>
+    <string name="book_page_line">Linha</string>
+    <string name="testing_sector">Sector de testagem</string>
 
-    <string name="ats_testing_data">Data ya majaribio ya HTC</string>
-    <string name="testing_date">Tarehe ya majaribio</string>
-    <string name="select_testing_date">Jaza tarehe ya majaribio</string>
-    <string name="pop_keys_miners">Vifunguo vya pop na wachimbaji</string>
-    <string name="index_case_contacts">Anwani za kesi za index</string>
-    <string name="self_test_confirmation">Uthibitisho wa Kujijaribu</string>
-    <string name="hiv_positive_results">Matokeo chanya kwa VVU</string>
+    <string name="ats_testing_data">Dados do ATS</string>
+    <string name="testing_date">Data do teste *</string>
+    <string name="select_testing_date">Seleccione a data do teste</string>
+    <string name="pop_keys_miners">Pop Chaves e Mineiros</string>
+    <string name="index_case_contacts">Contacto de Casos Índice</string>
+    <string name="self_test_confirmation">Confirmação de Autoteste</string>
+    <string name="hiv_positive_results">Resultado HIV</string>
 
-    <string name="historical_testing_data">Mtihani wa kihistoria</string>
-    <string name="first_time_testing">Ilijaribiwa kwa wakati</string>
-    <string name="positive_in_the_past">Chanya katika siku za nyuma</string>
+    <string name="historical_testing_data">Historial de Testagem</string>
+    <string name="first_time_testing">Testado pela 1ª vez</string>
+    <string name="positive_in_the_past">Positivo no Passado</string>
 
-    <string name="testing_date_format_error">Jaza tarehe ya majaribio kwa usahihi!</string>
-    <string name="general_success">Mafanikio</string>
-    <string name="record_saved_sucessfull">Rekodi Imehifadhiwa Imefaulu!</string>
+    <string name="testing_date_format_error">Preencha correctamente a data de teste!</string>
+    <string name="general_success">Sucesso</string>
+    <string name="record_saved_sucessfull">Registo feito com sucesso!</string>
 
     <string name="htc_person_mandatory_fields">Os campos marcados com * são obrigatórios</string>
-    <string name="htc_person_register">Register Persons</string>
+    <string name="htc_person_register">ATS - Registo de Pessoa</string>
 
-    <string name="person_exist_in_sesp_field">Does person exist in SESP?</string>
+    <string name="person_exist_in_sesp_field">Pessoa existe no SESP?</string>
 
-    <string name="htc_person_name_mandatory">Nome é obrigatório, e não pode conter símbolos ou nũmeros</string>
-    <string name="htc_person_surname_mandatory">Apelido é obrigatório, e não pode conter símbolos ou nũmeros</string>
+    <string name="htc_person_name_mandatory">Nome é obrigatório, e não pode conter símbolos ou números</string>
+    <string name="htc_person_surname_mandatory">Apelido é obrigatório, e não pode conter símbolos ou números</string>
     <string name="htc_person_phone_number_error">O telefone deve conter 9 dígitos numéricos, com o primeiro dígito 8</string>
     <string name="info_htc_person_download">Baixando registos de pessoas testadas</string>
     <string name="info_htc_persons_download">Baixando Pessoas Testadas</string>
@@ -833,7 +833,7 @@
     <string name="error_htc_person_download">Não consuguiu baixar pessoas testadas</string>
     <string name="info_htc_data_upload">Sincronizando novos dados de ATS para o servidor</string>
     <string name="info_htc_data_upload_success">Sincronização dos dados de ATS efectuada com sucesso.</string>
-    <string name="htc_person_age_error">Age must contain less or 3 digits and must be between 0 and 100</string>
+    <string name="htc_person_age_error">Idade deve conter no máximo 3 dígitos e deve estar entre 0 e 100</string>
     <string name="htc_data_register">Formulário do ATS</string>
     <string name="htc">mUzima ATS</string>
 
@@ -852,9 +852,9 @@
 
     <string-array name="personExistsInSESPOptions">
         <item></item>
-        <item>Yes</item>
-        <item>No</item>
-        <item>I don`t know</item>
+        <item>Sim</item>
+        <item>Não</item>
+        <item>Não sei</item>
     </string-array>
 
     <string-array name="testingSectors">
