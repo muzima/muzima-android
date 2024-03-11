@@ -246,7 +246,6 @@ public class PersonRegisterActivity extends BaseActivity {
                 birthDateOrAgeTextView.setText("Data de Nascimento *");
                 htcPersonAge.setVisibility(View.INVISIBLE);
                 birthDate.setVisibility(View.VISIBLE);
-                //birthDate.setTop(htcPersonAge.getTop());
             }
         });
         birthDate.setOnClickListener(new View.OnClickListener() {
@@ -258,12 +257,7 @@ public class PersonRegisterActivity extends BaseActivity {
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
-
                 DatePickerDialog datePickerDialog = new DatePickerDialog(PersonRegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
@@ -273,30 +267,21 @@ public class PersonRegisterActivity extends BaseActivity {
                 datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                 datePickerDialog.show();
             }
-                /*PersonRegisterActivity.DatePickerFragment newFragment = new PersonRegisterActivity.DatePickerFragment();
-                newFragment.show(getFragmentManager(), "datePicker");*/
-
         });
-        savePerson.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    HTCPerson htcPerson = createHTCPersonInstance();
-                    if (htcPerson != null) {
-                        goToHTCFormActivity(htcPerson);
-                    }
+        savePerson.setOnClickListener(view -> {
+                HTCPerson htcPerson = createHTCPersonInstance();
+                if (htcPerson != null) {
+                    goToHTCFormActivity(htcPerson);
                 }
-        });
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.drawable.ic_arrow_back:
-                        Intent intent = new Intent(getApplicationContext(), HTCMainActivity.class);
-                        startActivity(intent);
-                        return true;
-                    default: ;
-                        return false;
-                }
+            });
+        toolbar.setOnMenuItemClickListener(menuItem -> {
+            switch (menuItem.getItemId()) {
+                case R.drawable.ic_arrow_back:
+                    Intent intent = new Intent(getApplicationContext(), HTCMainActivity.class);
+                    startActivity(intent);
+                    return true;
+                default: ;
+                    return false;
             }
         });
     }
@@ -347,9 +332,10 @@ public class PersonRegisterActivity extends BaseActivity {
 
     private void setDataFieldsForExistingSESPPersons() {
        if(this.patient!=null) {
-           name.setText(patient.getNames().get(0).getGivenName());
-           surname.setText(patient.getNames().get(0).getFamilyName());
-           if(patient.getGender()!=null || !StringUtils.isEmpty(patient.getGender())) {
+
+           name.setText(patient.getName().getGivenName());
+           surname.setText(patient.getName().getFamilyName());
+           if(StringUtils.stringHasValue(patient.getGender())) {
                if (patient.getGender().equalsIgnoreCase("M")) {
                    optMale.setChecked(true);
                } else {
@@ -357,37 +343,33 @@ public class PersonRegisterActivity extends BaseActivity {
                }
            }
            if(patient.getBirthdate()!=null) {
-           if(patient.getBirthdateEstimated()) {
-               birthDateAge.setChecked(true);
-               htcPersonAge.setVisibility(View.VISIBLE);
-               birthDateDate.setChecked(false);
-               birthDate.setVisibility(View.INVISIBLE);
-               birthDateOrAgeTextView.setText(getResources().getString(R.string.general_age));
-               int age = DateUtils.calculateAge(patient.getBirthdate());
-               htcPersonAge.setText(age+"");
-           } else {
-               birthDateAge.setChecked(false);
-               htcPersonAge.setVisibility(View.INVISIBLE);
-               birthDateDate.setChecked(true);
-               birthDate.setVisibility(View.VISIBLE);
-               birthDateOrAgeTextView.setText(getResources().getString(R.string.general_birth_date));
-               birthDate.setText(DateUtils.convertDateToDayMonthYearString( patient.getBirthdate()).toString());
-           } }
-           if(!patient.getAddresses().isEmpty()) {
-               PersonAddress address = patient.getPreferredAddress();
-               if (address != null) {
-                   street.setText(address.getAddress1());
-                   locality.setText(address.getAddress6());
-                   block.setText(address.getAddress3());
-                   neighbourhood.setText(address.getAddress5());
+               if(patient.getBirthdateEstimated()) {
+                   birthDateAge.setChecked(true);
+                   htcPersonAge.setVisibility(View.VISIBLE);
+                   birthDateDate.setChecked(false);
+                   birthDate.setVisibility(View.GONE);
+                   birthDateOrAgeTextView.setText(getResources().getString(R.string.general_age));
+                   int age = DateUtils.calculateAge(patient.getBirthdate());
+                   htcPersonAge.setText(age+"");
+               } else {
+                   birthDateAge.setChecked(false);
+                   htcPersonAge.setVisibility(View.GONE);
+                   birthDateDate.setChecked(true);
+                   birthDate.setVisibility(View.VISIBLE);
+                   birthDateOrAgeTextView.setText(getResources().getString(R.string.general_birth_date));
+                   birthDate.setText(DateUtils.convertDateToDayMonthYearString( patient.getBirthdate()).toString());
                }
            }
-           personExistsInSESP.setSelection(0);
+           if(!patient.getAddresses().isEmpty()) {
+               street.setText(patient.getAddress().getAddress1());
+               locality.setText(patient.getAddress().getAddress6());
+               block.setText(patient.getAddress().getAddress3());
+               neighbourhood.setText(patient.getAddress().getAddress5());
+           }
            detailsTextView.setVisibility(View.VISIBLE);
            details.setVisibility(View.VISIBLE);
-           //dateOfCreation.setText(patient.getAttribute("").getAttribute());
            String phoneNumber = ((HTCPerson) patient).getPhoneNumber();
-           if(!StringUtils.isEmpty(phoneNumber) || phoneNumber!=null) {
+           if(!StringUtils.isEmpty(phoneNumber)) {
                contact.setText(phoneNumber);
            }
        }
@@ -399,11 +381,9 @@ public class PersonRegisterActivity extends BaseActivity {
     }
     private void setAdditionInformation() {
         try {
-            String currentDate = DateUtils.getCurrentDateAsString();
-            dateOfCreation.setText(currentDate);
+            dateOfCreation.setText( DateUtils.getCurrentDateAsString());
             dateOfCreation.setEnabled(false);
-            Location location = getLocation();
-            healthFacility.setText(location.getName());
+            healthFacility.setText(getLocation().getName());
             healthFacility.setEnabled(false);
         } catch (ParseException e) {
             throw new RuntimeException(e);
@@ -453,13 +433,7 @@ public class PersonRegisterActivity extends BaseActivity {
                 htcPerson.setBirthdate(birthDateValue);
                 htcPerson.setBirthdateEstimated(false);
             } catch (ParseException e) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
-                builder.setCancelable(false)
-                        .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                        .setTitle(getResources().getString(R.string.general_error))
-                        .setMessage(getResources().getString(R.string.testing_date_format_error))
-                        .setPositiveButton(R.string.general_ok, launchDashboard(htcPerson))
-                        .show();
+                ViewUtil.displayAlertDialog(PersonRegisterActivity.this,"Por favor indicar uma data de nascimento válida." ).show();
                 return null;
             }
         } else if(birthDateAge.isChecked()) {
@@ -473,73 +447,38 @@ public class PersonRegisterActivity extends BaseActivity {
                 throw new RuntimeException(e);
             }
         }
-        List<PersonName> names = new ArrayList<>();
-        PersonName personName = new PersonName();
+        if (htcPerson.getNames() == null) htcPerson.setNames(new ArrayList<>());
+        if (htcPerson.getNames().isEmpty()) {
+            htcPerson.getNames().add(new PersonName());
+            htcPerson.getNames().get(0).setPreferred(true);
+        }
+
+        PersonName personName = htcPerson.getName();
         personName.setGivenName(name.getText().toString());
         personName.setFamilyName(surname.getText().toString());
         personName.setPreferred(true);
-        names.add(personName);
-        htcPerson.setNames(names);
-        List<PersonAddress> addresses = new ArrayList<>();
-        PersonAddress address = new PersonAddress();
-        address.setCountry("Moçambique");
+
+        if (htcPerson.getAddress() == null) htcPerson.setAddresses(new ArrayList<>());
+        if (htcPerson.getAddresses().isEmpty()) {
+            htcPerson.getAddresses().add(new PersonAddress());
+            htcPerson.getAddresses().get(0).setPreferred(true);
+        }
+
+        PersonAddress address = htcPerson.getAddress();
         address.setAddress6(locality.getText().toString());
         address.setAddress5(neighbourhood.getText().toString());
         address.setAddress3(block.getText().toString());
         address.setAddress1(street.getText().toString());
         address.setPreferred(true);
-        addresses.add(address);
-        htcPerson.setAddresses(addresses);
+
         String personExistsInSESPValue = personExistsInSESP.getSelectedItem().toString();
         htcPerson.setPersonExistInSESP(personExistsInSESPValue);
+
         if(details.getVisibility()== View.VISIBLE) {
             htcPerson.setPersonExistInSESPDetails(details.getText().toString());
         }
         return htcPerson;
     }
-    private DialogInterface.OnClickListener launchDashboard(HTCPerson htcPerson) {
-        return new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        };
-    }
-
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker.
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this.getContext(), this, year, month, day);
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-            // Create a new instance of DatePickerDialog and return it.
-            return datePickerDialog;
-        }
-
-        @Override
-        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-            StringBuilder dayValue = new StringBuilder();
-            if(day+"".length()==1){
-                dayValue.append("0");
-                dayValue.append(day);
-            } else {
-                dayValue.append(day);
-            }
-            StringBuilder monthValue = new StringBuilder();
-            if(month+"".length()==1){
-                monthValue.append("0");
-                monthValue.append(month);
-            } else {
-                monthValue.append(month);
-            }
-            birthDate.setText(dayValue + "-" + monthValue.toString() + "-" + year);
-        }
-    }
-
 
     private void goToHTCFormActivity(HTCPerson htcPerson) {
         Intent intent = new Intent(getApplicationContext(), HTCFormActivity.class);
@@ -562,83 +501,39 @@ public class PersonRegisterActivity extends BaseActivity {
     }
 
     private boolean areRequiredFieldsValid() {
-        if(StringUtils.isEmpty(name.getText().toString()) || StringUtils.isEmpty(surname.getText().toString())
-                || (!optMale.isChecked() && !optFemale.isChecked())) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
-            builder.setCancelable(false)
-                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                    .setTitle(getResources().getString(R.string.general_error))
-                    .setMessage(getResources().getString(R.string.htc_person_mandatory_fields))
-                    .setPositiveButton(R.string.general_ok, launchDashboard(null))
-                    .show();
-            return false;
-        }
-        if(!birthDateDate.isChecked() && !birthDateAge.isChecked()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
-            builder.setCancelable(false)
-                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                    .setTitle(getResources().getString(R.string.general_error))
-                    .setMessage(getResources().getString(R.string.htc_person_mandatory_fields))
-                    .setPositiveButton(R.string.general_ok, launchDashboard(null))
-                    .show();
-            return false;
-        }
-        if((birthDateDate.isChecked() && StringUtils.isEmpty(birthDate.getText().toString()))
-                && (birthDateAge.isChecked() && StringUtils.isEmpty(birthDate.getText().toString()))) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
-            builder.setCancelable(false)
-                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                    .setTitle(getResources().getString(R.string.general_error))
-                    .setMessage(getResources().getString(R.string.htc_person_mandatory_fields))
-                    .setPositiveButton(R.string.general_ok, launchDashboard(null))
-                    .show();
-            return false;
-        }
         String htcPersonName = name.getText().toString();
-        if(!StringUtils.isEmpty(htcPersonName) && htcPersonName!=null && !htcPersonName.matches("^[a-zA-Z]*$")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
-            builder.setCancelable(false)
-                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                    .setTitle(getResources().getString(R.string.general_error))
-                    .setMessage(getResources().getString(R.string.htc_person_name_mandatory))
-                    .setPositiveButton(R.string.general_ok, launchDashboard(null))
-                    .show();
+        if(StringUtils.isEmpty(htcPersonName) || StringUtils.hasNumbers(htcPersonName)) {
+            ViewUtil.displayAlertDialog(PersonRegisterActivity.this,getResources().getString(R.string.htc_person_name_mandatory) ).show();
             return false;
         }
         String htcPersonSurname = surname.getText().toString();
-        if(StringUtils.isEmpty(htcPersonSurname) && htcPersonSurname.matches("^[a-zA-Z]*$")) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
-            builder.setCancelable(false)
-                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                    .setTitle(getResources().getString(R.string.general_error))
-                    .setMessage(getResources().getString(R.string.htc_person_surname_mandatory))
-                    .setPositiveButton(R.string.general_ok, launchDashboard(null))
-                    .show();
+        if(StringUtils.isEmpty(htcPersonSurname) || StringUtils.hasNumbers(htcPersonSurname)) {
+            ViewUtil.displayAlertDialog(PersonRegisterActivity.this,getResources().getString(R.string.htc_person_surname_mandatory) ).show();
             return false;
+        }
+        if((!optMale.isChecked() && !optFemale.isChecked())) {
+            ViewUtil.displayAlertDialog(PersonRegisterActivity.this,getResources().getString(R.string.htc_person_gender_mandatory) ).show();
+            return false;
+        }
+        if(birthDateDate.isChecked() && StringUtils.isEmpty(birthDate.getText().toString())) {
+            ViewUtil.displayAlertDialog(PersonRegisterActivity.this,"Por favor Indicar a data de Nascimento." ).show();
+            return false;
+        }
+        if(birthDateAge.isChecked() && StringUtils.isEmpty(htcPersonAge.getText().toString())) {
+            ViewUtil.displayAlertDialog(PersonRegisterActivity.this,"Por favor indicar idade." ).show();
+            return false;
+        }
+        if(birthDateAge.isChecked()) {
+            String age = htcPersonAge.getText().toString();
+            if(!(age.length()>0 && age.length()<=3 && Integer.valueOf(age)>=0 && Integer.valueOf(age)<=100)) {
+                ViewUtil.displayAlertDialog(PersonRegisterActivity.this,"Por favor indicar uma idade válida." ).show();
+                return false;
+            }
         }
         if(!StringUtils.isEmpty(contact.getText().toString())) {
             boolean isPhoneNumberValid = PhoneNumberUtils.validatePhoneNumber(contact.getText().toString());
             if(!isPhoneNumberValid) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
-                builder.setCancelable(false)
-                        .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                        .setTitle(getResources().getString(R.string.general_error))
-                        .setMessage(getResources().getString(R.string.htc_person_phone_number_error))
-                        .setPositiveButton(R.string.general_ok, launchDashboard(null))
-                        .show();
-                return false;
-            }
-        }
-        if(!StringUtils.isEmpty(htcPersonAge.getText().toString())) {
-            String age = htcPersonAge.getText().toString();
-            if(!(age.length()>0 && age.length()<=3 && Integer.valueOf(age)>=0 && Integer.valueOf(age)<=100)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(PersonRegisterActivity.this);
-                builder.setCancelable(false)
-                        .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                        .setTitle(getResources().getString(R.string.general_error))
-                        .setMessage(getResources().getString(R.string.htc_person_age_error))
-                        .setPositiveButton(R.string.general_ok, launchDashboard(null))
-                        .show();
+                ViewUtil.displayAlertDialog(PersonRegisterActivity.this,getResources().getString(R.string.htc_person_phone_number_error) ).show();
                 return false;
             }
         }

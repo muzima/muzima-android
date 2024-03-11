@@ -43,6 +43,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.view.main.HTCMainActivity;
+import com.muzima.view.person.PersonRegisterActivity;
 import com.muzima.view.person.SearchSESPPersonActivity;
 
 import java.io.Serializable;
@@ -220,9 +221,6 @@ public class HTCFormActivity extends AppCompatActivity {
                     }, mYear, mMonth, mDay);
                     datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                     datePickerDialog.show();
-
-            /*DatePickerFragment newFragment = new DatePickerFragment();
-            newFragment.show(getFragmentManager(), "datePicker");*/
         });
 
         saveHtcForm.setOnClickListener(new View.OnClickListener() {
@@ -242,13 +240,7 @@ public class HTCFormActivity extends AppCompatActivity {
                                 i++;
                             }
                             searchResults.add(i, new PatientItem(htcPerson));
-                            AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
-                            builder.setCancelable(false)
-                                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                                    .setTitle(getResources().getString(R.string.general_success))
-                                    .setMessage(getResources().getString(R.string.record_updated_successful))
-                                    .setPositiveButton(R.string.general_ok, launchDashboard())
-                                    .show();
+                            ViewUtil.displayAlertDialog(HTCFormActivity.this,getResources().getString(R.string.record_updated_successful)).show();
                             goToMainActivity(searchResults);
                         } else {
                             htcPersonController.saveHTCPerson(htcPerson);
@@ -259,24 +251,13 @@ public class HTCFormActivity extends AppCompatActivity {
                             createdHTCForm.setHtcPerson(createdHTCPerson);
                             Log.e(getClass().getSimpleName(), "UUID e ID : " + createdHTCForm.getUuid() + " - " + createdHTCForm.getId());
                             searchResults.add(new PatientItem(createdHTCPerson));
-                            AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
-                            builder.setCancelable(false)
-                                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                                    .setTitle(getResources().getString(R.string.general_success))
-                                    .setMessage(getResources().getString(R.string.record_saved_sucessfull))
-                                    .setPositiveButton(R.string.general_ok, launchDashboard())
-                                    .show();
+
+                            ViewUtil.displayAlertDialog(HTCFormActivity.this,getResources().getString(R.string.record_saved_sucessfull)).show();
                             goToMainActivity(searchResults);
                         }
                     }
                     catch (MuzimaHTCFormController.MuzimaHTCFormSaveException e) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
-                        builder.setCancelable(false)
-                                .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                                .setTitle(getResources().getString(R.string.general_error))
-                                .setMessage(getResources().getString(R.string.htc_save_error))
-                                .setPositiveButton(R.string.general_ok, launchDashboard())
-                                .show();
+                        ViewUtil.displayAlertDialog(HTCFormActivity.this,getResources().getString(R.string.htc_save_error)).show();
                     }
                 }
             }
@@ -314,7 +295,6 @@ public class HTCFormActivity extends AppCompatActivity {
         dateOfCreation = findViewById(R.id.dateOfCreation);
         healthFacility = findViewById(R.id.healthFacility);
         saveHtcForm = findViewById(R.id.saveHtcForm);
-        //firstTimeTestedOption.setChecked(true);
         setPopKeyMinersOptions();
         setIndexCaseContactsOptions();
         setTestingSectorsOptions();
@@ -333,94 +313,21 @@ public class HTCFormActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
     }
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
 
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker.
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this.getContext(), this, year, month, day);
-            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
-
-            // Create a new instance of DatePickerDialog and return it.
-            return datePickerDialog;
-        }
-
-        @Override
-        public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-            StringBuilder dayValue = new StringBuilder();
-            if(day+"".length()==1){
-                dayValue.append("0");
-                dayValue.append(day);
-            } else {
-                dayValue.append(day);
-            }
-            StringBuilder monthValue = new StringBuilder();
-            if(month+"".length()==1){
-                monthValue.append("0");
-                monthValue.append(month);
-            } else {
-                monthValue.append(month);
-            }
-            testingDate.setText(dayValue + "-" + monthValue.toString() + "-" + year);
-        }
-    }
     private boolean validateFields() {
         if (StringUtils.isEmpty(testingDate.getText().toString())) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
-            builder.setCancelable(false)
-                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                    .setTitle(getResources().getString(R.string.general_error))
-                    .setMessage(getResources().getString(R.string.testing_date_format_error))
-                    .setPositiveButton(R.string.general_ok, launchDashboard())
-                    .show();
+            ViewUtil.displayAlertDialog(HTCFormActivity.this,getResources().getString(R.string.testing_date_format_error)).show();
             return false;
         } else {
             try {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                 dateOfTesting = simpleDateFormat.parse(testingDate.getText().toString());
             } catch (ParseException e) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
-                builder.setCancelable(false)
-                        .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                        .setTitle(getResources().getString(R.string.general_error))
-                        .setMessage(getResources().getString(R.string.testing_date_format_error))
-                        .setPositiveButton(R.string.general_ok, launchDashboard())
-                        .show();
+                ViewUtil.displayAlertDialog(HTCFormActivity.this,getResources().getString(R.string.testing_date_format_error)).show();
                 return false;
             }
         }
         return true;
-    }
-    private DialogInterface.OnClickListener launchDashboard() {
-        return new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        };
-    }
-
-    private void parseTestingDate(String testingDate) {
-
-        try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-            dateOfTesting = simpleDateFormat.parse(testingDate);
-        } catch (ParseException e) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
-            builder.setCancelable(false)
-                    .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                    .setTitle(getResources().getString(R.string.general_error))
-                    .setMessage(getResources().getString(R.string.testing_date_format_error))
-                    .setPositiveButton(R.string.general_ok, launchDashboard())
-                    .show();
-        }
-
     }
 
     private void setHtcPersonIdentificationData(Patient htcPerson) {
@@ -473,13 +380,7 @@ public class HTCFormActivity extends AppCompatActivity {
                 Date date = DateUtils.parse(testingDate.getText().toString());
                 muzimaHtcForm.setTestingDate(date);
             } catch (ParseException e) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(HTCFormActivity.this);
-                builder.setCancelable(false)
-                        .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
-                        .setTitle(getResources().getString(R.string.general_error))
-                        .setMessage(getResources().getString(R.string.testing_date_format_error))
-                        .setPositiveButton(R.string.general_ok, launchDashboard())
-                        .show();
+                ViewUtil.displayAlertDialog(HTCFormActivity.this,getResources().getString(R.string.testing_date_format_error)).show();
             }
         }
         if(firstTimeTestedOption.isChecked()) {
@@ -606,7 +507,6 @@ public class HTCFormActivity extends AppCompatActivity {
             }
             selfTestConfirmation.setChecked(htcForm.isSelfTestConfirmation());
             healthFacility.setText(htcForm.getTestingLocation().getName());
-            //dateOfCreation.setText(htcForm.getDateOfCreation());
         }
     }
 }

@@ -17,8 +17,13 @@
         android:title="@string/general_load"
         custom:showAsAction="always" />
     <item
+        android:id="@+id/menu_language"
+        android:icon="@drawable/outline_miscellaneous_services_24"
+        android:title="@string/general_logout"
+        custom:showAsAction="always" />
+    <item
         android:id="@+id/menu_log_out"
         android:icon="@drawable/log_out"
         android:title="@string/general_logout"
-        custom:showAsAction="always" />
+        custom:showAsAction="ifRoom" />
 </menu>

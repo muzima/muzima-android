@@ -22,16 +22,19 @@ import com.muzima.api.model.HTCPerson;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonAttribute;
+import com.muzima.api.model.PersonName;
 import com.muzima.listners.LoadMoreListener;
 import com.muzima.model.patient.PatientItem;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
+import com.muzima.utils.Utils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.view.main.HTCMainActivity;
 import com.muzima.view.person.PersonRegisterActivity;
 import com.muzima.view.person.SearchSESPPersonActivity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -111,39 +114,60 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (holder instanceof PersonViewHolder){
             PersonViewHolder personViewHolder = (PersonViewHolder) holder;
             Patient patient = records.get(position).getPatient();
-            personViewHolder.name.setText(patient.getDisplayName());
+            PersonName name = getPreferedName(patient);
+            if (StringUtils.stringHasValue(name.getMiddleName())) {
+                personViewHolder.name.setText(name.getGivenName() + " " + name.getMiddleName() +" "+ name.getFamilyName());
+            }
+            else {
+                personViewHolder.name.setText(name.getGivenName() + " "+ name.getFamilyName());
+            }
 
             personViewHolder.details.animate().setDuration(200).rotation(180);
 
-            personViewHolder.details.animate().setDuration(200).rotation(180);
 
             Date dob = patient.getBirthdate();
             if(dob != null) {
                 personViewHolder.age.setText(DateUtils.calculateAge(dob)+" Anos");
-                //personViewHolder.age.setText(context.createConfigurationContext(configuration).getResources().getString(R.string.general_years ,String.format(Locale.getDefault(), "%d ", DateUtils.calculateAge(dob))));
             }else{
                 personViewHolder.age.setText("");
             }
 
             personViewHolder.identifier.setText( !StringUtils.isEmpty(patient.getIdentifier()) ? patient.getIdentifier() : "Sem Identifacor");
-            if (patient.getGender() != null) {
-                personViewHolder.sex.setImageResource(patient.getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female);
-            }
+
 
             personViewHolder.migrationState.setImageResource(((HTCPerson)patient).getSyncStatus().equals("uploaded") ? R.drawable.filled_cloud : R.drawable.empty_cloud);
 
-            for (PersonAddress address : patient.getAddresses()){
-                if (address.isPreferred()) {
-                    personViewHolder.address.setText(address.getAddress1()+", "+address.getAddress3()+", "+address.getAddress5()+", "+address.getAddress6());
+            if (patient.getGender() != null) {
+                personViewHolder.sex.setImageResource(patient.getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female);
+            }
+            else {
+                personViewHolder.sex.setImageResource(R.drawable.generic_person_24);
+            }
+            PersonAddress address = getPreferedAddress(patient);
+            if (address != null) {
+                String addressString = null;
+                if (StringUtils.stringHasValue(address.getAddress1())) {
+                    addressString = address.getAddress1();
                 }
+
+                if (StringUtils.stringHasValue(address.getAddress3())) {
+                    addressString += StringUtils.stringHasValue(addressString) ? ", "+address.getAddress3() : address.getAddress3();
+                }
+
+                if (StringUtils.stringHasValue(address.getAddress5())) {
+                    addressString += StringUtils.stringHasValue(addressString) ? ", "+address.getAddress5() : address.getAddress5();
+                }
+
+                if (StringUtils.stringHasValue(address.getAddress6())) {
+                    addressString += StringUtils.stringHasValue(addressString) ? ", "+address.getAddress6() : address.getAddress6();
+                }
+
+                personViewHolder.address.setText(addressString);
+            } else {
+                personViewHolder.address.setText("Sem Informação");
             }
 
-            PersonAttribute attribute = patient.getAttribute("e2e3fd64-1d5f-11e0-b929-000c29ad1d07");
-            if (attribute != null) {
-                personViewHolder.contact.setText(attribute.getAttribute());
-            } else {
-                personViewHolder.contact.setText(((HTCPerson)patient).getPhoneNumber());
-            }
+            personViewHolder.contact.setText(((HTCPerson)patient).getPhoneNumber());
 
             personViewHolder.details.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -181,6 +205,21 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
+    private PersonName getPreferedName(Patient patient) {
+        for (PersonName name : patient.getNames()) {
+            if (name.isPreferred()) return name;
+        }
+        return patient.getNames().get(0);
+    }
+
+    private PersonAddress getPreferedAddress(Patient patient) {
+        if (!Utils.listHasElements((ArrayList<?>) patient.getAddresses())) return null;
+
+        for (PersonAddress name : patient.getAddresses()) {
+            if (name.isPreferred()) return name;
+        }
+        return patient.getAddresses().get(0);
+    }
     public void setLoadMoreListener(LoadMoreListener loadMoreListener) {
         this.loadMoreListener = loadMoreListener;
     }

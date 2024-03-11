@@ -71,6 +71,7 @@
             android:inputType="number"
             android:maxLength="3"
             android:key="@string/preference_auto_save_interval"
+            android:visibility="gone"
             android:negativeButtonText="@android:string/cancel"
             android:positiveButtonText="@android:string/ok"
             android:selectAllOnFocus="true"

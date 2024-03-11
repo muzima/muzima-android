@@ -61,6 +61,7 @@ public class MuzimaTimer extends CountDownTimer {
 
                     if (muzimaApplication.getSetupConfigurationController().getAllSetupConfigurations().get(0).getUuid().equals("1eaa9574-fa5a-4655-bd63-466b538c5b5d")) {
                         mainClass = HTCMainActivity.class;
+                        return;
                     }
                     intent = new Intent(muzimaApplication, mainClass);
                     intent.putExtra("AutoLogOutTimer", true);
