@@ -116,7 +116,6 @@ public class SespPersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.V
                 personViewHolder.name.setText(name.getGivenName() + " "+ name.getFamilyName());
             }
 
-            personViewHolder.details.animate().setDuration(200).rotation(180);
 
             Date dob = patient.getBirthdate();
             if(dob != null) {

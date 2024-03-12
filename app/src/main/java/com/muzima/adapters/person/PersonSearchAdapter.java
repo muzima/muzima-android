@@ -122,7 +122,6 @@ public class PersonSearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 personViewHolder.name.setText(name.getGivenName() + " "+ name.getFamilyName());
             }
 
-            personViewHolder.details.animate().setDuration(200).rotation(180);
 
 
             Date dob = patient.getBirthdate();

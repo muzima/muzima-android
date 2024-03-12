@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -43,6 +44,7 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.PhoneNumberUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.utils.Utils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.htc.HTCFormActivity;
@@ -219,10 +221,10 @@ public class PersonRegisterActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedValue =  adapterView.getItemAtPosition(i).toString();
-                if(getResources().getString(R.string.general_yes).equals(selectedValue)) {
+                if(selectedValue.equalsIgnoreCase("SIM")) {
                     hideDetailsFields(View.VISIBLE);
                 } else {
-                    hideDetailsFields(View.INVISIBLE);
+                    hideDetailsFields(View.GONE);
                 }
             }
 
@@ -236,7 +238,7 @@ public class PersonRegisterActivity extends BaseActivity {
             public void onClick(View view) {
                 birthDateOrAgeTextView.setText("Idade *");
                 htcPersonAge.setVisibility(View.VISIBLE);
-                birthDate.setVisibility(View.INVISIBLE);
+                birthDate.setVisibility(View.GONE);
                 htcPersonAge.setTop(birthDate.getTop());
                 htcPersonAge.setHeight(birthDate.getHeight());
             }
@@ -245,7 +247,7 @@ public class PersonRegisterActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 birthDateOrAgeTextView.setText("Data de Nascimento *");
-                htcPersonAge.setVisibility(View.INVISIBLE);
+                htcPersonAge.setVisibility(View.GONE);
                 birthDate.setVisibility(View.VISIBLE);
             }
         });
@@ -327,7 +329,7 @@ public class PersonRegisterActivity extends BaseActivity {
 
         setPersonExistsInSESPOptions();
         hideDetailsFields(View.VISIBLE);
-        htcPersonAge.setVisibility(View.INVISIBLE);
+        htcPersonAge.setVisibility(View.GONE);
         setAdditionInformation();
     }
 
@@ -346,7 +348,7 @@ public class PersonRegisterActivity extends BaseActivity {
                hideDetailsFields(View.VISIBLE);
                details.setText(existInSESPDetails);
            } else {
-               hideDetailsFields(View.INVISIBLE);
+               hideDetailsFields(View.GONE);
                details.setText("");
            }
            name.setText(patient.getName().getGivenName());
@@ -388,7 +390,7 @@ public class PersonRegisterActivity extends BaseActivity {
            if(!StringUtils.isEmpty(phoneNumber)) {
                contact.setText(phoneNumber);
            }
-           if(((HTCPerson) patient).getSyncStatus().equalsIgnoreCase(STATUS_UPLOADED)){
+           if(StringUtils.stringHasValue(((HTCPerson) patient).getSyncStatus()) && ((HTCPerson) patient).getSyncStatus().equalsIgnoreCase(STATUS_UPLOADED)){
                enableOrDisableFields(false);
            }
        }
@@ -520,6 +522,10 @@ public class PersonRegisterActivity extends BaseActivity {
     }
 
     private boolean areRequiredFieldsValid() {
+        if(patient != null && StringUtils.stringHasValue(((HTCPerson) patient).getSyncStatus()) && ((HTCPerson) patient).getSyncStatus().equalsIgnoreCase(STATUS_UPLOADED)){
+            return true;
+        }
+
         String htcPersonName = name.getText().toString();
         if(StringUtils.isEmpty(htcPersonName) || StringUtils.hasNumbers(htcPersonName)) {
             ViewUtil.displayAlertDialog(PersonRegisterActivity.this,getResources().getString(R.string.htc_person_name_mandatory) ).show();
@@ -555,11 +561,6 @@ public class PersonRegisterActivity extends BaseActivity {
                 ViewUtil.displayAlertDialog(PersonRegisterActivity.this,getResources().getString(R.string.htc_person_phone_number_error) ).show();
                 return false;
             }
-        }
-        String personExistsInSESPValue = personExistsInSESP.getSelectedItem().toString();
-        if(StringUtils.isEmpty(personExistsInSESPValue)) {
-            ViewUtil.displayAlertDialog(PersonRegisterActivity.this,getResources().getString(R.string.htc_person_exist_in_sesp_error) ).show();
-            return false;
         }
         return true;
     }
