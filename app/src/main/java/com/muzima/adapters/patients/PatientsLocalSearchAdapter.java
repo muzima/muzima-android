@@ -31,6 +31,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
     private List<CohortFilter> filters;
     private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
     private final MuzimaSettingController muzimaSettingController;
+    private int int patientCount;
 
 
     public PatientsLocalSearchAdapter(Context context, PatientController patientController,
@@ -58,15 +59,31 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
     public void reloadData() {
         cancelBackgroundTask();
         if(!cohortUuids.isEmpty() ) {
-            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask = new PatientLoadBackgroundQueryTask();
             backgroundQueryTask.execute(cohortUuids.toArray(new String[cohortUuids.size()]));
         } else if(filters.size()>0){
-            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask = new PatientLoadBackgroundQueryTask();
             backgroundQueryTask.execute();
         } else {
-            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask = new PatientLoadBackgroundQueryTask();
             backgroundQueryTask.execute(StringUtils.EMPTY);
         }
+    }
+
+    public void loadNextPage(){
+
+    }
+
+    public int getTotalPageCount(){
+        return 1;
+    }
+
+    public boolean isLastPage(){
+        return false;
+    }
+
+    public boolean isLoading(){
+        return false;
     }
 
     public void search(String text) {
@@ -74,7 +91,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         if(StringUtils.isEmpty(text)) {
             reloadData();
         } else {
-            backgroundQueryTask = new BackgroundQueryTask();
+            backgroundQueryTask = new PatientLoadBackgroundQueryTask();
             backgroundQueryTask.execute(text, SEARCH);
         }
     }
@@ -110,7 +127,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         }
     }
 
-    private class BackgroundQueryTask extends MuzimaAsyncTask<String, List<Patient>, List<Patient>> {
+    private class PatientLoadBackgroundQueryTask extends MuzimaAsyncTask<String, List<Patient>, List<Patient>> {
 
         @Override
         protected void onPreExecute() {
@@ -256,13 +273,13 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                         }
                     }
                 } else {
-                    int patientCount = patientController.countAllPatients();
+                    patientCount = patientController.countAllPatients();
                     if(patientCount <= pageSize){
                         patients = patientController.getAllPatients();
                     } else {
                         int pages = new Double(Math.ceil((float)patientCount / pageSize)).intValue();
                         List<Patient> temp = null;
-                        for (int page = 1; page <= pages; page++) {
+                        for (int page = 1; page <= 2; page++) {
                             if(!isCancelled()) {
                                 if (patients == null) {
                                     patients = patientController.getPatients(page, pageSize);
