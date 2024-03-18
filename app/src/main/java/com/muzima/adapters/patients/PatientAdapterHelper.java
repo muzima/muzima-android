@@ -516,11 +516,17 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
     }
 
     protected void onPostExecuteUpdate(List<Patient> patients) {
+        onPostExecuteUpdate(patients, false);
+    }
+
+    protected void onPostExecuteUpdate(List<Patient> patients, boolean isSubsequentFetch) {
         if (patients == null) {
             Toast.makeText(context, context.getString(R.string.error_patient_repo_fetch), Toast.LENGTH_SHORT).show();
             return;
         }
-        patientList.clear();
+        if(!isSubsequentFetch) {
+            patientList.clear();
+        }
         for(Patient patient:patients) {
             patientList.add(new PatientItem(patient));
         }

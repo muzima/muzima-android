@@ -31,7 +31,11 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
     private List<CohortFilter> filters;
     private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
     private final MuzimaSettingController muzimaSettingController;
-    private int int patientCount;
+    private int patientCount;
+    private int nextPageToLoad = 1;
+    private boolean isLoading = false;
+    private boolean isSubsequentLazyFetchQuery = false;
+    private int totalPageCount;
 
 
     public PatientsLocalSearchAdapter(Context context, PatientController patientController,
@@ -58,6 +62,19 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
     @Override
     public void reloadData() {
         cancelBackgroundTask();
+        isSubsequentLazyFetchQuery = false;
+        runPatientLoadBackgroundQueryTask();
+    }
+
+    public void loadNextPage(){
+        if(!isLastPage() && !isLoading()) {
+            isSubsequentLazyFetchQuery = true;
+            nextPageToLoad++;
+            runPatientLoadBackgroundQueryTask();
+        }
+    }
+
+    private void runPatientLoadBackgroundQueryTask(){
         if(!cohortUuids.isEmpty() ) {
             backgroundQueryTask = new PatientLoadBackgroundQueryTask();
             backgroundQueryTask.execute(cohortUuids.toArray(new String[cohortUuids.size()]));
@@ -70,20 +87,20 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         }
     }
 
-    public void loadNextPage(){
-
+    public int getTotalPageCount(){
+        return totalPageCount;
     }
 
-    public int getTotalPageCount(){
-        return 1;
+    public int getTotalPatientCount(){
+        return patientCount;
     }
 
     public boolean isLastPage(){
-        return false;
+        return totalPageCount == nextPageToLoad-1;
     }
 
     public boolean isLoading(){
-        return false;
+        return isLoading;
     }
 
     public void search(String text) {
@@ -131,8 +148,11 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
 
         @Override
         protected void onPreExecute() {
-            onPreExecuteUpdate();
-            setOnProgressListener(PatientsLocalSearchAdapter.this);
+            isLoading = true;
+            if(!isSubsequentLazyFetchQuery) {
+                onPreExecuteUpdate();
+                setOnProgressListener(PatientsLocalSearchAdapter.this);
+            }
         }
 
         @Override
@@ -155,7 +175,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                 int pageSize = Constants.PATIENT_LOAD_PAGE_SIZE;
                 if (!cohortUuids.isEmpty()) {
                     for(String cohortUuid :cohortUuids) {
-                        int patientCount = patientController.countPatients(cohortUuid);
+                        patientCount = patientController.countPatients(cohortUuid);
                         List<Patient> temp = null;
 
                         if (patientCount <= pageSize) {
@@ -190,7 +210,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                     }
                 } else if(filters.size()>0) {
                     if(filters.size()==1 && filters.get(0).getCohortWithFilter()==null){
-                        int patientCount = patientController.countAllPatients();
+                        patientCount = patientController.countAllPatients();
                         if (patientCount <= pageSize) {
                             patients = patientController.getAllPatients();
                         } else {
@@ -219,7 +239,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                         List<CohortFilter> filterLoop = filters;
                         List<String> patientUuids = new ArrayList<>();
                         for(CohortFilter filter : filterLoop) {
-                            int patientCount = patientController.countPatients(filter.getCohortWithFilter().getCohort().getUuid());
+                            patientCount = patientController.countPatients(filter.getCohortWithFilter().getCohort().getUuid());
                             List<Patient> temp = null;
                             List<Patient> filteredTemp = new ArrayList<>();
                             if (patientCount <= pageSize) {
@@ -273,13 +293,16 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                         }
                     }
                 } else {
-                    patientCount = patientController.countAllPatients();
+                    if(!isSubsequentLazyFetchQuery) {
+                        patientCount = patientController.countAllPatients();
+                        totalPageCount = new Double(Math.ceil((float) patientCount / pageSize)).intValue();
+                    }
                     if(patientCount <= pageSize){
                         patients = patientController.getAllPatients();
                     } else {
-                        int pages = new Double(Math.ceil((float)patientCount / pageSize)).intValue();
                         List<Patient> temp = null;
-                        for (int page = 1; page <= 2; page++) {
+                        int noOfPages = nextPageToLoad <= 1 ? nextPageToLoad + 2 : nextPageToLoad + 1;
+                        for (int page = nextPageToLoad; page <= noOfPages; page++) {
                             if(!isCancelled()) {
                                 if (patients == null) {
                                     patients = patientController.getPatients(page, pageSize);
@@ -304,6 +327,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
             }
             List<String> tags = patientController.getSelectedTagUuids();
             filteredPatients = patientController.filterPatientByTags(patients,tags);
+
             return filteredPatients;
         }
 
@@ -316,7 +340,8 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
 
         @Override
         protected void onPostExecute(List<Patient> patients) {
-            onPostExecuteUpdate(patients);
+            isLoading = false;
+            onPostExecuteUpdate(patients, isSubsequentLazyFetchQuery);
         }
 
         @Override

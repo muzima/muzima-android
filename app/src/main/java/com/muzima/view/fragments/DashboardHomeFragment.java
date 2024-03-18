@@ -186,11 +186,9 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(patientSearchAdapter);
-        recyclerView.setOnScrollChangeListener(new RecyclerView.OnScrollListener(){
+        recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener(){
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
+            public void onScrollChange(View recyclerView, int dx, int dy, int var4, int var5) {
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
@@ -198,11 +196,10 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                 if (!patientSearchAdapter.isLoading() && !patientSearchAdapter.isLastPage()) {
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                             && firstVisibleItemPosition >= 0
-                            && totalItemCount >= patientSearchAdapter.getTotalPageCount()) {
+                            && totalItemCount <= patientSearchAdapter.getTotalPatientCount()) {
                         patientSearchAdapter.loadNextPage();
                     }
                 }
-
             }
         });
         patientSearchAdapter.setPatientListClickListener(this);
