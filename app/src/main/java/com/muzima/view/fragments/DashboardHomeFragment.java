@@ -196,7 +196,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                 if (!patientSearchAdapter.isLoading() && !patientSearchAdapter.isLastPage()) {
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                             && firstVisibleItemPosition >= 0
-                            && totalItemCount <= patientSearchAdapter.getTotalPatientCount()) {
+                            && totalItemCount < patientSearchAdapter.getTotalPatientCount()) {
                         patientSearchAdapter.loadNextPage();
                     }
                 }
@@ -699,7 +699,6 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this);
             }
-            //loadAllPatients();
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
