@@ -263,7 +263,40 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                 EventBus.getDefault().register(this);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Encountered an Exception while unregistering an event ", ex);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            if (EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().unregister(this);
+        } catch (Exception ex) {
+            Log.e(getClass().getSimpleName(), "Encountered an Exception while unregistering an event ", ex);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            if (!EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().unregister(this);
+        } catch (Exception ex) {
+            Log.e(getClass().getSimpleName(), "Encountered an Exception while unregistering an event ", ex);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            if (!EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().unregister(this);
+        } catch (Exception ex) {
+            Log.e(getClass().getSimpleName(), "Encountered an Exception while unregistering an event ", ex);
         }
     }
 

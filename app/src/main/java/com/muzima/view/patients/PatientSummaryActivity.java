@@ -185,7 +185,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     protected void onStart() {
         super.onStart();
         try {
-            EventBus.getDefault().register(this);
+            if (!EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().register(this);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

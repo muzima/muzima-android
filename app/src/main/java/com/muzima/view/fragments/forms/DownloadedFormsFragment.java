@@ -83,7 +83,8 @@ public class DownloadedFormsFragment extends Fragment implements FormsRecyclerVi
     public void onStart() {
         super.onStart();
         try {
-            EventBus.getDefault().register(this);
+            if (!EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().register(this);
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
