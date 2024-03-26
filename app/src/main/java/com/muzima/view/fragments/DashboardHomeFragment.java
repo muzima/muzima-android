@@ -41,6 +41,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -182,8 +183,25 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                 ((MuzimaApplication) context).getPatientController(), null, null, getCurrentGPSLocation(),  ((MuzimaApplication) context).getMuzimaSettingController());
 
         patientSearchAdapter.setBackgroundListQueryTaskListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(patientSearchAdapter);
+        recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener(){
+            @Override
+            public void onScrollChange(View recyclerView, int dx, int dy, int var4, int var5) {
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                if (!patientSearchAdapter.isLoading() && !patientSearchAdapter.isLastPage()) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount < patientSearchAdapter.getTotalPatientCount()) {
+                        patientSearchAdapter.loadNextPage();
+                    }
+                }
+            }
+        });
         patientSearchAdapter.setPatientListClickListener(this);
     }
 
@@ -681,7 +699,6 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this);
             }
-            loadAllPatients();
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(),"Encountered an exception",e);
         }
