@@ -398,29 +398,6 @@ public class FormController {
         }
     }
 
-    public CompleteFormWithPatientData getCompleteFormDataByUuid(String formDataUuid) throws FormFetchException {
-        CompleteFormWithPatientData completeForm = null;
-
-        try {
-            FormData formData = formService.getFormDataByUuid(formDataUuid);
-            if (formData != null && (StringUtils.equals(formData.getStatus(), Constants.STATUS_UPLOADED)) ||
-                    StringUtils.equals(formData.getStatus(), Constants.STATUS_COMPLETE)) {
-                Patient patient = patientService.getPatientByUuid(formData.getPatientUuid());
-                completeForm = new CompleteFormWithPatientDataBuilder()
-                        .withForm(formService.getFormByUuid(formData.getTemplateUuid()))
-                        .withFormDataUuid(formData.getUuid())
-                        .withPatient(patient)
-                        .withLastModifiedDate(formData.getSaveTime())
-                        .withEncounterDate(formData.getEncounterDate())
-                        .build();
-            }
-
-        } catch (IOException e) {
-            throw new FormFetchException(e);
-        }
-        return completeForm;
-    }
-
     public void saveFormData(FormData formData) throws FormDataSaveException {
         try {
             formData.setSaveTime(new Date());
@@ -608,34 +585,6 @@ public class FormController {
         return completePatientForms;
     }
 
-    public List<FormData> getCompleteAndArchivedFormData(String personUuid) throws FormFetchException {
-        List<FormData> formDataList = new ArrayList<>();
-        try {
-            List<FormData>  completeFormData = formService.getFormDataByPatient(personUuid, Constants.STATUS_COMPLETE);
-            formDataList.addAll(completeFormData);
-
-            List<FormData>  archivedFormData = formService.getFormDataByPatient(personUuid, STATUS_UPLOADED);
-            formDataList.addAll(archivedFormData);
-        } catch (IOException e) {
-            throw new FormFetchException(e);
-        }
-        return formDataList;
-    }
-
-    public boolean isFormTemplateUpdatesAvailable() throws FormFetchException {
-        try {
-            List<Form> forms = formService.getAllForms();
-            for (Form form : forms) {
-                if (form.isUpdateAvailable() && formService.isFormTemplateDownloaded(form.getUuid())) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (IOException e){
-            throw new FormFetchException(e);
-        }
-    }
-
     public int countAllIncompleteForms() throws FormFetchException {
         return getAllIncompleteFormsWithPatientData(StringUtils.EMPTY).size();
     }
@@ -764,10 +713,6 @@ public class FormController {
             }
         }
         return result;
-    }
-
-    public int getRecommendedFormsCount() throws FormFetchException {
-        return getRecommendedForms().size();
     }
 
     private boolean isRegistrationTag(Tag formTag) {
@@ -1019,39 +964,6 @@ public class FormController {
             }
         }
         return mediaString != null ? mediaString : mediaUri;
-    }
-
-    public boolean isFormAlreadyExist(String jsonPayload, FormData formData) throws IOException, JSONException {
-        org.json.JSONObject temp = new org.json.JSONObject(jsonPayload);
-        String checkEncounterDate = ((org.json.JSONObject) temp.get("encounter")).get("encounter.encounter_datetime").toString();
-        String checkPatientUuid = ((org.json.JSONObject) temp.get("patient")).get("patient.uuid").toString();
-        String checkFormUuid = ((org.json.JSONObject) temp.get("encounter")).get("encounter.form_uuid").toString();
-
-        List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_INCOMPLETE);
-        allFormData.addAll(formService.getAllFormData(Constants.STATUS_COMPLETE));
-        for (FormData formData1 : allFormData) {
-            if (!isRegistrationFormData(formData1) && !formData1.getUuid().equals(formData.getUuid())) {
-                org.json.JSONObject object = new org.json.JSONObject(formData1.getJsonPayload());
-                String encounterDate = ((org.json.JSONObject) object.get("encounter")).get("encounter.encounter_datetime").toString();
-                String patientUuid = ((org.json.JSONObject) object.get("patient")).get("patient.uuid").toString();
-                String formUuid = ((org.json.JSONObject) object.get("encounter")).get("encounter.form_uuid").toString();
-                if (encounterDate.equals(checkEncounterDate)
-                        && patientUuid.equals(checkPatientUuid)
-                        && formUuid.equals(checkFormUuid)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean isRegistrationFormDataWithEncounterForm(String formUuid) throws FormDataFetchException {
-        FormData formData = getFormDataByUuid(formUuid);
-        return isRegistrationFormData(formData) && hasEncounterForm(formData);
-    }
-
-    private boolean hasEncounterForm(FormData registrationFormData) throws FormDataFetchException {
-        return countAllFormDataByPatientUuid(registrationFormData.getPatientUuid(), null) > 1;
     }
 
     public boolean isRegistrationFormData(FormData formData) {

@@ -102,7 +102,6 @@ public class GeolocationJsonMapper {
         int count = 0;
         for (PersonAddress personAddress : addresses) {
             JSONObject personAddressUpdateJson = new JSONObject();
-            JSONObject personAddressJson = new JSONObject();
             if (!StringUtils.isEmpty(personAddress.getAddress1())) {
                 personAddressUpdateJson.put("address1", personAddress.getAddress1());
             }

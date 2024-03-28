@@ -64,8 +64,4 @@ public class LoadAvailableFormsTask implements Runnable {
             ex.printStackTrace();
         }
     }
-
-    public interface FormsLoadedCallback {
-        void onFormsLoaded(List<Form> formList);
-    }
 }

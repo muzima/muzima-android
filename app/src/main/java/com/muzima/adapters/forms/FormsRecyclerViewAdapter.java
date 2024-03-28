@@ -122,33 +122,4 @@ public class FormsRecyclerViewAdapter extends Adapter<FormsRecyclerViewAdapter.V
     public interface OnFormClickedListener {
         void onFormClicked(int position);
     }
-
-    public void filter(String searchKey) {
-        formList.clear();
-        for (FormItem formItem : itemsCopy) {
-            if (formItem.getForm().getName().contains(searchKey) ||
-                    formItem.getForm().getDescription().contains(searchKey) ||
-                    formItem.getForm().getDiscriminator().contains(searchKey)) {
-                formList.add(formItem);
-            }
-        }
-
-        if (formList.isEmpty()) {
-            for (FormItem formItem : itemsCopy) {
-                boolean tagsMatch = false;
-                for (Tag tag : formItem.getForm().getTags()) {
-                    if (tag.getName().startsWith(searchKey))
-                        tagsMatch = true;
-                }
-
-                if (tagsMatch)
-                    formList.add(formItem);
-            }
-        }
-
-        if (formList.isEmpty())
-            formList.addAll(itemsCopy);
-
-        notifyDataSetChanged();
-    }
 }

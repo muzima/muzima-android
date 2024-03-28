@@ -26,10 +26,6 @@ class ConceptParser {
     private static final String RULE = "ZZ";
     private XmlPullParser parser;
 
-    public ConceptParser() {
-        this(newPullParser());
-    }
-
     public ConceptParser(XmlPullParser parser) {
         try {
             if (parser != null) {
@@ -67,8 +63,6 @@ class ConceptParser {
 
         //A concept should have both date and time tags as children. This var stores the value of parent for
         // date or time and then it is verified with the other tag's parent.
-        String tempParent = null;
-
         //Parses the contents within model tag.
         while (!endOfModelTag(parser)) {
             if (parser.getEventType() == XmlPullParser.START_TAG) {

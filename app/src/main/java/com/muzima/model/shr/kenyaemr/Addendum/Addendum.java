@@ -23,14 +23,6 @@ public class Addendum {
     @JsonProperty("IDENTIFIERS")
     private List<Identifier> identifiers;
 
-    public CardDetails getCardDetail() {
-        return cardDetail;
-    }
-
-    public void setCardDetail(CardDetails cardDetail) {
-        this.cardDetail = cardDetail;
-    }
-
     public List<Identifier> getIdentifiers() {
         return this.identifiers;
     }

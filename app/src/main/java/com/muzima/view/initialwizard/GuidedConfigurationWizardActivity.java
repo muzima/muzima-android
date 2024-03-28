@@ -102,7 +102,6 @@ import java.util.UUID;
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
     private SetupConfigurationTemplate setupConfigurationTemplate;
-    private String progressUpdateMessage;
     private int wizardLevel = 0;
     private boolean wizardcompletedSuccessfully = true;
     private GuidedSetupActionLogAdapter setupActionLogAdapter;

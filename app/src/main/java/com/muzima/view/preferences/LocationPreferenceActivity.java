@@ -161,10 +161,6 @@ public class LocationPreferenceActivity extends BroadcastListenerActivity {
         }
     }
 
-    protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.layout_list, container, false);
-    }
-
     final class DeleteLocationsActionModeCallback implements ActionMode.Callback {
 
         @Override

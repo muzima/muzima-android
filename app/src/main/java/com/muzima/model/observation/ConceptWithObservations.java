@@ -39,7 +39,6 @@ public class ConceptWithObservations {
     }
 
     public List<Observation> getObservations() {
-        defineMetadataConceptsForFilters();
         Collections.sort(observations, observationDateTimeComparator);
 
         return observations;
@@ -67,12 +66,6 @@ public class ConceptWithObservations {
         int result = concept != null ? concept.hashCode() : 0;
         result = 31 * result + (observations != null ? observations.hashCode() : 0);
         return result;
-    }
-
-    private void defineMetadataConceptsForFilters(){
-        List<Integer> metaDataObservations = Arrays.asList(Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.NAME.concept_id,
-                Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.PROVIDER_DETAILS.ID.concept_id,
-                Constants.Shr.KenyaEmr.CONCEPTS.HIV_TESTS.TEST_FACILITY.concept_id);
     }
 
     private final Comparator<Observation> observationDateTimeComparator = new Comparator<Observation>() {

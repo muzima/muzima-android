@@ -39,11 +39,6 @@ public class FormBuilder {
         return this;
     }
 
-    public FormBuilder withVersion(String version) {
-        this.version = version;
-        return this;
-    }
-
     public FormBuilder withTags(Tag [] tags) {
         this.tags = tags;
         return this;

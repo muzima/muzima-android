@@ -102,11 +102,4 @@ public class MuzimaJobScheduleBuilder {
                 jobScheduler.schedule(mUzimaJobInfo);
             }
     }
-
-    private void cancelPeriodicBackgroundDataSyncJob() {
-        JobScheduler jobScheduler = null;
-        jobScheduler = (JobScheduler) context.getSystemService(JOB_SCHEDULER_SERVICE);
-        jobScheduler.cancel(MESSAGE_SYNC_JOB_ID);
-        Toast.makeText(context, R.string.info_data_sync_cancelled, Toast.LENGTH_SHORT).show();
-    }
 }

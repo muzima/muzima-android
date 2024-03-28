@@ -37,17 +37,6 @@ public class Immunization {
     public Immunization() {
     }
 
-    /**
-     *
-     * @param name
-     * @param dateAdministered
-     */
-    public Immunization(String name, String dateAdministered) {
-        super();
-        this.name = name;
-        this.dateAdministered = dateAdministered;
-    }
-
     @JsonProperty("NAME")
     public String getName() {
         return name;

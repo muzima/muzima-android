@@ -313,7 +313,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private void initializeResources() {
         Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
 
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         refreshIconRotateAnimation = AnimationUtils.loadAnimation(MainDashboardActivity.this, R.anim.rotate_refresh);
         refreshIconRotateAnimation.setRepeatCount(Animation.INFINITE);
         refreshMenuActionView = findViewById(R.id.menu_load);
@@ -785,7 +784,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         mainLayout.setDrawerListener(actionbarDrawerToggle);
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
     }
 
     private void initSelectedTags() {

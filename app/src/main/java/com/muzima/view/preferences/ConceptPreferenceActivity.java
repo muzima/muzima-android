@@ -164,10 +164,6 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
         }
     }
 
-    protected View setupMainView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.layout_list, container, false);
-    }
-
     final class DeleteConceptsActionModeCallback implements ActionMode.Callback {
 
         @Override

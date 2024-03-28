@@ -55,20 +55,6 @@ public class DerivedObservationController {
         return lastSyncTime != null;
     }
 
-    private ArrayList<String> getAllUuids(List<String> knownUuids, List<String> newUuids) {
-        HashSet<String> allUuids = new HashSet<>(knownUuids);
-        allUuids.addAll(newUuids);
-        ArrayList<String> sortedUuids = new ArrayList<>(allUuids);
-        Collections.sort(sortedUuids);
-        return sortedUuids;
-    }
-
-    private List<String> getNewUuids(List<String> patientUuids, List<String> knownPatientsUuid) {
-        List<String> newPatientsUuids = new ArrayList<>(patientUuids);
-        newPatientsUuids.removeAll(knownPatientsUuid);
-        return newPatientsUuids;
-    }
-
     private String buildParamSignature(List<String> patientUuids, List<String> conceptUuids) {
         String paramSignature = StringUtils.getCommaSeparatedStringFromList(patientUuids);
         paramSignature += UUID_TYPE_SEPARATOR;

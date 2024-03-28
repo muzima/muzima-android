@@ -42,14 +42,6 @@ public class SmartCardController {
         }
     }
 
-    public SmartCardRecord getSmartCardRecordByUuid(String uuid) throws SmartCardRecordFetchException {
-        try {
-            return smartCardRecordService.getSmartCardRecordByUuid(uuid);
-        } catch (IOException e) {
-            throw new SmartCardRecordFetchException(e);
-        }
-    }
-
     public SmartCardRecord getSmartCardRecordByPersonUuid(String personUuid) throws SmartCardRecordFetchException {
         try {
             return smartCardRecordService.getSmartCardRecordByPersonUuid(personUuid);
@@ -59,7 +51,6 @@ public class SmartCardController {
     }
 
     private List<SmartCardRecord> getAllSmartCardRecords() throws SmartCardRecordFetchException {
-        boolean isSuccess = false;
         try {
             return smartCardRecordService.getAllSmartCardRecords();
         } catch (IOException e) {
@@ -76,14 +67,6 @@ public class SmartCardController {
             }
         }
         return smartCardRecordWithNonUploadedData;
-    }
-
-    public boolean syncSmartCardRecord(SmartCardRecord smartCardRecord) throws SmartCardRecordFetchException {
-        try {
-            return smartCardRecordService.syncSmartCardRecord(smartCardRecord);
-        } catch (IOException e) {
-            throw new SmartCardRecordFetchException(e);
-        }
     }
 
 

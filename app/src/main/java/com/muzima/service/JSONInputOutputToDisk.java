@@ -73,16 +73,4 @@ public class JSONInputOutputToDisk extends PreferenceService{
         inputBuffer.close();
         return outStringBuffer.toString();
     }
-
-    public List readList() throws IOException {
-        return deserialize(read());
-    }
-
-    public void remove(String patientIdentifier) throws IOException {
-        String savedData = read();
-        List<String> savedList = deserialize(savedData);
-        savedList.remove(patientIdentifier);
-        String updatedData = serialize(savedList);
-        write(updatedData);
-    }
 }

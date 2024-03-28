@@ -337,11 +337,6 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
     }
 
-    private void loadAllPatients() {
-        patientSearchAdapter.reloadData();
-    }
-
-
     private void loadFormsCount() {
         try {
             long incompleteForms = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController().countAllIncompleteForms();

@@ -11,13 +11,10 @@
 package com.muzima.controller;
 
 import android.util.Log;
-import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.LocationAttribute;
 import com.muzima.api.model.LocationAttributeType;
 import com.muzima.api.service.LocationService;
-import com.muzima.service.HTMLLocationParser;
-import com.muzima.service.LocationParser;
 import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
 
@@ -109,14 +106,6 @@ public class LocationController {
         }
     }
 
-    public List<LocationAttributeType> getLocationAttributesByName(String name) throws LocationLoadException {
-        try {
-            return locationService.getLocationAttributeTypesByName(name);
-        } catch (IOException | ParseException e) {
-            throw new LocationLoadException(e);
-        }
-    }
-
     public LocationAttributeType getLocationAttributeTypeByUuid(String uuid) throws LocationLoadException {
         try {
             return locationService.getLocationAttributeTypeByUuid(uuid);
@@ -142,20 +131,6 @@ public class LocationController {
         } catch (IOException e) {
             throw new LocationLoadException(e);
         }
-    }
-
-    public Location getLocationByName(String name) throws LocationLoadException  {
-        try {
-            List<Location> locations = locationService.getLocationsByName(name);
-            for (Location location : locations) {
-                if (location.getName().equals(name)) {
-                    return location;
-                }
-            }
-        } catch (IOException | ParseException e) {
-            throw new LocationLoadException(e);
-        }
-        return null;
     }
 
     public Location getLocationById(int id) throws LocationLoadException  {
@@ -195,28 +170,6 @@ public class LocationController {
         if(locations.size() > 0){
             deleteLocations(locations);
         }
-    }
-
-    public List<Location> getRelatedLocations(List<FormTemplate> formTemplates) throws LocationDownloadException {
-        HashSet<Location> locations = new HashSet<>();
-        LocationParser xmlParserUtils = new LocationParser();
-        HTMLLocationParser htmlParserUtils = new HTMLLocationParser();
-        for (FormTemplate formTemplate : formTemplates) {
-            List<String> names = new ArrayList<>();
-            if (formTemplate.isHTMLForm()) {
-                names = htmlParserUtils.parse(formTemplate.getHtml());
-            } else {
-                // names = xmlParserUtils.parse(formTemplate.getModelXml());
-            }
-            locations.addAll(downloadLocationsFromServerByName(names));
-        }
-        return new ArrayList<>(locations);
-    }
-
-    public void newLocations(List<Location> locations) throws LocationLoadException {
-        newLocations = locations;
-        List<Location> savedLocations = getAllLocations();
-        newLocations.removeAll(savedLocations);
     }
 
     public List<Location> newLocations() {

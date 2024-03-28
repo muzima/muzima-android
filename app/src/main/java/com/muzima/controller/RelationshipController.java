@@ -137,18 +137,6 @@ public class RelationshipController {
         }
     }
 
-    /********************************************************************************************************
-     *                               METHODS FOR RELATIONSHIPS
-     *********************************************************************************************************/
-    public List<Relationship> downloadRelationshipsForPerson(String patientUuid) throws RetrieveRelationshipException {
-        try {
-            return relationshipService.downloadRelationshipsForPerson(patientUuid);
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error while downloading Patient Relationships for patient with UUID : " + patientUuid + " from server", e);
-            throw new RetrieveRelationshipException(e);
-        }
-    }
-
     public List<Relationship> downloadRelationshipsForPatients(List<String>  patientUuidList, String activeSetupConfig) throws RetrieveRelationshipException {
         try {
             List<Relationship> relationships;
@@ -205,35 +193,6 @@ public class RelationshipController {
         }
     }
 
-    /**
-     * Save a list of relationships to the local repo
-     * @param relationships list of {@link Relationship}
-     * @throws SaveRelationshipException Relationship Save Exception
-     */
-    public void saveRelationships(List<Relationship> relationships, String personUuid) throws SaveRelationshipException, SearchRelationshipException {
-        try {
-            List<Relationship> syncedRelationshipsForPatient = relationshipService.getRelationshipsForPerson(personUuid);
-            if (syncedRelationshipsForPatient.size() > 0) {
-                List<Relationship> syncedRelationshipsForPatientToDelete = new ArrayList<>();
-                for (Relationship relationship : syncedRelationshipsForPatient) {
-                    if (relationship.getSynced())
-                        syncedRelationshipsForPatientToDelete.add(relationship);
-                }
-                relationshipService.deleteRelationships(syncedRelationshipsForPatientToDelete);
-            }
-
-            for (Relationship relationship : relationships) {
-                if (relationshipService.getRelationshipByUuid(relationship.getUuid()) != null)
-                    relationshipService.deleteRelationship(relationship);
-            }
-            relationshipService.saveRelationships(relationships);
-
-            saveRelationshipTypesAndPersonsFromRelationships(relationships);
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error while saving the relationships list", e);
-            throw new SaveRelationshipException(e);
-        }
-    }
     public void saveRelationships(List<Relationship> relationships) throws SaveRelationshipException, SearchRelationshipException {
         try {
             relationshipService.saveRelationships(relationships);
@@ -276,16 +235,6 @@ public class RelationshipController {
         }
     }
 
-    public List<Relationship>  getPersonRelationshipsByType(String personUuid, String relationshipTypeUuid) throws RetrieveRelationshipException, SearchRelationshipException {
-        try {
-            return relationshipService.getPersonRelationshipsByType(personUuid, relationshipTypeUuid);
-        } catch (IOException e) {
-            throw new RetrieveRelationshipException(e);
-        } catch (ParseException e) {
-            throw new SearchRelationshipException(e);
-        }
-    }
-
     public boolean relationshipExists(Relationship relationship) {
         try {
             return relationshipService.getRelationship(relationship) != null;
@@ -308,18 +257,6 @@ public class RelationshipController {
         }
     }
 
-    /**
-     * Delete a single relationship from the local repository
-     * @param relationship {@link Relationship} to delete
-     * @throws DeleteRelationshipException Relationship Deletion Exception
-     */
-    public void  deleteRelationship(Relationship relationship) throws DeleteRelationshipException {
-        try {
-            relationshipService.deleteRelationship(relationship);
-        } catch (IOException e) {
-            throw new DeleteRelationshipException(e);
-        }
-    }
     public void  deleteAllRelationships() throws DeleteRelationshipException {
         try {
             List<Relationship> relationships = relationshipService.getAllRelationships();

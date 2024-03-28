@@ -161,13 +161,6 @@ public class HelpActivity extends BaseHelpActivity {
         startActivity(intent);
     }
 
-    private void startVideoContentDisplayActivity(String filePath, String title) {
-        Intent intent = new Intent(this, YouTubeVideoViewActivity.class);
-        intent.putExtra(YouTubeVideoViewActivity.VIDEO_PATH, filePath);
-        intent.putExtra(YouTubeVideoViewActivity.VIDEO_TITLE, title);
-        startActivityForResult(intent, YOUTUBE_API_RESULT);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //if youtube doen't work, try webView
@@ -188,11 +181,5 @@ public class HelpActivity extends BaseHelpActivity {
         intent.putExtra(VideoWebViewActivity.VIDEO_PATH, filePath);
         intent.putExtra(VideoWebViewActivity.VIDEO_TITLE, title);
         startActivity(intent);
-    }
-
-    private void viewVideo(String videoUrl) {
-        Intent playVideoIntent = new Intent(Intent.ACTION_VIEW);
-        playVideoIntent.setData(Uri.parse(videoUrl));
-        startActivity(playVideoIntent);
     }
 }

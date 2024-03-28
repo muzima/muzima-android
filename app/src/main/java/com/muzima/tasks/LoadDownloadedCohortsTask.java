@@ -13,6 +13,8 @@ package com.muzima.tasks;
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_CONCEPT_MAP;
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
 import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
+import static com.muzima.utils.Constants.FGH.FGH_INTERVENTIONS;
+import static com.muzima.utils.Constants.FGH.INDEX_CASE_FILTER_CONCEPT;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -41,7 +43,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class LoadDownloadedCohortsTask implements Runnable {
@@ -58,13 +59,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
     public void run() {
         List<CohortWithFilter> cohortWithFilters = new ArrayList<>();
         try {
-            List<String> interventions = new ArrayList<String>(){{
-                add("4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
-                add("1bd47ba9-b6ff-4b4c-ba26-f5b86498d738");
-                add("9e928864-b7d2-445d-9856-cb7c9a0632dd");
-                add("46e6c352-bddb-4191-8d1e-40380aa1a346");
-                add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
-            }};
+            List<String> interventions = FGH_INTERVENTIONS;
 
             MuzimaSetting cohortFilterDerivedConceptMapSetting = null;
             MuzimaSetting cohortFilterConceptMapSetting = null;
@@ -197,7 +192,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         conceptUuid = jsonArray.get(i).toString();
                                         if (!conceptUuid.isEmpty()) {
-                                            if (conceptUuid.equals("e3f3bcea-9e2f-4aec-976f-0290bdbfffb8")) {
+                                            if (conceptUuid.equals(INDEX_CASE_FILTER_CONCEPT)) {
                                                 Concept concept = conceptController.getConceptByUuid(conceptUuid);
                                                 if (concept != null) {
                                                     cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximos 10 dias"));
@@ -216,7 +211,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                 } else {
                                     conceptUuid = conceptObject.toString();
                                     if (!conceptUuid.isEmpty()) {
-                                        if (conceptUuid.equals("e3f3bcea-9e2f-4aec-976f-0290bdbfffb8")) {
+                                        if (conceptUuid.equals(INDEX_CASE_FILTER_CONCEPT)) {
                                             Concept concept = conceptController.getConceptByUuid(conceptUuid);
                                             if (concept != null) {
                                                 cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximos 10 dias"));

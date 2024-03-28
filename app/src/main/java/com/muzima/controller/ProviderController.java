@@ -50,15 +50,6 @@ public class ProviderController {
         return new ArrayList<>(result);
     }
 
-    public Provider downloadProviderFromServerByUuid(String uuid) throws ProviderDownloadException {
-        try {
-            return providerService.downloadProviderByUuid(uuid);
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error while downloading provider from the server", e);
-            throw new ProviderDownloadException(e);
-        }
-    }
-
     public List<Provider> downloadProvidersFromServerByUuid(String[] uuids) throws ProviderDownloadException {
         HashSet<Provider> result = new HashSet<>();
         try {
@@ -81,43 +72,12 @@ public class ProviderController {
         }
     }
 
-    public void saveProvider(Provider provider) throws ProviderSaveException {
-        try {
-            providerService.saveProvider(provider);
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error while saving the provider : " + provider.getUuid(), e);
-            throw new ProviderSaveException(e);
-        }
-    }
-
     public void saveProviders(List<Provider> providers) throws ProviderSaveException {
         try {
             providerService.saveProviders(providers);
         } catch (IOException e) {
             throw new ProviderSaveException(e);
         }
-    }
-
-    public Provider getProviderByUuid(String uuid) throws ProviderLoadException {
-        try {
-            return providerService.getProviderByUuid(uuid);
-        } catch (IOException e) {
-            throw new ProviderLoadException(e);
-        }
-    }
-
-    public Provider getProviderByName(String name) throws ProviderLoadException  {
-        try {
-            List<Provider> providers = providerService.getProvidersByName(name);
-            for (Provider provider : providers) {
-                if (provider.getName().equals(name)) {
-                    return provider;
-                }
-            }
-        } catch (IOException | org.apache.lucene.queryParser.ParseException e) {
-            throw new ProviderLoadException(e);
-        }
-        return null;
     }
 
     public void deleteProvider(Provider provider) throws ProviderDeleteException {
@@ -199,9 +159,6 @@ public class ProviderController {
         }
     }
 
-    public void resetNewProvidersList() {
-        newProviders.clear();
-    }
     public List<Provider> newProviders() {
         return newProviders;
     }

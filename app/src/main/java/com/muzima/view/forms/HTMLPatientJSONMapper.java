@@ -129,7 +129,6 @@ public class HTMLPatientJSONMapper {
             }
 
             if(!selectedPatientUUids.isEmpty() && !selectedPatientUUids.equals("[]")) {
-                List<Patient> patients = new ArrayList<>();
                 JSONArray selectedPatientJSONArray = new JSONArray();
                 selectedPatientUUids = selectedPatientUUids.replace("[", "");
                 selectedPatientUUids = selectedPatientUUids.replace("]", "");

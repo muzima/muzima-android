@@ -46,25 +46,6 @@ public class HIVTest {
     public HIVTest() {
     }
 
-    /**
-     *
-     * @param providerDetails
-     * @param facility
-     * @param strategy
-     * @param result
-     * @param type
-     * @param date
-     */
-    public HIVTest(String date, String result, String type, String facility, String strategy, ProviderDetails providerDetails) {
-        super();
-        this.date = date;
-        this.result = result;
-        this.type = type;
-        this.facility = facility;
-        this.strategy = strategy;
-        this.providerDetails = providerDetails;
-    }
-
     @JsonProperty("DATE")
     public String getDate() {
         return date;

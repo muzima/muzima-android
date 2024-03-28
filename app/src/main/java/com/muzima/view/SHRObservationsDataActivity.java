@@ -90,8 +90,6 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
 
     private void initPager() {
         viewPager = findViewById(R.id.pager);
-
-        Boolean isSHRData = true;
     }
 
     /**

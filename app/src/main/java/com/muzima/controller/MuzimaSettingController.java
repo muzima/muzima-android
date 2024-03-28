@@ -113,18 +113,6 @@ public class MuzimaSettingController {
         }
     }
 
-    public MuzimaSetting getSettingByUuid(String uuid) throws MuzimaSettingFetchException {
-        try {
-            MuzimaSetting configLevelSetting = getSetupConfigurationSettingByKey("uuid", uuid);
-            if(configLevelSetting != null){
-                return configLevelSetting;
-            }
-            return settingService.getSettingByUuid(uuid);
-        } catch (IOException e) {
-            throw new MuzimaSettingFetchException(e);
-        }
-    }
-
     public MuzimaSetting getSetupConfigurationSettingByKey(String keyType, String keyValue) throws MuzimaSettingFetchException{
         try{
             // Currently mUzima supports one config. So the expectation here is that only one config may be available
@@ -200,22 +188,6 @@ public class MuzimaSettingController {
         return muzimaSetting;
     }
 
-    public void saveSetting(MuzimaSetting setting) throws MuzimaSettingSaveException {
-        try {
-            settingService.saveSetting(setting);
-        } catch (IOException | NullPointerException e) {
-            throw new MuzimaSettingSaveException(e);
-        }
-    }
-
-    public void updateSetting(MuzimaSetting setting) throws MuzimaSettingSaveException {
-        try {
-            settingService.updateSetting(setting);
-        } catch (IOException e) {
-            throw new MuzimaSettingSaveException(e);
-        }
-    }
-
     public void saveOrUpdateSetting(List<MuzimaSetting> settings) throws MuzimaSettingSaveException {
         for(MuzimaSetting setting: settings){
             saveOrUpdateSetting(setting);
@@ -283,14 +255,6 @@ public class MuzimaSettingController {
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_SETTINGS, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return muzimaSettings;
-        } catch (IOException e) {
-            throw new MuzimaSettingDownloadException(e);
-        }
-    }
-
-    public MuzimaSetting downloadSettingByUuid(String uuid) throws MuzimaSettingDownloadException {
-        try {
-            return settingService.downloadSettingByUuid(uuid);
         } catch (IOException e) {
             throw new MuzimaSettingDownloadException(e);
         }

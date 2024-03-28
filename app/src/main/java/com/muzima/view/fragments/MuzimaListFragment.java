@@ -85,11 +85,6 @@ public abstract class MuzimaListFragment extends Fragment implements AdapterView
         }
     }
 
-    protected void updateDataLoadStatus(View layout, String noDataMsg){
-        TextView noDataMsgTextView = layout.findViewById(R.id.no_data_msg);
-        noDataMsgTextView.setText(noDataMsg);
-    }
-
     protected void logEvent(String tag, String details){
         if(StringUtils.isEmpty(details)){
             details = "{}";

@@ -107,15 +107,6 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
         return R.layout.item_forms_list;
     }
 
-    protected List<String> getSelectedTagUuids() {
-        List<Tag> selectedTags = ((MuzimaApplication) context.getApplicationContext()).getFormController().getSelectedTags();
-        List<String> tags = new ArrayList<String>();
-        for (Tag selectedTag : selectedTags) {
-            tags.add(selectedTag.getUuid());
-        }
-        return tags;
-    }
-
 
     static class ViewHolder {
         CheckedTextView name;
@@ -127,18 +118,6 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
         List<TextView> tags;
         TextView savedTime;
         TextView encounterDate;
-
-        public void addTag(TextView tag) {
-            this.tags.add(tag);
-            tagsLayout.addView(tag);
-        }
-
-        void removeTags(List<TextView> tagsToRemove) {
-                for (TextView tag : tagsToRemove) {
-                    tagsLayout.removeView(tag);
-                }
-                tags.removeAll(tagsToRemove);
-        }
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
@@ -153,14 +132,6 @@ public abstract class FormsAdapter<T extends BaseForm> extends ListAdapter<T> {
         if (backgroundQueryTask != null) {
             backgroundQueryTask.cancel();
         }
-    }
-
-    public void setRunningBackgroundQueryTask(MuzimaAsyncTask<?, ?, ?> backgroundQueryTask) {
-        this.backgroundQueryTask = backgroundQueryTask;
-    }
-
-    public boolean isFormDownloadBackgroundTaskRunning(){
-        return backgroundQueryTask != null;
     }
 
     public FormController getFormController() {

@@ -101,28 +101,6 @@ public class MediaController {
         }
     }
 
-    public void deleteMedia(List<String> uuids) throws MediaController.MediaSaveException {
-        try {
-            List<Media> mediaList = new ArrayList<>();
-            for(String uuid:uuids){
-                Media media = mediaService.getMediaByUuid(uuid);
-                if(media != null){
-                    mediaList.add(media);
-                    //Delete file if exists
-                    String PATH = Objects.requireNonNull(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)).getAbsolutePath();
-                    File file = new File(PATH + "/"+media.getName());
-                    if(file.exists())
-                        file.delete();
-                }
-            }
-            if(mediaList.size()>0)
-                mediaService.deleteMedia(mediaList);
-
-        } catch (IOException e) {
-            throw new MediaController.MediaSaveException(e);
-        }
-    }
-
     private final Comparator<Media> mediaOrderComparator = new Comparator<Media>() {
         @Override
         public int compare(Media lhs, Media rhs) {

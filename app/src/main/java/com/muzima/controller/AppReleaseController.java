@@ -57,14 +57,6 @@ public class AppReleaseController {
         }
     }
 
-    public void updateAppRelease(AppRelease appRelease) throws AppReleaseController.AppReleaseSaveException {
-        try {
-            appReleaseService.updateAppRelease(appRelease);
-        } catch (IOException e) {
-            throw new AppReleaseController.AppReleaseSaveException(e);
-        }
-    }
-
     public static class AppReleaseFetchException extends Throwable {
         AppReleaseFetchException(Throwable throwable) {
             super(throwable);
