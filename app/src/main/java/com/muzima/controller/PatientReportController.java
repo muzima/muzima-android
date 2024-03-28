@@ -46,10 +46,6 @@ public class PatientReportController {
         this.sntpService = sntpService;
     }
 
-    public int getPatientReportCountByPatientUuid(String patientUuid) throws IOException {
-        return patientReportService.countReportsByPatientUuid(patientUuid);
-    }
-
     public List<PatientReportHeader> getPatientReportHeadersByPatientUuid(String patientUuid) throws PatientReportException {
         try {
             return patientReportService.getPatientReportHeadersByPatientUuid(patientUuid);
@@ -116,7 +112,6 @@ public class PatientReportController {
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_PATIENT_REPORTS, sntpService.getTimePerDeviceTimeZone(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             LastSyncTime fullLastSyncTimeInfos = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_PATIENT_REPORTS);
-            String parameterSplits = fullLastSyncTimeInfos.getParamSignature();
             return patientReportHeaders;
         }
         catch (IOException e) {
@@ -174,15 +169,6 @@ public class PatientReportController {
         }
         catch (IOException e) {
             throw new PatientReportSaveException(e);
-        }
-    }
-
-    public void deletePatientReport(PatientReport patientReport) throws PatientReportDeleteException {
-        try {
-            patientReportService.deletePatientReport(patientReport);
-        }
-        catch (IOException e) {
-            throw new PatientReportDeleteException(e);
         }
     }
 

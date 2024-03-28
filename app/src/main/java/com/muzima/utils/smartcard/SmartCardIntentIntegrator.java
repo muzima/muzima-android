@@ -41,14 +41,6 @@ public class SmartCardIntentIntegrator {
         this.activity = activity;
     }
 
-    public static boolean isReadRequest(int requestCode){
-        return requestCode == SMARTCARD_READ_REQUEST_CODE;
-    }
-
-    public static boolean isWriteRequest(int requestCode){
-        return requestCode == SMARTCARD_WRITE_REQUEST_CODE;
-    }
-
     public void initiateCardRead(){
         Intent intent = new Intent();
         intent.setAction(ACTION_READ_DATA);

@@ -41,21 +41,6 @@ public class CardDetails {
     public CardDetails() {
     }
 
-    /**
-     *
-     * @param lastUpdatedFacility
-     * @param lastUpdated
-     * @param status
-     * @param reason
-     */
-    public CardDetails(String status, String reason, String lastUpdated, String lastUpdatedFacility) {
-        super();
-        this.status = status;
-        this.reason = reason;
-        this.lastUpdated = lastUpdated;
-        this.lastUpdatedFacility = lastUpdatedFacility;
-    }
-
     @JsonProperty("STATUS")
     public String getStatus() {
         return status;

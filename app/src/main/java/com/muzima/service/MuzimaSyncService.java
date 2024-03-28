@@ -221,17 +221,6 @@ public class MuzimaSyncService {
         return SyncStatusConstants.AUTHENTICATION_SUCCESS;
     }
 
-    private boolean hasInvalidSpecialCharacter(String username) {
-        String invalidCharacters = SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
-        for (int i = 0; i < invalidCharacters.length(); i++) {
-            String substring = invalidCharacters.substring(i, i + 1);
-            if (username.contains(substring)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public int[] downloadForms() {
         int[] result = new int[3];
 
@@ -485,34 +474,6 @@ public class MuzimaSyncService {
             List<Cohort> cohorts = downloadCohortsList();
             List<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
             cohorts.removeAll(voidedCohorts);
-            cohortController.saveOrUpdateCohorts(cohorts);
-            Log.i(getClass().getSimpleName(), "New cohorts are saved");
-            result[0] = SUCCESS;
-            result[1] = cohorts.size();
-            result[2] = voidedCohorts.size();
-        } catch (CohortController.CohortDownloadException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to download cohorts", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-            return result;
-        } catch (CohortController.CohortSaveException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to save cohorts", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
-            return result;
-        } catch (CohortController.CohortDeleteException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while deleting voided cohorts", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
-            return result;
-        }
-        return result;
-    }
-
-    public int[] downloadCohorts(String[] cohortUuids) {
-        int[] result = new int[3];
-        try {
-            List<Cohort> cohorts = cohortController.downloadCohortsByUuidList(cohortUuids);
-            List<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
-            cohorts.removeAll(voidedCohorts);
-
             cohortController.saveOrUpdateCohorts(cohorts);
             Log.i(getClass().getSimpleName(), "New cohorts are saved");
             result[0] = SUCCESS;
@@ -818,7 +779,6 @@ public class MuzimaSyncService {
                 Log.e(getClass().getSimpleName(), "Could not obtain active setup config", e);
             }
 
-            int i = 0;
             for (List<String> slicedPatientUuid : slicedPatientUuids) {
                 for (List<String> slicedConceptUuid : slicedConceptUuids) {
                     long startDownloadObservations = System.currentTimeMillis();
@@ -1441,7 +1401,6 @@ public class MuzimaSyncService {
 
                     PatientTag addressTag = null;
                     PatientTag assignmentTag = null;
-                    PatientTag awaitingAssignmentTag = null;
                     boolean hasSexualPartnerTag = false;
                     boolean hasAssignmentTag = false;
                     boolean hasAwaitingAssignmentTag = false;

@@ -74,20 +74,12 @@ public abstract class ReportsAdapter extends ListAdapter<PatientReport> {
             downloadedImage.setVisibility(View.GONE);
         }
 
-        void displayPendingUpdateImage() {
-            pendingUpdateImage.setVisibility(View.VISIBLE);
-        }
-
         void hidePendingUpdateImage() {
             pendingUpdateImage.setVisibility(View.GONE);
         }
 
         void setTextToName(String text) {
             name.setText(text);
-        }
-
-        void setPendingUpdateTextColor(){
-            name.setTextColor(ContextCompat.getColor(getContext(),R.color.pending_resource_update_color));
         }
 
         void setDefaultTextColor(){

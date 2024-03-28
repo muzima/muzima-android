@@ -88,8 +88,4 @@ public abstract class ActivityWithPatientSummaryBottomNavigation extends Broadca
     }
 
     protected abstract int getBottomNavigationMenuItemId();
-
-    protected BottomNavigationView getBottomNavigationView(){
-        return navigationView;
-    }
 }

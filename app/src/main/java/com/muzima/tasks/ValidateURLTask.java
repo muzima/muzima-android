@@ -23,7 +23,6 @@ public class ValidateURLTask extends AsyncTask<String, Void, Boolean> {
 
     private final SettingsPreferenceFragment settingsPreferenceFragment;
     private ProgressDialog progressDialog;
-    private NetworkUtils networkUtils;
 
     public ValidateURLTask(SettingsPreferenceFragment settingsPreferenceFragment) {
         this.settingsPreferenceFragment = settingsPreferenceFragment;

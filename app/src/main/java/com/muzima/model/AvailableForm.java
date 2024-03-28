@@ -35,10 +35,6 @@ public class AvailableForm extends BaseForm {
         isDownloaded = downloaded;
     }
 
-    public boolean isUpdateAvailable() {
-        return isUpdateAvailable;
-    }
-
     public void setUpdateAvailable(boolean updateAvailable) {
         isUpdateAvailable = updateAvailable;
     }

@@ -106,23 +106,4 @@ public class LocationUtils {
         return location;
     }
 
-    public static Location getDefaultEncounterLocationPreference(MuzimaApplication muzimaApplication) throws Exception {
-        try {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication);
-
-            String defaultLocationName = preferences.getString("defaultEncounterLocation", null);
-            List<Location> defaultLocation = new ArrayList<>();
-            List<Location> locations = muzimaApplication.getLocationController().getAllLocations();
-            if (defaultLocationName != null && locations != null) {
-                for (Location loc : locations) {
-                    if (Integer.toString(loc.getId()).equals(defaultLocationName)) {
-                        return loc;
-                    }
-                }
-            }
-            return null;
-        } catch (LocationController.LocationLoadException e) {
-            throw new Exception("Cannot retrieve locations",e);
-        }
-    }
 }

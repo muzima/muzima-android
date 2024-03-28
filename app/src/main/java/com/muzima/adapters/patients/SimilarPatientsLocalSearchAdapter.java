@@ -14,7 +14,6 @@ import android.content.Context;
 
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
-import com.muzima.model.CohortFilter;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.StringUtils;
 
@@ -22,18 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimilarPatientsLocalSearchAdapter extends PatientsLocalSearchAdapter implements MuzimaAsyncTask.OnProgressListener {
-    private static final String SEARCH = "search";
-    private final PatientController patientController;
-    private List<CohortFilter> filters;
-    private MuzimaAsyncTask<String, List<Patient>, List<Patient>> backgroundQueryTask;
-    private Context context;
     private Patient comparisonPatient;
 
 
     public SimilarPatientsLocalSearchAdapter(Context context, PatientController patientController, Patient comparisonPatient) {
         super(context,patientController,null,null,null,null);
-        this.patientController = patientController;
-        this.context = context;
         this.comparisonPatient = comparisonPatient;
         setShowAdditionalDetails(true);
     }

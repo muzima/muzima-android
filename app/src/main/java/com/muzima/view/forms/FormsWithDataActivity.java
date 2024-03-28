@@ -213,7 +213,6 @@ public class FormsWithDataActivity extends FormsActivityBase {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = null;
         switch (item.getItemId()) {
             case R.id.menu_load:
                 if (!NetworkUtils.isConnectedToNetwork(this)) {

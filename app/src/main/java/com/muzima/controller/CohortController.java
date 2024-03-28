@@ -351,15 +351,6 @@ public class CohortController {
         }
     }
 
-    public boolean isUpdateAvailable() throws CohortFetchException {
-        for (Cohort cohort : getSyncedCohorts()) {
-            if (cohort.isUpdateAvailable()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public List<Cohort> getCohortsWithPendingUpdates() throws CohortFetchException {
         List<Cohort> cohortList = new ArrayList<>();
         for (Cohort cohort : getSyncedCohorts()) {
@@ -372,8 +363,6 @@ public class CohortController {
 
 
     public void markAsUpToDate(String[] cohortUuids) throws CohortUpdateException {
-        ArrayList<CohortData> allCohortData = new ArrayList<>();
-
         try {
             for (String cohortUuid : cohortUuids) {
                 Cohort cohort = cohortService.getCohortByUuid(cohortUuid);
@@ -457,38 +446,6 @@ public class CohortController {
             throw new CohortReplaceException(e);
         }
 
-    }
-
-    public int countCohortMembers(Cohort cohort) throws CohortFetchException {
-        try {
-            return cohortService.countCohortMembers(cohort);
-        } catch (IOException e) {
-            throw new CohortFetchException(e);
-        }
-    }
-
-    public List<Cohort> downloadCohortByName(String name) throws CohortDownloadException {
-        String defaultLocation = getDefaultLocation();
-        Provider loggedInProvider = getLoggedInProvider();
-        try {
-            return cohortService.downloadCohortsByName(name, defaultLocation, loggedInProvider);
-        } catch (IOException e) {
-            throw new CohortDownloadException(e);
-        }
-    }
-
-    public List<Cohort> downloadCohortsByUuidList(String[] uuidList) throws CohortDownloadException {
-        String defaultLocation = getDefaultLocation();
-        Provider loggedInProvider = getLoggedInProvider();
-        try {
-            List<Cohort> cohortList = new ArrayList<>();
-            for (String uuid : uuidList) {
-                cohortList.add(cohortService.downloadCohortByUuid(uuid, defaultLocation, loggedInProvider));
-            }
-            return cohortList;
-        } catch (IOException e) {
-            throw new CohortDownloadException(e);
-        }
     }
 
     public List<Cohort> getCohorts() throws CohortFetchException {

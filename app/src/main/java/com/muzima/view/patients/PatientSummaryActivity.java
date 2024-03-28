@@ -107,8 +107,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     public static final String PATIENT = "patient";
     public static final String PATIENT_UUID = "patient_uuid";
     public static final String CALLING_ACTIVITY = "calling_activity_key";
-    public static final boolean DEFAULT_SHR_STATUS = false;
-    private static final boolean DEFAULT_RELATIONSHIP_STATUS = false;
     private TextView patientNameTextView;
     private ImageView patientGenderImageView;
     private TextView dobTextView;
@@ -299,7 +297,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             gpsAddressTextView.setText(getDistanceToClientAddress(patient));
 
             if (patient.getAddresses().size() > 0) {
-                int index = patient.getAddresses().size() - 1;
                 // the most recent address comes on index 0
                 patientAddress.setText(getFormattedPatientAddress(patient.getAddresses().get(0)));
             }
@@ -315,7 +312,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             observationController = ((MuzimaApplication) getApplicationContext()).getObservationController();
             cohortController = ((MuzimaApplication) getApplicationContext()).getCohortController();
             providerController = ((MuzimaApplication) getApplicationContext()).getProviderController();
-            EncounterController encounterController =  ((MuzimaApplication) getApplicationContext()).getEncounterController();
             formController =  ((MuzimaApplication) getApplicationContext()).getFormController();
             DerivedConceptController derivedConceptController = ((MuzimaApplication) getApplicationContext()).getDerivedConceptController();
             DerivedObservationController derivedObservationController = ((MuzimaApplication) getApplicationContext()).getDerivedObservationController();
@@ -762,7 +758,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         lastConsentDetails = findViewById(R.id.last_consent_details);
         expandableConsentDetails = findViewById(R.id.expand_consent_details);
 
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
         LinearLayout dadosDeConsentimento = findViewById(R.id.dados_de_consentimento);
         RelativeLayout addressLayout = findViewById(R.id.address_layout);
         RelativeLayout phoneNumberLayout = findViewById(R.id.phone_number_layout);
@@ -973,12 +968,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 nextClinicalConsultDateSeparator.setVisibility(View.VISIBLE);
                 tptStartDateSeparator.setVisibility(View.VISIBLE);
                 tptEndDateSeparator.setVisibility(View.VISIBLE);
-
-                ViewGroup.LayoutParams volunteerLayoutParam = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        0,
-                        22
-                );
 
                 LinearLayout.LayoutParams clinicalInfoParam = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,

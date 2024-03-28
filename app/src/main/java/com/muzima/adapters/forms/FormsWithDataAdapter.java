@@ -132,18 +132,6 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
         TextView clientId;
         TextView lastEditedTime;
         TextView encounterDate;
-
-        public void addTag(TextView tag) {
-            this.tags.add(tag);
-            tagsLayout.addView(tag);
-        }
-
-        void removeTags(List<TextView> tagsToRemove) {
-            for (TextView tag : tagsToRemove) {
-                tagsLayout.removeView(tag);
-            }
-            tags.removeAll(tagsToRemove);
-        }
     }
 
     private void setClickListenersOnView(final int position, View convertView) {

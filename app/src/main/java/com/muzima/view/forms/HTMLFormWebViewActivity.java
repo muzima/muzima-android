@@ -94,7 +94,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     private static final String RELATIONSHIP_CREATOR = "relationshipCreatorComponent";
     private static final String ENCOUNTER_MINI_FORM_CREATOR = "encounterMiniFormCreatorComponent";
     public static final String FORM = "form";
-    public static final String DISCRIMINATOR = "discriminator";
     private static final String DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS = "2";
     public static final String DEFAULT_FONT_SIZE = "Medium";
     private static final boolean IS_LOGGED_IN_USER_DEFAULT_PROVIDER = false;
@@ -105,7 +104,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     private WebView webView;
     private Form form;
-    private Toolbar toolbar;
     private FormTemplate formTemplate;
     private MuzimaProgressDialog progressDialog;
     private FormData formData;
@@ -332,18 +330,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
                 .show();
     }
 
-    public void showWarningDialog(String saveType) {
-        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
-                .setCancelable(true)
-                .setIcon(ThemeUtils.getIconWarning(this))
-                .setTitle(getResources().getString(R.string.title_duplicate_form_data_warning))
-                .setMessage(getResources().getString(R.string.warning_form_data_already_exists))
-                .setPositiveButton(getString(R.string.confirm_duplicate_form_data_save), duplicateFormDataClickListener(saveType))
-                .setNegativeButton(getString(R.string.general_cancel), null)
-                .create()
-                .show();
-    }
-
     public void showWarningDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
@@ -355,20 +341,6 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         //Center text massage
         TextView messageView = dialog.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER);
-    }
-
-    private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType) {
-
-        return new Dialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (saveType.equals(SAVE_AS_INCOMPLETE)) {
-                    webView.loadUrl("javascript:document.saveDraft()");
-                } else if (saveType.equals(SAVE_AS_COMPLETED)) {
-                    webView.loadUrl("javascript:document.submit()");
-                }
-            }
-        };
     }
 
     private void autoSaveForm() {

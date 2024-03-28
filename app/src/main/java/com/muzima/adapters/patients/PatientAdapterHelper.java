@@ -553,22 +553,6 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
 
     }
 
-    public static String getPatientFormattedName(Patient patient) {
-        StringBuilder patientFormattedName = new StringBuilder();
-        if (!StringUtils.isEmpty(patient.getFamilyName())) {
-            patientFormattedName.append(patient.getFamilyName());
-            patientFormattedName.append(", ");
-        }
-        if (!StringUtils.isEmpty(patient.getGivenName())) {
-            patientFormattedName.append(patient.getGivenName().substring(0, 1));
-            patientFormattedName.append(" ");
-        }
-        if (!StringUtils.isEmpty(patient.getMiddleName())) {
-            patientFormattedName.append(patient.getMiddleName().substring(0, 1));
-        }
-        return patientFormattedName.toString();
-    }
-
     private String getPatientFullName(Patient patient) {
         StringBuilder patientFullName = new StringBuilder();
         if (!StringUtils.isEmpty(patient.getFamilyName())) {

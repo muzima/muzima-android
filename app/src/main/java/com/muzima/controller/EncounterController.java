@@ -59,14 +59,6 @@ public class EncounterController {
 
     }
 
-    public List<Encounter> getEncountersByEncounterTypeUuidAndPatientUuid(String encounterTypeUuid,String patientUuid) throws FetchEncounterException{
-        try{
-            return encounterService.getEncountersByEncounterTypeUuidAndPatientUuid(encounterTypeUuid,patientUuid);
-        }catch(IOException e){
-            throw new FetchEncounterException(e);
-        }
-    }
-
     public Encounter getEncounterByUuid(String encounterUuid) throws IOException {
         return encounterService.getEncounterByUuid(encounterUuid);
     }
