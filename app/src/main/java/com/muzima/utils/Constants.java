@@ -14,6 +14,9 @@ import android.os.Environment;
 
 import com.muzima.BuildConfig;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //TODO: This class should be burnt and flushed. Constants in an anti-pattern and and a sure sign that your abstractions are wrong: Zabil
 //TODO: Burnt?? Maybe or may not be - Prasanna
 public class Constants {
@@ -502,5 +505,15 @@ public class Constants {
         public static class FormTemplateUuids {
             public static final String INDEX_CASE_PERSON_REGISTRATION_FORM = "92dd9024-b859-47ed-bf6b-05f35a27531e";
         }
+
+        public static final ArrayList FGH_INTERVENTIONS =  new ArrayList<String>(){{
+            add("4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
+            add("1bd47ba9-b6ff-4b4c-ba26-f5b86498d738");
+            add("9e928864-b7d2-445d-9856-cb7c9a0632dd");
+            add("46e6c352-bddb-4191-8d1e-40380aa1a346");
+            add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
+        }};
+
+        public static final String INDEX_CASE_FILTER_CONCEPT = "e3f3bcea-9e2f-4aec-976f-0290bdbfffb8";
     }
 }
