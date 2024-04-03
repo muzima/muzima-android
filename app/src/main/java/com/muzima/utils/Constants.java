@@ -14,11 +14,13 @@ import android.os.Environment;
 
 import com.muzima.BuildConfig;
 
+import java.util.ArrayList;
+import java.util.List;
+
 //TODO: This class should be burnt and flushed. Constants in an anti-pattern and and a sure sign that your abstractions are wrong: Zabil
 //TODO: Burnt?? Maybe or may not be - Prasanna
 public class Constants {
 
-    public static final String SYNC_PREF = "SyncMetaData";
     public static final String COHORT_PREFIX_PREF = "CohortPrefixPref";
     public static final String COHORT_PREFIX_PREF_KEY = "CohortPrefixPrefKey";
     public static final String FORM_TAG_PREF = "FormTagPref";
@@ -52,14 +54,11 @@ public class Constants {
 
     private static final String APP_EXTERNAL_DIR_ROOT = Environment.getExternalStorageDirectory().getPath() + "/muzima";
     private static final String APP_MEDIA_DIR = APP_EXTERNAL_DIR_ROOT + "/media";
-    public static final String APP_IMAGE_DIR = APP_MEDIA_DIR + "/image";
     public static final String APP_AUDIO_DIR = APP_MEDIA_DIR + "/audio";
     public static final String APP_VIDEO_DIR = APP_MEDIA_DIR + "/video";
-    public static final String TMP_FILE_PATH = APP_EXTERNAL_DIR_ROOT + "/.cache";
 
     public static final int PATIENT_LOAD_PAGE_SIZE = 10;
 
-    public static final String MINIMUM_SERVER_SIDE_MODULE_VERSION = "1.6.0";
 
     public static final String STANDARD_DATE_FORMAT = "dd-MM-yyyy";
     public static final String STANDARD_DATE_LOCALE_FORMAT = "dd-MM-yyyy HH:mm";
@@ -67,16 +66,8 @@ public class Constants {
     public static final String STANDARD_DATE_TIMEZONE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
     public static final String STANDARD_TIME_FORMAT = "HH:mm";
 
-
-    public static final class FORMS_LAUNCH_MODE {
-        public static final int INCOMPLETE_FORMS_VIEW = 0;
-        public static final int COMPLETE_FORMS_VIEW = 1;
-        public static final int ALL_FORMS_VIEW = 2;
-    }
-
     public static class MuzimaGPSLocationConstants {
         public static final int LOCATION_ACCESS_PERMISSION_REQUEST_CODE = 9111;
-        public static final int LOCATION_SERVICES_SWITCH_REQUEST_CODE = 9122;
     }
 
     public static class DataSyncServiceConstants {
@@ -104,7 +95,6 @@ public class Constants {
         public static final int SYNC_UPLOAD_FORMS = 8;
         public static final int DOWNLOAD_SELECTED_PATIENTS_FULL_DATA = 9;
         public static final int SYNC_REAL_TIME_UPLOAD_FORMS = 11;
-        public static final int SYNC_SHR = 12;
         public static final int SYNC_PATIENT_REPORTS_HEADERS = 13;
         public static final int SYNC_PATIENT_REPORTS = 14;
         public static final int SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA = 15;
@@ -148,23 +138,9 @@ public class Constants {
         }
 
         public static class MuzimaJobSchedulerConstants {
-            public static final String MUZIMA_JOB_SCHEDULE_INTENT = BuildConfig.APPLICATION_ID + " muzima scheduled job";
-            public static final String WORK_DURATION_KEY = "work duration";
             public static final int MESSAGE_SYNC_JOB_ID = 22;
-            public static final int MSG_INDICATOR_START = 18;
-            public static final int MSG_INDICATOR_STOP = 19;
-            public static final int MSG_COLOR_START = 20;
-            public static final int JOB_INDICATOR_STOP = 21;
             public static final long MUZIMA_JOB_PERIODIC = 15 * 60 * 1000;
         }
-    }
-
-    public static class NotificationStatusConstants {
-        public static final String NOTIFICATION_READ = "read";
-        public static final String NOTIFICATION_UNREAD = "unread";
-        public static final String RECEIVER_UUID = "receiverUuid";
-        public static final String NOTIFICATION_UPLOADED = "uploaded";
-        public static final String NOTIFICATION_NOT_UPLOADED = "notUploaded";
     }
 
     public static class SyncPatientReportsConstants {
@@ -190,8 +166,6 @@ public class Constants {
     public static class Shr {
 
         public static class KenyaEmr {
-
-            public static final String SMART_CARD_RECORD_TYPE = "KenyaEmrSHR";
 
             public static class DEFAULT_SHR_USER {
                 public static final String id = "SHR_user";
@@ -353,10 +327,6 @@ public class Constants {
                         }
                     }
 
-                    public static class ENCOUNTER {
-                        public static final String ENCOUNTER_TYPE_UUID = "9bc15e94-2794-11e8-b467-0ed5f89f718b";
-                    }
-
                     public static class FORM {
                         public static final String FORM_UUID = "9bc157d2-2794-11e8-b467-0ed5f89f718b";
                     }
@@ -481,10 +451,6 @@ public class Constants {
                         public static final int concept_id = 1418;
                     }
 
-                    static class ENCOUNTER {
-                        public static final String ENCOUNTER_TYPE_UUID = "9bc15e94-2794-11e8-b467-0ed5f89f718b";
-                    }
-
                     public static class FORM {
                         public static final String FORM_UUID = "9bc157d2-2794-11e8-b467-0ed5f89f718b";
                     }
@@ -498,16 +464,10 @@ public class Constants {
             }
         }
     }
-
     public static class ACTION_MODE_EVENT {
-        public static final int COHORTS_DOWNLOAD_ACTION = 1211;
         public static final int FORMS_DOWNLOAD_ACTION = 1221;
     }
 
-    public static class FORM_TYPE {
-        public static final String INCOMPLETE_FORMS_KEY = "incomplete_forms_key";
-        public static final String COMPLETE_FORMS_KEY = "complete_forms_key";
-    }
 
     public static class FORM_FILTERS {
         public static final int FORM_FILTER_STATUS = 1;
@@ -516,12 +476,6 @@ public class Constants {
     public static class FORM_SORT_STRATEGY {
         public static final int SORT_BY_NAME = 1;
         public static final int SORT_BY_STATUS = 0;
-    }
-
-    public static class OBSERVATIONS_FILTER_CATEGORY {
-        public static final int BY_TYPE = 1;
-        public static final int BY_ABSTRACT = 2;
-        public static final int BY_ENCOUNTER = 3;
     }
 
     public static final class COHORT_LIST_TYPE {
@@ -533,7 +487,6 @@ public class Constants {
     public static class FGH{
         public static class Concepts {
             public static final int HEALTHWORKER_ASSIGNMENT_CONCEPT_ID = 1912;
-            public static final int INDEX_CASE_TESTING_CONSENT_CONCEPT_ID = 21155;
         }
 
         public static class DerivedConcepts {
@@ -551,7 +504,16 @@ public class Constants {
 
         public static class FormTemplateUuids {
             public static final String INDEX_CASE_PERSON_REGISTRATION_FORM = "92dd9024-b859-47ed-bf6b-05f35a27531e";
-            public static final String INDEX_CASE_PERSON_DEMOGRAPHIC_UPDATE_FORM = "287cf6ec-d0e2-48b9-85df-775d960c3b06";
         }
+
+        public static final ArrayList FGH_INTERVENTIONS =  new ArrayList<String>(){{
+            add("4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
+            add("1bd47ba9-b6ff-4b4c-ba26-f5b86498d738");
+            add("9e928864-b7d2-445d-9856-cb7c9a0632dd");
+            add("46e6c352-bddb-4191-8d1e-40380aa1a346");
+            add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
+        }};
+
+        public static final String INDEX_CASE_FILTER_CONCEPT = "e3f3bcea-9e2f-4aec-976f-0290bdbfffb8";
     }
 }

@@ -92,7 +92,6 @@ import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_REA
 public class PatientsSearchActivity extends BroadcastListenerActivity implements PatientAdapterHelper.PatientListClickListener,
         RecyclerAdapter.BackgroundListQueryTaskListener {
     private static final int RC_BARCODE_CAPTURE = 9001;
-    private static final String TAG = "PatientsSearchActivity";
     public static final String COHORT_ID = "cohortId";
     public static final String COHORT_NAME = "cohortName";
     public static final String SEARCH_STRING = "searchString";
@@ -108,7 +107,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private PatientController patientController;
     private MuzimaApplication muzimaApplication;
     private SmartCardController smartCardController;
-    private SmartCardRecordService smartCardService;
     private SmartCardRecord smartCardRecord;
     private MuzimaSyncService muzimaSyncService;
 
@@ -127,9 +125,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private ProgressDialog serverSearchProgressDialog;
     private ProgressDialog patientRegistrationProgressDialog;
 
-    private static final boolean DEFAULT_SHR_STATUS = false;
-    private boolean isSHREnabled;
-    private boolean searchViewClosed;
     private DrawerLayout mainLayout;
     private PatientTagsListAdapter tagsListAdapter;
     private TagPreferenceService tagPreferenceService;
@@ -539,12 +534,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         finish();
     }
 
-    private void launchCompleteFormsActivity() {
-        Intent intent = new Intent(getApplicationContext(), FormsWithDataActivity.class);
-        intent.putExtra(FormsWithDataActivity.KEY_FORMS_TAB_TO_OPEN, 3);
-        startActivity(intent);
-    }
-
     private void hideDialog() {
         if (negativeServerSearchResultNotifyAlertDialog.isShowing())
             negativeServerSearchResultNotifyAlertDialog.cancel();
@@ -620,13 +609,11 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
             MuzimaApplication muzimaApplication = (MuzimaApplication) getApplication();
             Patient patient = null;
             PatientController patientController = muzimaApplication.getPatientController();
-            CohortController cohortController = muzimaApplication.getCohortController();
             List<Patient> localSearchResultPatients = new ArrayList<>();
             try {
                 //for (Cohort cohort : cohortController.getSyncedCohorts()) {
                 localSearchResultPatients = patientController.searchPatientLocally(searchTerm, null);
                 for (Patient searchResultPatient : localSearchResultPatients) {
-                    PatientIdentifier identifier = searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name);
                     if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier()
                             .equals(SHRPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier())) {
                         foundPatient = searchResultPatient;
@@ -832,7 +819,6 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         };
         mainLayout.setDrawerListener(actionbarDrawerToggle);
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
     }
 
     private void initSelectedTags() {

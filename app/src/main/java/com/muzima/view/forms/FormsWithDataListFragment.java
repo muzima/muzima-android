@@ -137,10 +137,5 @@ public abstract class FormsWithDataListFragment extends FormsListFragment{
             ((FormsWithDataAdapter) listAdapter).clearSelectedFormsUuid();
             unselectAllItems(list);
         }
-
-        public void reloadList() {
-            reloadData();
-            listAdapter.notifyDataSetChanged();
-        }
     }
 }

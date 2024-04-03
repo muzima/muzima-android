@@ -24,13 +24,4 @@ public class SntpService {
         return new Date(nowAsPerDeviceTimeZone);
     }
 
-    public Date getTimePerDeviceTimeZone(int timeout) {
-        long nowAsPerDeviceTimeZone = 0;
-        SntpClient sntpClient = new SntpClient();
-
-        if (sntpClient.requestTime("0.africa.pool.ntp.org", timeout)) {
-            nowAsPerDeviceTimeZone = sntpClient.getNtpTime();
-        }
-        return new Date(nowAsPerDeviceTimeZone);
-    }
 }

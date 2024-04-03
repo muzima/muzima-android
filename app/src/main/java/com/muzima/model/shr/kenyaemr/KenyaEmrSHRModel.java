@@ -39,23 +39,6 @@ public class KenyaEmrSHRModel {
     @JsonIgnore
     private final Map<String, Object> additionalProperties = new HashMap<>();
 
-    public static final String newShrModelTemplate =
-            "{  \"CARD_DETAILS\": {}," +
-                "\"HIV_TEST\": []," +
-                "\"IMMUNIZATION\": []," +
-                 "\"NEXT_OF_KIN\": []," +
-                "\"PATIENT_IDENTIFICATION\": {" +
-                    "\"EXTERNAL_PATIENT_ID\": {}," +
-                    "\"INTERNAL_PATIENT_ID\": []," +
-                    "\"MOTHER_DETAILS\": {" +
-                        "\"MOTHER_IDENTIFIER\": []," +
-                        "\"MOTHER_NAME\": {}" +
-                    "}," +
-                    "\"PATIENT_ADDRESS\": {}" +
-                "}," +
-                "\"VERSION\": \"1.0.0\"" +
-            "}";
-
     /**
      * No args constructor for use in serialization
      *

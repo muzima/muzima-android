@@ -190,7 +190,6 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
             TextView providerDetailsHeader;
             TextView conceptDetailsHeader;
             TextView observationDetailsHeader;
-            RelativeLayout providerDetails;
 
             LayoutInflater layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             AlertDialog.Builder addIndividualObservationsDialogBuilder =

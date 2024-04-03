@@ -107,14 +107,6 @@ public class DateUtils {
         return simpleDateFormat.format(calendar.getTime());
     }
 
-    public static String convertDateToHumanReadableString(Date date) {
-        if (date == null) return "Invalid";
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(HUMAN_READABLE_SIMPLE_DATE_FORMAT, Locale.getDefault());
-        return simpleDateFormat.format(calendar.getTime());
-    }
-
     public static String convertDateToDayMonthYearString(Date date) {
         if (date == null) return "Invalid";
         Calendar calendar = Calendar.getInstance();

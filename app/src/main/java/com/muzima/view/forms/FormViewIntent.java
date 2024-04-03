@@ -23,8 +23,6 @@ public class FormViewIntent extends Intent {
 
     public static final String FORM_COMPLETION_STATUS_INTENT = "form completion status";
     public static final String FORM_COMPLETION_STATUS_RECOMMENDED = "recommended form";
-    public static final String FORM_COMPLETION_STATUS_INCOMPLETE = "incomplete form";
-    public static final String FORM_COMPLETION_STATUS_COMPLETE = "complete form";
 
     public FormViewIntent(Activity activity, FormWithData form) {
         this(activity, form, form.getPatient(), false);

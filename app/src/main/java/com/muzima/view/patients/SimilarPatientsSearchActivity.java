@@ -33,7 +33,6 @@ public class SimilarPatientsSearchActivity extends BroadcastListenerActivity imp
     private DrawerLayout mainLayout;
     private final LanguageUtil languageUtil = new LanguageUtil();
     private Patient patient;
-    private List<Patient> similarPatients;
     private SimilarPatientsLocalSearchAdapter patientAdapter;
 
     private RecyclerView recyclerView;
@@ -47,7 +46,6 @@ public class SimilarPatientsSearchActivity extends BroadcastListenerActivity imp
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_registration_search, null);
         setContentView(mainLayout);
-        Bundle intentExtras = getIntent().getExtras();
 
         setTitle(getString(R.string.title_found_similar_people));
         setupListView();

@@ -31,11 +31,6 @@ public class StringUtils {
         return commaSeparated.substring(0, commaSeparated.length() - 1);
     }
 
-    public static List<String> getListFromCommaSeparatedString(String value){
-        String[] values = split(value, ",");
-        return Arrays.asList(values);
-    }
-
     public static boolean isEmpty(String string) {
         return (string == null || string.trim().length() == 0);
     }

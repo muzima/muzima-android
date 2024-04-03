@@ -69,37 +69,6 @@ public class MediaUtils {
         return BitmapFactory.decodeFile(f.getAbsolutePath(), options);
 	}
 
-	/**
-	 * Converts Bitmap picture to a string which can be JSONified.
-	 * 
-	 * @param bitmapPicture
-	 * @return
-	 */
-	public static String getStringFromBitmap(Bitmap bitmapPicture) {
-		if (bitmapPicture != null ){
-			final int COMPRESSION_QUALITY = 80;
-			String encodedImage;
-			ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-			bitmapPicture.compress(Bitmap.CompressFormat.JPEG, COMPRESSION_QUALITY,
-					byteArrayBitmapStream);
-			byte[] b = byteArrayBitmapStream.toByteArray();
-			encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-			return encodedImage;
-		}
-		return null;
-	}
-	
-	/**
-	 * Convert an @Base64 stringified image back to a bitmap
-	 * @param jsonString
-	 * @return
-	 */
-	public Bitmap getBitmapFromString(String jsonString) {
-		byte[] decodedString = Base64.decode(jsonString, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0,
-                decodedString.length);
-	}
-
     public static void copyFile(File sourceFile, File destFile) {
         if (sourceFile.exists()) {
             FileChannel src;
@@ -116,29 +85,6 @@ public class MediaUtils {
             }
         } else
             Log.e("Media Utils", "Source file does not exist: " + sourceFile.getAbsolutePath());
-    }
-
-    public static void deleteImage(Context context, String imageUri) {
-        // get the file path and delete the file
-
-        String[] projection = {MediaStore.Images.ImageColumns._ID};
-
-        Cursor c = context.getContentResolver().query(
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,
-                        "_data='" + imageUri + "'", null, null);
-        int del = 0;
-        if (c.getCount() > 0) {
-            c.moveToFirst();
-            String id = c.getString(c.getColumnIndex(MediaStore.Images.ImageColumns._ID));
-
-            Log.i("Media Utils","attempting to delete: " + Uri.withAppendedPath(
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id));
-            del = context.getContentResolver().delete(Uri.withAppendedPath(
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id), null, null);
-        }
-        c.close();
-
-        Log.i("Media Utils", "Deleted " + del + " rows from media content provider");
     }
 
     public static int deleteVideoFileFromMediaProvider(Context context, String videoFile) {

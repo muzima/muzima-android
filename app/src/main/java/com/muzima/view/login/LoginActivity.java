@@ -481,7 +481,7 @@ public class LoginActivity extends BaseActivity {
             if (loginButton.getVisibility() == View.VISIBLE) {
                 flipFromLoginToAuthAnimator.start();
             }
-            boolean isTaskRunning = true;
+            isTaskRunning = true;
         }
 
         @Override
@@ -524,11 +524,11 @@ public class LoginActivity extends BaseActivity {
                     MuzimaJobScheduleBuilder muzimaJobScheduleBuilder = new MuzimaJobScheduleBuilder(getApplicationContext());
                     //delay for 10 seconds to allow next UI activity to finish loading
                     muzimaJobScheduleBuilder.schedulePeriodicBackgroundJob(10000, false);
-                    boolean isTaskRunning = false;
+                    isTaskRunning = false;
                     checkMuzimaCoreModuleCompatibility(result);
                 }
             } else {
-                boolean isTaskRunning = false;
+                isTaskRunning = false;
                 MuzimaLoggerService.log((MuzimaApplication)getApplicationContext(),"LOGIN_FAILURE",
                         result.credentials.getUserName(),MuzimaLoggerService.getAndParseGPSLocationForLogging((MuzimaApplication)getApplicationContext()),"{}");
                 Toast.makeText(getApplicationContext(), getErrorText(result), Toast.LENGTH_SHORT).show();
@@ -769,11 +769,8 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initAnimators() {
-        ValueAnimator flipFromLoginToNoConnAnimator = ValueAnimator.ofFloat(0, 1);
-        ValueAnimator flipFromNoConnToLoginAnimator = ValueAnimator.ofFloat(0, 1);
         flipFromLoginToAuthAnimator = ValueAnimator.ofFloat(0, 1);
         flipFromAuthToLoginAnimator = ValueAnimator.ofFloat(0, 1);
-        ValueAnimator flipFromAuthToNoConnAnimator = ValueAnimator.ofFloat(0, 1);
 
         initFlipAnimation(flipFromLoginToAuthAnimator, loginButton, authenticatingText);
         initFlipAnimation(flipFromAuthToLoginAnimator, authenticatingText, loginButton);

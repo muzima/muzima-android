@@ -48,21 +48,6 @@ public class InternalPatientId {
     public InternalPatientId() {
     }
 
-    /**
-     *
-     * @param assigningAuthority
-     * @param identifierType
-     * @param id
-     * @param assigningFacility
-     */
-    public InternalPatientId(String id, String identifierType, String assigningAuthority, String assigningFacility) {
-        super();
-        this.id = id;
-        this.identifierType = identifierType;
-        this.assigningAuthority = assigningAuthority;
-        this.assigningFacility = assigningFacility;
-    }
-
     @JsonProperty("ID")
     public String getID() {
         return id;

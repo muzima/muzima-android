@@ -98,14 +98,6 @@ public class MediaCategoryController {
         }
     }
 
-    public void updateMediaCategory(MediaCategory mediaCategory) throws MediaCategoryController.MediaCategorySaveException {
-        try {
-            mediaCategoryService.updateMediaCategory(mediaCategory);
-        } catch (IOException e) {
-            throw new MediaCategoryController.MediaCategorySaveException(e);
-        }
-    }
-
     public void updateMediaCategory(List<MediaCategory> mediaCategory) throws MediaCategoryController.MediaCategorySaveException {
         try {
             mediaCategoryService.updateMediaCategory(mediaCategory);
@@ -129,13 +121,6 @@ public class MediaCategoryController {
             throw new MediaCategoryController.MediaCategorySaveException(e);
         }
     }
-
-    private final Comparator<MediaCategory> mediaCategoryOrderComparator = new Comparator<MediaCategory>() {
-        @Override
-        public int compare(MediaCategory lhs, MediaCategory rhs) {
-            return lhs.getOrder()-rhs.getOrder();
-        }
-    };
 
     public static class MediaCategoryFetchException extends Throwable {
         MediaCategoryFetchException(Throwable throwable) {
