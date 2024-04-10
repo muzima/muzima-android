@@ -10,6 +10,9 @@
 
 package com.muzima.adapters.patients;
 
+
+import static com.muzima.utils.Constants.PATIENT_LOAD_PAGE_SIZE;
+
 import android.content.Context;
 import android.util.Log;
 import com.muzima.api.model.Patient;
@@ -104,6 +107,10 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         return totalPageCount == nextPageToLoad-1;
     }
 
+    public boolean hasLessItemsThanMaxSizeForLoadedPages(){
+        return getItemCount() < PATIENT_LOAD_PAGE_SIZE * nextPageToLoad;
+    }
+
     public boolean isLoading(){
         return isLoading;
     }
@@ -177,7 +184,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
             }
 
             try {
-                int pageSize = Constants.PATIENT_LOAD_PAGE_SIZE;
+                int pageSize = PATIENT_LOAD_PAGE_SIZE;
                 if (!cohortUuids.isEmpty()) {
                     if(!isSubsequentLazyFetchQuery) {
                         totalPageCountMap.clear();

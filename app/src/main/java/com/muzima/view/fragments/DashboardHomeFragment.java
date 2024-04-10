@@ -793,7 +793,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
     @Override
     public void onQueryTaskFinish() {
-        if(patientSearchAdapter.isEmpty() && !patientSearchAdapter.isLastPage()
+        if(patientSearchAdapter.hasLessItemsThanMaxSizeForLoadedPages() && !patientSearchAdapter.isLastPage()
                 && ((MuzimaApplication) mActivity.getApplicationContext()).getPatientController().getSelectedTagUuids().size()>0){
             patientSearchAdapter.loadNextPage();
         } else {
