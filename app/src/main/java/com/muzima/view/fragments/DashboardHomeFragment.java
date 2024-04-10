@@ -192,7 +192,6 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                 int visibleItemCount = layoutManager.getChildCount();
                 int totalItemCount = layoutManager.getItemCount();
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-
                 if (!patientSearchAdapter.isLoading() && !patientSearchAdapter.isLastPage()) {
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                             && firstVisibleItemPosition >= 0
@@ -799,13 +798,18 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
     @Override
     public void onQueryTaskFinish() {
-        filterProgressBar.setVisibility(View.GONE);
-        if(patientSearchAdapter.isEmpty()) {
-            noDataView.setVisibility(VISIBLE);
-            recyclerView.setVisibility(View.GONE);
+        if(patientSearchAdapter.isEmpty() && !patientSearchAdapter.isLastPage()
+                && ((MuzimaApplication) mActivity.getApplicationContext()).getPatientController().getSelectedTagUuids().size()>0){
+            patientSearchAdapter.loadNextPage();
         } else {
-            recyclerView.setVisibility(VISIBLE);
-            noDataView.setVisibility(View.GONE);
+            filterProgressBar.setVisibility(View.GONE);
+            if (patientSearchAdapter.isEmpty()) {
+                noDataView.setVisibility(VISIBLE);
+                recyclerView.setVisibility(View.GONE);
+            } else {
+                recyclerView.setVisibility(VISIBLE);
+                noDataView.setVisibility(View.GONE);
+            }
         }
     }
 
