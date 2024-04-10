@@ -792,4 +792,5 @@
     <string name="general_female">Femelle</string>
     <string name="general_more">Plus</string>
     <string name="general_less">Moins</string>
+    <string name="general_not_all_contacts_visited">Tous les contacts n\'ont pas été visités</string>
 </resources>

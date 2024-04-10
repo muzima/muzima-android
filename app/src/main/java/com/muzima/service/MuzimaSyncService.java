@@ -115,6 +115,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.FGH.DerivedConcepts.CONTACTS_TESTED_DERIVED_CONCEPT_ID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.NAO_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.NOT_ALL_CONTACTS_VISITED_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.SIM_TAG_UUID;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
@@ -1406,6 +1407,7 @@ public class MuzimaSyncService {
                     boolean hasAwaitingAssignmentTag = false;
                     boolean hasAllContactsVisitedTag = false;
                     boolean hasHomeVisitTags = false;
+                    boolean hasNotAllContactsVisitedTag = false;
                     int homeVisitTagCount = 0;
                     for (PatientTag tag : patient.getTags()) {
                         if (StringUtils.equals(tag.getUuid(), HAS_SEXUAL_PARTNER_TAG_UUID)) {
@@ -1420,6 +1422,8 @@ public class MuzimaSyncService {
                         } else if(StringUtils.equals(tag.getUuid(), SIM_TAG_UUID) || StringUtils.equals(tag.getUuid(), NAO_TAG_UUID)){
                             hasHomeVisitTags = true;
                             homeVisitTagCount++;
+                        }else if(StringUtils.equals(tag.getUuid(), NOT_ALL_CONTACTS_VISITED_TAG_UUID)){
+                            hasNotAllContactsVisitedTag = true;
                         }
                     }
 
@@ -1591,12 +1595,33 @@ public class MuzimaSyncService {
                             }
 
                             if (contactsVisited >= relatedPersons.size() && relatedPersons.size()>0) {
+                                //Remove NV patient tag to be replaced by the V tag
+                                PatientTag NVTag = null;
+                                for (PatientTag patientTag : tags) {
+                                    if (patientTag.getName().equals("NV")) {
+                                        NVTag = patientTag;
+                                    }
+                                }
+
+                                if (NVTag != null) {
+                                    tags.remove(NVTag);
+                                }
+
+                                //Add V tag
                                 PatientTag allContactsVisitedTag = new PatientTag();
                                 allContactsVisitedTag.setName("V");
                                 allContactsVisitedTag.setDescription(muzimaApplication.getString(R.string.general_all_contacts_visited));
                                 allContactsVisitedTag.setUuid(ALL_CONTACTS_VISITED_TAG_UUID);
                                 tags.add(allContactsVisitedTag);
+
                                 patientController.savePatientTags(allContactsVisitedTag);
+                            }else if(relatedPersons.size()>0 && !hasAllContactsVisitedTag && !hasNotAllContactsVisitedTag){
+                                PatientTag notAllContactsVisitedTag = new PatientTag();
+                                notAllContactsVisitedTag.setName("NV");
+                                notAllContactsVisitedTag.setDescription(muzimaApplication.getString(R.string.general_not_all_contacts_visited));
+                                notAllContactsVisitedTag.setUuid(NOT_ALL_CONTACTS_VISITED_TAG_UUID);
+                                tags.add(notAllContactsVisitedTag);
+                                patientController.savePatientTags(notAllContactsVisitedTag);
                             }
                         }
                     }

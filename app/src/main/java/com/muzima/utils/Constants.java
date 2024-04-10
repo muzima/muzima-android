@@ -498,6 +498,7 @@ public class Constants {
             public static final String ALREADY_ASSIGNED_TAG_UUID = "e7e26b4e-b3fd-11eb-8374-d0577bb73cd4";
             public static final String AWAITING_ASSIGNMENT_TAG_UUID = "d334310f-5f04-4ecb-a09f-79ca7fc3dcbb";
             public static final String ALL_CONTACTS_VISITED_TAG_UUID = "7cff5cc9-e17e-4614-8294-c0c67c8085a6";
+            public static final String NOT_ALL_CONTACTS_VISITED_TAG_UUID = "c40726c4-f702-11ee-8f83-197e9acf860e";
             public static final String SIM_TAG_UUID = "32809438-e45b-11e9-b737-c8d3ffd477a6f";
             public static final String NAO_TAG_UUID = "d7ae6ff6-0531-11ea-a2b4-c8d3ffd477a6";
         }
