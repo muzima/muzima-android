@@ -14,6 +14,7 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +25,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -215,6 +215,11 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     }
 
     private void loadCohorts(final boolean showFilter) {
+        Dialog progressDialog = new ProgressDialog(this, android.R.style.Theme_Panel);
+        if (showFilter) {
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
         selectedCohortFilters.clear();
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
                 .execute(new LoadDownloadedCohortsTask(getApplicationContext(), new LoadDownloadedCohortsTask.OnDownloadedCohortsLoadedCallback() {
@@ -246,9 +251,10 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                                     cohortList.add(new CohortFilter(cohortWithFilter, isCohortSelected));
                                 }
                                 cohortFilterAdapter.notifyDataSetChanged();
-                                if (showFilter)
+                                if (showFilter) {
                                     cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
+                                    progressDialog.dismiss();
+                                }
                             }
                         });
                     }

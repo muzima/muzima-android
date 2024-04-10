@@ -784,4 +784,5 @@
     <string name="general_female">સ્ત્રી</string>
     <string name="general_more">વધુ</string>
     <string name="general_less">ઓછા</string>
+    <string name="general_not_all_contacts_visited">બધા સંપર્કોની મુલાકાત લીધી નથી</string>
 </resources>

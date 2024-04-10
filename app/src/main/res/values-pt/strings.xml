@@ -791,4 +791,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_female">Fêmea</string>
     <string name="general_more">Mais</string>
     <string name="general_less">Menos</string>
+    <string name="general_not_all_contacts_visited">Nem todos os contatos visitados</string>
 </resources>
