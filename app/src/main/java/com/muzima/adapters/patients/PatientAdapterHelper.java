@@ -494,9 +494,9 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
             }
 
         } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Could not fetch settings", e);
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Error processing settings", e);
         }
     }
 
