@@ -481,31 +481,43 @@ public class HTCFormActivity extends AppCompatActivity {
             bookPageNumber.setText(htcForm.getBookPageNumber()+"");
             bookPageLine.setText(htcForm.getBookPageLineNumber()+"");
             testingDate.setText(DateUtils.convertDateToDayMonthYearString(htcForm.getTestingDate()));
-            int countTestingSectors = testingSectors.getAdapter().getCount();
-            for(int i=0; i< countTestingSectors; i++) {
-                if(testingSectors.getAdapter().getItem(i).toString().equalsIgnoreCase(htcForm.getTestingSector())){
-                    testingSectors.setSelection(i);
-                    break;
+
+            if (StringUtils.stringHasValue(htcForm.getTestingSector())) {
+                int countTestingSectors = testingSectors.getAdapter().getCount();
+                for (int i = 0; i < countTestingSectors; i++) {
+                    if (testingSectors.getAdapter().getItem(i).toString().equalsIgnoreCase(htcForm.getTestingSector())) {
+                        testingSectors.setSelection(i);
+                        break;
+                    }
                 }
             }
-            int countPopKeyMiners = popKeysMiners.getAdapter().getCount();
-            for(int i=0; i< countPopKeyMiners; i++) {
-                if(popKeysMiners.getAdapter().getItem(i).toString().equalsIgnoreCase(htcForm.getPopKeysMiners())){
-                    popKeysMiners.setSelection(i);
-                    break;
+
+            if (StringUtils.stringHasValue(htcForm.getPopKeysMiners())) {
+                int countPopKeyMiners = popKeysMiners.getAdapter().getCount();
+                for (int i = 0; i < countPopKeyMiners; i++) {
+                    if (popKeysMiners.getAdapter().getItem(i).toString().equalsIgnoreCase(htcForm.getPopKeysMiners())) {
+                        popKeysMiners.setSelection(i);
+                        break;
+                    }
                 }
             }
-            int countIndexCaseContacts = indexCaseContacts.getAdapter().getCount();
-            for(int i=0; i< countIndexCaseContacts; i++) {
-                if(indexCaseContacts.getAdapter().getItem(i).toString().equalsIgnoreCase(htcForm.getIndexCaseContact())){
-                    indexCaseContacts.setSelection(i);
-                    break;
+
+            if (StringUtils.stringHasValue(htcForm.getIndexCaseContact())) {
+                int countIndexCaseContacts = indexCaseContacts.getAdapter().getCount();
+                for (int i = 0; i < countIndexCaseContacts; i++) {
+                    if (indexCaseContacts.getAdapter().getItem(i).toString().equalsIgnoreCase(htcForm.getIndexCaseContact())) {
+                        indexCaseContacts.setSelection(i);
+                        break;
+                    }
                 }
             }
-            if(htcForm.getTestHistory().equalsIgnoreCase("FIRST_TEST")) {
-                firstTimeTestedOption.setChecked(true);
-            } else if(htcForm.getTestHistory().equalsIgnoreCase("PAST_POSITIVE")) {
-                pastPositiveOption.setChecked(true);
+
+            if (StringUtils.stringHasValue(htcForm.getTestHistory())) {
+                if (htcForm.getTestHistory().equalsIgnoreCase("FIRST_TEST")) {
+                    firstTimeTestedOption.setChecked(true);
+                } else if (htcForm.getTestHistory().equalsIgnoreCase("PAST_POSITIVE")) {
+                    pastPositiveOption.setChecked(true);
+                }
             }
             selfTestConfirmation.setChecked(htcForm.isSelfTestConfirmation());
             healthFacility.setText(htcForm.getTestingLocation().getName());

@@ -92,11 +92,13 @@ public class SearchSESPPersonActivity extends BaseActivity {
 
         String searchValue = (String) getIntent().getSerializableExtra("searchValue");
         if(!StringUtils.isEmpty(searchValue)) {
+            noSearchResultTv.setVisibility(View.GONE);
             new ServerHTCPersonSearchBackgroundTask().execute(searchValue);
         }
 
         editTextSearch.setText(searchValue);
         searchButton.setOnClickListener(view -> {
+            noSearchResultTv.setVisibility(View.GONE);
             new ServerHTCPersonSearchBackgroundTask().execute(editTextSearch.getText().toString());
         });
     }
