@@ -22,7 +22,6 @@ import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
@@ -69,6 +68,7 @@ import static com.muzima.util.Constants.ServerSettings.HISTORICAL_DATA_TAB_ENABL
 import static com.muzima.util.Constants.ServerSettings.OBS_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
 import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
+import static com.muzima.util.Constants.ServerSettings.PATIENT_REGISTRATION_BUTTON_ACTION_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_REGISTRATION_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
 import static com.muzima.util.Constants.ServerSettings.NOTIFICATION_FEATURE_ENABLED_SETTING;
@@ -110,18 +110,6 @@ public class MuzimaSettingController {
             }
             return settingService.getSettingByProperty(property);
         } catch (IOException | ArrayIndexOutOfBoundsException | ParseException | ConcurrentModificationException e) { //Fails with ArrayIndexOutOfBoundsException onCall #getSettingByProperty
-            throw new MuzimaSettingFetchException(e);
-        }
-    }
-
-    public MuzimaSetting getSettingByUuid(String uuid) throws MuzimaSettingFetchException {
-        try {
-            MuzimaSetting configLevelSetting = getSetupConfigurationSettingByKey("uuid", uuid);
-            if(configLevelSetting != null){
-                return configLevelSetting;
-            }
-            return settingService.getSettingByUuid(uuid);
-        } catch (IOException e) {
             throw new MuzimaSettingFetchException(e);
         }
     }
@@ -201,22 +189,6 @@ public class MuzimaSettingController {
         return muzimaSetting;
     }
 
-    public void saveSetting(MuzimaSetting setting) throws MuzimaSettingSaveException {
-        try {
-            settingService.saveSetting(setting);
-        } catch (IOException | NullPointerException e) {
-            throw new MuzimaSettingSaveException(e);
-        }
-    }
-
-    public void updateSetting(MuzimaSetting setting) throws MuzimaSettingSaveException {
-        try {
-            settingService.updateSetting(setting);
-        } catch (IOException e) {
-            throw new MuzimaSettingSaveException(e);
-        }
-    }
-
     public void saveOrUpdateSetting(List<MuzimaSetting> settings) throws MuzimaSettingSaveException {
         for(MuzimaSetting setting: settings){
             saveOrUpdateSetting(setting);
@@ -225,10 +197,12 @@ public class MuzimaSettingController {
 
     public void saveOrUpdateSetting(MuzimaSetting setting) throws MuzimaSettingSaveException {
         try {
-            if (settingService.getSettingByProperty(setting.getProperty()) != null) {
+            MuzimaSetting preExistingSetting = settingService.getSettingByProperty(setting.getProperty());
+            if (preExistingSetting != null) {
                 settingService.updateSetting(setting);
-                if(setting.getProperty().equals(ONLINE_ONLY_MODE_ENABLED_SETTING)){
-                    updateTheme();
+                if(setting.getProperty().equals(ONLINE_ONLY_MODE_ENABLED_SETTING) &&
+                preExistingSetting.getValueBoolean() != setting.getValueBoolean()){
+                    toggleTheme();
                     if(!setting.getValueBoolean()) {
                         ActivityManager am = (ActivityManager) muzimaApplication.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
                         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
@@ -261,7 +235,7 @@ public class MuzimaSettingController {
         }
     }
 
-    public void updateTheme(){
+    public void toggleTheme(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
         String lightModeKey = muzimaApplication.getApplicationContext().getResources().getString(R.string.preference_light_mode);
         boolean isLightThemeEnabled = preferences.getBoolean(lightModeKey, false);
@@ -282,14 +256,6 @@ public class MuzimaSettingController {
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_SETTINGS, sntpService.getTimePerDeviceTimeZone());
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
             return muzimaSettings;
-        } catch (IOException e) {
-            throw new MuzimaSettingDownloadException(e);
-        }
-    }
-
-    public MuzimaSetting downloadSettingByUuid(String uuid) throws MuzimaSettingDownloadException {
-        try {
-            return settingService.downloadSettingByUuid(uuid);
         } catch (IOException e) {
             throw new MuzimaSettingDownloadException(e);
         }
@@ -585,6 +551,19 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "Patient registration setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Patient registration setting is missing on this server");
+        }
+        return true;
+    }
+
+    public Boolean isPatientSearchBeforeRegistrationEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(PATIENT_REGISTRATION_BUTTON_ACTION_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Patient registration Button action setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Patient registration Button action setting is missing on this server");
         }
         return true;
     }

@@ -94,14 +94,6 @@ public class ObservationController {
         }
     }
 
-    public List<Observation> getObservationsByEncounterType(int encounterTypeId,String patientUuid) throws LoadObservationException {
-        try{
-            return observationService.getObservationsByEncounterType(encounterTypeId,patientUuid);
-        } catch (IOException e){
-            throw new LoadObservationException(e);
-        }
-    }
-
     public int getObservationsCountByPatient(String patientUuid) throws IOException {
         return observationService.countObservationsByPatient(patientUuid);
     }
@@ -168,14 +160,6 @@ public class ObservationController {
         }
     }
 
-    public Concepts searchObservationsGroupedByConcepts(String term, String patientUuid) throws LoadObservationException {
-        try {
-            return groupByConcepts(observationService.searchObservations(patientUuid, term));
-        } catch (IOException e) {
-            throw new LoadObservationException(e);
-        }
-    }
-
     private Concepts groupByConcepts(List<Observation> observations) throws IOException {
         inflateConcepts(observations);
         return new Concepts(observations);
@@ -184,14 +168,6 @@ public class ObservationController {
     public Encounters getEncountersWithObservations(String patientUuid) throws LoadObservationException {
         try {
             return groupByEncounters(observationService.getObservationsByPatient(patientUuid));
-        } catch (IOException e) {
-            throw new LoadObservationException(e);
-        }
-    }
-
-    public Encounters getObservationsByEncounterUuid(String encounterUuid) throws LoadObservationException {
-        try {
-            return groupByEncounters(observationService.getObservationsByEncounter(encounterUuid));
         } catch (IOException e) {
             throw new LoadObservationException(e);
         }
@@ -223,14 +199,6 @@ public class ObservationController {
         return new Encounters(observationsByPatient);
     }
 
-    public Encounters searchObservationsGroupedByEncounter(String term, String patientUuid) throws LoadObservationException {
-        try {
-            return groupByEncounters(observationService.searchObservations(patientUuid, term));
-        } catch (IOException e) {
-            throw new LoadObservationException(e);
-        }
-    }
-
     public List<Observation> downloadObservationsByPatientUuidsAndConceptUuids(List<String> patientUuids, List<String> conceptUuids,String activeSetupConfigUuid) throws DownloadObservationException {
         try {
             String paramSignature = buildParamSignature(patientUuids, conceptUuids);
@@ -239,28 +207,7 @@ public class ObservationController {
             if (hasExactCallBeenMadeBefore(lastSyncTime)) {
                 observations.addAll(observationService.downloadObservationsAndSetupConfig(patientUuids, conceptUuids, lastSyncTime, activeSetupConfigUuid));
             } else {
-
-                LastSyncTime fullLastSyncTimeInfo = lastSyncTimeService.getFullLastSyncTimeInfoFor(DOWNLOAD_OBSERVATIONS);
-                if (isFirstCallToDownloadObservationsEver(fullLastSyncTimeInfo)) {
-                    observations.addAll(observationService.downloadObservationsAndSetupConfig(patientUuids, conceptUuids, null, activeSetupConfigUuid));
-                } else {
-                    String[] parameterSplit = fullLastSyncTimeInfo.getParamSignature().split(UUID_TYPE_SEPARATOR, -1);
-                    List<String> knownPatientsUuid = asList(parameterSplit[0].split(UUID_SEPARATOR));
-                    List<String> newPatientsUuids = getNewUuids(patientUuids, knownPatientsUuid);
-                    List<String> knownConceptsUuid = asList(parameterSplit[1].split(UUID_SEPARATOR));
-                    List<String> newConceptsUuids = getNewUuids(conceptUuids, knownConceptsUuid);
-                    List<String> allConceptsUuids = getAllUuids(knownConceptsUuid, newConceptsUuids);
-                    List<String> allPatientsUuids = getAllUuids(knownPatientsUuid, newPatientsUuids);
-                    paramSignature = buildParamSignature(allPatientsUuids, allConceptsUuids);
-                    if(newPatientsUuids.size()!=0) {
-                        observations = observationService.downloadObservationsAndSetupConfig(newPatientsUuids, allConceptsUuids, null, activeSetupConfigUuid);
-                        observations.addAll(observationService.downloadObservationsAndSetupConfig(knownPatientsUuid, newConceptsUuids, null, activeSetupConfigUuid));
-                        observations.addAll(observationService.downloadObservationsAndSetupConfig(knownPatientsUuid, knownConceptsUuid, fullLastSyncTimeInfo.getLastSyncDate(), activeSetupConfigUuid));
-                    }
-                    else{
-                        observations.addAll(observationService.downloadObservationsAndSetupConfig(patientUuids, conceptUuids, fullLastSyncTimeInfo.getLastSyncDate(),activeSetupConfigUuid));
-                    }
-                }
+                observations.addAll(observationService.downloadObservationsAndSetupConfig(patientUuids, conceptUuids, null, activeSetupConfigUuid));
             }
             LastSyncTime newLastSyncTime = new LastSyncTime(DOWNLOAD_OBSERVATIONS, sntpService.getTimePerDeviceTimeZone(), paramSignature);
             lastSyncTimeService.saveLastSyncTime(newLastSyncTime);
@@ -279,24 +226,6 @@ public class ObservationController {
         }
 
         return observations;
-    }
-
-    private ArrayList<String> getAllUuids(List<String> knownUuids, List<String> newUuids) {
-        HashSet<String> allUuids = new HashSet<>(knownUuids);
-        allUuids.addAll(newUuids);
-        ArrayList<String> sortedUuids = new ArrayList<>(allUuids);
-        Collections.sort(sortedUuids);
-        return sortedUuids;
-    }
-
-    private List<String> getNewUuids(List<String> patientUuids, List<String> knownPatientsUuid) {
-        List<String> newPatientsUuids = new ArrayList<>(patientUuids);
-        newPatientsUuids.removeAll(knownPatientsUuid);
-        return newPatientsUuids;
-    }
-
-    private boolean isFirstCallToDownloadObservationsEver(LastSyncTime fullLastSyncTimeInfo) {
-        return fullLastSyncTimeInfo == null;
     }
 
     private boolean hasExactCallBeenMadeBefore(Date lastSyncTime) {

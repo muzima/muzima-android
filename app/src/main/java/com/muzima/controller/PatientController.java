@@ -122,38 +122,6 @@ public class PatientController {
     }
 
 
-    public int countPatients(String cohortUuid, String derivedConceptUuid, String obsValue) throws PatientLoadException {
-        try {
-            return patientService.countPatients(cohortUuid, derivedConceptUuid, obsValue);
-        } catch (IOException e) {
-            throw new PatientLoadException(e);
-        }
-    }
-
-    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String derivedObsValue) throws PatientLoadException {
-        try {
-            return patientService.getPatients(cohortUuid, derivedConceptUuid, derivedObsValue);
-        } catch (IOException e) {
-            throw new PatientLoadException(e);
-        }
-    }
-
-    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String derivedObsValue,String conceptUuid, String obsValue) throws PatientLoadException {
-        try {
-            return patientService.getPatients(cohortUuid, derivedConceptUuid, derivedObsValue, conceptUuid, obsValue);
-        } catch (IOException e) {
-            throw new PatientLoadException(e);
-        }
-    }
-
-    public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String derivedObsValue, int page, int pageSize) throws PatientLoadException {
-        try {
-            return patientService.getPatients(cohortUuid, derivedConceptUuid, derivedObsValue, page,pageSize);
-        } catch (IOException e) {
-            throw new PatientLoadException(e);
-        }
-    }
-
     public List<Patient> getPatients(String cohortUuid, String derivedConceptUuid, String derivedObsValue,String conceptUuid, String obsValue, int page, int pageSize) throws PatientLoadException {
         try {
             return patientService.getPatients(cohortUuid, derivedConceptUuid, derivedObsValue, conceptUuid, obsValue, page,pageSize);
@@ -172,18 +140,10 @@ public class PatientController {
 
     public List<Patient> searchPatientLocally(String term, String cohortUuid) throws PatientLoadException {
         try {
+            boolean useFuzzySearch = true;
             return StringUtils.isEmpty(cohortUuid)
-                    ? patientService.searchPatients(term)
+                    ? patientService.searchPatients(term,useFuzzySearch)
                     : patientService.searchPatients(term, cohortUuid);
-        } catch (IOException | ParseException e) {
-            throw new PatientLoadException(e);
-        }
-    }
-
-    public List<Patient> searchPatientLocally(String term,  int page, int pageSize)
-            throws PatientLoadException {
-        try {
-            return patientService.searchPatients(term,page,pageSize);
         } catch (IOException | ParseException e) {
             throw new PatientLoadException(e);
         }
@@ -262,15 +222,6 @@ public class PatientController {
     }
 
     public void savePatients(List<Patient> patients) throws PatientSaveException {
-        try {
-            patientService.savePatients(patients);
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error while saving the patient list", e);
-            throw new PatientSaveException(e);
-        }
-    }
-
-    public void generatePatientTags(List<Patient> patients) throws PatientSaveException {
         try {
             patientService.savePatients(patients);
         } catch (IOException e) {

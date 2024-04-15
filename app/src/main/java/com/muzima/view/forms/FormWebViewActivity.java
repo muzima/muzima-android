@@ -75,7 +75,6 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     private static final String ZIGGY_FILE_LOADER = "ziggyFileLoader";
     private static final String FORM = "form";
     private static final String DISCRIMINATOR = "discriminator";
-    private static final String MUZIMA_LOCATION_SERVICE = "muzimaGPSLocationInterface";
 
 
     private WebView webView;

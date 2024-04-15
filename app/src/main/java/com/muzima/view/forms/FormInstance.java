@@ -44,9 +44,6 @@ class FormInstance {
         return formTemplate.getHtml();
     }
 
-    public void log(String message) {
-        Log.d(getClass().getSimpleName(), message);
-    }
 
 
 }

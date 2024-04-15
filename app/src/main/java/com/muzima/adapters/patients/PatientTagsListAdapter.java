@@ -10,6 +10,12 @@
 
 package com.muzima.adapters.patients;
 
+import static com.muzima.utils.Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.NOT_ALL_CONTACTS_VISITED_TAG_UUID;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -28,11 +34,12 @@ import android.widget.Toast;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.api.model.PatientTag;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.tasks.MuzimaAsyncTask;
-import com.muzima.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,11 +49,13 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
 
     private final PatientController patientController;
     PatientsLocalSearchAdapter patientsLocalSearchAdapter;
+    private final  MuzimaSettingController muzimaSettingController;
 
-    public PatientTagsListAdapter(Context context, int textViewResourceId,PatientController patientController) {
+    public PatientTagsListAdapter(Context context, int textViewResourceId, PatientController patientController, MuzimaSettingController muzimaSettingController) {
         super(context, textViewResourceId);
         this.patientController = patientController;
-        patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context, patientController, null,null, null);
+        this.muzimaSettingController = muzimaSettingController;
+        patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context, patientController, null,null, null, muzimaSettingController);
     }
 
     public void onTagsChanged() {
@@ -99,13 +108,17 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
         holder.tagColorIndicator.setBackgroundColor(tagColor);
         holder.name.setText(patientTag.getName());
 
-        if(Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID.equals(patientTag.getUuid())){
+        if(ALREADY_ASSIGNED_TAG_UUID.equals(patientTag.getUuid())){
             holder.description.setText(getContext().getString(R.string.general_already_assigned));
-        } else if(Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID.equals(patientTag.getUuid())){
+        } else if(AWAITING_ASSIGNMENT_TAG_UUID.equals(patientTag.getUuid())){
             holder.description.setText(getContext().getString(R.string.general_awaiting_assignment));
-        } else if(Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID.equals(patientTag.getUuid())){
+        } else if(HAS_SEXUAL_PARTNER_TAG_UUID.equals(patientTag.getUuid())){
             holder.description.setText(getContext().getString(R.string.general_has_sexual_partner));
-        } else if(patientTag.getDescription() != null){
+        } else if(ALL_CONTACTS_VISITED_TAG_UUID.equals(patientTag.getUuid())){
+            holder.description.setText(getContext().getString(R.string.general_all_contacts_visited));
+        }else if(NOT_ALL_CONTACTS_VISITED_TAG_UUID.equals(patientTag.getUuid())){
+            holder.description.setText(getContext().getString(R.string.general_not_all_contacts_visited));
+        }else if(patientTag.getDescription() != null){
             holder.description.setText(patientTag.getDescription());
         }
         return convertView;
@@ -187,9 +200,42 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
                 add(getAllTagsElement());
             }
 
+            PatientTag AATag = null;
+            PatientTag ALTag = null;
+            PatientTag PTag = null;
+            PatientTag VTag = null;
+            PatientTag NVTag = null;
+            List<PatientTag> otherTags = new ArrayList<>();
             for (PatientTag tag : tags) {
-                add(tag);
+                if(tag.getUuid().equals(AWAITING_ASSIGNMENT_TAG_UUID))
+                    AATag = tag;
+                else if(tag.getUuid().equals(ALREADY_ASSIGNED_TAG_UUID))
+                    ALTag = tag;
+                else if(tag.getUuid().equals(HAS_SEXUAL_PARTNER_TAG_UUID))
+                    PTag = tag;
+                else if(tag.getUuid().equals(ALL_CONTACTS_VISITED_TAG_UUID))
+                    VTag = tag;
+                else if(tag.getUuid().equals(NOT_ALL_CONTACTS_VISITED_TAG_UUID))
+                    NVTag = tag;
+                else
+                    otherTags.add(tag);
             }
+
+            Collections.sort(otherTags, (o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
+
+            if(AATag!=null)
+                add(AATag);
+            if(ALTag!=null)
+                add(ALTag);
+            if(PTag!=null)
+                add(PTag);
+            if(VTag!=null)
+                add(VTag);
+            if(NVTag!=null)
+                add(NVTag);
+            if(otherTags.size()>0)
+                addAll(otherTags);
+
             notifyDataSetChanged();
         }
 

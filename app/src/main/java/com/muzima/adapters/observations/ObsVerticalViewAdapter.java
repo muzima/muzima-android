@@ -147,7 +147,6 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            View container = view.findViewById(R.id.item_single_obs_container);
             this.observationContainer = view.findViewById(R.id.value_container);
             this.observationValue = view.findViewById(R.id.observation_value);
             this.conceptIcon = view.findViewById(R.id.concept_icon);

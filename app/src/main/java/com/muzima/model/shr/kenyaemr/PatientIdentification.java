@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.muzima.utils.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,37 +56,6 @@ public class PatientIdentification {
      *
      */
     public PatientIdentification() {
-    }
-
-    /**
-     *
-     * @param deathDate
-     * @param deathIndicator
-     * @param phoneNumber
-     * @param externalPatientId
-     * @param dateOfBirthPrecision
-     * @param motherDetails
-     * @param patientName
-     * @param patientAddress
-     * @param sex
-     * @param dateOfBirth
-     * @param maritalStatus
-     * @param internalPatientIds
-     */
-    public PatientIdentification(ExternalPatientId externalPatientId, List<InternalPatientId> internalPatientIds, PatientName patientName, String dateOfBirth, String dateOfBirthPrecision, String sex, String deathDate, String deathIndicator, PatientAddress patientAddress, String phoneNumber, String maritalStatus, MotherDetails motherDetails) {
-        super();
-        this.externalPatientId = externalPatientId;
-        this.internalPatientIds = internalPatientIds;
-        this.patientName = patientName;
-        this.dateOfBirth = dateOfBirth;
-        this.dateOfBirthPrecision = dateOfBirthPrecision;
-        this.sex = sex;
-        this.deathDate = deathDate;
-        this.deathIndicator = deathIndicator;
-        this.patientAddress = patientAddress;
-        this.phoneNumber = phoneNumber;
-        this.maritalStatus = maritalStatus;
-        this.motherDetails = motherDetails;
     }
 
     @JsonProperty("EXTERNAL_PATIENT_ID")
@@ -220,14 +188,4 @@ public class PatientIdentification {
         this.additionalProperties.put(name, value);
     }
 
-    public InternalPatientId getInternalPatientIdByIdentifierType(String identifierType){
-        if(internalPatientIds != null){
-            for(InternalPatientId internalPatientId: internalPatientIds){
-                if(StringUtils.equals(internalPatientId.getIdentifierType(),identifierType)){
-                    return internalPatientId;
-                }
-            }
-        }
-        return null;
-    }
 }

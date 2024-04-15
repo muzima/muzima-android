@@ -137,14 +137,6 @@ public class ConceptController {
         return new ArrayList<>(result);
     }
 
-    public List<Concept> searchConceptsLocallyByNamePrefix(String prefix) throws ConceptFetchException {
-        try {
-            return conceptService.getConceptsByName(prefix);
-        } catch (IOException e) {
-            throw new ConceptFetchException(e);
-        }
-    }
-
     public List<Concept> getConcepts() throws ConceptFetchException {
         try {
             List<Concept> allConcepts = conceptService.getAllConcepts();
@@ -159,10 +151,6 @@ public class ConceptController {
         newConcepts = concepts;
         List<Concept> savedConcepts = getConcepts();
         newConcepts.removeAll(savedConcepts);
-    }
-
-    public void resetNewConceptsList() {
-        newConcepts.clear();
     }
 
     public List<Concept> newConcepts() {

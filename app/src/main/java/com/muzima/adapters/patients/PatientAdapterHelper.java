@@ -19,13 +19,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
+import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PatientTag;
+import com.muzima.api.model.PersonAttribute;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.model.patient.PatientItem;
@@ -41,7 +48,12 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 
+import static com.muzima.util.Constants.ServerSettings.PATIENT_ADDITIONAL_DETAILS;
 import static com.muzima.utils.DateUtils.getFormattedDate;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapterHelper.ViewHolder> {
     private PatientController patientController;
@@ -53,9 +65,12 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
     private final LanguageUtil languageUtil = new LanguageUtil();
     private Configuration configuration ;
+    private MuzimaSettingController muzimaSettingController;
+    private boolean showAdditionalDetails;
 
-    public PatientAdapterHelper(Context context, PatientController patientController) {
+    public PatientAdapterHelper(Context context, PatientController patientController, MuzimaSettingController muzimaSettingController) {
         this.patientController = patientController;
+        this.muzimaSettingController = muzimaSettingController;
         this.context = context;
         patientList = new ArrayList<>();
         selectedPatientsUuids = new ArrayList<>();
@@ -70,6 +85,10 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
 
     public void setCurrentLocation(MuzimaGPSLocation currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public void setShowAdditionalDetails(boolean showAdditionalDetails){
+        this.showAdditionalDetails = showAdditionalDetails;
     }
 
     public void setBackgroundListQueryTaskListener(BackgroundListQueryTaskListener backgroundListQueryTaskListener) {
@@ -122,6 +141,9 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
             holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
         }
         addTags(holder,patient);
+        if(showAdditionalDetails) {
+            addAdditionalDetails(holder, patient);
+        }
         highlightPatientItem(patient, holder.container);
 
         holder.container.setOnClickListener(new View.OnClickListener() {
@@ -252,6 +274,232 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
         }
     }
 
+    public void addAdditionalDetails(ViewHolder holder, Patient patient){
+        try {
+            int index = 1;
+            MuzimaSetting muzimaSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(PATIENT_ADDITIONAL_DETAILS);
+            JSONObject jsonObject = new JSONObject();
+            if(muzimaSetting != null) {
+                String additionalDetailsSettingValue = muzimaSetting.getValueString();
+                if (additionalDetailsSettingValue != null) {
+                    jsonObject = new JSONObject(additionalDetailsSettingValue);
+                    Object object = new JSONObject();
+                    String addressColumn = null;
+                    List<String> attributeTypeUuids = new ArrayList<>();
+                    List<String> identifierTypeUuids = new ArrayList<>();
+                    if (jsonObject.has("address")) {
+                        object = jsonObject.get("address");
+                        PersonAddress personAddress = patient.getPreferredAddress();
+                        if (object != null && object instanceof JSONArray) {
+                            JSONArray jsonArray = (JSONArray) object;
+                            if (personAddress != null) {
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    addressColumn = jsonArray.get(i).toString();
+                                    RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    if(addressColumn.equals("address1")){
+                                        TextView textViews = new TextView(context);
+                                        if(personAddress.getAddress1() != null)
+                                            textViews.setText("address1".concat(" : ").concat(personAddress.getAddress1()));
+                                        textViews.setId(index);
+                                        params1.addRule(RelativeLayout.BELOW, index-1);
+                                        holder.additionalDetailsLayout.addView(textViews, params1);
+                                        index++;
+                                    }else if(addressColumn.equals("address2")){
+                                        TextView textViews = new TextView(context);
+                                        if(personAddress.getAddress2() != null)
+                                            textViews.setText("address2".concat(" : ").concat(personAddress.getAddress2()));
+                                        textViews.setId(index);
+                                        params1.addRule(RelativeLayout.BELOW, index-1);
+                                        holder.additionalDetailsLayout.addView(textViews, params1);
+                                        index++;
+                                    }else if(addressColumn.equals("address3")){
+                                        TextView textViews = new TextView(context);
+                                        if(personAddress.getAddress3() != null)
+                                            textViews.setText("address3".concat(" : ").concat(personAddress.getAddress3()));
+                                        textViews.setId(index);
+                                        params1.addRule(RelativeLayout.BELOW, index-1);
+                                        holder.additionalDetailsLayout.addView(textViews, params1);
+                                        index++;
+                                    }else if(addressColumn.equals("address4")){
+                                        TextView textViews = new TextView(context);
+                                        if(personAddress.getAddress4() != null)
+                                            textViews.setText("address4".concat(" : ").concat(personAddress.getAddress4()));
+                                        textViews.setId(index);
+                                        params1.addRule(RelativeLayout.BELOW, index-1);
+                                        holder.additionalDetailsLayout.addView(textViews, params1);
+                                        index++;
+                                    }else if(addressColumn.equals("address5")){
+                                        TextView textViews = new TextView(context);
+                                        if(personAddress.getAddress5() != null)
+                                            textViews.setText("address5".concat(" : ").concat(personAddress.getAddress5()));
+                                        textViews.setId(index);
+                                        params1.addRule(RelativeLayout.BELOW, index-1);
+                                        holder.additionalDetailsLayout.addView(textViews, params1);
+                                        index++;
+                                    }else if(addressColumn.equals("address6")){
+                                        TextView textViews = new TextView(context);
+                                        if(personAddress.getAddress6() != null)
+                                            textViews.setText("address6".concat(" : ").concat(personAddress.getAddress6()));
+                                        textViews.setId(index);
+                                        params1.addRule(RelativeLayout.BELOW, index-1);
+                                        holder.additionalDetailsLayout.addView(textViews, params1);
+                                        index++;
+                                    }else if(addressColumn.equals("cityVillage")){
+                                        TextView textViews = new TextView(context);
+                                        if(personAddress.getCityVillage() != null)
+                                            textViews.setText("City/Village".concat(" : ").concat(personAddress.getCityVillage()));
+                                        textViews.setId(index);
+                                        params1.addRule(RelativeLayout.BELOW, index-1);
+                                        holder.additionalDetailsLayout.addView(textViews, params1);
+                                        index++;
+                                    }
+                                }
+                            }
+                        }else{
+                            addressColumn = object.toString();
+                            RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            if(addressColumn.equals("address1")){
+                                TextView textViews = new TextView(context);
+                                if(personAddress.getAddress1() != null)
+                                    textViews.setText("address1".concat(" : ").concat(personAddress.getAddress1()));
+                                textViews.setId(index);
+                                params1.addRule(RelativeLayout.BELOW, index-1);
+                                holder.additionalDetailsLayout.addView(textViews, params1);
+                                index++;
+                            }else if(addressColumn.equals("address2")){
+                                TextView textViews = new TextView(context);
+                                if(personAddress.getAddress2() != null)
+                                    textViews.setText("address2".concat(" : ").concat(personAddress.getAddress2()));
+                                textViews.setId(index);
+                                params1.addRule(RelativeLayout.BELOW, index-1);
+                                holder.additionalDetailsLayout.addView(textViews, params1);
+                                index++;
+                            }else if(addressColumn.equals("address3")){
+                                TextView textViews = new TextView(context);
+                                if(personAddress.getAddress3() != null)
+                                    textViews.setText("address3".concat(" : ").concat(personAddress.getAddress3()));
+                                textViews.setId(index);
+                                params1.addRule(RelativeLayout.BELOW, index-1);
+                                holder.additionalDetailsLayout.addView(textViews, params1);
+                                index++;
+                            }else if(addressColumn.equals("address4")){
+                                TextView textViews = new TextView(context);
+                                if(personAddress.getAddress4() != null)
+                                    textViews.setText("address4".concat(" : ").concat(personAddress.getAddress4()));
+                                textViews.setId(index);
+                                params1.addRule(RelativeLayout.BELOW, index-1);
+                                holder.additionalDetailsLayout.addView(textViews, params1);
+                                index++;
+                            }else if(addressColumn.equals("address5")){
+                                TextView textViews = new TextView(context);
+                                if(personAddress.getAddress5() != null)
+                                    textViews.setText("address5".concat(" : ").concat(personAddress.getAddress5()));
+                                textViews.setId(index);
+                                params1.addRule(RelativeLayout.BELOW, index-1);
+                                holder.additionalDetailsLayout.addView(textViews, params1);
+                                index++;
+                            }else if(addressColumn.equals("address6")){
+                                TextView textViews = new TextView(context);
+                                if(personAddress.getAddress6() != null)
+                                    textViews.setText("address6".concat(" : ").concat(personAddress.getAddress6()));
+                                textViews.setId(index);
+                                params1.addRule(RelativeLayout.BELOW, index-1);
+                                holder.additionalDetailsLayout.addView(textViews, params1);
+                                index++;
+                            }else if(addressColumn.equals("cityVillage")){
+                                TextView textViews = new TextView(context);
+                                if(personAddress.getCityVillage() != null)
+                                    textViews.setText("City/Village".concat(" : ").concat(personAddress.getCityVillage()));
+                                textViews.setId(index);
+                                params1.addRule(RelativeLayout.BELOW, index-1);
+                                holder.additionalDetailsLayout.addView(textViews, params1);
+                                index++;
+                            }
+                        }
+                    }
+
+                    if(jsonObject.has("attribute")){
+                        object = jsonObject.get("attribute");
+                        String uuid = null;
+                        List<PersonAttribute> personAttributes = patient.getAtributes();
+                        if (object != null && object instanceof JSONArray) {
+                            JSONArray jsonArray = (JSONArray) object;
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                uuid = jsonArray.get(i).toString();
+                                attributeTypeUuids.add(uuid);
+                            }
+
+                            for(PersonAttribute personAttribute : personAttributes){
+                                if(attributeTypeUuids.contains(personAttribute.getAttributeType().getUuid())) {
+                                    RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    TextView textViews = new TextView(context);
+                                    textViews.setText(personAttribute.getAttributeType().getName().concat(" : ").concat(personAttribute.getAttribute()));
+                                    textViews.setId(index);
+                                    params1.addRule(RelativeLayout.BELOW, index-1);
+                                    holder.additionalDetailsLayout.addView(textViews, params1);
+                                    index++;
+                                }
+                            }
+                        }else{
+                            uuid = object.toString();
+                            attributeTypeUuids.add(uuid);
+                            for(PersonAttribute personAttribute : personAttributes){
+                                if(attributeTypeUuids.contains(personAttribute.getAttributeType().getUuid())) {
+                                    RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    TextView textViews = new TextView(context);
+                                    textViews.setText(personAttribute.getAttributeType().getName().concat(" : ").concat(personAttribute.getAttribute()));
+                                    textViews.setId(index);
+                                    params1.addRule(RelativeLayout.BELOW, index-1);
+                                    holder.additionalDetailsLayout.addView(textViews, params1);
+                                    index++;
+                                }
+                            }
+                        }
+                    }
+
+                    if(jsonObject.has("identifier")){
+                        object = jsonObject.get("identifier");
+                        String uuid = null;
+                        List<PatientIdentifier>  patientIdentifiers = patient.getIdentifiers();
+                        if (object != null && object instanceof JSONArray) {
+                            JSONArray jsonArray = (JSONArray) object;
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                uuid = jsonArray.get(i).toString();
+                                identifierTypeUuids.add(uuid);
+                            }
+                            for(PatientIdentifier patientIdentifier : patientIdentifiers){
+                                if(identifierTypeUuids.contains(patientIdentifier.getIdentifierType().getUuid())) {
+                                    RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    TextView textViews = new TextView(context);
+                                    textViews.setText(patientIdentifier.getIdentifierType().getName().concat(" : ").concat(patientIdentifier.getIdentifier()));
+                                    textViews.setId(index);
+                                    params1.addRule(RelativeLayout.BELOW, index-1);
+                                    holder.additionalDetailsLayout.addView(textViews, params1);
+                                    index++;
+                                }
+                            }
+                        }else{
+                            uuid = object.toString();
+                            PatientIdentifier patientIdentifier = patient.getIdentifier(uuid);
+                            RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            TextView textViews = new TextView(context);
+                            textViews.setText(patientIdentifier.getIdentifierType().getName().concat(" : ").concat(patientIdentifier.getIdentifier()));
+                            textViews.setId(index);
+                            params1.addRule(RelativeLayout.BELOW, index-1);
+                            holder.additionalDetailsLayout.addView(textViews, params1);
+                            index++;
+                        }
+                    }
+                }
+            }
+
+        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Could not fetch settings", e);
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Error processing settings", e);
+        }
+    }
+
     private TextView newTextView(LayoutInflater layoutInflater) {
         TextView textView = (TextView) layoutInflater.inflate(R.layout.tag, null, false);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -268,12 +516,17 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
     }
 
     protected void onPostExecuteUpdate(List<Patient> patients) {
+        onPostExecuteUpdate(patients, false);
+    }
+
+    protected void onPostExecuteUpdate(List<Patient> patients, boolean isSubsequentFetch) {
         if (patients == null) {
             Toast.makeText(context, context.getString(R.string.error_patient_repo_fetch), Toast.LENGTH_SHORT).show();
             return;
         }
-
-        patientList.clear();
+        if(!isSubsequentFetch) {
+            patientList.clear();
+        }
         for(Patient patient:patients) {
             patientList.add(new PatientItem(patient));
         }
@@ -298,22 +551,6 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
             backgroundListQueryTaskListener.onQueryTaskFinish();
         }
 
-    }
-
-    public static String getPatientFormattedName(Patient patient) {
-        StringBuilder patientFormattedName = new StringBuilder();
-        if (!StringUtils.isEmpty(patient.getFamilyName())) {
-            patientFormattedName.append(patient.getFamilyName());
-            patientFormattedName.append(", ");
-        }
-        if (!StringUtils.isEmpty(patient.getGivenName())) {
-            patientFormattedName.append(patient.getGivenName().substring(0, 1));
-            patientFormattedName.append(" ");
-        }
-        if (!StringUtils.isEmpty(patient.getMiddleName())) {
-            patientFormattedName.append(patient.getMiddleName().substring(0, 1));
-        }
-        return patientFormattedName.toString();
     }
 
     private String getPatientFullName(Patient patient) {
@@ -346,6 +583,7 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
         List<TextView> tags;
         LinearLayout tagsLayout;
         CheckedLinearLayout container;
+        RelativeLayout additionalDetailsLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -359,6 +597,7 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
             tagsLayout = itemView.findViewById(R.id.menu_tags);
             tags = new ArrayList<>();
             container = itemView.findViewById(R.id.item_patient_container);
+            additionalDetailsLayout = itemView.findViewById(R.id.patient_additional_details_layout);
         }
 
         public void addTag(TextView tag) {

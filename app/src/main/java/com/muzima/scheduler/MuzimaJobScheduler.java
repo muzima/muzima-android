@@ -41,8 +41,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import android.widget.Toast;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.muzima.MuzimaApplication;
@@ -73,6 +71,7 @@ import com.muzima.utils.DownloadAndDeleteDerivedConceptAndObservationBasedOnConf
 import com.muzima.utils.DownloadAndDeleteLocationBasedOnConfigChangesIntent;
 import com.muzima.utils.DownloadAndDeleteProvidersBasedOnConfigChangesIntent;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
+import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
 import com.muzima.utils.SyncDatasetsIntent;
 import com.muzima.utils.SyncMediaCategoryIntent;
@@ -417,7 +416,7 @@ public class MuzimaJobScheduler extends JobService {
                 configSettings.add(muzimaSetting.getProperty());
                if (MuzimaSettingUtils.isOnlineOnlyModeSetting(muzimaSetting)) {
                     if(onlineModeBeforeConfigUpdate != muzimaSetting.getValueBoolean()){
-                        muzimaSettingController.updateTheme();
+                        muzimaSettingController.toggleTheme();
                         if(muzimaSetting.getValueBoolean()) {
                             Intent intent;
                             intent = new Intent(((MuzimaApplication) context), MainDashboardActivity.class);
@@ -506,7 +505,7 @@ public class MuzimaJobScheduler extends JobService {
                 MuzimaSetting encounterLocationIdSetting = null;
                 try {
                     encounterLocationIdSetting = muzimaSettingController.getSettingByProperty(DEFAULT_ENCOUNTER_LOCATION_SETTING);
-                    if(encounterLocationIdSetting != null) {
+                    if(encounterLocationIdSetting != null && !StringUtils.isEmpty(encounterLocationIdSetting.getValueString())) {
                         Location defaultEncounterLocation = ((MuzimaApplication) context).getLocationController().getLocationById(Integer.valueOf(encounterLocationIdSetting.getValueString()));
                         if(defaultEncounterLocation != null){
                             Context context = getApplicationContext();

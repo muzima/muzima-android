@@ -420,19 +420,13 @@ public class DataSyncService extends IntentService {
         }
     }
 
-    private void broadCastMessageForEncounters(Intent broadcastIntent, int[] resultForEncounters) {
-        String msgForEncounters = getString(R.string.info_new_encounter_download_delete, resultForEncounters[1], resultForEncounters[2]);
-        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msgForEncounters);
-        broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_ENCOUNTERS);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
-    }
-
     private void broadCastMessageForObservationDownload(Intent broadcastIntent, int[] resultForObservations) {
         String msgForObservations = getString(R.string.info_new_observation_download_delete, resultForObservations[1], resultForObservations[2]);
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, resultForObservations[0]);
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE, msgForObservations);
         broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_OBSERVATIONS);
-        if (isSuccess(resultForObservations)) {
+        if (isSuccess(resultForObservations) && resultForObservations.length>1) {
+            broadcastIntent.putExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, resultForObservations[1]);
             updateNotificationMsg(msgForObservations);
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);

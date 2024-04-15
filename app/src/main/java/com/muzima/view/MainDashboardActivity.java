@@ -14,6 +14,7 @@ import static android.content.DialogInterface.BUTTON_POSITIVE;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +25,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -215,6 +215,12 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     }
 
     private void loadCohorts(final boolean showFilter) {
+        Dialog progressDialog = new ProgressDialog(this, android.R.style.Theme_Panel);
+        if (showFilter) {
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+        selectedCohortFilters.clear();
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
                 .execute(new LoadDownloadedCohortsTask(getApplicationContext(), new LoadDownloadedCohortsTask.OnDownloadedCohortsLoadedCallback() {
                     @Override
@@ -245,9 +251,10 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                                     cohortList.add(new CohortFilter(cohortWithFilter, isCohortSelected));
                                 }
                                 cohortFilterAdapter.notifyDataSetChanged();
-                                if (showFilter)
+                                if (showFilter) {
                                     cohortFilterBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-
+                                    progressDialog.dismiss();
+                                }
                             }
                         });
                     }
@@ -262,7 +269,40 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
                 EventBus.getDefault().register(this);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.e(getClass().getSimpleName(), "Encountered an Exception while unregistering an event ", ex);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            if (EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().unregister(this);
+        } catch (Exception ex) {
+            Log.e(getClass().getSimpleName(), "Encountered an Exception while unregistering an event ", ex);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            if (!EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().unregister(this);
+        } catch (Exception ex) {
+            Log.e(getClass().getSimpleName(), "Encountered an Exception while unregistering an event ", ex);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            if (!EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().unregister(this);
+        } catch (Exception ex) {
+            Log.e(getClass().getSimpleName(), "Encountered an Exception while unregistering an event ", ex);
         }
     }
 
@@ -279,7 +319,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     private void initializeResources() {
         Toolbar toolbar = findViewById(R.id.dashboard_toolbar);
 
-        LayoutInflater inflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         refreshIconRotateAnimation = AnimationUtils.loadAnimation(MainDashboardActivity.this, R.anim.rotate_refresh);
         refreshIconRotateAnimation.setRepeatCount(Animation.INFINITE);
         refreshMenuActionView = findViewById(R.id.menu_load);
@@ -725,7 +764,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         initSelectedTags();
         ListView tagsDrawerList = findViewById(R.id.tags_list);
         tagsDrawerList.setEmptyView(findViewById(R.id.tags_no_data_msg));
-        tagsListAdapter = new PatientTagsListAdapter(this, R.layout.item_tags_list, ((MuzimaApplication) getApplicationContext()).getPatientController());
+        tagsListAdapter = new PatientTagsListAdapter(this, R.layout.item_tags_list, ((MuzimaApplication) getApplicationContext()).getPatientController(), ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController());
         tagsDrawerList.setAdapter(tagsListAdapter);
         tagsDrawerList.setOnItemClickListener(tagsListAdapter);
         ActionBarDrawerToggle actionbarDrawerToggle = new ActionBarDrawerToggle(this, mainLayout,
@@ -751,7 +790,6 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         mainLayout.setDrawerListener(actionbarDrawerToggle);
         mainLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        TextView tagsNoDataMsg = findViewById(R.id.tags_no_data_msg);
     }
 
     private void initSelectedTags() {

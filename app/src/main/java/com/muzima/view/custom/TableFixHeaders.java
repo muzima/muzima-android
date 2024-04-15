@@ -125,15 +125,6 @@ public class TableFixHeaders extends ViewGroup {
     }
 
     /**
-     * Returns the adapter currently associated with this widget.
-     *
-     * @return The adapter used to provide this view's content.
-     */
-    public TableAdapter getAdapter() {
-        return adapter;
-    }
-
-    /**
      * Sets the data behind this TableFixHeaders.
      *
      * @param adapter

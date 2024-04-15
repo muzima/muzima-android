@@ -12,8 +12,9 @@ package com.muzima.tasks;
 
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_CONCEPT_MAP;
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
+import static com.muzima.utils.Constants.FGH.FGH_INTERVENTIONS;
+import static com.muzima.utils.Constants.FGH.INDEX_CASE_FILTER_CONCEPT;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -27,14 +28,11 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.MuzimaSetting;
-import com.muzima.api.model.Observation;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.ObservationController;
-import com.muzima.model.CohortWithFilter;
 import com.muzima.model.CohortWithFilter;
 import com.muzima.utils.StringUtils;
 
@@ -59,24 +57,26 @@ public class LoadDownloadedCohortsTask implements Runnable {
 
     @Override
     public void run() {
+        List<CohortWithFilter> cohortWithFilters = new ArrayList<>();
         try {
-            List<String> interventions = new ArrayList<String>(){{
-                add("4b479a6c-4276-45a1-b785-ecbc7dc59ff1");
-                add("1bd47ba9-b6ff-4b4c-ba26-f5b86498d738");
-                add("9e928864-b7d2-445d-9856-cb7c9a0632dd");
-                add("46e6c352-bddb-4191-8d1e-40380aa1a346");
-                add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
-            }};
+            List<String> interventions = FGH_INTERVENTIONS;
 
-            List<CohortWithFilter> cohortWithFilters = new ArrayList<>();
-            MuzimaSetting muzimaSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
+            MuzimaSetting cohortFilterDerivedConceptMapSetting = null;
+            MuzimaSetting cohortFilterConceptMapSetting = null;
+            try{
+                cohortFilterDerivedConceptMapSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
+                cohortFilterConceptMapSetting = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_CONCEPT_MAP);
+
+            } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                Log.e(getClass().getSimpleName(),"Encountered An error while fetching muzima settings ",e);
+            }
+
             DerivedObservationController derivedObservationController = ((MuzimaApplication) context.getApplicationContext()).getDerivedObservationController();
             DerivedConceptController derivedConceptController = ((MuzimaApplication) context.getApplicationContext()).getDerivedConceptController();
-            MuzimaSetting ms = ((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().getSettingByProperty(COHORT_FILTER_CONCEPT_MAP);
             ConceptController conceptController = ((MuzimaApplication) context.getApplicationContext()).getConceptController();
             JSONObject jsonCohortObject = new JSONObject();
-            if(ms != null) {
-                String obsSettingValue = ms.getValueString();
+            if(cohortFilterConceptMapSetting != null) {
+                String obsSettingValue = cohortFilterConceptMapSetting.getValueString();
                 if (obsSettingValue != null) {
                     jsonCohortObject = new JSONObject(obsSettingValue);
                 }
@@ -86,8 +86,8 @@ public class LoadDownloadedCohortsTask implements Runnable {
             for (Cohort cohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
                     .getCohorts()) {
                 if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(cohort)) {
-                    String settingValue = muzimaSetting.getValueString();
-                    if(settingValue != null) {
+                    if(cohortFilterDerivedConceptMapSetting != null && cohortFilterDerivedConceptMapSetting.getValueString() != null) {
+                        String settingValue = cohortFilterDerivedConceptMapSetting.getValueString();
                         String derivedConceptUuid = "";
                         Object derivedConceptObject = null;
                         JSONObject jsonObject = new JSONObject(settingValue);
@@ -179,8 +179,8 @@ public class LoadDownloadedCohortsTask implements Runnable {
                         }
                     }
 
-                    if(ms != null) {
-                        String obsSettingValue = ms.getValueString();
+                    if(cohortFilterConceptMapSetting != null) {
+                        String obsSettingValue = cohortFilterConceptMapSetting.getValueString();
                         if (obsSettingValue != null) {
                             String conceptUuid = "";
                             Object conceptObject = null;
@@ -192,7 +192,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                     for (int i = 0; i < jsonArray.length(); i++) {
                                         conceptUuid = jsonArray.get(i).toString();
                                         if (!conceptUuid.isEmpty()) {
-                                            if (conceptUuid.equals("e3f3bcea-9e2f-4aec-976f-0290bdbfffb8")) {
+                                            if (conceptUuid.equals(INDEX_CASE_FILTER_CONCEPT)) {
                                                 Concept concept = conceptController.getConceptByUuid(conceptUuid);
                                                 if (concept != null) {
                                                     cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximos 10 dias"));
@@ -200,16 +200,18 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                                     cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximo mês"));
                                                 }
                                             } else {
-                                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                                if(!cohortUuids.contains(cohort.getUuid()))
+                                                    cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
                                             }
                                         } else {
-                                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                            if(!cohortUuids.contains(cohort.getUuid()))
+                                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
                                         }
                                     }
                                 } else {
                                     conceptUuid = conceptObject.toString();
                                     if (!conceptUuid.isEmpty()) {
-                                        if (conceptUuid.equals("e3f3bcea-9e2f-4aec-976f-0290bdbfffb8")) {
+                                        if (conceptUuid.equals(INDEX_CASE_FILTER_CONCEPT)) {
                                             Concept concept = conceptController.getConceptByUuid(conceptUuid);
                                             if (concept != null) {
                                                 cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximos 10 dias"));
@@ -217,10 +219,12 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                                 cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, conceptUuid, "Próximo mês"));
                                             }
                                         } else {
-                                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                            if(!cohortUuids.contains(cohort.getUuid()))
+                                                cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
                                         }
                                     } else {
-                                        cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
+                                        if(!cohortUuids.contains(cohort.getUuid()))
+                                            cohortWithFilters.add(new CohortWithFilter(cohort, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY, StringUtils.EMPTY));
                                     }
                                 }
                             } else {
@@ -241,11 +245,8 @@ public class LoadDownloadedCohortsTask implements Runnable {
                     return o1.getCohort().getName().compareTo(o2.getCohort().getName());
                 }
             });
-            cohortsLoadedCallback.onCohortsLoaded(cohortWithFilters);
         } catch (CohortController.CohortFetchException ex) {
             Log.e(getClass().getSimpleName(),"Encountered An error while fetching cohorts ",ex);
-        } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
-            Log.e(getClass().getSimpleName(),"Encountered An error while fetching muzima settings ",e);
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(),"Encountered a JSON Exception ",e);
 
@@ -261,6 +262,8 @@ public class LoadDownloadedCohortsTask implements Runnable {
             Log.e(getClass().getSimpleName(),"Encountered an error while fetching derived concepts ",e);
         } catch (ConceptController.ConceptFetchException e) {
             Log.e(getClass().getSimpleName(),"Encountered an error while fetching concepts",e);
+        } finally {
+            cohortsLoadedCallback.onCohortsLoaded(cohortWithFilters);
         }
     }
 

@@ -23,10 +23,6 @@ public class AppUsageLogsController {
         appUsageLogsService.saveOrUpdateAppUsageLog(appUsageLog);
     }
 
-    public void saveOrUpdateAppUsageLogs(List<AppUsageLogs> appUsageLogs) throws IOException, ParseException {
-        appUsageLogsService.saveOrUpdateAppUsageLogs(appUsageLogs);
-    }
-
     public AppUsageLogs getAppUsageLogByKey(String key) throws IOException, ParseException {
        return appUsageLogsService.getAppUsageLogByKey(key);
     }

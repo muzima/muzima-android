@@ -30,9 +30,6 @@ public class SingleObsForm {
     private int readingCount;
     private String inputDateValue;
 
-    public SingleObsForm() {
-    }
-
     public SingleObsForm(Concept concept, Date date, String inputDataType, String inputValue, int readingCount) {
         this.concept = concept;
         this.date = date;
@@ -45,24 +42,12 @@ public class SingleObsForm {
         return concept;
     }
 
-    public void setConcept(Concept concept) {
-        this.concept = concept;
-    }
-
     public Date getDate() {
         return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public String getInputDataType() {
-        return inputDataType;
-    }
-
-    public void setInputDataType(String inputDataType) {
-        this.inputDataType = inputDataType;
     }
 
     public String getInputValue() {
@@ -75,10 +60,6 @@ public class SingleObsForm {
 
     public int getReadingCount() {
         return readingCount;
-    }
-
-    public void setReadingCount(int readingCount) {
-        this.readingCount = readingCount;
     }
 
     public String getInputDateValue() {

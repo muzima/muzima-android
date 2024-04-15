@@ -781,4 +781,20 @@
     <string name="attempt_number_limit_reached">Nombre de tentatives de visite dépassé!</string>
     <string name="visit_made_sucessfully">Visite déjà effectuée avec succès!</string>
     <string name="todos_utentes">Todos os Utentes</string>
+    <string name="general_open_registration_form">Ouvrir le formulaire d\'inscription</string>
+    <string name="info_cannot_find_person_on_list">Je ne trouve pas la personne sur la liste.</string>
+    <string name="info_similar_people_found_msg">Vous trouverez ci-dessous une liste de personnes qui semblent similaires à celle que vous êtes sur le point de créer.</string>
+    <string name="info_similar_people_found_tip">Si la personne que vous êtes en train de créer existe déjà, sélectionnez-la dans la liste. Sinon, cliquez sur le bouton ci-dessous pour continuer à créer une nouvelle personne.</string>
+    <string name="title_found_similar_people">Trouvé des personnes similaires</string>
+    <string name="general_person_name">Nom d\\\'une personne:</string>
+    <string name="general_gender">Genre:</string>
+    <string name="general_male">Mâle</string>
+    <string name="general_birthdate">Date de naissance:</string>
+    <string name="general_proceed">Procéder</string>
+    <string name="general_or_age">Ou Âge:</string>
+    <string name="last_allocation_volunteer">Alloué à:</string>
+    <string name="general_female">Femelle</string>
+    <string name="general_more">Plus</string>
+    <string name="general_less">Moins</string>
+    <string name="general_not_all_contacts_visited">Tous les contacts n\'ont pas été visités</string>
 </resources>

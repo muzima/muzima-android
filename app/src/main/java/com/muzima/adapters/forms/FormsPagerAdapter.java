@@ -64,7 +64,4 @@ public class FormsPagerAdapter extends MuzimaPagerAdapter implements TagsListAda
         pagers[TAB_INCOMPLETE] = new PagerView(localizedContext.getResources().getString(R.string.title_form_data_incomplete), incompleteFormsListFragment);
     }
 
-    public void endActionMode() {
-    }
-
 }

@@ -88,8 +88,6 @@ public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavi
     public static final String PATIENT = "patient";
     public static final String PATIENT_UUID = "patient_uuid";
     public static final String CALLING_ACTIVITY = "calling_activity_key";
-    public static final boolean DEFAULT_SHR_STATUS = false;
-    private static final boolean DEFAULT_RELATIONSHIP_STATUS = false;
     private TextView patientNameTextView;
     private ImageView patientGenderImageView;
     private TextView dobTextView;
@@ -162,7 +160,8 @@ public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavi
     protected void onStart() {
         super.onStart();
         try {
-            EventBus.getDefault().register(this);
+            if (!EventBus.getDefault().isRegistered(this))
+                EventBus.getDefault().register(this);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

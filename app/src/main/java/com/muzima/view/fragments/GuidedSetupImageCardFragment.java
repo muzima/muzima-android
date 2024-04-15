@@ -58,7 +58,7 @@ public class GuidedSetupImageCardFragment extends Fragment {
         imageView = view.findViewById(R.id.card_image_view);
         titleTextView = view.findViewById(R.id.fragment_guided_setup_title_text_view);
         descriptionTextView = view.findViewById(R.id.fragment_guided_setup_description_text_view);
-        imageView.setImageDrawable(getResources().getDrawable(drawableId));
+        imageView.setImageDrawable(getContext().getDrawable(drawableId));
         titleTextView.setText(title);
         descriptionTextView.setText(description);
     }

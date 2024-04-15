@@ -117,6 +117,7 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.FGH.DerivedConcepts.CONTACTS_TESTED_DERIVED_CONCEPT_ID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.NAO_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.NOT_ALL_CONTACTS_VISITED_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.SIM_TAG_UUID;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
@@ -224,17 +225,6 @@ public class MuzimaSyncService {
                 muzimaContext.closeSession();
         }
         return SyncStatusConstants.AUTHENTICATION_SUCCESS;
-    }
-
-    private boolean hasInvalidSpecialCharacter(String username) {
-        String invalidCharacters = SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
-        for (int i = 0; i < invalidCharacters.length(); i++) {
-            String substring = invalidCharacters.substring(i, i + 1);
-            if (username.contains(substring)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public int[] downloadForms() {
@@ -511,34 +501,6 @@ public class MuzimaSyncService {
         return result;
     }
 
-    public int[] downloadCohorts(String[] cohortUuids) {
-        int[] result = new int[3];
-        try {
-            List<Cohort> cohorts = cohortController.downloadCohortsByUuidList(cohortUuids);
-            List<Cohort> voidedCohorts = deleteVoidedCohorts(cohorts);
-            cohorts.removeAll(voidedCohorts);
-
-            cohortController.saveOrUpdateCohorts(cohorts);
-            Log.i(getClass().getSimpleName(), "New cohorts are saved");
-            result[0] = SUCCESS;
-            result[1] = cohorts.size();
-            result[2] = voidedCohorts.size();
-        } catch (CohortController.CohortDownloadException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to download cohorts", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
-            return result;
-        } catch (CohortController.CohortSaveException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to save cohorts", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
-            return result;
-        } catch (CohortController.CohortDeleteException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while deleting voided cohorts", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
-            return result;
-        }
-        return result;
-    }
-
     public int[] downloadPatientsForCohortsWithUpdatesAvailable() {
         int[] result = new int[3];
         try {
@@ -794,8 +756,8 @@ public class MuzimaSyncService {
         int count = 0;
         boolean hasElements = !strings.isEmpty();
         while (hasElements) {
-            int startElement = count * 50;
-            int endElement = ++count * 50;
+            int startElement = count * 100;
+            int endElement = ++count * 100;
             hasElements = strings.size() > endElement;
             if (hasElements) {
                 lists.add(strings.subList(startElement, endElement));
@@ -826,7 +788,6 @@ public class MuzimaSyncService {
                 Log.e(getClass().getSimpleName(), "Could not obtain active setup config", e);
             }
 
-            int i = 0;
             for (List<String> slicedPatientUuid : slicedPatientUuids) {
                 for (List<String> slicedConceptUuid : slicedConceptUuids) {
                     long startDownloadObservations = System.currentTimeMillis();
@@ -1226,10 +1187,10 @@ public class MuzimaSyncService {
                 setupConfigurationController.saveSetupConfigurationTemplate(setupConfigurationTemplate);
             }
         } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to download setup configs");
+            Log.e(getClass().getSimpleName(), "Exception when trying to download setup config",e);
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (SetupConfigurationController.SetupConfigurationSaveException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
+            Log.e(getClass().getSimpleName(), "Exception when trying to save setup config",e);
             result[0] = SyncStatusConstants.SAVE_ERROR;
         }
         return result;
@@ -1449,12 +1410,12 @@ public class MuzimaSyncService {
 
                     PatientTag addressTag = null;
                     PatientTag assignmentTag = null;
-                    PatientTag awaitingAssignmentTag = null;
                     boolean hasSexualPartnerTag = false;
                     boolean hasAssignmentTag = false;
                     boolean hasAwaitingAssignmentTag = false;
                     boolean hasAllContactsVisitedTag = false;
                     boolean hasHomeVisitTags = false;
+                    boolean hasNotAllContactsVisitedTag = false;
                     int homeVisitTagCount = 0;
                     for (PatientTag tag : patient.getTags()) {
                         if (StringUtils.equals(tag.getUuid(), HAS_SEXUAL_PARTNER_TAG_UUID)) {
@@ -1469,6 +1430,8 @@ public class MuzimaSyncService {
                         } else if(StringUtils.equals(tag.getUuid(), SIM_TAG_UUID) || StringUtils.equals(tag.getUuid(), NAO_TAG_UUID)){
                             hasHomeVisitTags = true;
                             homeVisitTagCount++;
+                        }else if(StringUtils.equals(tag.getUuid(), NOT_ALL_CONTACTS_VISITED_TAG_UUID)){
+                            hasNotAllContactsVisitedTag = true;
                         }
                     }
 
@@ -1640,12 +1603,33 @@ public class MuzimaSyncService {
                             }
 
                             if (contactsVisited >= relatedPersons.size() && relatedPersons.size()>0) {
+                                //Remove NV patient tag to be replaced by the V tag
+                                PatientTag NVTag = null;
+                                for (PatientTag patientTag : tags) {
+                                    if (patientTag.getName().equals("NV")) {
+                                        NVTag = patientTag;
+                                    }
+                                }
+
+                                if (NVTag != null) {
+                                    tags.remove(NVTag);
+                                }
+
+                                //Add V tag
                                 PatientTag allContactsVisitedTag = new PatientTag();
                                 allContactsVisitedTag.setName("V");
                                 allContactsVisitedTag.setDescription(muzimaApplication.getString(R.string.general_all_contacts_visited));
                                 allContactsVisitedTag.setUuid(ALL_CONTACTS_VISITED_TAG_UUID);
                                 tags.add(allContactsVisitedTag);
+
                                 patientController.savePatientTags(allContactsVisitedTag);
+                            }else if(relatedPersons.size()>0 && !hasAllContactsVisitedTag && !hasNotAllContactsVisitedTag){
+                                PatientTag notAllContactsVisitedTag = new PatientTag();
+                                notAllContactsVisitedTag.setName("NV");
+                                notAllContactsVisitedTag.setDescription(muzimaApplication.getString(R.string.general_not_all_contacts_visited));
+                                notAllContactsVisitedTag.setUuid(NOT_ALL_CONTACTS_VISITED_TAG_UUID);
+                                tags.add(notAllContactsVisitedTag);
+                                patientController.savePatientTags(notAllContactsVisitedTag);
                             }
                         }
                     }
