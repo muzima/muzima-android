@@ -119,10 +119,14 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 import static com.muzima.utils.Constants.FGH.DerivedConcepts.CONTACTS_TESTED_DERIVED_CONCEPT_ID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.NAO_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.NOT_ALL_CONTACTS_VISITED_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.SIM_TAG_UUID;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
+import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static java.util.Collections.singleton;
 
 import com.muzima.utils.DeviceDetailsUtil;
@@ -1541,7 +1545,7 @@ public class MuzimaSyncService {
 
                     if (muzimaApplication.getMuzimaSettingController().isAllocationTagGenerationEnabled()) {
                         if (!hasAssignmentTag) {
-                            List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
+                            List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
                             if (assignmentObsList.size() > 0) {
                                 for (Observation assignmentObs : assignmentObsList) {
                                     if(cohortMembers.size()>0) {
@@ -2957,7 +2961,7 @@ public class MuzimaSyncService {
             result[0] = htcPersonController.uploadAllPendingHtcData() ? Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS : Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
             htcPersonController.deleteHtcPersonPendingDeletion();
             try {
-                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(Constants.STANDARD_DATE_TIMEZONE_FORMAT);
+                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
                 AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME, muzimaApplication.getAuthenticatedUserId());
                 if (lastUploadLog != null) {
                     lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));

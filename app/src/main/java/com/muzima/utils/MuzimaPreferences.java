@@ -97,11 +97,11 @@ public class MuzimaPreferences {
         editor.apply();
     }
 
-    public static void setAppLocalePreference(Context context, String localeDescription) {
+   /* public static void setAppLocalePreference(Context context, String localeDescription) {
         setStringPreference(context, APP_LOCALE_PREFERENCE, localeDescription);
     }
 
     public static String getAppLocalePreference(Context context) {
         return getStringPreference(context, APP_LOCALE_PREFERENCE, context.getString(R.string.language_portuguese));
-    }
+    }*/
 }
