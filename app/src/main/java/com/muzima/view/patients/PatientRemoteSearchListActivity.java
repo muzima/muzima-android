@@ -27,7 +27,6 @@ import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
-import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
@@ -39,9 +38,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static com.muzima.utils.Constants.DataSyncServiceConstants;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
-import static com.muzima.utils.Constants.SEARCH_STRING_BUNDLE_KEY;
+
+import com.muzima.utils.Constants;
 
 public class PatientRemoteSearchListActivity extends BroadcastListenerActivity implements PatientAdapterHelper.PatientListClickListener,
         RecyclerAdapter.BackgroundListQueryTaskListener {
@@ -66,7 +64,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         setContentView(R.layout.activity_patient_remote_search_list);
         Bundle intentExtras = getIntent().getExtras();
         if (intentExtras != null) {
-            searchString = intentExtras.getString(SEARCH_STRING_BUNDLE_KEY);
+            searchString = intentExtras.getString(Constants.SEARCH_STRING_BUNDLE_KEY);
         }
         progressBarContainer = findViewById(R.id.progressbarContainer);
 
@@ -156,12 +154,12 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         TextView noDataTipTextView = findViewById(R.id.no_data_tip);
         createPatientBtn.setVisibility(INVISIBLE);
 
-        if (errorDefinition instanceof SERVER_CONNECTIVITY_STATUS){
-            SERVER_CONNECTIVITY_STATUS serverConnectivityStatus = (SERVER_CONNECTIVITY_STATUS)errorDefinition;
-            if(serverConnectivityStatus == SERVER_CONNECTIVITY_STATUS.SERVER_OFFLINE) {
+        if (errorDefinition instanceof Constants.SERVER_CONNECTIVITY_STATUS){
+            Constants.SERVER_CONNECTIVITY_STATUS serverConnectivityStatus = (Constants.SERVER_CONNECTIVITY_STATUS)errorDefinition;
+            if(serverConnectivityStatus == Constants.SERVER_CONNECTIVITY_STATUS.SERVER_OFFLINE) {
                 noDataMsgTextView.setText(getResources().getText(R.string.error_server_connection_unavailable));
                 noDataTipTextView.setText(R.string.hint_server_connection_unavailable);
-            } else if(serverConnectivityStatus == SERVER_CONNECTIVITY_STATUS.INTERNET_FAILURE) {
+            } else if(serverConnectivityStatus == Constants.SERVER_CONNECTIVITY_STATUS.INTERNET_FAILURE) {
                 noDataMsgTextView.setText(R.string.error_local_connection_unavailable);
                 noDataTipTextView.setText(R.string.hint_local_connection_unavailable);
             }
@@ -199,12 +197,12 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
     @Override
     protected void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
-        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
-        String[] patientUUIDs = intent.getStringArrayExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD);
+        int syncStatus = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
+        String[] patientUUIDs = intent.getStringArrayExtra(Constants.DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD);
 
-        if (syncType == DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA) {
-            if (syncStatus == SyncStatusConstants.SUCCESS && patientUUIDs.length == 1) {
+        if (syncType == Constants.DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA) {
+            if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS && patientUUIDs.length == 1) {
                 try {
                     PatientController patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
                     Patient patient = patientController.getPatientByUuid(patientUUIDs[0]);
@@ -215,7 +213,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
                     Log.e(PatientRemoteSearchListActivity.class.getName(), "Could not load downloaded patient " + e.getMessage());
                     startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsSearchActivity.class));
                 }
-            } else if (syncStatus == SyncStatusConstants.SUCCESS) {
+            } else if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                 startActivity(new Intent(PatientRemoteSearchListActivity.this, PatientsSearchActivity.class));
             }
         }

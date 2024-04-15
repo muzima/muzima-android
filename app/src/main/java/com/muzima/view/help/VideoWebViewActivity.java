@@ -18,7 +18,6 @@ import android.webkit.WebViewClient;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.TimeoutPreferenceService;
-import com.muzima.view.help.BaseHelpActivity;
 
 public class VideoWebViewActivity extends BaseHelpActivity {
 

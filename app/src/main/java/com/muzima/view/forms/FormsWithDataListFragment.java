@@ -28,8 +28,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 public abstract class FormsWithDataListFragment extends FormsListFragment{
     ActionMode actionMode;
     boolean actionModeActive;

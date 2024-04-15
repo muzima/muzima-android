@@ -18,7 +18,6 @@ import com.muzima.api.model.Location;
 import com.muzima.api.model.LocationAttribute;
 import com.muzima.api.model.LocationAttributeType;
 import com.muzima.controller.LocationController;
-import com.muzima.utils.Constants.Shr.KenyaEmr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +37,9 @@ public class LocationUtils {
     public static String getKenyaEmrMasterFacilityListCode(Location location){
         String facilityCode = null;
         if(location != null){
-            facilityCode = LocationUtils.getLocationAttributeValue(location, KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.name);
+            facilityCode = LocationUtils.getLocationAttributeValue(location, Constants.Shr.KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.name);
             if(StringUtils.isEmpty(facilityCode)){
-                facilityCode = LocationUtils.getLocationAttributeValue(location, KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid);
+                facilityCode = LocationUtils.getLocationAttributeValue(location, Constants.Shr.KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid);
             }
         }
         return facilityCode;
@@ -51,7 +50,7 @@ public class LocationUtils {
         Location location = null;
         LocationAttributeType locationAttributeType = null;
         try {
-            locationAttributeType = locationController.getLocationAttributeTypeByUuid(KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid);
+            locationAttributeType = locationController.getLocationAttributeTypeByUuid(Constants.Shr.KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid);
 
             if (locationAttributeType != null) {
                 location = locationController.getLocationByAttributeTypeAndValue(locationAttributeType, facilityCode);
@@ -60,7 +59,7 @@ public class LocationUtils {
                 for(Location location1:locationController.getAllLocations()){
                     for(LocationAttribute locationAttribute: location1.getAttributes()){
                         if(StringUtils.equalsIgnoreCase(locationAttribute.getAttributeType().getUuid(),
-                                KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid)){
+                                Constants.Shr.KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid)){
                             location = location1;
                             locationFound = true;
                             break;
@@ -88,8 +87,8 @@ public class LocationUtils {
 
             if(locationAttributeType == null){
                 locationAttributeType = new LocationAttributeType();
-                locationAttributeType.setUuid(KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid);
-                locationAttributeType.setName(KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.name);
+                locationAttributeType.setUuid(Constants.Shr.KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.uuid);
+                locationAttributeType.setName(Constants.Shr.KenyaEmr.LocationAttributeType.MASTER_FACILITY_CODE.name);
             }
 
             LocationAttribute locationAttribute = new LocationAttribute();

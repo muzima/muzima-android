@@ -16,9 +16,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.content.DialogInterface;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.controller.FormController;
+import com.muzima.listners.IDialogListener;
 import com.muzima.model.FormItem;
 
 import java.util.Collections;
@@ -100,5 +108,33 @@ public class ViewUtil {
 
         animation.setDuration((long) (actualHeight/ view.getContext().getResources().getDisplayMetrics().density));
         view.startAnimation(animation);
+    }
+
+    public static AlertDialog displayAlertDialog(final Context mContext, final String alertMessage, IDialogListener listener) {
+        return genericDisplayAlertDialog(mContext, alertMessage, listener);
+    }
+
+    public static AlertDialog displayAlertDialog(final Context mContext, final String alertMessage) {
+        return genericDisplayAlertDialog(mContext, alertMessage, null);
+    }
+    /**
+     * Common AppCompat Alert Dialog to be used in the Application everywhere
+     *
+     * @param mContext, Context of where to display
+     */
+    private static AlertDialog genericDisplayAlertDialog(final Context mContext, final String alertMessage, IDialogListener listener) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                .setMessage(alertMessage)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (listener != null) listener.doOnConfirmed();
+                        dialog.dismiss();
+                    }
+
+                });
+
+        return builder.create();
     }
 }

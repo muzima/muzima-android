@@ -5,11 +5,13 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
 
-import com.muzima.R;
+
 import com.muzima.api.model.Media;
 
 import java.io.File;
 import java.util.List;
+
+import com.muzima.R;
 
 public class MemoryUtil {
     public static long getTotalMediaFileSize(List<Media> mediaList){

@@ -44,17 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import static com.muzima.utils.PersonRegistrationUtils.copyPersonAddress;
-import static com.muzima.utils.PersonRegistrationUtils.createBirthDate;
-import static com.muzima.utils.PersonRegistrationUtils.createBirthDateEstimated;
-import static com.muzima.utils.PersonRegistrationUtils.createDemographicsUpdateBirthDate;
-import static com.muzima.utils.PersonRegistrationUtils.createDemographicsUpdateBirthDateEstimated;
-import static com.muzima.utils.PersonRegistrationUtils.createDemographicsUpdatePersonAddresses;
-import static com.muzima.utils.PersonRegistrationUtils.createDemographicsUpdatePersonAttributes;
-import static com.muzima.utils.PersonRegistrationUtils.createDemographicsUpdatePersonName;
-import static com.muzima.utils.PersonRegistrationUtils.createPersonAddresses;
-import static com.muzima.utils.PersonRegistrationUtils.createPersonAttributes;
-import static com.muzima.utils.PersonRegistrationUtils.createPersonName;
+import com.muzima.utils.PersonRegistrationUtils;
 
 public class GenericPatientRegistrationJSONMapper{
 
@@ -336,13 +326,13 @@ public class GenericPatientRegistrationJSONMapper{
 
     private void setPatientNames() throws JSONException {
         List<PersonName> names = new ArrayList<>();
-        names.add(createPersonName(patientJSON));
+        names.add(PersonRegistrationUtils.createPersonName(patientJSON));
         patient.setNames(names);
     }
 
     private void updatePatientNames() throws JSONException {
         if(demographicsUpdateJSON != null && demographicsUpdateJSON.has("demographicsupdate.given_name")) {
-            PersonName newName = createDemographicsUpdatePersonName(demographicsUpdateJSON);
+            PersonName newName = PersonRegistrationUtils.createDemographicsUpdatePersonName(demographicsUpdateJSON);
             if(newName != null) {
                 for (PersonName personName : patient.getNames()) {
                     personName.setPreferred(false);
@@ -368,16 +358,16 @@ public class GenericPatientRegistrationJSONMapper{
     }
 
     private void setPatientBirthDate() throws JSONException {
-        patient.setBirthdate(createBirthDate(patientJSON));
-        patient.setBirthdateEstimated(createBirthDateEstimated(patientJSON));
+        patient.setBirthdate(PersonRegistrationUtils.createBirthDate(patientJSON));
+        patient.setBirthdateEstimated(PersonRegistrationUtils.createBirthDateEstimated(patientJSON));
     }
 
     private void updatePatientBirthDate() throws JSONException {
         if(!muzimaApplication.getMuzimaSettingController().isDemographicsUpdateManulReviewNeeded() &&
                 demographicsUpdateJSON != null && demographicsUpdateJSON.has("demographicsupdate.birth_date")
         ){
-            patient.setBirthdate(createDemographicsUpdateBirthDate(demographicsUpdateJSON));
-            patient.setBirthdateEstimated(createDemographicsUpdateBirthDateEstimated(demographicsUpdateJSON));
+            patient.setBirthdate(PersonRegistrationUtils.createDemographicsUpdateBirthDate(demographicsUpdateJSON));
+            patient.setBirthdateEstimated(PersonRegistrationUtils.createDemographicsUpdateBirthDateEstimated(demographicsUpdateJSON));
         }
     }
 
@@ -619,20 +609,20 @@ public class GenericPatientRegistrationJSONMapper{
     }
 
     private void setPersonAddresses() throws JSONException {
-        List<PersonAddress> addresses = createPersonAddresses(patientJSON);
+        List<PersonAddress> addresses = PersonRegistrationUtils.createPersonAddresses(patientJSON);
         if(!addresses.isEmpty()){
             patient.setAddresses(addresses);
         }
     }
     private void updatePersonAddresses() throws JSONException {
-        List<PersonAddress> demographicsUpdateAddresses = createDemographicsUpdatePersonAddresses(demographicsUpdateJSON);
+        List<PersonAddress> demographicsUpdateAddresses = PersonRegistrationUtils.createDemographicsUpdatePersonAddresses(demographicsUpdateJSON);
         for(PersonAddress demographicsUpdateAddress:demographicsUpdateAddresses){
             boolean preExistingAddressFound = false;
             for(PersonAddress preExistingAddress:patient.getAddresses()){
                 if (StringUtils.equals(demographicsUpdateAddress.getUuid(), preExistingAddress.getUuid())) {
                     preExistingAddressFound = true;
                     try{
-                        copyPersonAddress(demographicsUpdateAddress, preExistingAddress);
+                        PersonRegistrationUtils.copyPersonAddress(demographicsUpdateAddress, preExistingAddress);
                     } catch (Exception e){
                         Log.e(getClass().getSimpleName(), "Could not copy address",e);
                     }
@@ -653,7 +643,7 @@ public class GenericPatientRegistrationJSONMapper{
     }
 
     private void setPersonAttributes() throws JSONException{
-        List<PersonAttribute> attributes = createPersonAttributes(patientJSON,muzimaApplication);
+        List<PersonAttribute> attributes = PersonRegistrationUtils.createPersonAttributes(patientJSON,muzimaApplication);
 
         if(!attributes.isEmpty()) {
             patient.setAttributes(attributes);
@@ -661,7 +651,7 @@ public class GenericPatientRegistrationJSONMapper{
     }
 
     private void updatePersonAttributes() throws JSONException{
-        List<PersonAttribute> demographicsUpdatePersonAttributes  = createDemographicsUpdatePersonAttributes(demographicsUpdateJSON,muzimaApplication);
+        List<PersonAttribute> demographicsUpdatePersonAttributes  = PersonRegistrationUtils.createDemographicsUpdatePersonAttributes(demographicsUpdateJSON,muzimaApplication);
 
         Iterator<PersonAttribute> demographicsUpdateAttributesIterator = demographicsUpdatePersonAttributes.iterator();
         while(demographicsUpdateAttributesIterator.hasNext()) {

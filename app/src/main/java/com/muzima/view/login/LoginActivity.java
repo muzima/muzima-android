@@ -48,6 +48,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.textfield.TextInputLayout;
+
 import com.muzima.BuildConfig;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -56,12 +57,13 @@ import com.muzima.api.model.AppRelease;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.MinimumSupportedAppVersion;
 import com.muzima.api.model.MuzimaSetting;
+
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.PatientReport;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.AppReleaseController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.PatientReportController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
@@ -92,6 +94,7 @@ import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.Constants.STANDARD_TIME_FORMAT;
 import static com.muzima.utils.DateUtils.convertLongToDateString;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
+import com.muzima.view.main.HTCMainActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -110,6 +113,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+import com.muzima.utils.DateUtils;
+import com.muzima.utils.DeviceDetailsUtil;
 
 
 //This class shouldn't extend BaseAuthenticatedActivity. Since it is independent of the application's context
@@ -498,7 +504,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Result result) {
             MuzimaApplication muzimaApplication = (MuzimaApplication)getApplicationContext();
-            if (result.status == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
+            if (result.status == com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                 if(isNewUser && !isFirstLaunchValue && ((MuzimaApplication) getApplication()).getMuzimaSettingController().isClearAppDataIfNewUserEnabled()){
                     showAlertDialog(result.credentials);
                 }else {
@@ -516,7 +522,7 @@ public class LoginActivity extends BaseActivity {
                     LocalePreferenceService localePreferenceService = ((MuzimaApplication) getApplication()).getLocalePreferenceService();
 
                     String languageKey = getApplicationContext().getResources().getString(R.string.preference_app_language);
-                    String defaultLanguage = getApplicationContext().getString(R.string.language_english);
+                    String defaultLanguage = getApplicationContext().getString(R.string.language_portuguese);
                     String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey, defaultLanguage);
 
                     localePreferenceService.setPreferredLocale(preferredLocale);
@@ -548,17 +554,17 @@ public class LoginActivity extends BaseActivity {
 
         private String getErrorText(Result result) {
             switch (result.status) {
-                case SyncStatusConstants.MALFORMED_URL_ERROR:
+                case com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.MALFORMED_URL_ERROR:
                     return getString(R.string.error_server_url_invalid);
-                case SyncStatusConstants.INVALID_CREDENTIALS_ERROR:
+                case com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.INVALID_CREDENTIALS_ERROR:
                     return getString(R.string.error_credential_invalid);
-                case SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME:
-                    return getString(R.string.error_username_invalid_format) + SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
-                case SyncStatusConstants.LOCAL_CONNECTION_ERROR:
+                case com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME:
+                    return getString(R.string.error_username_invalid_format) + com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
+                case com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOCAL_CONNECTION_ERROR:
                     return getString(R.string.error_local_connection_unavailable);
-                case SyncStatusConstants.SERVER_CONNECTION_ERROR:
+                case com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SERVER_CONNECTION_ERROR:
                     return getString(R.string.error_server_connection_unavailable);
-                case SyncStatusConstants.UNKNOWN_ERROR:
+                case com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR:
                     return getString(R.string.error_authentication_fail);
                 default:
                     return getString(R.string.error_authentication_fail);
@@ -615,9 +621,9 @@ public class LoginActivity extends BaseActivity {
     public void checkAndUpdateUsageLogsIfNecessary(MuzimaApplication muzimaApplication, Date date, String loggedInUser){
         AppUsageLogsController appUsageLogsController = muzimaApplication.getAppUsageLogsController();
         try {
-            SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
-            SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(STANDARD_TIME_FORMAT);
-            String pseudoDeviceId = generatePseudoDeviceId();
+            SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT);
+            SimpleDateFormat simpleTimeFormat = new SimpleDateFormat(com.muzima.utils.Constants.STANDARD_TIME_FORMAT);
+            String pseudoDeviceId = DeviceDetailsUtil.generatePseudoDeviceId();
 
 
             //update login time
@@ -657,7 +663,7 @@ public class LoginActivity extends BaseActivity {
                     }
                     AppUsageLogs appInstallationOrUpdateTimeLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
                     if(appInstallationOrUpdateTimeLog != null) {
-                        appInstallationOrUpdateTimeLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                        appInstallationOrUpdateTimeLog.setLogvalue(DateUtils.convertLongToDateString(appInstallationOrUpdateTime));
                         appInstallationOrUpdateTimeLog.setUpdateDatetime(new Date());
                         appInstallationOrUpdateTimeLog.setDeviceId(pseudoDeviceId);
                         appInstallationOrUpdateTimeLog.setLogSynced(false);
@@ -666,7 +672,7 @@ public class LoginActivity extends BaseActivity {
                         AppUsageLogs appUsageLog1 = new AppUsageLogs();
                         appUsageLog1.setUuid(UUID.randomUUID().toString());
                         appUsageLog1.setLogKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
-                        appUsageLog1.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                        appUsageLog1.setLogvalue(DateUtils.convertLongToDateString(appInstallationOrUpdateTime));
                         appUsageLog1.setUpdateDatetime(new Date());
                         appUsageLog1.setDeviceId(pseudoDeviceId);
                         appUsageLog1.setUserName(loggedInUser);
@@ -692,7 +698,7 @@ public class LoginActivity extends BaseActivity {
 
                 AppUsageLogs appInstallationOrUpdateTimeLog = appUsageLogsController.getAppUsageLogByKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
                 if(appInstallationOrUpdateTimeLog != null) {
-                    appInstallationOrUpdateTimeLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                    appInstallationOrUpdateTimeLog.setLogvalue(DateUtils.convertLongToDateString(appInstallationOrUpdateTime));
                     appInstallationOrUpdateTimeLog.setUpdateDatetime(new Date());
                     appInstallationOrUpdateTimeLog.setDeviceId(pseudoDeviceId);
                     appInstallationOrUpdateTimeLog.setLogSynced(false);
@@ -701,7 +707,7 @@ public class LoginActivity extends BaseActivity {
                     AppUsageLogs appUsageLog = new AppUsageLogs();
                     appUsageLog.setUuid(UUID.randomUUID().toString());
                     appUsageLog.setLogKey(Constants.AppUsageLogs.APP_INSTALLATION_OR_UPDATE_TIME);
-                    appUsageLog.setLogvalue(convertLongToDateString(appInstallationOrUpdateTime));
+                    appUsageLog.setLogvalue(DateUtils.convertLongToDateString(appInstallationOrUpdateTime));
                     appUsageLog.setUpdateDatetime(new Date());
                     appUsageLog.setDeviceId(pseudoDeviceId);
                     appUsageLog.setUserName(loggedInUser);
@@ -1011,7 +1017,7 @@ public class LoginActivity extends BaseActivity {
             } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
                 e.printStackTrace();
             }
-            if (setting != null && setting.getValueString().equals("ATS")) {
+            if ((setting != null && setting.getValueString() != null) && setting.getValueString().equals("ATS")) {
                 intent = new Intent(getApplicationContext(), HTCMainActivity.class);
             } else {
                 intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
@@ -1206,7 +1212,7 @@ public class LoginActivity extends BaseActivity {
             LocalePreferenceService localePreferenceService = muzimaApplication.getLocalePreferenceService();
 
             String languageKey = getApplicationContext().getResources().getString(R.string.preference_app_language);
-            String defaultLanguage = getApplicationContext().getString(R.string.language_english);
+            String defaultLanguage = getApplicationContext().getString(R.string.language_portuguese);
             String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey, defaultLanguage);
 
             localePreferenceService.setPreferredLocale(preferredLocale);

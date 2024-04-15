@@ -1,64 +1,89 @@
 package com.muzima.view.main;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.patients.PatientsRemoteSearchAdapter;
 import com.muzima.adapters.person.PersonSearchAdapter;
 import com.muzima.api.model.HTCPerson;
-import com.muzima.api.model.Patient;
-import com.muzima.controller.HTCPersonController;
-import com.muzima.domain.Credentials;
-import com.muzima.model.patient.PatientItem;
-import com.muzima.utils.Constants;
-import com.muzima.utils.NetworkUtils;
-import com.muzima.utils.VerticalSpaceItemDecoration;
-import com.muzima.view.BaseActivity;
-import com.muzima.view.person.PersonRegisterActivity;
+import com.muzima.api.model.User;
 
+import com.muzima.controller.HTCPersonController;
+import com.muzima.model.patient.PatientItem;
+import com.muzima.scheduler.MuzimaJobScheduleBuilder;
+import com.muzima.utils.StringUtils;
+import com.muzima.utils.ThemeUtils;
+import com.muzima.utils.VerticalSpaceItemDecoration;
+import com.muzima.utils.ViewUtil;
+import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.login.LoginActivity;
+import com.muzima.view.person.PersonRegisterActivity;
+import com.muzima.view.person.SearchSESPPersonActivity;
+import com.muzima.view.preferences.SettingsActivity;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HTCMainActivity extends BaseActivity {
-
+public class HTCMainActivity extends BroadcastListenerActivity {
     private FloatingActionButton newPersonButton;
-
     private RecyclerView recyclerView;
     private PersonSearchAdapter personSearchAdapter;
-
     private List<PatientItem> searchResults;
-
     private EditText editTextSearch;
-
     private ImageButton searchButton;
-
-
+    Toolbar toolbar;
     private HTCPersonController htcPersonController;
+
+    private androidx.appcompat.app.AlertDialog syncDialog;
+    private TextView userName;
+
+    private User user;
+    private Animation refreshIconRotateAnimation;
+
+
+
+    private ActionMenuItemView syncMenuAction;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_htcmain);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("ATS");
+        this.user = ((MuzimaApplication) getApplication()).getAuthenticatedUser();
+        this.userName = findViewById(R.id.user_name);
+        this.userName.setText(getResources().getString(R.string.welcome_message)+this.user.getUsername());
 
-        this.searchResults = new ArrayList<>();
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.htc);
+
+
+        this.searchResults = (List<PatientItem>) getIntent().getSerializableExtra("searchResults");
+        this.searchResults = this.searchResults==null?new ArrayList<>():this.searchResults;
         searchButton = findViewById(R.id.buttonSearch);
         editTextSearch = findViewById(R.id.search);
 
@@ -69,87 +94,155 @@ public class HTCMainActivity extends BaseActivity {
         recyclerView.setAdapter(personSearchAdapter);
 
         initController();
+        getLatestHTCPersons();
 
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
 
         newPersonButton = findViewById(R.id.new_person);
         newPersonButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), PersonRegisterActivity.class);
+            intent.putExtra("searchResults", (Serializable) searchResults);
+            intent.putExtra("isEditionFlow", Boolean.FALSE);
+            intent.putExtra("isAddATSForSESPExistingPerson", Boolean.FALSE);
             startActivity(intent);
         });
 
         searchButton.setOnClickListener(view -> {
-            new ServerHTCPersonSearchBackgroundTask().execute(editTextSearch.getText().toString());
+            if(StringUtils.isEmpty(editTextSearch.getText().toString())) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(HTCMainActivity.this);
+                builder.setCancelable(false)
+                        .setIcon(ThemeUtils.getIconWarning(getApplicationContext()))
+                        .setTitle(getResources().getString(R.string.general_error))
+                        .setMessage(getResources().getString(R.string.fill_the_intended_name_to_search_on_sesp))
+                        .setPositiveButton(R.string.general_ok, launchDashboard())
+                        .show();
+            } else {
+                Intent intent = new Intent(getApplicationContext(), SearchSESPPersonActivity.class);
+                intent.putExtra("searchValue", editTextSearch.getText().toString());
+                startActivity(intent);
+            }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_htc_main, menu);
+
+        syncMenuAction = findViewById(R.id.menu_sync_htc);
+        return true;
+    }
+
+    private void logout() {
+        if(((MuzimaApplication) getApplication()).getAuthenticatedUser() != null) {
+            ((MuzimaApplication) getApplication()).logOut();
+            launchLoginActivity();
+        }
+    }
+
+    private void launchLoginActivity() {
+        Intent intent = new Intent(getApplication(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(LoginActivity.isFirstLaunch, false);
+        intent.putExtra(LoginActivity.sessionTimeOut, false);
+        getApplication().startActivity(intent);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_sync_htc:
+                refreshIconRotateAnimation = AnimationUtils.loadAnimation(HTCMainActivity.this, R.anim.rotate_refresh);
+                refreshIconRotateAnimation.setRepeatCount(Animation.INFINITE);
+                processSync(refreshIconRotateAnimation);
+                return true;
+            case R.id.menu_log_out:
+                showExitAlertDialog();
+                return true;
+            case R.id.menu_language:
+                openLanguageDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void openLanguageDialog() {
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        intent.putExtra("MODULE", "ATS");
+        startActivity(intent);
+    }
+
+    private void processSync(Animation refreshIconRotateAnimation){
+        syncDialog = ViewUtil.displayAlertDialog(HTCMainActivity.this, "Envio de novos dados de ATS para o servidor em curso...");
+        if(!isDataSyncRunning()) {
+            syncMenuAction.startAnimation(refreshIconRotateAnimation);
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.info_muzima_sync_service_in_progress), Toast.LENGTH_LONG).show();
+            new MuzimaJobScheduleBuilder(getApplicationContext()).schedulePeriodicBackgroundJob(1000, true);
+            syncDialog.show();
+            //showBackgroundSyncProgressDialog(HTCMainActivity.this);
+        } else {
+            syncDialog.show();
+            //showBackgroundSyncProgressDialog(HTCMainActivity.this);
+        }
+    }
+
+    protected void updateSyncProgressWidgets(boolean isSyncRunning){
+        if(!isSyncRunning){
+            syncMenuAction.clearAnimation();
+            getLatestHTCPersons();
+            personSearchAdapter.notifyDataSetChanged();
+            if (syncDialog != null && syncDialog.isShowing()) syncDialog.dismiss();
+            ViewUtil.displayAlertDialog(HTCMainActivity.this, "Envio de novos dados de ATS para o servidor efectuado com sucesso.").show();
+
+        } else{
+            syncMenuAction.startAnimation(refreshIconRotateAnimation);
+        }
     }
 
     private void initController() {
         this.htcPersonController = ((MuzimaApplication) getApplicationContext()).getHtcPersonController();
     }
-
     @Override
     public void setSupportActionBar(@Nullable Toolbar toolbar) {
         super.setSupportActionBar(toolbar);
     }
 
-    private class ServerHTCPersonSearchBackgroundTask extends AsyncTask<String, Void, Object> {
-
-        @Override
-        protected void onPreExecute() {
-            onPreExecuteUpdate();
+    private void getLatestHTCPersons() {
+        List<HTCPerson> htcPersonList = this.htcPersonController.getLatestHTCPersons();
+        searchResults.clear();
+        for (HTCPerson htcPerson: htcPersonList) {
+             PatientItem patientItem = new PatientItem(htcPerson);
+             searchResults.add(patientItem);
         }
-        @Override
-        protected void onPostExecute(Object patientsObject) {
-            List<HTCPerson> htcPersonList = (List<HTCPerson>)patientsObject;
-            onPostExecuteUpdate(htcPersonList);
-        }
-        @Override
-        protected Object doInBackground(String... strings) {
-            MuzimaApplication applicationContext = (MuzimaApplication) getApplicationContext();
-
-            Credentials credentials = new Credentials(applicationContext);
-            try {
-                Constants.SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(applicationContext, credentials.getServerUrl());
-                if(serverStatus == Constants.SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE) {
-                    int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
-                    if (authenticateResult == Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS) {
-                        return htcPersonController.searchPersonOnServer(strings[0]);
-                    } else {
-                        cancel(true);
-                        return authenticateResult;
-                    }
-                }else {
-                    cancel(true);
-                    return serverStatus;
-                }
-
-            } catch (Throwable t) {
-                Log.e(getClass().getSimpleName(), "Error while searching for person in the server.", t);
-            } finally {
-                applicationContext.getMuzimaContext().closeSession();
+    }
+    private DialogInterface.OnClickListener launchDashboard() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
             }
-            Log.e(getClass().getSimpleName(), "Authentication failure !! Returning empty patient list");
-            return new ArrayList<Patient>();
-        }
+        };
     }
 
-    private void onPreExecuteUpdate() {
-        this.searchResults.clear();
-        this.personSearchAdapter.notifyDataSetChanged();
+    private void showExitAlertDialog() {
+        String message = getResources().getString(R.string.warning_logout_confirm);
+
+        new AlertDialog.Builder(HTCMainActivity.this)
+                .setCancelable(true)
+                .setIcon(ThemeUtils.getIconWarning(this))
+                .setTitle(getResources().getString(R.string.title_logout_confirm))
+                .setMessage(message)
+                .setPositiveButton(getString(R.string.general_yes), exitApplication())
+                .setNegativeButton(getString(R.string.general_no), null)
+                .create()
+                .show();
     }
 
-    private void onPostExecuteUpdate(List<HTCPerson> htcPersonList) {
-        if (htcPersonList == null) {
-            Toast.makeText(this, getApplicationContext().getString(R.string.error_patient_repo_fetch), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        this.searchResults.clear();
-
-        for(HTCPerson patient:htcPersonList) {
-            this.searchResults.add(new PatientItem(patient));
-        }
-
-        this.personSearchAdapter.notifyDataSetChanged();
+    private Dialog.OnClickListener exitApplication() {
+        return (dialog, which) -> {
+            ((MuzimaApplication) getApplication()).logOut();
+            launchLoginActivity();
+        };
     }
 }

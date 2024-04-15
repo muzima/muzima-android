@@ -10,13 +10,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.util.TypedValue;
 import android.view.ActionMode;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +23,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.relationships.RelationshipsAdapter;
 import com.muzima.api.model.MuzimaSetting;
-import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Relationship;
@@ -37,7 +34,6 @@ import com.muzima.view.forms.RegistrationFormsActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import es.dmoral.toasty.Toasty;

@@ -13,7 +13,6 @@ package com.muzima.view.patients;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
 import android.util.Log;
@@ -38,6 +37,7 @@ import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -17,7 +17,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.legacy.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
@@ -47,7 +46,6 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.TagsUtil;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.MainDashboardActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,10 +54,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
-import static com.muzima.view.patients.PatientSummaryActivity.PATIENT;
-import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
+import com.muzima.utils.Constants;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 
 public class FormsWithDataActivity extends FormsActivityBase {
@@ -86,7 +82,7 @@ public class FormsWithDataActivity extends FormsActivityBase {
         formController = ((MuzimaApplication) getApplication()).getFormController();
         tagPreferenceService = new TagPreferenceService(this);
 
-        patientUuid = getIntent().getStringExtra(PATIENT_UUID);
+        patientUuid = getIntent().getStringExtra(PatientSummaryActivity.PATIENT_UUID);
 
         loadPatientData();
         initPager();
@@ -173,37 +169,37 @@ public class FormsWithDataActivity extends FormsActivityBase {
     protected void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
 
-        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
-        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+        int syncStatus = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
 
         switch (syncType) {
-            case DataSyncServiceConstants.SYNC_FORMS:
+            case Constants.DataSyncServiceConstants.SYNC_FORMS:
                 hideProgressbar();
                 syncInProgress = false;
-                if (syncStatus == SyncStatusConstants.SUCCESS) {
+                if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                     //tagsListAdapter.reloadData();
                     ((FormsPagerAdapter) formsPagerAdapter).onFormMetadataDownloadFinish();
                 }
                 break;
-            case DataSyncServiceConstants.SYNC_UPLOAD_FORMS:
+            case Constants.DataSyncServiceConstants.SYNC_UPLOAD_FORMS:
                 menuUpload.setActionView(null);
                 syncInProgress = false;
-                if (syncStatus == SyncStatusConstants.SUCCESS) {
+                if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                     ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
                     syncAllFormsInBackgroundService();
                 }
 
                 break;
-            case DataSyncServiceConstants.SYNC_TEMPLATES:
+            case Constants.DataSyncServiceConstants.SYNC_TEMPLATES:
                 hideProgressbar();
-                if (syncStatus == SyncStatusConstants.SUCCESS) {
+                if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                     ((FormsPagerAdapter) formsPagerAdapter).onFormTemplateDownloadFinish();
                 }
                 break;
-            case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
+            case Constants.DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
                 SharedPreferences sp = getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", MODE_PRIVATE);
                 if (sp.getBoolean("active", false)) {
-                    if (syncStatus == SyncStatusConstants.SUCCESS) {
+                    if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                         ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
                     }
                 }

@@ -12,13 +12,12 @@ package com.muzima.view.preferences.settings;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.Build;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.MuzimaSyncService;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import com.muzima.utils.Constants;
 
 class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     private final SettingsPreferenceFragment settingsPreferenceFragment;
@@ -33,7 +32,7 @@ class SyncFormDataTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected Boolean doInBackground(String... params) {
         int[] result = muzimaSyncService.uploadAllCompletedForms();
-        return result[0] == SyncStatusConstants.SUCCESS;
+        return result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
     }
 
     @Override

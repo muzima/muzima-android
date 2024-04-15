@@ -11,15 +11,14 @@
 package com.muzima.view.forms;
 
 import android.content.Context;
-import androidx.fragment.app.FragmentActivity;
+
 import com.muzima.view.SyncIntent;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_FORMS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import com.muzima.utils.Constants;
 
 public class SyncFormIntent extends SyncIntent {
     public SyncFormIntent(Context context) {
         super(context);
-        putExtra(SYNC_TYPE, SYNC_FORMS);
+        putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_FORMS);
     }
 }

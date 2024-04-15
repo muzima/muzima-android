@@ -83,7 +83,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:justificationMode="inter_word"
                 android:text="@string/info_confidentiality_text"
-                android:visibility="gone"/>
+                />
         </LinearLayout>
 
         <View

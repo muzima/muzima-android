@@ -1,9 +1,6 @@
 package com.muzima.utils;
 
-import android.util.Log;
-
 import com.muzima.api.model.ConceptName;
-import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedConceptName;
 
 import java.util.List;

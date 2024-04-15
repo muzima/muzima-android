@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
+
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
@@ -52,10 +52,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT;
-
 import org.json.JSONException;
+
+import com.muzima.utils.ConceptUtils;
 
 public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
@@ -133,7 +132,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
             }
 
             if(relationship.getPersonB().getGender() != null && !StringUtils.isEmpty(relationship.getPersonB().getGender())) {
-                int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.ic_female;
+                int genderDrawable = relationship.getPersonB().getGender().equalsIgnoreCase("M") ? R.drawable.gender_male : R.drawable.gender_female;
                 holder.genderImg.setImageDrawable(context.getResources().getDrawable(genderDrawable));
             }
             else{
@@ -188,7 +187,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
             holder.hivCareDetails.setVisibility(View.GONE);
         }else {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
 
             try {
                 holder.testDate.setText(getObsDateTimeByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
@@ -250,9 +249,9 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
             if(observations.size()>0){
                 Observation obs = observations.get(0);
                 if(concept.isDatetime())
-                    return DateUtils.getFormattedDate(obs.getValueDatetime(),SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+                    return DateUtils.getFormattedDate(obs.getValueDatetime(), DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
                 else if(concept.isCoded())
-                    return getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(),applicationLanguage);
+                    return ConceptUtils.getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(),applicationLanguage);
                 else if(concept.isNumeric())
                     return String.valueOf(obs.getValueNumeric());
                 else
@@ -271,7 +270,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
             Collections.sort(observations, observationDateTimeComparator);
             if(observations.size()>0){
                 Observation obs = observations.get(0);
-                return DateUtils.getFormattedDate(obs.getObservationDatetime(),SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+                return DateUtils.getFormattedDate(obs.getObservationDatetime(), DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
             }
         } catch (ObservationController.LoadObservationException | Exception  e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);

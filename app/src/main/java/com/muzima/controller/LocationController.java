@@ -16,6 +16,7 @@ import com.muzima.api.model.LocationAttribute;
 import com.muzima.api.model.LocationAttributeType;
 import com.muzima.api.service.LocationService;
 import com.muzima.utils.StringUtils;
+
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;

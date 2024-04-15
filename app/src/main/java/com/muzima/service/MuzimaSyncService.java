@@ -21,7 +21,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
 import com.muzima.api.model.AppUsageLogs;
@@ -36,6 +35,7 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormDataStatus;
 import com.muzima.api.model.FormTemplate;
+import com.muzima.api.model.HTCPerson;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Media;
 import com.muzima.api.model.MediaCategory;
@@ -54,6 +54,8 @@ import com.muzima.api.model.RelationshipType;
 import com.muzima.api.model.ReportDataset;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
+
+import com.muzima.R;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.CohortMemberSummaryController;
@@ -61,6 +63,7 @@ import com.muzima.controller.ConceptController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.FormController;
+import com.muzima.controller.HTCPersonController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MediaCategoryController;
 import com.muzima.controller.MediaController;
@@ -122,12 +125,7 @@ import static com.muzima.utils.Constants.FGH.TagsUuids.SIM_TAG_UUID;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
-import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
-import static com.muzima.utils.Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID;
-import static com.muzima.utils.Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID;
-import static com.muzima.utils.Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID;
-import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
-import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
+import com.muzima.utils.DeviceDetailsUtil;
 
 public class MuzimaSyncService {
     private static final String TAG = "MuzimaSyncService";
@@ -152,6 +150,8 @@ public class MuzimaSyncService {
     private DerivedObservationController derivedObservationController;
 
     private CohortMemberSummaryController cohortMemberSummaryController;
+
+    private HTCPersonController htcPersonController;
     private Logger logger;
     private String pseudoDeviceId;
 
@@ -176,7 +176,9 @@ public class MuzimaSyncService {
         derivedConceptController = muzimaApplication.getDerivedConceptController();
         derivedObservationController = muzimaApplication.getDerivedObservationController();
         cohortMemberSummaryController = muzimaApplication.getCohortMemberSummaryController();
-        pseudoDeviceId = generatePseudoDeviceId();
+        htcPersonController = muzimaApplication.getHtcPersonController();
+
+        pseudoDeviceId = DeviceDetailsUtil.generatePseudoDeviceId();
     }
 
     public int authenticate(String[] credentials) {
@@ -2936,5 +2938,68 @@ public class MuzimaSyncService {
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
         }
+    }
+
+    public int[] downloadHtcPersons(String providerUuid) {
+        int[] result = new int[4];
+        List<HTCPerson> htcPersonList = new ArrayList<>(htcPersonController.downloadHtcPersonsOfProvider(providerUuid));
+        htcPersonController.saveHtcPersons(htcPersonList);
+
+        result[3] = htcPersonList.size();
+        result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+        return result;
+    }
+
+
+    public int[] uploadAllPendingHtcData() {
+        int[] result = new int[1];
+        try {
+            result[0] = htcPersonController.uploadAllPendingHtcData() ? Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS : Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
+            htcPersonController.deleteHtcPersonPendingDeletion();
+            try {
+                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(Constants.STANDARD_DATE_TIMEZONE_FORMAT);
+                AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME, muzimaApplication.getAuthenticatedUserId());
+                if (lastUploadLog != null) {
+                    lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                    lastUploadLog.setUpdateDatetime(new Date());
+                    lastUploadLog.setUserName(muzimaApplication.getAuthenticatedUserId());
+                    lastUploadLog.setDeviceId(pseudoDeviceId);
+                    lastUploadLog.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(lastUploadLog);
+                } else {
+                    AppUsageLogs newUploadTime = new AppUsageLogs();
+                    newUploadTime.setUuid(UUID.randomUUID().toString());
+                    newUploadTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME);
+                    newUploadTime.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
+                    newUploadTime.setUpdateDatetime(new Date());
+                    newUploadTime.setUserName(muzimaApplication.getAuthenticatedUserId());
+                    newUploadTime.setDeviceId(pseudoDeviceId);
+                    newUploadTime.setLogSynced(false);
+                    appUsageLogsController.saveOrUpdateAppUsageLog(newUploadTime);
+                }
+            } catch (IOException e) {
+                Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
+            } catch (ParseException e) {
+                Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
+            }
+        } catch (HTCPersonController.UploadHtcDataException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while uploading htc data.", e);
+            String exceptionError = e.getMessage();
+            String[] exceptionErrorArray = exceptionError.split(":", 0);
+            String uploadError = "";
+            int i = 0;
+            for (String error : exceptionErrorArray) {
+                if (i == 0) {
+                    uploadError = error.trim();
+                }
+                i++;
+            }
+            if (uploadError.equals("java.net.ConnectException")) {
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SERVER_CONNECTION_ERROR;
+            } else {
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
+            }
+        }
+        return result;
     }
 }

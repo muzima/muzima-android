@@ -34,11 +34,9 @@ import com.muzima.api.model.User;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LocationService;
-import com.muzima.api.service.NotificationService;
 import com.muzima.api.service.NotificationTokenService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PersonService;
-import com.muzima.api.service.PersonTagService;
 import com.muzima.api.service.ProviderService;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.AppReleaseController;
@@ -55,6 +53,7 @@ import com.muzima.controller.LocationController;
 import com.muzima.controller.MediaCategoryController;
 import com.muzima.controller.MediaController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
+import com.muzima.controller.MuzimaHTCFormController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
@@ -94,10 +93,7 @@ import java.util.concurrent.TimeUnit;
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
-
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
-import static com.muzima.view.preferences.MuzimaTimer.getTimer;
+import com.muzima.R;
 
 import org.apache.lucene.queryParser.ParseException;
 
@@ -130,7 +126,7 @@ public class MuzimaApplication extends MultiDexApplication {
     private DerivedObservationController derivedObservationController;
 
     private CohortMemberSummaryController cohortMemberSummaryController;
-
+    private MuzimaHTCFormController htcFormController;
     private HTCPersonController htcPersonController;
     private MuzimaTimer muzimaTimer;
     private static final String APP_DIR = "/data/data/com.muzima";
@@ -177,7 +173,7 @@ public class MuzimaApplication extends MultiDexApplication {
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
 
         logOut();
-        muzimaTimer = getTimer(this);
+        muzimaTimer = MuzimaTimer.getTimer(this);
 
         super.onCreate();
         checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted();
@@ -546,8 +542,8 @@ public class MuzimaApplication extends MultiDexApplication {
             getPersonController().deletePersons(availablePersons);
 
             List<FormData> formDataList = new ArrayList<>();
-            List<FormData> incompleteForms = getFormController().getAllFormData(STATUS_INCOMPLETE);
-            List<FormData> completeForms = getFormController().getAllFormData(STATUS_COMPLETE);
+            List<FormData> incompleteForms = getFormController().getAllFormData(com.muzima.utils.Constants.STATUS_INCOMPLETE);
+            List<FormData> completeForms = getFormController().getAllFormData(com.muzima.utils.Constants.STATUS_COMPLETE);
             if(incompleteForms.size()>0)
                 formDataList.addAll(incompleteForms);
             if(completeForms.size()>0)
@@ -780,12 +776,23 @@ public class MuzimaApplication extends MultiDexApplication {
     public HTCPersonController getHtcPersonController() {
         if(htcPersonController == null){
             try{
-                htcPersonController = new HTCPersonController(muzimaContext.getHtcPersonService());
+                htcPersonController = new HTCPersonController(muzimaContext.getHtcPersonService(), muzimaContext.getMuzimaHtcService(), this);
             }catch (IOException e){
                 throw new RuntimeException(e);
             }
         }
 
         return htcPersonController;
+    }
+    public MuzimaHTCFormController getHtcFormController() {
+        if(htcFormController == null){
+            try{
+                htcFormController = new MuzimaHTCFormController(muzimaContext.getMuzimaHtcService());
+            }catch (IOException e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        return htcFormController;
     }
 }

@@ -14,12 +14,10 @@ import android.app.Activity;
 import com.muzima.utils.Constants;
 import com.muzima.view.SyncIntent;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants;
-
 public class DownloadPatientReportsIntent extends SyncIntent {
     public DownloadPatientReportsIntent(Activity activity, String[] selectedReportsArray) {
         super(activity);
-        putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_PATIENT_REPORTS);
+        putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_PATIENT_REPORTS);
         putExtra(Constants.SyncPatientReportsConstants.REPORT_UUIDS, selectedReportsArray);
     }
 }

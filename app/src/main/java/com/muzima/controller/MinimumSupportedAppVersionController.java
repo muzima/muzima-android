@@ -10,8 +10,6 @@
 
 package com.muzima.controller;
 
-import android.util.Log;
-
 import com.muzima.api.model.MinimumSupportedAppVersion;
 import com.muzima.api.service.MinimumSupportedAppVersionService;
 

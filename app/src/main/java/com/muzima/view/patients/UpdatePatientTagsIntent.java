@@ -8,8 +8,6 @@ import com.muzima.utils.Constants;
 
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.PATIENT_UUIDS;
-
 public class UpdatePatientTagsIntent extends Intent {
     private final Context context;
 
@@ -17,7 +15,7 @@ public class UpdatePatientTagsIntent extends Intent {
         super(context, DataSyncService.class);
         this.context = context;
         putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.UPDATE_PATIENT_TAGS);
-        putExtra(PATIENT_UUIDS, patientUuidsList.toArray(new String[patientUuidsList.size()]));
+        putExtra(Constants.DataSyncServiceConstants.PATIENT_UUIDS, patientUuidsList.toArray(new String[patientUuidsList.size()]));
 
     }
 

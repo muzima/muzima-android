@@ -16,7 +16,6 @@ import android.content.Context;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Surface;
