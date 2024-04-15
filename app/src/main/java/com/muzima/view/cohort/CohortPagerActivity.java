@@ -35,13 +35,12 @@ import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.model.events.CohortsDownloadedEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
-import com.muzima.utils.Constants.DataSyncServiceConstants;
-import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
 import org.greenrobot.eventbus.EventBus;;
+import com.muzima.utils.Constants;
 
 public class CohortPagerActivity extends ActivityWithBottomNavigation {
     private ViewPager viewPager;
@@ -173,34 +172,34 @@ public class CohortPagerActivity extends ActivityWithBottomNavigation {
     }
 
     protected void onReceive(Context context, Intent intent) {
-        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
-        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
-        int downloadCount = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
+        int syncStatus = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
+        int downloadCount = intent.getIntExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_PRIMARY, 0);
 
-        if (syncStatus != SyncStatusConstants.SUCCESS)
+        if (syncStatus != Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS)
             EventBus.getDefault().post(new CohortsDownloadedEvent(false));
         else {
             String msg = StringUtils.EMPTY;
 
             switch (syncType) {
-                case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
+                case Constants.DataSyncServiceConstants.SYNC_COHORTS_METADATA:
                     msg = getString(R.string.info_new_cohort_download, downloadCount);
                     break;
-                case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
-                    int downloadCountSec = intent.getIntExtra(DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
+                case Constants.DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
+                    int downloadCountSec = intent.getIntExtra(Constants.DataSyncServiceConstants.DOWNLOAD_COUNT_SECONDARY, 0);
                     msg = getString(R.string.info_cohort_new_patient_download, downloadCount, downloadCountSec) + getString(R.string.info_patient_data_download);
                     break;
-                case DataSyncServiceConstants.SYNC_OBSERVATIONS:
+                case Constants.DataSyncServiceConstants.SYNC_OBSERVATIONS:
                     msg = getString(R.string.info_new_observation_download, downloadCount);
                     break;
-                case DataSyncServiceConstants.SYNC_ENCOUNTERS:
+                case Constants.DataSyncServiceConstants.SYNC_ENCOUNTERS:
                     msg = getString(R.string.info_new_encounter_download, downloadCount);
                     EventBus.getDefault().post(new CohortsDownloadedEvent(true));
                     break;
             }
 
             if (StringUtils.isEmpty(msg))
-                msg = getString(R.string.info_download_complete, syncStatus) + " Sync type = " + intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+                msg = getString(R.string.info_download_complete, syncStatus) + " Sync type = " + intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
 
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         }

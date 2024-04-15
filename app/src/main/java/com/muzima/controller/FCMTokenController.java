@@ -10,8 +10,6 @@
 
 package com.muzima.controller;
 
-import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
-
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
@@ -19,10 +17,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.service.NotificationTokenService;
 
 import java.io.IOException;
+
+import com.muzima.R;
+import com.muzima.utils.DeviceDetailsUtil;
 
 public class FCMTokenController {
     private final NotificationTokenService notificationTokenService;
@@ -45,7 +45,7 @@ public class FCMTokenController {
             String appTokenKey = context.getResources().getString(R.string.preference_app_token);
             String token = sharedPreferences.getString(appTokenKey, null);
 
-            String pseudoDeviceId = generatePseudoDeviceId();
+            String pseudoDeviceId = DeviceDetailsUtil.generatePseudoDeviceId();
             String serial = "UNKNOWN";
 
             try {

@@ -1,8 +1,5 @@
 package com.muzima.controller;
 
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_UPLOADED;
-
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
@@ -16,6 +13,8 @@ import org.apache.lucene.queryParser.ParseException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.muzima.utils.Constants;
 
 public class HTCPersonController {
     private final HTCPersonService htcPersonService;
@@ -47,7 +46,7 @@ public class HTCPersonController {
     }
     public void saveHTCPerson(HTCPerson htcPerson) {
         try {
-            htcPerson.setSyncStatus(STATUS_COMPLETE);
+            htcPerson.setSyncStatus(Constants.STATUS_COMPLETE);
             htcPersonService.saveHTCPerson(htcPerson);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while searching for person in the server", e);
@@ -99,11 +98,11 @@ public class HTCPersonController {
     public boolean uploadAllPendingHtcData() throws UploadHtcDataException {
         boolean result = false;
         try {
-        List<HTCPerson> htcPersonList = htcPersonService.getBySyncStatus(STATUS_COMPLETE);
+        List<HTCPerson> htcPersonList = htcPersonService.getBySyncStatus(Constants.STATUS_COMPLETE);
             for (HTCPerson person : htcPersonList) {
                 person.setHtcForm(htcFormService.getHTCFormByHTCPersonUuid(person.getUuid()));
                 if (htcPersonService.syncHtcData(person)) {
-                    person.setSyncStatus(STATUS_UPLOADED);
+                    person.setSyncStatus(Constants.STATUS_UPLOADED);
                     htcPersonService.updateHTCPerson(person);
                     result = true;
                     MuzimaLoggerService.log(muzimaApplication, "SYNCED_HTC_DATA", "{\"htcPersonUuid\":\"" + person.getUuid() + "\"}");

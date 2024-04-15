@@ -21,7 +21,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
 import com.muzima.api.model.AppUsageLogs;
@@ -55,6 +54,8 @@ import com.muzima.api.model.RelationshipType;
 import com.muzima.api.model.ReportDataset;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
+
+import com.muzima.R;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.CohortMemberSummaryController;
@@ -109,26 +110,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
-import static com.muzima.utils.Constants.FGH.DerivedConcepts.CONTACTS_TESTED_DERIVED_CONCEPT_ID;
-import static com.muzima.utils.Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID;
-import static com.muzima.utils.Constants.FGH.TagsUuids.NAO_TAG_UUID;
-import static com.muzima.utils.Constants.FGH.TagsUuids.SIM_TAG_UUID;
-import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
 
-import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
-import static com.muzima.utils.Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID;
-import static com.muzima.utils.Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID;
-import static com.muzima.utils.Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID;
-import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
-import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
+import com.muzima.utils.DeviceDetailsUtil;
 
 public class MuzimaSyncService {
     private static final String TAG = "MuzimaSyncService";
@@ -181,7 +165,7 @@ public class MuzimaSyncService {
         cohortMemberSummaryController = muzimaApplication.getCohortMemberSummaryController();
         htcPersonController = muzimaApplication.getHtcPersonController();
 
-        pseudoDeviceId = generatePseudoDeviceId();
+        pseudoDeviceId = DeviceDetailsUtil.generatePseudoDeviceId();
     }
 
     public int authenticate(String[] credentials) {
@@ -202,38 +186,38 @@ public class MuzimaSyncService {
             muzimaContext.openSession();
             if (!muzimaContext.isAuthenticated()) {
                 if (isUpdatePasswordRequired && !NetworkUtils.isConnectedToNetwork(muzimaApplication)) {
-                    return SyncStatusConstants.LOCAL_CONNECTION_ERROR;
+                    return Constants.DataSyncServiceConstants.SyncStatusConstants.LOCAL_CONNECTION_ERROR;
                 } else {
                     muzimaContext.authenticate(username, password, server, isUpdatePasswordRequired);
                 }
             }
         } catch (ConnectException e) {
             Log.e(getClass().getSimpleName(), "ConnectException Exception thrown while authentication.", e);
-            return SyncStatusConstants.SERVER_CONNECTION_ERROR;
+            return Constants.DataSyncServiceConstants.SyncStatusConstants.SERVER_CONNECTION_ERROR;
         } catch (ParseException e) {
             Log.e(getClass().getSimpleName(), "ParseException Exception thrown while authentication.", e);
-            return SyncStatusConstants.PARSING_ERROR;
+            return Constants.DataSyncServiceConstants.SyncStatusConstants.PARSING_ERROR;
         } catch (MalformedURLException e) {
             Log.e(getClass().getSimpleName(), "IOException Exception thrown while authentication.", e);
-            return SyncStatusConstants.MALFORMED_URL_ERROR;
+            return Constants.DataSyncServiceConstants.SyncStatusConstants.MALFORMED_URL_ERROR;
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "IOException Exception thrown while authentication.", e);
-            return SyncStatusConstants.AUTHENTICATION_ERROR;
+            return Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_ERROR;
         } catch (AuthenticationException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while authentication.", e);
-            return SyncStatusConstants.INVALID_CREDENTIALS_ERROR;
+            return Constants.DataSyncServiceConstants.SyncStatusConstants.INVALID_CREDENTIALS_ERROR;
         } catch (IllegalArgumentException e) {
             Log.e(getClass().getSimpleName(), "IllegalArgumentException Exception thrown while authenticating.", e);
-            return SyncStatusConstants.UNKNOWN_ERROR;
+            return Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
         } finally {
             if (muzimaContext != null)
                 muzimaContext.closeSession();
         }
-        return SyncStatusConstants.AUTHENTICATION_SUCCESS;
+        return Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS;
     }
 
     private boolean hasInvalidSpecialCharacter(String username) {
-        String invalidCharacters = SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
+        String invalidCharacters = Constants.DataSyncServiceConstants.SyncStatusConstants.INVALID_CHARACTER_FOR_USERNAME;
         for (int i = 0; i < invalidCharacters.length(); i++) {
             String substring = invalidCharacters.substring(i, i + 1);
             if (username.contains(substring)) {
@@ -260,21 +244,21 @@ public class MuzimaSyncService {
             Log.d(getClass().getSimpleName(), "In downloading forms: " + (endDownloadForms - startDownloadForms) / 1000 + " sec\n" +
                     "In replacing forms: " + (endDownloadForms - endSaveForms) / 1000 + " sec");
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = allDownloadedForms.size();
             result[2] = deletedFormCount;
 
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download forms", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         } catch (FormController.FormSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save forms", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (FormController.FormDeleteException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to delete forms", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
             return result;
         }
         return result;
@@ -346,34 +330,34 @@ public class MuzimaSyncService {
 
             Log.i(getClass().getSimpleName(), "Form templates replaced");
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = formTemplates.size();
             result[2] = concepts.size();
         } catch (FormController.FormSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save forms", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download forms", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         } catch (ConceptController.ConceptDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception while parsing Concepts", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         } catch (ConceptController.ConceptSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download forms", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (ConceptController.ConceptFetchException e) {
             Log.e(getClass().getSimpleName(),"Encounter an exception while fetching concepts",e);
         } catch (ProviderController.ProviderLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception while loading Providers", e);
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
             return result;
         } catch (ProviderController.ProviderSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception while saving Provider", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         }
         return result;
@@ -410,15 +394,15 @@ public class MuzimaSyncService {
 
             Log.i(getClass().getSimpleName(), "Form templates replaced");
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = formTemplates.size();
         } catch (FormController.FormSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save forms", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (FormController.FormFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download forms", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         }
         return result;
@@ -432,15 +416,15 @@ public class MuzimaSyncService {
             locationController.saveLocations(locations);
             Log.i(getClass().getSimpleName(), "Downloaded " + locations.size() + " locations");
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = locations.size();
         } catch (LocationController.LocationSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save locations", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (LocationController.LocationDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download locations", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         }
         return result;
@@ -454,15 +438,15 @@ public class MuzimaSyncService {
             providerController.saveProviders(providers);
             Log.i(getClass().getSimpleName(), "Downloaded " + providers.size() + " providers");
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = providers.size();
         } catch (ProviderController.ProviderSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save providers", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (ProviderController.ProviderDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download providers", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         }
         return result;
@@ -476,15 +460,15 @@ public class MuzimaSyncService {
             conceptController.saveConcepts(concepts);
             Log.i(getClass().getSimpleName(), "Downloaded " + concepts.size() + " concepts");
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = concepts.size();
         } catch (ConceptController.ConceptSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save concepts", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (ConceptController.ConceptDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download concepts", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         }
         return result;
@@ -498,20 +482,20 @@ public class MuzimaSyncService {
             cohorts.removeAll(voidedCohorts);
             cohortController.saveOrUpdateCohorts(cohorts);
             Log.i(getClass().getSimpleName(), "New cohorts are saved");
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = cohorts.size();
             result[2] = voidedCohorts.size();
         } catch (CohortController.CohortDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download cohorts", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         } catch (CohortController.CohortSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save cohorts", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (CohortController.CohortDeleteException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while deleting voided cohorts", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
             return result;
         }
         return result;
@@ -526,20 +510,20 @@ public class MuzimaSyncService {
 
             cohortController.saveOrUpdateCohorts(cohorts);
             Log.i(getClass().getSimpleName(), "New cohorts are saved");
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = cohorts.size();
             result[2] = voidedCohorts.size();
         } catch (CohortController.CohortDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download cohorts", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         } catch (CohortController.CohortSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save cohorts", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         } catch (CohortController.CohortDeleteException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while deleting voided cohorts", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
             return result;
         }
         return result;
@@ -558,11 +542,11 @@ public class MuzimaSyncService {
                 }
                 return downloadPatientsForCohorts(cohortUuids);
             } else {
-                result[0] = SyncStatusConstants.CANCELLED;
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.CANCELLED;
             }
         } catch (CohortController.CohortFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }
@@ -589,14 +573,14 @@ public class MuzimaSyncService {
                 patientController.deletePatientByCohortMembership(cohortData.getCohortMembers());
             }
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = cohortDataList.size();
         } catch (CohortController.CohortDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (CohortController.CohortDeleteException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while replacing cohort data.", e);
-            result[0] = SyncStatusConstants.REPLACE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.REPLACE_ERROR;
         }
         return result;
     }
@@ -634,7 +618,7 @@ public class MuzimaSyncService {
             Log.d(getClass().getSimpleName(), "In Downloading cohort data: " + (endDownloadCohortData - startDownloadCohortData) / 1000 + " sec\n" +
                     "In Replacing cohort members and patients: " + (cohortMemberAndPatientReplaceTime - endDownloadCohortData) / 1000 + " sec");
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = patientCount;
             result[2] = cohortDataList.size();
             result[3] = voidedPatients.size();
@@ -662,19 +646,19 @@ public class MuzimaSyncService {
             cohortController.setSyncStatus(cohortUuids,1);
         } catch (CohortController.CohortDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading cohort data.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (CohortController.CohortReplaceException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while replacing cohort data.", e);
-            result[0] = SyncStatusConstants.REPLACE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.REPLACE_ERROR;
         } catch (PatientController.PatientSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while replacing patients.", e);
-            result[0] = SyncStatusConstants.REPLACE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.REPLACE_ERROR;
         } catch (PatientController.PatientDeleteException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while deleting patients.", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
         } catch (CohortController.CohortUpdateException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while marking cohorts as updated.", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }
@@ -694,14 +678,14 @@ public class MuzimaSyncService {
             downloadedPatients = downloadPatientsByUUID(patientUUIDs);
             patientController.savePatients(downloadedPatients);
             Log.e(getClass().getSimpleName(), "DOWNLOADED PATIENTS.");
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = downloadedPatients.size();
         } catch (PatientController.PatientDownloadException e) {
             Log.e(getClass().getSimpleName(), "Error while downloading patients.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (PatientController.PatientSaveException e) {
             Log.e(getClass().getSimpleName(), "Error while saving patients.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         }
         return result;
     }
@@ -716,7 +700,7 @@ public class MuzimaSyncService {
             patientlist = getPatientUuids(patients);
 
             result = downloadObservationsForPatientsByPatientUUIDs(patientlist, replaceExistingObservation);
-            if (result[0] != SUCCESS) {
+            if (result[0] != Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                 updateProgressDialog(muzimaApplication.getString(R.string.error_encounter_observation_download));
 
             }
@@ -728,7 +712,7 @@ public class MuzimaSyncService {
             }
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }
@@ -744,12 +728,12 @@ public class MuzimaSyncService {
                 personUuidList.add(person.getUuid());
             }
             result = downloadObservationsForPatientsByPatientUUIDs(personUuidList, replaceExistingObservation);
-            if (result[0] != SUCCESS) {
+            if (result[0] != Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                 updateProgressDialog(muzimaApplication.getString(R.string.error_encounter_observation_download));
             }
         } catch (PersonController.PersonLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading persons.", e);
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }
@@ -773,12 +757,12 @@ public class MuzimaSyncService {
                 updatePatientTags(patientlist);
             }
 
-            if (result[0] != SUCCESS) {
+            if (result[0] != Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                 updateProgressDialog(muzimaApplication.getString(R.string.error_derived_observation_download));
             }
         } catch (PersonController.PersonLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading persons.", e);
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
         }
@@ -874,25 +858,25 @@ public class MuzimaSyncService {
                 }
             }
             result[3] = patientUuidsForDownloadedObs.size();
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             Log.d(getClass().getSimpleName(), "Total Downloading observations : " + totalTimeDownloading / 1000 + " sec\n");
             Log.d(getClass().getSimpleName(), "Total Replacing observations : " + totalTimeReplacing / 1000 + " sec\n");
             Log.d(getClass().getSimpleName(), "Total Saving observations : " + totalTimeSaving / 1000 + " sec\n");
         } catch (ObservationController.DownloadObservationException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading observations.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (ObservationController.ReplaceObservationException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while replacing observations.", e);
-            result[0] = SyncStatusConstants.REPLACE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.REPLACE_ERROR;
         } catch (ConceptController.ConceptFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading concepts.", e);
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         } catch (ObservationController.DeleteObservationException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while deleting observations.", e);
-            result[0] = SyncStatusConstants.DELETE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
         } catch (ObservationController.SaveObservationException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while saving observations.", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         }
 
         return result;
@@ -911,10 +895,10 @@ public class MuzimaSyncService {
     public int[] uploadAllCompletedForms() {
         int[] result = new int[1];
         try {
-            result[0] = formController.uploadAllCompletedForms() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
+            result[0] = formController.uploadAllCompletedForms() ? Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS : Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
             patientController.deletePatientsPendingDeletion();
             try {
-                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(Constants.STANDARD_DATE_TIMEZONE_FORMAT);
                 AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME, muzimaApplication.getAuthenticatedUserId());
                 if (lastUploadLog != null) {
                     lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
@@ -952,9 +936,9 @@ public class MuzimaSyncService {
                 i++;
             }
             if (uploadError.equals("java.net.ConnectException")) {
-                result[0] = SyncStatusConstants.SERVER_CONNECTION_ERROR;
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SERVER_CONNECTION_ERROR;
             } else {
-                result[0] = SyncStatusConstants.UPLOAD_ERROR;
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
             }
         }
         return result;
@@ -966,7 +950,7 @@ public class MuzimaSyncService {
             Patient patientFromServer = patientController.consolidateTemporaryPatient(localPatient);
             if (patientFromServer != null) {
                 checkChangeInPatientId(localPatient, patientFromServer);
-                patientFromServer.addIdentifier(localPatient.getIdentifier(LOCAL_PATIENT));
+                patientFromServer.addIdentifier(localPatient.getIdentifier(Constants.LOCAL_PATIENT));
                 patientController.deletePatient(localPatient);
                 try {
                     patientController.savePatient(patientFromServer);
@@ -1011,16 +995,16 @@ public class MuzimaSyncService {
             if (successfullyProcessedFormData.size() > 0) {
                 formController.deleteFormDataAndRelatedEncountersAndObs(successfullyProcessedFormData);
             }
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = successfullyProcessedFormData.size();
             result[2] = processedWithErrorFormData.size();
             result[3] = pendingProcessingFormData.size();
             result[4] = unknownStatusFormData.size();
 
         } catch (FormController.FormDataStatusDownloadException e) {
-            result[0] = DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (FormController.FormDataDeleteException e) {
-            result[0] = DELETE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
         }
         return result;
     }
@@ -1131,16 +1115,16 @@ public class MuzimaSyncService {
             patientReportHeaders = patientReportController.downloadPatientReportHeadersByPatientUuid(patientUuid);
             patientReportController.savePatientReportHeaders(patientReportHeaders);
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = patientReportHeaders.size();
 
         } catch (PatientReportController.PatientReportDownloadException e) {
             Log.e(TAG, "Exception when trying to download patient reports headers", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         } catch (PatientReportController.PatientReportSaveException e) {
             Log.e(TAG, "Exception when trying to save patient reports headers", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         }
         return result;
@@ -1167,7 +1151,7 @@ public class MuzimaSyncService {
                     patientReportController.saveOrUpdatePatientReports(downloadedPatientReports);
                 }
             }
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = totalDownloadedPatientReports.size();
 
         } catch (PatientController.PatientLoadException e) {
@@ -1190,15 +1174,15 @@ public class MuzimaSyncService {
             }
 
             patientReportController.saveOrUpdatePatientReports(downloadedPatientReports);
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = downloadedPatientReports.size();
 
         } catch (PatientReportController.PatientReportDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download patient report");
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (PatientReportController.PatientReportSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save patient reports");
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }
@@ -1207,17 +1191,17 @@ public class MuzimaSyncService {
         int[] result = new int[2];
         try {
             List<SetupConfiguration> setupConfigurations = setupConfigurationController.downloadAllSetupConfigurations();
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = setupConfigurations.size();
             Log.i(getClass().getSimpleName(), "Setup Configs downloaded: " + setupConfigurations.size());
             //ToDo: Remove all retired
             setupConfigurationController.saveSetupConfigurations(setupConfigurations);
         } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download setup configs");
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (SetupConfigurationController.SetupConfigurationSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         }
     }
 
@@ -1226,17 +1210,17 @@ public class MuzimaSyncService {
         try {
             SetupConfigurationTemplate setupConfigurationTemplate =
                     setupConfigurationController.downloadSetupConfigurationTemplate(uuid);
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             if (setupConfigurationTemplate != null) {
                 result[1] = 1;
                 setupConfigurationController.saveSetupConfigurationTemplate(setupConfigurationTemplate);
             }
         } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download setup configs");
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (SetupConfigurationController.SetupConfigurationSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }
@@ -1246,7 +1230,7 @@ public class MuzimaSyncService {
         try {
             SetupConfigurationTemplate setupConfigurationTemplate =
                     setupConfigurationController.downloadUpdatedSetupConfigurationTemplate(uuid);
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             if (setupConfigurationTemplate != null) {
                 result[1] = 1;
                 setupConfigurationController.updateSetupConfigurationTemplate(setupConfigurationTemplate);
@@ -1254,10 +1238,10 @@ public class MuzimaSyncService {
 
         } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download setup configs");
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (SetupConfigurationController.SetupConfigurationSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }
@@ -1267,9 +1251,9 @@ public class MuzimaSyncService {
         try {
             for (SetupConfigurationTemplate template : setupConfigurationController.getSetupConfigurationTemplates()) {
                 int[] templateResult = downloadAndSaveUpdatedSetupConfigurationTemplate(template.getUuid());
-                if (templateResult[0] == SUCCESS) {
+                if (templateResult[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                     result[1] += templateResult[1];
-                    result[0] = SUCCESS;
+                    result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
                     List<MuzimaSetting> settings = settingsController.getSettingsFromSetupConfigurationTemplate(template.getUuid());
 
@@ -1280,10 +1264,10 @@ public class MuzimaSyncService {
             }
         } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to update setup settings preferences");
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }
@@ -1292,17 +1276,17 @@ public class MuzimaSyncService {
         int[] result = new int[2];
         try {
             MuzimaSetting setting = settingsController.downloadSettingByProperty(property);
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             if (setting != null) {
                 result[1] = 1;
                 settingsController.saveOrUpdateSetting(setting);
             }
         } catch (MuzimaSettingController.MuzimaSettingDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download setting.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (MuzimaSettingController.MuzimaSettingSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save setting.", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }
@@ -1316,14 +1300,14 @@ public class MuzimaSyncService {
                 settingsController.saveOrUpdateSetting(settings);
                 updateSettingsPreferences(settings);
             }
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = settings.size();
         } catch (MuzimaSettingController.MuzimaSettingDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download setting", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (MuzimaSettingController.MuzimaSettingSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save setting", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }
@@ -1352,13 +1336,13 @@ public class MuzimaSyncService {
             result[1] += relationshipTypes.size();
 
             relationshipController.saveRelationshipTypes(relationshipTypes);
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
         } catch (RelationshipController.RetrieveRelationshipTypeException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading relationship types.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (RelationshipController.SaveRelationshipTypeException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while saving relationship types.", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         }
         return result;
     }
@@ -1382,13 +1366,13 @@ public class MuzimaSyncService {
                 relationshipController.saveRelationships(patientRelationships);
                 result[1] += patientRelationships.size();
             }
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
         } catch (RelationshipController.RetrieveRelationshipException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading relationships.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (RelationshipController.SaveRelationshipException | RelationshipController.SearchRelationshipException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while saving relationships.", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while fetching the active setup config.", e);
         }
@@ -1415,14 +1399,14 @@ public class MuzimaSyncService {
                 }
             }
             result = downloadRelationshipsForPatientsByPatientUUIDs(patientList);
-            if (result[0] != SUCCESS) {
+            if (result[0] != Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                 Log.e(getClass().getSimpleName(), "Relationships for patient " + count + " of " + patientsTotal + " not downloaded");
                 updateProgressDialog(muzimaApplication.getString(R.string.info_relationships_not_downloaded_progress, count, patientsTotal));
 
             }
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading relationships for patients.", e);
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }
@@ -1463,16 +1447,16 @@ public class MuzimaSyncService {
                     boolean hasHomeVisitTags = false;
                     int homeVisitTagCount = 0;
                     for (PatientTag tag : patient.getTags()) {
-                        if (StringUtils.equals(tag.getUuid(), HAS_SEXUAL_PARTNER_TAG_UUID)) {
+                        if (StringUtils.equals(tag.getUuid(), Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID)) {
                             hasSexualPartnerTag = true;
-                        } else if (StringUtils.equals(tag.getUuid(), ALREADY_ASSIGNED_TAG_UUID)) {
+                        } else if (StringUtils.equals(tag.getUuid(), Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID)) {
                             hasAssignmentTag = true;
                             assignmentTag = tag;
-                        } else if (StringUtils.equals(tag.getUuid(), AWAITING_ASSIGNMENT_TAG_UUID)) {
+                        } else if (StringUtils.equals(tag.getUuid(), Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID)) {
                             hasAwaitingAssignmentTag = true;
-                        } else if (StringUtils.equals(tag.getUuid(), ALL_CONTACTS_VISITED_TAG_UUID)) {
+                        } else if (StringUtils.equals(tag.getUuid(), Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID)) {
                             hasAllContactsVisitedTag = true;
-                        } else if(StringUtils.equals(tag.getUuid(), SIM_TAG_UUID) || StringUtils.equals(tag.getUuid(), NAO_TAG_UUID)){
+                        } else if(StringUtils.equals(tag.getUuid(), Constants.FGH.TagsUuids.SIM_TAG_UUID) || StringUtils.equals(tag.getUuid(), Constants.FGH.TagsUuids.NAO_TAG_UUID)){
                             hasHomeVisitTags = true;
                             homeVisitTagCount++;
                         }
@@ -1486,7 +1470,7 @@ public class MuzimaSyncService {
                                 PatientTag sexualPartnerTag = new PatientTag();
                                 sexualPartnerTag.setName("P");
                                 sexualPartnerTag.setDescription(muzimaApplication.getString(R.string.general_has_sexual_partner));
-                                sexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
+                                sexualPartnerTag.setUuid(Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID);
                                 if (!hasSexualPartnerTag) {
                                     hasSexualPartnerTag = true;
                                     tags.add(sexualPartnerTag);
@@ -1505,7 +1489,7 @@ public class MuzimaSyncService {
                                     if (relatedPatient != null) {
                                         boolean relatedPatientHasSexualPartnerTag = false;
                                         for (PatientTag tag : relatedPatient.getTags()) {
-                                            if (StringUtils.equals(tag.getUuid(), HAS_SEXUAL_PARTNER_TAG_UUID)) {
+                                            if (StringUtils.equals(tag.getUuid(), Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID)) {
                                                 relatedPatientHasSexualPartnerTag = true;
                                             }
                                         }
@@ -1513,7 +1497,7 @@ public class MuzimaSyncService {
                                             PatientTag relatedSexualPartnerTag = new PatientTag();
                                             relatedSexualPartnerTag.setName("P");
                                             relatedSexualPartnerTag.setDescription(muzimaApplication.getString(R.string.general_has_sexual_partner));
-                                            relatedSexualPartnerTag.setUuid(HAS_SEXUAL_PARTNER_TAG_UUID);
+                                            relatedSexualPartnerTag.setUuid(Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID);
                                             List<PatientTag> relatedPatientTags = new ArrayList<>(Arrays.asList(relatedPatient.getTags()));
 
 
@@ -1582,7 +1566,7 @@ public class MuzimaSyncService {
 
                     if (muzimaApplication.getMuzimaSettingController().isAllocationTagGenerationEnabled()) {
                         if (!hasAssignmentTag) {
-                            List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
+                            List<Observation> assignmentObsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID);
                             if (assignmentObsList.size() > 0) {
                                 for (Observation assignmentObs : assignmentObsList) {
                                     if(cohortMembers.size()>0) {
@@ -1592,7 +1576,7 @@ public class MuzimaSyncService {
                                             assignmentTag = new PatientTag();
                                             assignmentTag.setName("AL");
                                             assignmentTag.setDescription(muzimaApplication.getString(R.string.general_already_assigned));
-                                            assignmentTag.setUuid(ALREADY_ASSIGNED_TAG_UUID);
+                                            assignmentTag.setUuid(Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID);
                                             tags.add(assignmentTag);
                                             patientController.savePatientTags(assignmentTag);
 
@@ -1624,7 +1608,7 @@ public class MuzimaSyncService {
                             assignmentTag = new PatientTag();
                             assignmentTag.setName("AA");
                             assignmentTag.setDescription(muzimaApplication.getString(R.string.general_awaiting_assignment));
-                            assignmentTag.setUuid(AWAITING_ASSIGNMENT_TAG_UUID);
+                            assignmentTag.setUuid(Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID);
                             tags.add(assignmentTag);
                             patientController.savePatientTags(assignmentTag);
                         }
@@ -1638,7 +1622,7 @@ public class MuzimaSyncService {
                                 CohortMember cohortMember = cohortMembers.get(0);
                                 Date membershipDate = cohortMember.getMembershipDate();
                                 for (Person person : relatedPersons) {
-                                    Boolean isDerivedConceptAfterMembershipDate = derivedObservationController.getDerivedObservationsByPatientUuidAndAfterIndexCaseMembershipDate(person.getUuid(), membershipDate, CONTACTS_TESTED_DERIVED_CONCEPT_ID);
+                                    Boolean isDerivedConceptAfterMembershipDate = derivedObservationController.getDerivedObservationsByPatientUuidAndAfterIndexCaseMembershipDate(person.getUuid(), membershipDate, Constants.FGH.DerivedConcepts.CONTACTS_TESTED_DERIVED_CONCEPT_ID);
                                     if(isDerivedConceptAfterMembershipDate){
                                         contactsVisited++;
                                     }
@@ -1649,7 +1633,7 @@ public class MuzimaSyncService {
                                 PatientTag allContactsVisitedTag = new PatientTag();
                                 allContactsVisitedTag.setName("V");
                                 allContactsVisitedTag.setDescription(muzimaApplication.getString(R.string.general_all_contacts_visited));
-                                allContactsVisitedTag.setUuid(ALL_CONTACTS_VISITED_TAG_UUID);
+                                allContactsVisitedTag.setUuid(Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID);
                                 tags.add(allContactsVisitedTag);
                                 patientController.savePatientTags(allContactsVisitedTag);
                             }
@@ -1675,13 +1659,13 @@ public class MuzimaSyncService {
                                     if (firstAttemptObservations.get(0).getValueCoded().getId() == 1065) {
                                         PatientTag firstAttemptTag = new PatientTag();
                                         firstAttemptTag.setName("SIM");
-                                        firstAttemptTag.setUuid(SIM_TAG_UUID);
+                                        firstAttemptTag.setUuid(Constants.FGH.TagsUuids.SIM_TAG_UUID);
                                         tags.add(firstAttemptTag);
                                         patientController.savePatientTags(firstAttemptTag);
                                     } else {
                                         PatientTag firstAttemptTag = new PatientTag();
                                         firstAttemptTag.setName("NÃO");
-                                        firstAttemptTag.setUuid(NAO_TAG_UUID);
+                                        firstAttemptTag.setUuid(Constants.FGH.TagsUuids.NAO_TAG_UUID);
                                         tags.add(firstAttemptTag);
                                         patientController.savePatientTags(firstAttemptTag);
                                     }
@@ -1694,13 +1678,13 @@ public class MuzimaSyncService {
                                     if (secondAttemptObservations.get(0).getValueCoded().getId() == 1065) {
                                         PatientTag secondAttemptTag = new PatientTag();
                                         secondAttemptTag.setName("SIM");
-                                        secondAttemptTag.setUuid(SIM_TAG_UUID);
+                                        secondAttemptTag.setUuid(Constants.FGH.TagsUuids.SIM_TAG_UUID);
                                         tags.add(secondAttemptTag);
                                         patientController.savePatientTags(secondAttemptTag);
                                     } else {
                                         PatientTag secondAttemptTag = new PatientTag();
                                         secondAttemptTag.setName("NÃO");
-                                        secondAttemptTag.setUuid(NAO_TAG_UUID);
+                                        secondAttemptTag.setUuid(Constants.FGH.TagsUuids.NAO_TAG_UUID);
                                         tags.add(secondAttemptTag);
                                         patientController.savePatientTags(secondAttemptTag);
                                     }
@@ -1713,13 +1697,13 @@ public class MuzimaSyncService {
                                     if (thirdAttemptObservations.get(0).getValueCoded().getId() == 1065) {
                                         PatientTag thirdAttemptTag = new PatientTag();
                                         thirdAttemptTag.setName("SIM");
-                                        thirdAttemptTag.setUuid(SIM_TAG_UUID);
+                                        thirdAttemptTag.setUuid(Constants.FGH.TagsUuids.SIM_TAG_UUID);
                                         tags.add(thirdAttemptTag);
                                         patientController.savePatientTags(thirdAttemptTag);
                                     } else {
                                         PatientTag thirdAttemptTag = new PatientTag();
                                         thirdAttemptTag.setName("NÃO");
-                                        thirdAttemptTag.setUuid(NAO_TAG_UUID);
+                                        thirdAttemptTag.setUuid(Constants.FGH.TagsUuids.NAO_TAG_UUID);
                                         tags.add(thirdAttemptTag);
                                         patientController.savePatientTags(thirdAttemptTag);
                                     }
@@ -1760,7 +1744,7 @@ public class MuzimaSyncService {
         try {
             List<ReportDataset> reportDatasets = reportDatasetController.downloadReportDatasets(datasetDefinitionIds, isDeltaSync);
             reportDatasetController.saveReportDatasets(reportDatasets);
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = reportDatasets.size();
 
         } catch (ReportDatasetController.ReportDatasetDownloadException | ReportDatasetController.ReportDatasetSaveException e) {
@@ -1783,7 +1767,7 @@ public class MuzimaSyncService {
                 downloadReportDatasets(datasetDefinitionIds, isDeltaSync);
             }
         } catch (ReportDatasetController.ReportDatasetFetchException e) {
-            result[0] = LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
             Log.e(getClass().getSimpleName(), "Error while fetching report datasets",e);
         }
 
@@ -1795,15 +1779,15 @@ public class MuzimaSyncService {
         try {
             List<MediaCategory> mediaCategories = mediaCategoryController.downloadMediaCategory(mediaCategoryUuids, false);
             mediaCategoryController.saveMediaCategory(mediaCategories);
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = mediaCategories.size();
 
         } catch (MediaCategoryController.MediaCategoryDownloadException e) {
-            result[0] = DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             Log.e(TAG, "Encountered Load Exception while downloading media categories", e);
 
         } catch (MediaCategoryController.MediaCategorySaveException e) {
-            result[0] = DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             Log.e(TAG, "Encountered Load Exception while saving media categories", e);
         }
         return result;
@@ -1823,10 +1807,10 @@ public class MuzimaSyncService {
         int[] result = new int[2];
         try {
             mediaController.saveMedia(media);
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = media.size();
         } catch (MediaController.MediaSaveException e) {
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             Log.e(TAG, "Encountered Load Exception while downloading media", e);
         }
         return result;
@@ -1892,21 +1876,21 @@ public class MuzimaSyncService {
                 reportDatasets = reportDatasets+reportDatasetList.size();
             }
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = reportDatasets;
 
         } catch (ReportDatasetController.ReportDatasetSaveException reportDatasetSaveException) {
             reportDatasetSaveException.printStackTrace();
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         } catch (SetupConfigurationController.SetupConfigurationFetchException setupConfigurationFetchException) {
             setupConfigurationFetchException.printStackTrace();
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         } catch (ReportDatasetController.ReportDatasetDownloadException reportDatasetDownloadException) {
             reportDatasetDownloadException.printStackTrace();
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         } catch (ReportDatasetController.ReportDatasetFetchException reportDatasetFetchException) {
             reportDatasetFetchException.printStackTrace();
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }
@@ -2073,16 +2057,16 @@ public class MuzimaSyncService {
                 mediaCategories = mediaCategories+downloadedMediaList.size();
             }
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = mediaCategories;
         } catch (MediaCategoryController.MediaCategoryDownloadException e) {
-            result[0] = DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             Log.e(getClass().getSimpleName(), "Encountered an error while downloading media categories");
         } catch (MediaCategoryController.MediaCategorySaveException e) {
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             Log.e(getClass().getSimpleName(), "Encountered an error while saving media categories");
         } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
             Log.e(getClass().getSimpleName(), "Encountered an error while getting config");
         }
         return result;
@@ -2144,7 +2128,7 @@ public class MuzimaSyncService {
 
                         downloadFile(media,context);
                     }
-                    result[0] =SUCCESS;
+                    result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
                     result[1] = mediaList.size();
                 }else{
                     AppUsageLogs noEnoughSpaceLog = appUsageLogsController.getAppUsageLogByKey(com.muzima.util.Constants.AppUsageLogs.NO_ENOUGH_SPACE_DEVICES);
@@ -2170,7 +2154,7 @@ public class MuzimaSyncService {
                     MemoryUtil.showAlertDialog(availableSpace,totalFileSize, context.getApplicationContext());
                 }
             }else{
-                result[0] =SUCCESS;
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
                 result[1] = 0;
             }
         }  catch (MediaCategoryController.MediaCategoryFetchException e) {
@@ -2345,24 +2329,24 @@ public class MuzimaSyncService {
                 locationController.saveLocations(locationList);
             }
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = locationsToDownload.size();
             result[2] = locationsToBeDeleted.size();
 
         } catch (SetupConfigurationController.SetupConfigurationFetchException e){
-            result[0] = LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
             Log.e(getClass().getSimpleName(),"Could not get the active config ",e);
         }  catch (LocationController.LocationDeleteException e) {
-            result[0] = DELETE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
             Log.e(getClass().getSimpleName(),"Could not delete locations ",e);
         } catch (LocationController.LocationDownloadException e) {
-            result[0] = DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             Log.e(getClass().getSimpleName(),"Could not download locations ",e);
         } catch (LocationController.LocationSaveException e) {
-            result[0] = SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             Log.e(getClass().getSimpleName(),"Could not save locations ",e);
         } catch (IOException e) {
-            result[0] = UNKNOWN_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
             Log.e(getClass().getSimpleName(),"Could not get locations ",e);
         }
         return result;
@@ -2418,24 +2402,24 @@ public class MuzimaSyncService {
                 providerController.saveProviders(providerList);
             }
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = providersToDownload.size();
             result[2] = providersToBeDeleted.size();
 
         } catch (SetupConfigurationController.SetupConfigurationFetchException e){
-            result[0] = LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
             Log.e(getClass().getSimpleName(),"Could not get the active config ",e);
         } catch (ProviderController.ProviderDeleteException e) {
-            result[0] = DELETE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
             Log.e(getClass().getSimpleName(),"Could not delete providers ",e);
         } catch (ProviderController.ProviderDownloadException e) {
-            result[0] = DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             Log.e(getClass().getSimpleName(),"Could not download providers ",e);
         } catch (ProviderController.ProviderSaveException e) {
-            result[0] = SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             Log.e(getClass().getSimpleName(),"Could not save providers ",e);
         } catch (IOException e) {
-            result[0] = UNKNOWN_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
             Log.e(getClass().getSimpleName(),"Could not load providers ",e);
         }
         return result;
@@ -2522,7 +2506,7 @@ public class MuzimaSyncService {
                 }
             }
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = conceptsToDownload.size();
             result[2] = conceptsToBeDeleted.size();
             result[3] = observations.size();
@@ -2558,15 +2542,15 @@ public class MuzimaSyncService {
             derivedConceptController.saveDerivedConcepts(derivedConcepts);
             Log.i(getClass().getSimpleName(), "Downloaded " + derivedConcepts.size() + " derived concepts");
 
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
             result[1] = derivedConcepts.size();
         } catch (DerivedConceptController.DerivedConceptDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to download derived concepts", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
             return result;
         } catch (DerivedConceptController.DerivedConceptSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception when trying to save derived concepts", e);
-            result[0] = SyncStatusConstants.SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
             return result;
         }
         return result;
@@ -2582,7 +2566,7 @@ public class MuzimaSyncService {
             patientlist = getPatientUuids(patients);
 
             result = downloadDerivedObservationsForPatientsByPatientUUIDs(patientlist, replaceExistingObservation);
-            if (result[0] != SUCCESS) {
+            if (result[0] != Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                 updateProgressDialog(muzimaApplication.getString(R.string.error_derived_observation_download));
             }
 
@@ -2592,7 +2576,7 @@ public class MuzimaSyncService {
 
         } catch (PatientController.PatientLoadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while loading patients.", e);
-            result[0] = SyncStatusConstants.LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }
@@ -2610,10 +2594,10 @@ public class MuzimaSyncService {
             }
 
             result[3] = patientUuidsForDownloadedSummary.size();
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
         } catch (CohortMemberSummaryController.CohortMemberSummaryDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading summaries.", e);
-            result[0] = LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }
@@ -2666,19 +2650,19 @@ public class MuzimaSyncService {
             }
 
             result[3] = patientUuidsForDownloadedObs.size();
-            result[0] = SUCCESS;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
         } catch (DerivedObservationController.DerivedObservationDownloadException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading observations.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (DerivedObservationController.DerivedObservationDeleteException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading observations.", e);
-            result[0] = DELETE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR;
         } catch (DerivedObservationController.DerivedObservationSaveException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading observations.", e);
-            result[0] = SAVE_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
         } catch (DerivedConceptController.DerivedConceptFetchException e) {
             Log.e(getClass().getSimpleName(), "Exception thrown while downloading observations.", e);
-            result[0] = LOAD_ERROR;
+            result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR;
         }
         return result;
     }
@@ -2794,13 +2778,13 @@ public class MuzimaSyncService {
                     patientUuidsForDownloadedDerivedObs.add(derivedObservation.getPerson().getUuid());
                 }
 
-                result[0] = SUCCESS;
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
                 result[1] = derivedConceptsToDownload.size();
                 result[2] = derivedConceptsToBeDeleted.size();
                 result[3] = derivedObservations.size();
                 result[4] = patientUuidsForDownloadedDerivedObs.size();
             } else {
-                result[0] = SUCCESS;
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
                 result[1] = 0;
                 result[2] = 0;
                 result[3] = 0;
@@ -2856,7 +2840,7 @@ public class MuzimaSyncService {
                             boolean hasVisitTags = false;
                             int homeVisitTagCount = 0;
                             for (PersonTag tag : person.getPersonTags()) {
-                                if(StringUtils.equals(tag.getUuid(), SIM_TAG_UUID) || StringUtils.equals(tag.getUuid(), NAO_TAG_UUID)){
+                                if(StringUtils.equals(tag.getUuid(), Constants.FGH.TagsUuids.SIM_TAG_UUID) || StringUtils.equals(tag.getUuid(), Constants.FGH.TagsUuids.NAO_TAG_UUID)){
                                     hasVisitTags = true;
                                     homeVisitTagCount++;
                                 }
@@ -2875,13 +2859,13 @@ public class MuzimaSyncService {
                                             if (observations.get(0).getValueCoded().getId() == 1065) {
                                                 PersonTag firstAttemptTag = new PersonTag();
                                                 firstAttemptTag.setName("SIM");
-                                                firstAttemptTag.setUuid(SIM_TAG_UUID);
+                                                firstAttemptTag.setUuid(Constants.FGH.TagsUuids.SIM_TAG_UUID);
                                                 tags.add(firstAttemptTag);
                                                 personController.savePersonTags(firstAttemptTag);
                                             } else {
                                                 PersonTag firstAttemptTag = new PersonTag();
                                                 firstAttemptTag.setName("NÃO");
-                                                firstAttemptTag.setUuid(NAO_TAG_UUID);
+                                                firstAttemptTag.setUuid(Constants.FGH.TagsUuids.NAO_TAG_UUID);
                                                 tags.add(firstAttemptTag);
                                                 personController.savePersonTags(firstAttemptTag);
                                             }
@@ -2894,13 +2878,13 @@ public class MuzimaSyncService {
                                                 if (observations.get(1).getValueCoded().getId() == 1065) {
                                                     PersonTag firstAttemptTag = new PersonTag();
                                                     firstAttemptTag.setName("SIM");
-                                                    firstAttemptTag.setUuid(SIM_TAG_UUID);
+                                                    firstAttemptTag.setUuid(Constants.FGH.TagsUuids.SIM_TAG_UUID);
                                                     tags.add(firstAttemptTag);
                                                     personController.savePersonTags(firstAttemptTag);
                                                 } else {
                                                     PersonTag firstAttemptTag = new PersonTag();
                                                     firstAttemptTag.setName("NÃO");
-                                                    firstAttemptTag.setUuid(NAO_TAG_UUID);
+                                                    firstAttemptTag.setUuid(Constants.FGH.TagsUuids.NAO_TAG_UUID);
                                                     tags.add(firstAttemptTag);
                                                     personController.savePersonTags(firstAttemptTag);
                                                 }
@@ -2913,13 +2897,13 @@ public class MuzimaSyncService {
                                                 if (observations.get(2).getValueCoded().getId() == 1065) {
                                                     PersonTag attemptTag = new PersonTag();
                                                     attemptTag.setName("SIM");
-                                                    attemptTag.setUuid(SIM_TAG_UUID);
+                                                    attemptTag.setUuid(Constants.FGH.TagsUuids.SIM_TAG_UUID);
                                                     tags.add(attemptTag);
                                                     personController.savePersonTags(attemptTag);
                                                 } else {
                                                     PersonTag attemptTag = new PersonTag();
                                                     attemptTag.setName("NÃO");
-                                                    attemptTag.setUuid(NAO_TAG_UUID);
+                                                    attemptTag.setUuid(Constants.FGH.TagsUuids.NAO_TAG_UUID);
                                                     tags.add(attemptTag);
                                                     personController.savePersonTags(attemptTag);
                                                 }
@@ -2966,7 +2950,7 @@ public class MuzimaSyncService {
         htcPersonController.saveHtcPersons(htcPersonList);
 
         result[3] = htcPersonList.size();
-        result[0] = SUCCESS;
+        result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
         return result;
     }
 
@@ -2974,10 +2958,10 @@ public class MuzimaSyncService {
     public int[] uploadAllPendingHtcData() {
         int[] result = new int[1];
         try {
-            result[0] = htcPersonController.uploadAllPendingHtcData() ? SUCCESS : SyncStatusConstants.UPLOAD_ERROR;
+            result[0] = htcPersonController.uploadAllPendingHtcData() ? Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS : Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
             htcPersonController.deleteHtcPersonPendingDeletion();
             try {
-                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+                SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(Constants.STANDARD_DATE_TIMEZONE_FORMAT);
                 AppUsageLogs lastUploadLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.LAST_UPLOAD_TIME, muzimaApplication.getAuthenticatedUserId());
                 if (lastUploadLog != null) {
                     lastUploadLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
@@ -3015,9 +2999,9 @@ public class MuzimaSyncService {
                 i++;
             }
             if (uploadError.equals("java.net.ConnectException")) {
-                result[0] = SyncStatusConstants.SERVER_CONNECTION_ERROR;
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SERVER_CONNECTION_ERROR;
             } else {
-                result[0] = SyncStatusConstants.UPLOAD_ERROR;
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
             }
         }
         return result;

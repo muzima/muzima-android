@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +32,7 @@ import com.muzima.model.events.ReloadObservationsDataEvent;
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 

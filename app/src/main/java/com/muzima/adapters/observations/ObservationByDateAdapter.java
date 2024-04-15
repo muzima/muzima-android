@@ -26,7 +26,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.ConceptIcons;
-import com.muzima.model.ObsGroups;
+
 import com.muzima.util.JsonUtils;
 import com.muzima.utils.BackgroundTaskHelper;
 import com.muzima.utils.DateUtils;

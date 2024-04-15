@@ -9,11 +9,9 @@
  */
 package com.muzima.view.relationship;
 
-import static com.muzima.utils.RelationshipViewUtil.listOnClickListeners;
 import static com.muzima.view.patients.PatientSummaryActivity.CALLING_ACTIVITY;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,7 +59,9 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.patients.UpdatePatientTagsIntent;
 
+import com.muzima.utils.RelationshipViewUtil;
 import es.dmoral.toasty.Toasty;
+
 import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
@@ -600,6 +600,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     @Override
     public void onItemClick(View view, int position) {
         Relationship relationship = patientRelationshipsAdapter.getRelationship(position);
-        listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship, patientRelationshipsAdapter);
+        RelationshipViewUtil.listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship, patientRelationshipsAdapter);
     }
 }

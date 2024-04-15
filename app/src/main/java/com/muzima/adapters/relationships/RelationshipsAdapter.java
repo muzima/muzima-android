@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
+
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
@@ -52,10 +52,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT;
-
 import org.json.JSONException;
+
+import com.muzima.utils.ConceptUtils;
 
 public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
@@ -250,9 +249,9 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
             if(observations.size()>0){
                 Observation obs = observations.get(0);
                 if(concept.isDatetime())
-                    return DateUtils.getFormattedDate(obs.getValueDatetime(),SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+                    return DateUtils.getFormattedDate(obs.getValueDatetime(), DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
                 else if(concept.isCoded())
-                    return getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(),applicationLanguage);
+                    return ConceptUtils.getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(),applicationLanguage);
                 else if(concept.isNumeric())
                     return String.valueOf(obs.getValueNumeric());
                 else
@@ -271,7 +270,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
             Collections.sort(observations, observationDateTimeComparator);
             if(observations.size()>0){
                 Observation obs = observations.get(0);
-                return DateUtils.getFormattedDate(obs.getObservationDatetime(),SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+                return DateUtils.getFormattedDate(obs.getObservationDatetime(), DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
             }
         } catch (ObservationController.LoadObservationException | Exception  e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);

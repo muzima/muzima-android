@@ -49,6 +49,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
 import com.muzima.adapters.forms.NewFormsPagerAdapter;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 

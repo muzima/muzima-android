@@ -1,7 +1,5 @@
 package com.muzima.view.patients;
 
-import static com.muzima.view.patients.PatientSummaryActivity.PATIENT;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -29,7 +27,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class SimilarPatientsSearchActivity extends BroadcastListenerActivity implements PatientAdapterHelper.PatientListClickListener,
-        RecyclerAdapter.BackgroundListQueryTaskListener{
+        RecyclerAdapter.BackgroundListQueryTaskListener {
     private DrawerLayout mainLayout;
     private final LanguageUtil languageUtil = new LanguageUtil();
     private Patient patient;
@@ -76,7 +74,7 @@ public class SimilarPatientsSearchActivity extends BroadcastListenerActivity imp
 
     }
     private void setupListView() {
-        patient = (Patient) getIntent().getSerializableExtra(PATIENT);
+        patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
 
         recyclerView = findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -117,7 +115,7 @@ public class SimilarPatientsSearchActivity extends BroadcastListenerActivity imp
             patient.setUuid(String.valueOf(UUID.randomUUID()));
         }
         Intent intent = new Intent(SimilarPatientsSearchActivity.this, RegistrationFormsActivity.class);
-        intent.putExtra(PATIENT,patient);
+        intent.putExtra(PatientSummaryActivity.PATIENT,patient);
         startActivity(intent);
         finish();
     }

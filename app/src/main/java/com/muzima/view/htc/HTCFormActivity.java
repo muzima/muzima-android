@@ -1,10 +1,6 @@
 package com.muzima.view.htc;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.MenuItem;
@@ -40,11 +36,8 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.patient.PatientItem;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
-import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.view.main.HTCMainActivity;
-import com.muzima.view.person.PersonRegisterActivity;
-import com.muzima.view.person.SearchSESPPersonActivity;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -55,7 +48,8 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
-import static com.muzima.utils.Constants.STATUS_UPLOADED;
+
+import com.muzima.utils.Constants;
 
 public class HTCFormActivity extends AppCompatActivity {
     private ImageButton identificationDataBtn;
@@ -521,7 +515,7 @@ public class HTCFormActivity extends AppCompatActivity {
             }
             selfTestConfirmation.setChecked(htcForm.isSelfTestConfirmation());
             healthFacility.setText(htcForm.getTestingLocation().getName());
-            if(htcPerson.getSyncStatus().equalsIgnoreCase(STATUS_UPLOADED)){
+            if(htcPerson.getSyncStatus().equalsIgnoreCase(Constants.STATUS_UPLOADED)){
                 enableOrDisableFields(false);
             }
         }

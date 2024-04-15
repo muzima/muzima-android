@@ -21,7 +21,6 @@ import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.HTCPerson;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonAddress;
-import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.PersonName;
 import com.muzima.listners.LoadMoreListener;
 import com.muzima.model.patient.PatientItem;

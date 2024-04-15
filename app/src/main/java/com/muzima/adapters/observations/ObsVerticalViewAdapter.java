@@ -10,10 +10,6 @@
 
 package com.muzima.adapters.observations;
 
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,11 +41,13 @@ import com.muzima.utils.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import com.muzima.utils.ConceptUtils;
+import com.muzima.utils.Constants;
 
 public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalViewAdapter.ViewHolder> {
     private List<Observation> observationList = new ArrayList<>();
@@ -92,7 +90,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Observation observation = observationList.get(position);
 
-        holder.concept.setText(getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(),applicationLanguage));
+        holder.concept.setText(ConceptUtils.getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(),applicationLanguage));
         holder.conceptIcon.setTypeface(FontManager.getTypeface(context,FontManager.FONTAWESOME));
         String icon = getConceptIcon(observation.getConcept().getUuid());
         holder.conceptIcon.setText(StringUtils.isEmpty(icon) ? "edit" : icon);
@@ -110,13 +108,13 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
                 holder.observationValue.setText(DateUtils.convertDateToStdString(observation.getValueDatetime()));
 
             if (observation.getConcept().isCoded())
-                holder.observationValue.setText(getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
+                holder.observationValue.setText(ConceptUtils.getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
 
             if (observation.getConcept().isBoolean())
                 holder.observationValue.setText(String.valueOf(observation.isValueBoolean()));
 
             if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded() && !observation.getConcept().isBoolean()){
-                if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
+                if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
                     Provider provider = providerController.getProviderBySystemId(observation.getValueAsString());
                     if(provider != null){
                         holder.observationValue.setText(provider.getName());
@@ -173,7 +171,7 @@ public class ObsVerticalViewAdapter extends RecyclerView.Adapter<ObsVerticalView
 
                 List<ConceptName> conceptNames = new ArrayList<>();
                 ConceptName conceptName = new ConceptName();
-                conceptName.setName(getDerivedConceptNameFromConceptNamesByLocale(derivedObservation.getDerivedConcept().getDerivedConceptName(), applicationLanguage));
+                conceptName.setName(ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale(derivedObservation.getDerivedConcept().getDerivedConceptName(), applicationLanguage));
                 conceptName.setLocale(applicationLanguage);
                 conceptNames.add(conceptName);
 

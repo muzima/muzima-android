@@ -1,13 +1,7 @@
 package com.muzima.view.person;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.AdapterView;
@@ -25,7 +19,6 @@ import android.widget.LinearLayout;
 
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -43,8 +36,6 @@ import com.muzima.model.patient.PatientItem;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.PhoneNumberUtils;
 import com.muzima.utils.StringUtils;
-import com.muzima.utils.ThemeUtils;
-import com.muzima.utils.Utils;
 import com.muzima.utils.ViewUtil;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.htc.HTCFormActivity;
@@ -58,7 +49,8 @@ import java.util.Date;
 import java.util.List;
 
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
-import static com.muzima.utils.Constants.STATUS_UPLOADED;
+
+import com.muzima.utils.Constants;
 
 public class PersonRegisterActivity extends BaseActivity {
     private ImageButton identificationDataBtn;
@@ -390,7 +382,7 @@ public class PersonRegisterActivity extends BaseActivity {
            if(!StringUtils.isEmpty(phoneNumber)) {
                contact.setText(phoneNumber);
            }
-           if(StringUtils.stringHasValue(((HTCPerson) patient).getSyncStatus()) && ((HTCPerson) patient).getSyncStatus().equalsIgnoreCase(STATUS_UPLOADED)){
+           if(StringUtils.stringHasValue(((HTCPerson) patient).getSyncStatus()) && ((HTCPerson) patient).getSyncStatus().equalsIgnoreCase(Constants.STATUS_UPLOADED)){
                enableOrDisableFields(false);
            }
        }
@@ -522,7 +514,7 @@ public class PersonRegisterActivity extends BaseActivity {
     }
 
     private boolean areRequiredFieldsValid() {
-        if(patient != null && StringUtils.stringHasValue(((HTCPerson) patient).getSyncStatus()) && ((HTCPerson) patient).getSyncStatus().equalsIgnoreCase(STATUS_UPLOADED)){
+        if(patient != null && StringUtils.stringHasValue(((HTCPerson) patient).getSyncStatus()) && ((HTCPerson) patient).getSyncStatus().equalsIgnoreCase(Constants.STATUS_UPLOADED)){
             return true;
         }
 

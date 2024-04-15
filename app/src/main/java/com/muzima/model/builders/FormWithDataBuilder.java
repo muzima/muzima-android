@@ -12,9 +12,11 @@ package com.muzima.model.builders;
 
 import android.content.Context;
 
-import com.muzima.R;
+
 import com.muzima.api.model.Form;
 import com.muzima.api.model.Patient;
+
+import com.muzima.R;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.Constants;
 

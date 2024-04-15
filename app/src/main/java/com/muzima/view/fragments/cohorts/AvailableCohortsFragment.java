@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.muzima.R;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.cohort.CohortsAdapter;
-import com.muzima.model.cohort.CohortItem;
 import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.model.events.CohortsDownloadedEvent;
 import com.muzima.model.events.DestroyActionModeEvent;
@@ -35,10 +34,10 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
 import com.muzima.view.patients.SyncPatientDataIntent;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Locale;
 
 public class AvailableCohortsFragment extends Fragment implements CohortsAdapter.OnCohortClickedListener, RecyclerAdapter.BackgroundListQueryTaskListener {

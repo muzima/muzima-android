@@ -20,10 +20,6 @@ import static com.muzima.util.Constants.ServerSettings.NOTIFICATION_FEATURE_ENAB
 import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
 import static com.muzima.util.Constants.ServerSettings.SHR_FEATURE_ENABLED_SETTING;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
-import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
-import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
-import static com.muzima.view.BroadcastListenerActivity.SYNC_COMPLETED_ACTION;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -41,18 +37,17 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import android.widget.Toast;
-
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.User;
+
+import com.muzima.R;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
@@ -94,6 +89,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.muzima.utils.DeviceDetailsUtil;
+
 @SuppressLint("NewApi")
 public class MuzimaJobScheduler extends JobService {
 
@@ -120,7 +117,7 @@ public class MuzimaJobScheduler extends JobService {
         setupConfigurationController = muzimaApplication.getSetupConfigurationController();
         fcmTokenController = muzimaApplication.getFCMTokenController();
         appUsageLogsController = muzimaApplication.getAppUsageLogsController();
-        pseudoDeviceId = generatePseudoDeviceId();
+        pseudoDeviceId = DeviceDetailsUtil.generatePseudoDeviceId();
         username = muzimaApplication.getAuthenticatedUserId();
         authenticatedUser = muzimaApplication.getAuthenticatedUser();
         if (authenticatedUser != null){
@@ -149,7 +146,7 @@ public class MuzimaJobScheduler extends JobService {
     };
 
     protected void onReceive(Intent intent){
-        if(intent.getAction().equals(SYNC_COMPLETED_ACTION)){
+        if(intent.getAction().equals(BroadcastListenerActivity.SYNC_COMPLETED_ACTION)){
             new SyncAppUsageLogsBackgroundTask().execute();
             LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         } else {
@@ -165,7 +162,7 @@ public class MuzimaJobScheduler extends JobService {
             //execute job
             Log.i(getClass().getSimpleName(), "Service Started ===");
             LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(MESSAGE_SENT_ACTION));
-            LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(SYNC_COMPLETED_ACTION));
+            LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter(BroadcastListenerActivity.SYNC_COMPLETED_ACTION));
 
             Intent syncStartedBroadcastIntent = new Intent();
             syncStartedBroadcastIntent.setAction(BroadcastListenerActivity.SYNC_STARTED_ACTION);
@@ -336,13 +333,13 @@ public class MuzimaJobScheduler extends JobService {
                 configBeforeConfigUpdate = setupConfigurationController.getActiveSetupConfigurationTemplate();
                 for (SetupConfigurationTemplate template : setupConfigurationController.getSetupConfigurationTemplates()) {
                     int[] templateResult = downloadAndSaveUpdatedSetupConfigurationTemplate(template.getUuid());
-                    if (templateResult[0] == SUCCESS && wasConfigUpdateDone) {
+                    if (templateResult[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS && wasConfigUpdateDone) {
                         List<MuzimaSetting> settings = muzimaSettingController.getSettingsFromSetupConfigurationTemplate(template.getUuid());
 
                         updateSettingsPreferences(settings);
 
                         try {
-                            SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+                            SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(Constants.STANDARD_DATE_TIMEZONE_FORMAT);
                             AppUsageLogs lastSetupUpdateLog = appUsageLogsController.getAppUsageLogByKeyAndUserName(com.muzima.util.Constants.AppUsageLogs.SETUP_UPDATE_TIME, username);
                             if(lastSetupUpdateLog != null){
                                 lastSetupUpdateLog.setLogvalue(simpleDateTimezoneFormat.format(new Date()));
@@ -398,7 +395,7 @@ public class MuzimaJobScheduler extends JobService {
             try {
                 SetupConfigurationTemplate setupConfigurationTemplate =
                         setupConfigurationController.downloadUpdatedSetupConfigurationTemplate(uuid);
-                result[0] = SUCCESS;
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
                 if (setupConfigurationTemplate != null) {
                     result[1] = 1;
                     wasConfigUpdateDone = true;

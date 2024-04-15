@@ -14,6 +14,7 @@ import android.os.Environment;
 
 import com.muzima.BuildConfig;
 
+
 //TODO: This class should be burnt and flushed. Constants in an anti-pattern and and a sure sign that your abstractions are wrong: Zabil
 //TODO: Burnt?? Maybe or may not be - Prasanna
 public class Constants {

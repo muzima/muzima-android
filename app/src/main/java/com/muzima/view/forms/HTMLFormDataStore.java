@@ -89,12 +89,8 @@ import java.util.UUID;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
+import com.muzima.utils.ConceptUtils;
+import com.muzima.view.relationship.RelationshipsListActivity;
 
 
 class HTMLFormDataStore {
@@ -169,9 +165,9 @@ class HTMLFormDataStore {
                 }};
 
                 if (i == (patients.size() - 1))
-                    processForm(separatePatientJsonPayload, STATUS_COMPLETE, false, formDatas);
+                    processForm(separatePatientJsonPayload, Constants.STATUS_COMPLETE, false, formDatas);
                 else
-                    processForm(separatePatientJsonPayload, STATUS_COMPLETE, true, formDatas);
+                    processForm(separatePatientJsonPayload, Constants.STATUS_COMPLETE, true, formDatas);
             }
 
             Intent intent = new Intent(applicationContext, MainDashboardActivity.class);
@@ -361,7 +357,7 @@ class HTMLFormDataStore {
 
                     if (formData.getDiscriminator() != null &&
                             (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE))) {
-                        Patient indexPatient = (Patient) formWebViewActivity.getIntent().getSerializableExtra(INDEX_PATIENT);
+                        Patient indexPatient = (Patient) formWebViewActivity.getIntent().getSerializableExtra(RelationshipsListActivity.INDEX_PATIENT);
                         if (indexPatient != null) {
                             initiatePatientTagsUpdate(new ArrayList<String>() {{
                                 add(indexPatient.getUuid());
@@ -708,7 +704,7 @@ class HTMLFormDataStore {
 
     private String isValidForm(String jsonPayload, String status, boolean parseForPerson, FormData formData) {
         String homeVisitFormUuid = "fdd67221-5d1a-49e9-97e2-2f69aa5e26bc";
-        if(homeVisitFormUuid.equalsIgnoreCase(formData.getTemplateUuid()) && STATUS_COMPLETE.equalsIgnoreCase(status)){
+        if(homeVisitFormUuid.equalsIgnoreCase(formData.getTemplateUuid()) && Constants.STATUS_COMPLETE.equalsIgnoreCase(status)){
             HTMLFormObservationCreator observationCreator = getFormParser(parseForPerson);
             observationCreator.parseObservationsJSONResponse(jsonPayload, this.formData.getUuid());
             List<Observation> observations = observationCreator.getObservations();
@@ -1032,10 +1028,10 @@ class HTMLFormDataStore {
             String conceptUuid = obs.getConcept().getUuid();
             for (Concept concept : concepts) {
                 if (concept.getUuid().equals(conceptUuid)) {
-                    conceptName = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), getApplicationLanguage());
+                    conceptName = ConceptUtils.getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), getApplicationLanguage());
                 }
             }
-            final String dateFormat = STANDARD_DATE_FORMAT;
+            final String dateFormat = Constants.STANDARD_DATE_FORMAT;
             SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
             Date obsDateTime = null;
             Date valueDateTime = null;
@@ -1069,7 +1065,7 @@ class HTMLFormDataStore {
             if (obs.getValueCoded() != null) {
                 codedConcept.put("uuid", obs.getValueCoded().getUuid());
                 codedConcept.put("id", obs.getValueCoded().getId());
-                codedConcept.put("name", getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(), getApplicationLanguage()));
+                codedConcept.put("name", ConceptUtils.getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(), getApplicationLanguage()));
                 ;
                 json.put("valueCoded", codedConcept);
             } else {
@@ -1355,10 +1351,10 @@ class HTMLFormDataStore {
             eventDetails.put("formUuid", formData.getTemplateUuid());
 
             switch (status) {
-                case STATUS_COMPLETE:
+                case Constants.STATUS_COMPLETE:
                     logEvent("SAVE_COMPLETE_FORM", eventDetails.toString());
                     break;
-                case STATUS_INCOMPLETE:
+                case Constants.STATUS_INCOMPLETE:
                     logEvent("SAVE_DRAFT_FORM", eventDetails.toString());
                     break;
             }
@@ -1649,10 +1645,10 @@ class HTMLFormDataStore {
             String conceptUuid = derivedObservation.getDerivedConcept().getUuid();
             for (DerivedConcept derivedConcept : derivedConcepts) {
                 if (derivedConcept.getUuid().equals(conceptUuid)) {
-                    derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), getApplicationLanguage());
+                    derivedConceptName = ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), getApplicationLanguage());
                 }
             }
-            final String dateFormat = STANDARD_DATE_FORMAT;
+            final String dateFormat = Constants.STANDARD_DATE_FORMAT;
             SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
             Date dateCreated = null;
             Date valueDateTime = null;
@@ -1686,7 +1682,7 @@ class HTMLFormDataStore {
             if (derivedObservation.getValueCoded() != null) {
                 derivedCodedConcept.put("uuid", derivedObservation.getValueCoded().getUuid());
                 derivedCodedConcept.put("id", derivedObservation.getValueCoded().getId());
-                derivedCodedConcept.put("name", getConceptNameFromConceptNamesByLocale(derivedObservation.getValueCoded().getConceptNames(), getApplicationLanguage()));
+                derivedCodedConcept.put("name", ConceptUtils.getConceptNameFromConceptNamesByLocale(derivedObservation.getValueCoded().getConceptNames(), getApplicationLanguage()));
                 ;
                 json.put("valueCoded", derivedCodedConcept);
             } else {

@@ -1,6 +1,5 @@
 package com.muzima.utils;
 
-import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
 

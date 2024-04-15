@@ -33,7 +33,6 @@ import com.muzima.controller.PatientController;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +42,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
 
     private final PatientController patientController;
     PatientsLocalSearchAdapter patientsLocalSearchAdapter;
-    private final  MuzimaSettingController muzimaSettingController;
+    private final MuzimaSettingController muzimaSettingController;
 
     public PatientTagsListAdapter(Context context, int textViewResourceId, PatientController patientController, MuzimaSettingController muzimaSettingController) {
         super(context, textViewResourceId);
@@ -60,12 +59,12 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        com.muzima.adapters.patients.PatientTagsListAdapter.ViewHolder holder;
+        PatientTagsListAdapter.ViewHolder holder;
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(
                     R.layout.item_tags_list, parent, false);
-            holder = new com.muzima.adapters.patients.PatientTagsListAdapter.ViewHolder();
+            holder = new PatientTagsListAdapter.ViewHolder();
             holder.indicator = convertView.findViewById(R.id.tag_indicator);
             holder.name = convertView
                     .findViewById(R.id.tag_name);
@@ -77,7 +76,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
             convertView.setTag(holder);
         }
 
-        holder = (com.muzima.adapters.patients.PatientTagsListAdapter.ViewHolder) convertView.getTag();
+        holder = (PatientTagsListAdapter.ViewHolder) convertView.getTag();
         PatientTag patientTag = getItem(position);
         int tagColor = patientController.getTagColor(patientTag.getUuid());
         if (position == 0) {
@@ -114,20 +113,20 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
         return convertView;
     }
 
-    private void markItemUnselected(com.muzima.adapters.patients.PatientTagsListAdapter.ViewHolder holder, Resources resources) {
+    private void markItemUnselected(PatientTagsListAdapter.ViewHolder holder, Resources resources) {
         holder.icon.setImageDrawable(getContext().getDrawable(R.drawable.ic_action_close));
         int drawerColor = getContext().getColor(R.color.drawer_background);
         holder.indicator.setBackgroundColor(drawerColor);
     }
 
-    private void markItemSelected(com.muzima.adapters.patients.PatientTagsListAdapter.ViewHolder holder, int tagColor, Resources resources) {
+    private void markItemSelected(PatientTagsListAdapter.ViewHolder holder, int tagColor, Resources resources) {
         holder.icon.setImageDrawable(resources.getDrawable(R.drawable.ic_accept));
         holder.indicator.setBackgroundColor(tagColor);
     }
 
     @Override
     public void reloadData() {
-        new com.muzima.adapters.patients.PatientTagsListAdapter.BackgroundQueryTask().execute();
+        new PatientTagsListAdapter.BackgroundQueryTask().execute();
     }
 
     @Override
@@ -185,7 +184,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
                 return;
             }
 
-            com.muzima.adapters.patients.PatientTagsListAdapter.this.clear();
+            PatientTagsListAdapter.this.clear();
             if (!tags.isEmpty()) {
                 add(getAllTagsElement());
             }

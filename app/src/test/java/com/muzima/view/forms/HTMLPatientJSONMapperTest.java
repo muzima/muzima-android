@@ -27,12 +27,13 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.muzima.utils.Constants;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest= Config.NONE)
@@ -49,7 +50,7 @@ public class HTMLPatientJSONMapperTest {
     @Test
     public void shouldAddPatientDetailsOnJSONFromPatient() {
         Date birthdate = new Date();
-        SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
+        SimpleDateFormat formattedDate = new SimpleDateFormat(Constants.STANDARD_DATE_FORMAT);
         Patient patient = patient(new Date());
         HTMLPatientJSONMapper mapper = new HTMLPatientJSONMapper();
         FormData formData = new FormData();

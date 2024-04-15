@@ -19,6 +19,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.controller.PatientController;
 import com.muzima.service.FormParser;
 import com.muzima.utils.Constants;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +31,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.text.ParseException;
 
-import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyInt;
@@ -102,7 +102,7 @@ public class FormDataStoreTest {
     public void shouldCreateANewPatientAndStoreHisUUIDAsPatientUUID() throws FormController.FormDataProcessException {
         String tempUUIDAssignedByDevice = "newUUID";
         formData.setPatientUuid(null);
-        formData.setDiscriminator(FORM_DISCRIMINATOR_REGISTRATION);
+        formData.setDiscriminator(Constants.FORM_DISCRIMINATOR_REGISTRATION);
         Patient patient = new Patient();
         patient.setUuid(tempUUIDAssignedByDevice);
         when(controller.createNewPatient(muzimaApplication,formData)).thenReturn(patient);

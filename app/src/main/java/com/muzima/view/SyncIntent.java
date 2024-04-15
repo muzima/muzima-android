@@ -15,8 +15,7 @@ import android.content.Intent;
 import com.muzima.domain.Credentials;
 import com.muzima.service.DataSyncService;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.CREDENTIALS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import com.muzima.utils.Constants;
 
 public class SyncIntent extends Intent {
     private final Context context;
@@ -24,11 +23,11 @@ public class SyncIntent extends Intent {
     protected SyncIntent(Context context) {
         super(context, DataSyncService.class);
         this.context = context;
-        putExtra(CREDENTIALS, new Credentials(context).getCredentialsArray());
+        putExtra(Constants.DataSyncServiceConstants.CREDENTIALS, new Credentials(context).getCredentialsArray());
     }
 
     public void start() {
-        int syncType = getIntExtra(SYNC_TYPE, -1);
+        int syncType = getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
         if(syncType != -1){
             DataSyncService.addQueuedSyncType(syncType);
         }

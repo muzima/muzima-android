@@ -14,8 +14,6 @@ import androidx.fragment.app.FragmentManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.MuzimaPagerAdapter;
-import com.muzima.api.model.Observation;
-import com.muzima.api.service.ObservationService;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.utils.LanguageUtil;

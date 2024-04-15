@@ -18,7 +18,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -26,7 +25,6 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -52,8 +50,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 //ToDO: android.preference.PreferenceFragment was depreciated in API 29 - the current target SDK version. There's need to migrate to androidx.preference
 public class SettingsPreferenceFragment extends PreferenceFragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -596,7 +592,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
         @Override
         protected void onPostExecute(int[] result) {
-            if(result[0] == SUCCESS) {
+            if(result[0] == com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                 FormDuplicateCheckPreferenceService formDuplicateCheckPreferenceService
                         = ((MuzimaApplication) mActivity.getApplication()).getFormDuplicateCheckPreferenceService();
                 formDuplicateCheckPreferenceService.updateFormDuplicateCheckPreferenceSettings();

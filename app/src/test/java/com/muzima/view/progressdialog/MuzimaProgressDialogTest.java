@@ -14,8 +14,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;

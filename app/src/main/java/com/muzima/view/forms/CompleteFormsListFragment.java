@@ -14,7 +14,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +28,6 @@ import com.muzima.R;
 import com.muzima.adapters.forms.CompleteFormsWithDataAdapter;
 import com.muzima.adapters.forms.FormsAdapter;
 import com.muzima.api.model.Concept;
-import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.FormController;
@@ -37,15 +35,11 @@ import com.muzima.controller.ObservationController;
 import com.muzima.model.CompleteFormWithPatientData;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.Constants;
-import com.muzima.utils.CustomColor;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
 
 import org.json.JSONException;
 
@@ -53,7 +47,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+
+import com.muzima.view.patients.PatientSummaryActivity;
 
 public class CompleteFormsListFragment extends FormsWithDataListFragment implements FormsAdapter.MuzimaClickListener{
     public static CompleteFormsListFragment newInstance(FormController formController, ObservationController observationController) {
@@ -93,7 +88,7 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        String filterPatientUuid = getActivity().getIntent().getStringExtra(PATIENT_UUID);
+        String filterPatientUuid = getActivity().getIntent().getStringExtra(PatientSummaryActivity.PATIENT_UUID);
         listAdapter = new CompleteFormsWithDataAdapter(getActivity(), R.layout.item_form_with_data_layout, filterPatientUuid, formController, observationController);
         ((CompleteFormsWithDataAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.info_complete_form_unavailable);

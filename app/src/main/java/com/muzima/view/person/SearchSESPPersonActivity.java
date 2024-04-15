@@ -14,14 +14,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.person.PersonSearchAdapter;
+
 import com.muzima.adapters.person.SespPersonSearchAdapter;
 import com.muzima.api.model.HTCPerson;
 import com.muzima.api.model.Patient;
@@ -32,7 +31,6 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.VerticalSpaceItemDecoration;
-import com.muzima.utils.ViewUtil;
 import com.muzima.view.BaseActivity;
 import com.muzima.view.main.HTCMainActivity;
 

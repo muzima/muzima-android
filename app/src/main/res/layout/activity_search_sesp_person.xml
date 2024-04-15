@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     style="@style/AppBaseTheme.Light.NoActionBar"
-    tools:context=".view.main.HTCMainActivity">
+    tools:context="com.muzima.view.main.HTCMainActivity">
 
     <include layout="@layout/app_bar" />
     <LinearLayout

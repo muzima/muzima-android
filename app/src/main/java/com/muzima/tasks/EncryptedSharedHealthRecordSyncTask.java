@@ -19,8 +19,7 @@ import com.muzima.controller.SmartCardController;
 
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
+import com.muzima.utils.Constants;
 
 public class EncryptedSharedHealthRecordSyncTask {
 
@@ -45,7 +44,7 @@ public class EncryptedSharedHealthRecordSyncTask {
         }
         @Override
         protected void onPostExecute(Integer[] result){
-            if(result[0] == SUCCESS) {
+            if(result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                 Toast.makeText(EncryptedSharedHealthRecordSyncTask.context, "Uploaded " + result[1] +" SHR Data items", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(EncryptedSharedHealthRecordSyncTask.context, "Error Uploading SHR Data. Uploaded " +
@@ -76,18 +75,18 @@ public class EncryptedSharedHealthRecordSyncTask {
                         }
                         result[1]++;
                     } else {
-                        result[0] = UPLOAD_ERROR;
+                        result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
                         result[2]++;
                     }
                 }
 
-                if(result[0] != UPLOAD_ERROR){
-                    result[0] = SUCCESS;
+                if(result[0] != Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR){
+                    result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
                 }
                 return result;
             } catch (SmartCardController.SmartCardRecordFetchException e) {
                 Log.e(getClass().getSimpleName(), "Exception thrown while uploading smartcard record.", e);
-                result[0] = UPLOAD_ERROR;
+                result[0] = Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR;
             }
             return result;
         }

@@ -17,6 +17,7 @@ import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.ObservationService;
+
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.service.SntpService;
 import org.junit.Before;

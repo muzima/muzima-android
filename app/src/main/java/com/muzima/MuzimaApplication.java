@@ -93,10 +93,7 @@ import java.util.concurrent.TimeUnit;
 import io.github.inflationx.calligraphy3.CalligraphyConfig;
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
 import io.github.inflationx.viewpump.ViewPump;
-
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
-import static com.muzima.view.preferences.MuzimaTimer.getTimer;
+import com.muzima.R;
 
 import org.apache.lucene.queryParser.ParseException;
 
@@ -176,7 +173,7 @@ public class MuzimaApplication extends MultiDexApplication {
         FirebaseAnalytics.getInstance(this).setAnalyticsCollectionEnabled(true);
 
         logOut();
-        muzimaTimer = getTimer(this);
+        muzimaTimer = MuzimaTimer.getTimer(this);
 
         super.onCreate();
         checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted();
@@ -545,8 +542,8 @@ public class MuzimaApplication extends MultiDexApplication {
             getPersonController().deletePersons(availablePersons);
 
             List<FormData> formDataList = new ArrayList<>();
-            List<FormData> incompleteForms = getFormController().getAllFormData(STATUS_INCOMPLETE);
-            List<FormData> completeForms = getFormController().getAllFormData(STATUS_COMPLETE);
+            List<FormData> incompleteForms = getFormController().getAllFormData(com.muzima.utils.Constants.STATUS_INCOMPLETE);
+            List<FormData> completeForms = getFormController().getAllFormData(com.muzima.utils.Constants.STATUS_COMPLETE);
             if(incompleteForms.size()>0)
                 formDataList.addAll(incompleteForms);
             if(completeForms.size()>0)

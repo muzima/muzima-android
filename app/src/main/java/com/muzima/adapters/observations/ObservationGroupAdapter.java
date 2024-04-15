@@ -1,9 +1,5 @@
 package com.muzima.adapters.observations;
 
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -43,6 +39,9 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.muzima.utils.ConceptUtils;
+import com.muzima.utils.Constants;
 
 public class ObservationGroupAdapter extends BaseTableAdapter {
 
@@ -201,7 +200,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
 
                         List<ConceptName> conceptNames = new ArrayList<>();
                         ConceptName conceptName = new ConceptName();
-                        conceptName.setName(getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage));
+                        conceptName.setName(ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage));
                         conceptName.setLocale(applicationLanguage);
                         conceptNames.add(conceptName);
 
@@ -234,7 +233,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                 }
             }
 
-        } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException | SetupConfigurationController.SetupConfigurationFetchException e) {
+        } catch (ConceptController.ConceptFetchException | ObservationController.LoadObservationException |
+                 SetupConfigurationController.SetupConfigurationFetchException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading Observations or fetching concepts ",e);
         } catch (DerivedConceptController.DerivedConceptFetchException e) {
             Log.e(getClass().getSimpleName(),"Exception encountered while loading derived concepts ",e);
@@ -263,12 +263,12 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                         conceptWithObservations.add(concept);
                         for (String dateString : h) {
                             if (dateString.isEmpty()) {
-                                conceptRow.add(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage));
+                                conceptRow.add(ConceptUtils.getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage));
                             } else {
                                 String value = "";
                                 for (Observation observation : observations) {
                                     if (dateString.equals(dateFormat.format(observation.getObservationDatetime()))) {
-                                        if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
+                                        if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
                                             Provider provider = app.getProviderController().getProviderBySystemId(observation.getValueText());
                                             if (provider != null) {
                                                 value = provider.getName();
@@ -279,7 +279,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                             if (concept.isNumeric()) {
                                                 value = String.valueOf(observation.getValueNumeric());
                                             } else if (concept.isCoded()) {
-                                                value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
+                                                value = ConceptUtils.getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
                                             } else if (concept.isDatetime()) {
                                                 if(observation.getValueDatetime() != null)
                                                     value = dateFormat.format(observation.getValueDatetime());
@@ -301,8 +301,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                             units = concept.getUnit();
                         }
 
-                        map.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), groups.indexOf(conceptGroupMap.get(pair.getKey())));
-                        conceptUnits.put(getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), units);
+                        map.put(ConceptUtils.getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), groups.indexOf(conceptGroupMap.get(pair.getKey())));
+                        conceptUnits.put(ConceptUtils.getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), applicationLanguage), units);
                         obsGroup[groups.indexOf(conceptGroupMap.get(pair.getKey()))].list.add(new ObsData(conceptRow.toArray(new String[0])));
                     }
                 }else {
@@ -314,12 +314,12 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                             conceptWithObservations.add(observations.get(0).getConcept());
                             for (String dateString : h) {
                                 if (dateString.isEmpty()) {
-                                    conceptRow.add(getConceptNameFromConceptNamesByLocale(observations.get(0).getConcept().getConceptNames(), applicationLanguage));
+                                    conceptRow.add(ConceptUtils.getConceptNameFromConceptNamesByLocale(observations.get(0).getConcept().getConceptNames(), applicationLanguage));
                                 } else {
                                     String value = "";
                                     for (Observation observation : observations) {
                                         if (dateString.equals(dateFormat.format(observation.getObservationDatetime()))) {
-                                            if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
+                                            if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
                                                 Provider provider = app.getProviderController().getProviderBySystemId(observation.getValueText());
                                                 if (provider != null) {
                                                     value = provider.getName();
@@ -330,7 +330,7 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                                 if (derivedConcept.isNumeric()) {
                                                     value = String.valueOf(observation.getValueNumeric());
                                                 } else if (derivedConcept.isCoded()) {
-                                                    value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
+                                                    value = ConceptUtils.getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
                                                 } else if (derivedConcept.isDatetime()) {
                                                     if (observation.getValueDatetime() != null)
                                                         value = dateFormat.format(observation.getValueDatetime());
@@ -350,8 +350,8 @@ public class ObservationGroupAdapter extends BaseTableAdapter {
                                 }
                             }
                             String units = "";
-                            map.put(getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage), groups.indexOf(conceptGroupMap.get(pair.getKey())));
-                            conceptUnits.put(getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage), units);
+                            map.put(ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage), groups.indexOf(conceptGroupMap.get(pair.getKey())));
+                            conceptUnits.put(ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage), units);
                             obsGroup[groups.indexOf(conceptGroupMap.get(pair.getKey()))].list.add(new ObsData(conceptRow.toArray(new String[0])));
                         }
                     }

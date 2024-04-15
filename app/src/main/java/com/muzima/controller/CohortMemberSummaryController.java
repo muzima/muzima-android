@@ -1,13 +1,9 @@
 package com.muzima.controller;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_DERIVED_OBSERVATIONS;
-import static com.muzima.util.Constants.UUID_SEPARATOR;
-import static com.muzima.util.Constants.UUID_TYPE_SEPARATOR;
-import static java.util.Arrays.asList;
 
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.CohortMemberSummary;
-import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.CohortMemberSummaryService;
 import com.muzima.api.service.CohortService;

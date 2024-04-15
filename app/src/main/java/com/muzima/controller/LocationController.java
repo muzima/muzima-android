@@ -19,6 +19,7 @@ import com.muzima.api.service.LocationService;
 import com.muzima.service.HTMLLocationParser;
 import com.muzima.service.LocationParser;
 import com.muzima.utils.StringUtils;
+
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;

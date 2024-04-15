@@ -31,7 +31,6 @@ import com.muzima.R;
 import com.muzima.domain.Credentials;
 import com.muzima.view.landing.SplashActivity;
 import com.muzima.view.login.LoginActivity;
-import com.muzima.view.preferences.SettingsActivity;
 
 import java.util.Map;
 

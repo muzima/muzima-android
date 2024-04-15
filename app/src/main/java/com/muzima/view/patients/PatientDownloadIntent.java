@@ -13,12 +13,12 @@ package com.muzima.view.patients;
 import android.app.Activity;
 import com.muzima.view.SyncIntent;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import com.muzima.utils.Constants;
 
 public class PatientDownloadIntent extends SyncIntent {
     public PatientDownloadIntent(Activity activity, String[] patientUUIDs) {
         super(activity);
-        putExtra(DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD, patientUUIDs);
-        putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA);
+        putExtra(Constants.DataSyncServiceConstants.PATIENT_UUID_FOR_DOWNLOAD, patientUUIDs);
+        putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA);
     }
 }

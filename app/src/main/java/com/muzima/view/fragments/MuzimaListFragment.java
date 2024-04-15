@@ -24,7 +24,6 @@ import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.StringUtils;
-import com.muzima.view.custom.CheckedRelativeLayout;
 
 public abstract class MuzimaListFragment extends Fragment implements AdapterView.OnItemClickListener {
     private static final String TAG = "MuzimaListFragment";

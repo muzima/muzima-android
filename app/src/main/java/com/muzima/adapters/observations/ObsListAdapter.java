@@ -1,10 +1,6 @@
 package com.muzima.adapters.observations;
 
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +17,9 @@ import com.muzima.api.model.Provider;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+
+import com.muzima.utils.ConceptUtils;
+import com.muzima.utils.Constants;
 
 public class ObsListAdapter extends RecyclerView.Adapter<ObsListAdapter.ViewHolder> {
     private Context context;
@@ -49,7 +48,7 @@ public class ObsListAdapter extends RecyclerView.Adapter<ObsListAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Observation observation = observations.get(position);
         String value = "";
-        if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
+        if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
             Provider provider = app.getProviderController().getProviderBySystemId(observation.getValueText());
             if (provider != null) {
                 value = provider.getName();
@@ -60,7 +59,7 @@ public class ObsListAdapter extends RecyclerView.Adapter<ObsListAdapter.ViewHold
             if (concept.isNumeric()) {
                 value = String.valueOf(observation.getValueNumeric());
             } else if (concept.isCoded()) {
-                value = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
+                value = ConceptUtils.getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(), applicationLanguage);
             } else if (concept.isDatetime()) {
                 if(observation.getValueDatetime() != null)
                     value = dateFormat.format(observation.getValueDatetime());

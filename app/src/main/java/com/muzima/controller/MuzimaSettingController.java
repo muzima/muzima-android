@@ -20,9 +20,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.model.Cohort;
-import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
@@ -30,6 +28,8 @@ import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.MuzimaSettingService;
 
 import com.muzima.api.service.SetupConfigurationService;
+
+import com.muzima.R;
 import com.muzima.service.SntpService;
 import com.muzima.view.MainDashboardActivity;
 

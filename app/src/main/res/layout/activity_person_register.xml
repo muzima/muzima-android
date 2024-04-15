@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     style="@style/AppBaseTheme.Light.NoActionBar"
-    tools:context=".view.person.PersonRegisterActivity">
+    tools:context="com.muzima.view.person.PersonRegisterActivity">
 
     <include layout="@layout/app_bar" />
     <LinearLayout
@@ -336,7 +336,7 @@
                         android:id="@+id/contact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
+                        android:inputType="phone"
                         android:textColor="#000"
                         android:padding="6dp"
                         android:background="@drawable/fields_background" />

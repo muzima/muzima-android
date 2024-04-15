@@ -31,7 +31,7 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
-        android:name=".MuzimaApplication"
+        android:name="com.muzima.MuzimaApplication"
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher_logo"
         android:label="@string/app_name"
@@ -42,19 +42,19 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".view.htc.HTCFormActivity"
+            android:name="com.muzima.view.htc.HTCFormActivity"
             android:theme="@style/AppBaseTheme.Light.NoActionBar"
             android:exported="false" />
         <activity
-            android:name=".view.person.PersonRegisterActivity"
+            android:name="com.muzima.view.person.PersonRegisterActivity"
             android:theme="@style/AppBaseTheme.Light.NoActionBar"
             android:exported="false" />
         <activity
-                android:name=".view.person.SearchSESPPersonActivity"
+                android:name="com.muzima.view.person.SearchSESPPersonActivity"
                 android:theme="@style/AppBaseTheme.Light.NoActionBar"
                 android:exported="false" />
         <activity
-            android:name=".view.main.HTCMainActivity"
+            android:name="com.muzima.view.main.HTCMainActivity"
             android:exported="false"
             android:theme="@style/AppBaseTheme.Light.NoActionBar" />
 
@@ -68,7 +68,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.muzima.provider"
+            android:authorities="mz.org.mz.muzima.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -77,7 +77,7 @@
         </provider>
 
         <activity
-            android:name=".view.landing.SplashActivity"
+            android:name="com.muzima.view.landing.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -86,100 +86,100 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.login.LoginActivity"
+            android:name="com.muzima.view.login.LoginActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".view.preferences.SettingsActivity"
+            android:name="com.muzima.view.preferences.SettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_settings"
             android:launchMode="singleTask"
-            android:parentActivityName=".view.MainDashboardActivity"
+            android:parentActivityName="com.muzima.view.MainDashboardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.preferences.ProviderPreferenceActivity"
+            android:name="com.muzima.view.preferences.ProviderPreferenceActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_providers"
-            android:parentActivityName=".view.preferences.SettingsActivity"
+            android:parentActivityName="com.muzima.view.preferences.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.preferences.ConceptPreferenceActivity"
+            android:name="com.muzima.view.preferences.ConceptPreferenceActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_concepts"
-            android:parentActivityName=".view.preferences.SettingsActivity"
+            android:parentActivityName="com.muzima.view.preferences.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.preferences.LocationPreferenceActivity"
+            android:name="com.muzima.view.preferences.LocationPreferenceActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_locations"
-            android:parentActivityName=".view.preferences.SettingsActivity"
+            android:parentActivityName="com.muzima.view.preferences.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.help.HelpActivity"
+            android:name="com.muzima.view.help.HelpActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_help"
-            android:parentActivityName=".view.MainDashboardActivity"
+            android:parentActivityName="com.muzima.view.MainDashboardActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.MainDashboardActivity" />
         </activity>
         <activity
-            android:name=".view.help.InteractiveHelpActivity"
+            android:name="com.muzima.view.help.InteractiveHelpActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/ask_help"
-            android:parentActivityName=".view.MainDashboardActivity"
+            android:parentActivityName="com.muzima.view.MainDashboardActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.MainDashboardActivity" />
         </activity>
         <activity
-            android:name=".view.help.FeedbackActivity"
+            android:name="com.muzima.view.help.FeedbackActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_feedback"
-            android:parentActivityName=".view.MainDashboardActivity"
+            android:parentActivityName="com.muzima.view.MainDashboardActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.MainDashboardActivity" />
         </activity>
         <activity
-            android:name=".view.help.WebViewActivity"
+            android:name="com.muzima.view.help.WebViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_help"
-            android:parentActivityName=".view.BaseActivity"
+            android:parentActivityName="com.muzima.view.BaseActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.help.WebViewActivity" />
         </activity>
         <activity
-            android:name=".view.patients.PatientsSearchActivity"
+            android:name="com.muzima.view.patients.PatientsSearchActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_clients"
-            android:parentActivityName=".view.MainDashboardActivity"
+            android:parentActivityName="com.muzima.view.MainDashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".view.patients.PatientRemoteSearchListActivity"
+            android:name="com.muzima.view.patients.PatientRemoteSearchListActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_clients"
-            android:parentActivityName=".view.patients.PatientsSearchActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientsSearchActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.forms.FormsWithDataActivity"
+            android:name="com.muzima.view.forms.FormsWithDataActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_forms"
-            android:parentActivityName=".view.MainDashboardActivity"
+            android:parentActivityName="com.muzima.view.MainDashboardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.forms.FormWebViewActivity"
+            android:name="com.muzima.view.forms.FormWebViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_form"
-            android:parentActivityName=".view.forms.FormsWithDataActivity"
+            android:parentActivityName="com.muzima.view.forms.FormsWithDataActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -187,10 +187,10 @@
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".view.forms.HTMLFormWebViewActivity"
+            android:name="com.muzima.view.forms.HTMLFormWebViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_form"
-            android:parentActivityName=".view.forms.FormsWithDataActivity"
+            android:parentActivityName="com.muzima.view.forms.FormsWithDataActivity"
             android:theme="@style/DialogNoTitleBar"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -198,46 +198,46 @@
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".view.forms.RegistrationFormsActivity"
+            android:name="com.muzima.view.forms.RegistrationFormsActivity"
             android:configChanges="orientation|screenSize"
             android:label="Select Registration Form"
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".utils.imaging.ImagingIntentActivity"
+            android:name="com.muzima.utils.imaging.ImagingIntentActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_image"
-            android:parentActivityName=".view.forms.FormsWithDataActivity"
+            android:parentActivityName="com.muzima.view.forms.FormsWithDataActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".view.reports.PatientReportActivity"
+            android:name="com.muzima.view.reports.PatientReportActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_client_reports"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.patients.PatientSummaryActivity" />
         </activity>
         <activity
-            android:name=".view.reports.PatientReportWebActivity"
+            android:name="com.muzima.view.reports.PatientReportWebActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_client_reports"
-            android:parentActivityName=".view.reports.PatientReportActivity"
+            android:parentActivityName="com.muzima.view.reports.PatientReportActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.reports.PatientReportActivity" />
         </activity>
         <activity
-            android:name=".utils.audio.AudioIntentActivity"
+            android:name="com.muzima.utils.audio.AudioIntentActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_audio"
-            android:parentActivityName=".view.forms.FormsWithDataActivity"
+            android:parentActivityName="com.muzima.view.forms.FormsWithDataActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -245,10 +245,10 @@
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".utils.video.VideoIntentActivity"
+            android:name="com.muzima.utils.video.VideoIntentActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_video"
-            android:parentActivityName=".view.forms.FormsWithDataActivity"
+            android:parentActivityName="com.muzima.view.forms.FormsWithDataActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -256,10 +256,10 @@
                 android:value="com.muzima.view.forms.FormsWithDataActivity" />
         </activity>
         <activity
-            android:name=".view.relationship.RelationshipsListActivity"
+            android:name="com.muzima.view.relationship.RelationshipsListActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_relationships"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -267,10 +267,10 @@
                 android:value="com.muzima.view.patients.PatientSummaryActivity" />
         </activity>
         <activity
-            android:name=".view.patients.PatientLocationMapActivity"
+            android:name="com.muzima.view.patients.PatientLocationMapActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_client_location"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -278,10 +278,10 @@
                 android:value="com.muzima.view.patients.PatientSummaryActivity" />
         </activity>
         <activity
-            android:name=".view.patients.PatientsLocationMapActivity"
+            android:name="com.muzima.view.patients.PatientsLocationMapActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_clients_locations"
-            android:parentActivityName=".view.patients.PatientsSearchActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientsSearchActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -289,10 +289,10 @@
                 android:value="com.muzima.view.patients.PatientsSearchActivity" />
         </activity>
         <activity
-            android:name=".view.maps.GPSLocationPickerActivity"
+            android:name="com.muzima.view.maps.GPSLocationPickerActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_pick_location"
-            android:parentActivityName=".view.patients.PatientsSearchActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientsSearchActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <meta-data
@@ -300,140 +300,140 @@
                 android:value="com.muzima.view.patients.PatientsSearchActivity" />
         </activity>
         <activity
-            android:name=".view.patients.DataCollectionActivity"
+            android:name="com.muzima.view.patients.DataCollectionActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.patients.ObsViewActivity"
+            android:name="com.muzima.view.patients.ObsViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_observations"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.reports.ProviderPerformanceReportViewActivity"
+            android:name="com.muzima.view.reports.ProviderPerformanceReportViewActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".view.reports.ProviderReportListActivity" /> <!-- Wizard Activities Start -->
+            android:parentActivityName="com.muzima.view.reports.ProviderReportListActivity" /> <!-- Wizard Activities Start -->
         <activity
-            android:name=".view.initialwizard.SetupMethodPreferenceWizardActivity"
+            android:name="com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_setup_method"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".view.initialwizard.GuidedConfigurationWizardActivity"
+            android:name="com.muzima.view.initialwizard.GuidedConfigurationWizardActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_guided_setup_wizard"
             android:screenOrientation="portrait" /> <!-- Wizard Activities End -->
         <activity
-            android:name=".view.reports.ProviderReportViewActivity"
+            android:name="com.muzima.view.reports.ProviderReportViewActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".view.reports.ProviderReportListActivity"
+            android:parentActivityName="com.muzima.view.reports.ProviderReportListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.reports.ProviderReportListActivity"
+            android:name="com.muzima.view.reports.ProviderReportListActivity"
             android:configChanges="orientation|screenSize"
-            android:parentActivityName=".view.MainDashboardActivity"
+            android:parentActivityName="com.muzima.view.MainDashboardActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.AboutMuzimaActivity"
+            android:name="com.muzima.view.AboutMuzimaActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_about_muzima" />
 
-        <receiver android:name=".utils.ConnectivityChangeReceiver">
+        <receiver android:name="com.muzima.utils.ConnectivityChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".service.DataSyncService"
+            android:name="com.muzima.service.DataSyncService"
             android:exported="false" />
         <service
-            android:name=".view.progressdialog.ProgressDialogUpdateIntentService"
+            android:name="com.muzima.view.progressdialog.ProgressDialogUpdateIntentService"
             android:exported="false" />
 
-        <activity android:name=".view.SHRObservationsDataActivity" />
+        <activity android:name="com.muzima.view.SHRObservationsDataActivity" />
 
         <service
-            android:name=".scheduler.MuzimaJobScheduler"
+            android:name="com.muzima.scheduler.MuzimaJobScheduler"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <activity android:name=".view.barcode.BarcodeCaptureActivity" />
+        <activity android:name="com.muzima.view.barcode.BarcodeCaptureActivity" />
         <activity
-            android:name=".view.help.YouTubeVideoViewActivity"
+            android:name="com.muzima.view.help.YouTubeVideoViewActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_help"
-            android:parentActivityName=".view.help.HelpActivity"
+            android:parentActivityName="com.muzima.view.help.HelpActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.help.HelpActivity" />
         </activity>
         <activity
-            android:name=".view.help.VideoWebViewActivity"
+            android:name="com.muzima.view.help.VideoWebViewActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:label="@string/general_help"
-            android:parentActivityName=".view.help.HelpActivity"
+            android:parentActivityName="com.muzima.view.help.HelpActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.muzima.view.help.HelpActivity" />
         </activity>
         <activity
-            android:name=".view.relationship.RelationshipFormsActivity"
+            android:name="com.muzima.view.relationship.RelationshipFormsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/select_a_relationship_form_text"
             android:noHistory="true"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity"
             android:theme="@style/DialogNoTitleBar" />
         <activity
-            android:name=".view.forms.EncounterMiniFormActivity"
+            android:name="com.muzima.view.forms.EncounterMiniFormActivity"
             android:configChanges="orientation|screenSize"
             android:noHistory="true"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity"
             android:theme="@style/DialogNoTitleBar" />
         <activity
-            android:name=".view.forms.PersonDemographicsUpdateFormsActivity"
+            android:name="com.muzima.view.forms.PersonDemographicsUpdateFormsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/select_a_relationship_form_text"
             android:noHistory="true"
-            android:parentActivityName=".view.patients.PatientSummaryActivity"
+            android:parentActivityName="com.muzima.view.patients.PatientSummaryActivity"
             android:theme="@style/DialogNoTitleBar" />
-        <activity android:name=".view.initialwizard.OnboardScreenActivity" />
+        <activity android:name="com.muzima.view.initialwizard.OnboardScreenActivity" />
         <activity
-            android:name=".view.initialwizard.TermsAndPolicyActivity"
+            android:name="com.muzima.view.initialwizard.TermsAndPolicyActivity"
             android:label="@string/general_policy_title" />
         <activity
-            android:name=".view.MainDashboardActivity"
+            android:name="com.muzima.view.MainDashboardActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.patients.PatientSummaryActivity"
+            android:name="com.muzima.view.patients.PatientSummaryActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_client_summary"
-            android:parentActivityName=".view.MainDashboardActivity"
+            android:parentActivityName="com.muzima.view.MainDashboardActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".view.MainDashboardActivity" />
+                android:value="com.muzima.view.MainDashboardActivity" />
         </activity>
         <activity
-            android:name=".view.cohort.CohortPagerActivity"
+            android:name="com.muzima.view.cohort.CohortPagerActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_cohorts"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.forms.FormPagerActivity"
+            android:name="com.muzima.view.forms.FormPagerActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_forms"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.MediaActivity"
+            android:name="com.muzima.view.MediaActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/general_media"
             android:launchMode="singleTask">
@@ -448,7 +448,7 @@
             android:value="@integer/google_play_services_version" />
 
         <service
-            android:name=".service.MuzimaFirebaseMessagingService"
+            android:name="com.muzima.service.MuzimaFirebaseMessagingService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED">

@@ -40,6 +40,7 @@ import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.CheckedLinearLayout;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -120,7 +121,7 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
         Patient patient = patientList.get(position).getPatient();
 
         if(patient.getBirthdate() != null) {
-            holder.dateOfBirth.setText(String.format("DOB: %s", getFormattedDate(patient.getBirthdate())));
+            holder.dateOfBirth.setText(String.format("DOB: %s", DateUtils.getFormattedDate(patient.getBirthdate())));
         }else{
             holder.dateOfBirth.setText(String.format(""));
         }

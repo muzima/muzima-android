@@ -10,8 +10,6 @@
 
 package com.muzima.adapters.observations;
 
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -32,6 +30,8 @@ import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.muzima.utils.ConceptUtils;
 
 public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
 
@@ -143,7 +143,7 @@ public abstract class ObservationsAdapter<T> extends ListAdapter<T> {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
             String applicationLanguage = preferences.getString(activity.getResources().getString(R.string.preference_app_language), activity.getResources().getString(R.string.language_portuguese));
 
-            String text = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage);
+            String text = ConceptUtils.getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage);
             if (concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)) {
                 text += " (" + concept.getUnit() + ")";
             }

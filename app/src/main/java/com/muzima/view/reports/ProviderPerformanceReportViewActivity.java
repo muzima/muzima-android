@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.reports.LeaderboardAdapter;

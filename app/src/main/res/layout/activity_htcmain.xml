@@ -8,7 +8,7 @@
     android:background="@color/white"
     android:orientation="vertical"
     style="@style/AppBaseTheme.Light.NoActionBar"
-    tools:context=".view.main.HTCMainActivity">
+    tools:context="com.muzima.view.main.HTCMainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

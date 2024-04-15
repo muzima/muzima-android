@@ -23,6 +23,7 @@ import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.service.HTMLFormObservationCreator;
 import com.muzima.utils.Constants;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

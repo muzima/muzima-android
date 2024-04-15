@@ -1,16 +1,8 @@
 package com.muzima.view.main;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.PorterDuff;
-import android.os.Parcelable;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
@@ -38,20 +29,15 @@ import com.muzima.R;
 import com.muzima.adapters.person.PersonSearchAdapter;
 import com.muzima.api.model.HTCPerson;
 import com.muzima.api.model.User;
-import com.muzima.controller.FormController;
+
 import com.muzima.controller.HTCPersonController;
-import com.muzima.controller.MuzimaSettingController;
 import com.muzima.model.patient.PatientItem;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
-import com.muzima.utils.Constants;
-import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.VerticalSpaceItemDecoration;
 import com.muzima.utils.ViewUtil;
-import com.muzima.view.BaseActivity;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.person.PersonRegisterActivity;
 import com.muzima.view.person.SearchSESPPersonActivity;

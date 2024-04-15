@@ -10,19 +10,13 @@
 
 package com.muzima.utils;
 
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.muzima.utils.Constants.*;
 
 public class DateUtils {
     private static final String TAG = "DateUtils";
@@ -31,7 +25,7 @@ public class DateUtils {
     public static final String SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT = "dd-MM-yyyy";
 
     public static String getFormattedDate(Date date) {
-        SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
+        SimpleDateFormat formattedDate = new SimpleDateFormat(Constants.STANDARD_DATE_FORMAT);
         return formattedDate.format(date);
     }
 
@@ -51,10 +45,10 @@ public class DateUtils {
         Pattern dateTimePattern = Pattern.compile("[\\d]{2}-[\\d]{2}-[\\d]{4} [\\d]{2}:[\\d]{2}");
         Pattern datePattern = Pattern.compile("[\\d]{2}-[\\d]{2}-[\\d]{4}");
         if (dateTimePattern.matcher(dateAsString).matches()) {
-            SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_LOCALE_FORMAT);
+            SimpleDateFormat formattedDate = new SimpleDateFormat(Constants.STANDARD_DATE_LOCALE_FORMAT);
             return formattedDate.parse(dateAsString);
         } else if (datePattern.matcher(dateAsString).matches()) {
-            SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_FORMAT);
+            SimpleDateFormat formattedDate = new SimpleDateFormat(Constants.STANDARD_DATE_FORMAT);
             return formattedDate.parse(dateAsString);
         } else {
             SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -63,12 +57,12 @@ public class DateUtils {
     }
 
     public static String getFormattedDateTime(Date date) {
-        SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DATE_LOCALE_FORMAT);
+        SimpleDateFormat formattedDate = new SimpleDateFormat(Constants.STANDARD_DATE_LOCALE_FORMAT);
         return formattedDate.format(date);
     }
 
     public static String getFormattedStandardDisplayDateTime(Date date) {
-        SimpleDateFormat formattedDate = new SimpleDateFormat(STANDARD_DISPLAY_FORMAT);
+        SimpleDateFormat formattedDate = new SimpleDateFormat(Constants.STANDARD_DISPLAY_FORMAT);
         return formattedDate.format(date);
     }
 
@@ -142,7 +136,7 @@ public class DateUtils {
 
     public static String convertLongToDateString(long time){
         Date date = new Date(time);
-        SimpleDateFormat format = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
+        SimpleDateFormat format = new SimpleDateFormat(Constants.STANDARD_DATE_TIMEZONE_FORMAT);
         return format.format(date);
     }
 

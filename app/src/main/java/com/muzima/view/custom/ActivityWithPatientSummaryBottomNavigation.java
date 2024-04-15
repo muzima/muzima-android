@@ -1,7 +1,5 @@
 package com.muzima.view.custom;
 
-import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -16,6 +14,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.patients.DataCollectionActivity;
 import com.muzima.view.patients.ObsViewActivity;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 public abstract class ActivityWithPatientSummaryBottomNavigation extends BroadcastListenerActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -64,11 +63,11 @@ public abstract class ActivityWithPatientSummaryBottomNavigation extends Broadca
                 startActivity(new Intent(this, MainDashboardActivity.class));
             } else if (itemId == R.id.action_data_collection) {
                 Intent intent = new Intent(this, DataCollectionActivity.class);
-                intent.putExtra(PATIENT_UUID, patientUuid);
+                intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patientUuid);
                 startActivity(intent);
             } else if (itemId == R.id.action_historical_data) {
                 Intent intent = new Intent(this, ObsViewActivity.class);
-                intent.putExtra(PATIENT_UUID, patientUuid);
+                intent.putExtra(PatientSummaryActivity.PATIENT_UUID, patientUuid);
                 startActivity(intent);
             }
         });

@@ -26,6 +26,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.StringUtils;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,8 +36,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import static com.muzima.utils.DateUtils.parse;
 
 public class HTMLPatientJSONMapper {
 
@@ -293,7 +292,7 @@ public class HTMLPatientJSONMapper {
         Date birthDate = null;
         try {
             if (birthDateAsString != null)
-                birthDate = parse(birthDateAsString);
+                birthDate = DateUtils.parse(birthDateAsString);
         } catch (ParseException e) {
             Log.e(getClass().getSimpleName(), "Could not parse birth_date", e);
         }

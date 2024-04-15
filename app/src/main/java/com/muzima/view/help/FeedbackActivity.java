@@ -21,7 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Toast;
-import androidx.appcompat.widget.Toolbar;
+
 import com.muzima.domain.Credentials;
 import com.muzima.R;
 import com.muzima.utils.StringUtils;

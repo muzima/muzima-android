@@ -10,9 +10,9 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 32,
-      "versionName": "3.4.0-RELEASE",
-      "outputFile": "muzima-android-release-3.4.0-RELEASE.apk"
+      "versionCode": 34,
+      "versionName": "3.5.0-RELEASE",
+      "outputFile": "muzima-android-general-release-3.5.0-RELEASE.apk"
     }
   ]
 }

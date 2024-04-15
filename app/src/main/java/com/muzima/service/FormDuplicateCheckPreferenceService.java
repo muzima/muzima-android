@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 
+
 public class FormDuplicateCheckPreferenceService extends PreferenceService{
     private final SharedPreferences preferences;
     private final MuzimaApplication application;

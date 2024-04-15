@@ -35,6 +35,7 @@ import com.muzima.model.events.FormSearchEvent;
 import com.muzima.tasks.LoadDownloadedFormsTask;
 import com.muzima.utils.ViewUtil;
 import com.muzima.view.custom.MuzimaRecyclerView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 

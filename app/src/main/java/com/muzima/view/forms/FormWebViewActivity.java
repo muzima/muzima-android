@@ -49,6 +49,7 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,8 +59,6 @@ import java.util.UUID;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static com.muzima.view.forms.BarCodeComponent.RC_BARCODE_CAPTURE;
 import static java.text.MessageFormat.format;
 
@@ -287,7 +286,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private boolean isFormComplete() {
-        return formData != null && formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
+        return formData != null && formData.getStatus().equalsIgnoreCase(Constants.STATUS_COMPLETE);
     }
 
     private void setupFormData()
@@ -311,7 +310,7 @@ public class FormWebViewActivity extends BroadcastListenerActivity {
             setUuid(UUID.randomUUID().toString());
             setPatientUuid(patient.getUuid());
             setUserUuid("userUuid");
-            setStatus(STATUS_INCOMPLETE);
+            setStatus(Constants.STATUS_INCOMPLETE);
             setTemplateUuid(form.getUuid());
             setDiscriminator(form.getDiscriminator());
         }};

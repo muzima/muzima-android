@@ -101,10 +101,9 @@ import static android.view.View.VISIBLE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
 import static com.muzima.util.Constants.ServerSettings.COHORT_FILTER_DERIVED_CONCEPT_MAP;
-import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
-import static com.muzima.utils.StringUtils.EMPTY;
-import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_ASSIGNMENT_FORM_UUID_SETTING;
+
+import com.muzima.utils.Constants;
 
 public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.BackgroundListQueryTaskListener,
         PatientAdapterHelper.PatientListClickListener {
@@ -272,7 +271,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         searchPatientEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchPatientsSearchActivity(EMPTY);
+                launchPatientsSearchActivity(StringUtils.EMPTY);
             }
         });
 
@@ -483,10 +482,10 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                     } else {
                         birthDate[0] = new Date(ageInYears, 0, 1);
                     }
-                    SimpleDateFormat sf = new SimpleDateFormat(STANDARD_DATE_FORMAT);
+                    SimpleDateFormat sf = new SimpleDateFormat(Constants.STANDARD_DATE_FORMAT);
                     birthDateEditText.setText(sf.format(birthDate[0]));
                 } else if(ageEditText.hasFocus()){
-                    birthDateEditText.setText(EMPTY);
+                    birthDateEditText.setText(StringUtils.EMPTY);
                 }
             }
 
@@ -532,7 +531,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                         calendar.set(Calendar.DAY_OF_MONTH, day);
                         birthDate[0] = calendar.getTime();
 
-                        SimpleDateFormat sf = new SimpleDateFormat(STANDARD_DATE_FORMAT);
+                        SimpleDateFormat sf = new SimpleDateFormat(Constants.STANDARD_DATE_FORMAT);
                         birthDateEditText.setText(sf.format(birthDate[0]));
                         ageEditText.setText("");
                     }
@@ -597,7 +596,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
         return new Dialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                launchPatientsSearchActivity(EMPTY);
+                launchPatientsSearchActivity(StringUtils.EMPTY);
             }
         };
     }
@@ -640,7 +639,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
         switch (requestCode) {
-            case SMARTCARD_READ_REQUEST_CODE:
+            case SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE:
                 break;
             case RC_BARCODE_CAPTURE:
                 if (resultCode == CommonStatusCodes.SUCCESS) {

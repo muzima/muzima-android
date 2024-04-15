@@ -12,7 +12,6 @@ package com.muzima.view.patients;
 
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -82,6 +81,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import com.muzima.utils.ConceptUtils;
 
 public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavigation implements ClientDynamicObsFormsAdapter.DatePickerClickedListener, ClientDynamicObsFormsAdapter.DateValuePickerClickedListener {
     private static final String TAG = "PatientSummaryActivity";
@@ -286,7 +287,7 @@ public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavi
                 singleObsFormsList.add(form);
             }
         }else {
-            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", getConceptNameFromConceptNamesByLocale(selectedBottomSheetConcept.getConceptNames(),applicationLanguage), selectedBottomSheetConcept.getConceptType().getName()));
+            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", ConceptUtils.getConceptNameFromConceptNamesByLocale(selectedBottomSheetConcept.getConceptNames(),applicationLanguage), selectedBottomSheetConcept.getConceptType().getName()));
             singleObsFormsList.add(form);
         }
         clientDynamicObsFormsAdapter.notifyDataSetChanged();

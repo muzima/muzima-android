@@ -10,9 +10,6 @@
 
 package com.muzima.view.forms;
 
-import android.app.ActionBar;
-import android.os.Build;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -47,7 +44,6 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
-import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
 import com.muzima.service.MuzimaGPSLocationService;
@@ -77,12 +73,10 @@ import java.util.UUID;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
-import static com.muzima.view.forms.BarCodeComponent.RC_BARCODE_CAPTURE;
-import static com.muzima.view.fragments.DashboardHomeFragment.SELECTED_PATIENT_UUIDS_KEY;
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 import static java.text.MessageFormat.format;
+
+import com.muzima.view.fragments.DashboardHomeFragment;
+import com.muzima.view.relationship.RelationshipsListActivity;
 
 public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String PATIENT = "patient";
@@ -415,7 +409,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == RC_BARCODE_CAPTURE) {
+        if (requestCode == BarCodeComponent.RC_BARCODE_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (intent != null) {
                     Barcode barcode = intent.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
@@ -499,7 +493,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private boolean isFormComplete() {
-        return formData != null && formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
+        return formData != null && formData.getStatus().equalsIgnoreCase(Constants.STATUS_COMPLETE);
     }
 
     private void setupFormData()
@@ -508,7 +502,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         BaseForm baseForm = (BaseForm) getIntent().getSerializableExtra(FORM);
         form = formController.getFormByUuid(baseForm.getFormUuid());
         patient = (Patient) getIntent().getSerializableExtra(PATIENT);
-        indexPatient = (Patient) getIntent().getSerializableExtra(INDEX_PATIENT);
+        indexPatient = (Patient) getIntent().getSerializableExtra(RelationshipsListActivity.INDEX_PATIENT);
         formTemplate = formController.getFormTemplateByUuid(baseForm.getFormUuid());
 
         if (baseForm.hasData()) {
@@ -526,7 +520,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setPatientUuid(patient.getUuid());
             setUserSystemId(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getSystemId());
             setUserUuid("userUuid");
-            setStatus(STATUS_INCOMPLETE);
+            setStatus(Constants.STATUS_INCOMPLETE);
             setTemplateUuid(form.getUuid());
             setDiscriminator(form.getDiscriminator());
         }};
@@ -606,7 +600,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private String getSelectedFormUuidsFromIntent(){
-        String selectedFormUuids = getIntent().getStringExtra(SELECTED_PATIENT_UUIDS_KEY);
+        String selectedFormUuids = getIntent().getStringExtra(DashboardHomeFragment.SELECTED_PATIENT_UUIDS_KEY);
         if (selectedFormUuids == null){
             return "[]";
         } else {

@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,18 +47,13 @@ import com.muzima.api.model.CohortMemberSummary;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
-import com.muzima.api.model.DerivedObservation;
-import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.EncounterType;
-import com.muzima.api.model.Encounter;
-import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.Relationship;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.CohortMemberSummaryController;
-import com.muzima.controller.EncounterController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.ConceptController;
@@ -99,10 +93,9 @@ import java.util.Locale;
 
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_COMPLETE;
 import static com.muzima.adapters.forms.FormsPagerAdapter.TAB_INCOMPLETE;
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT;
-import static com.muzima.utils.RelationshipViewUtil.listOnClickListeners;
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
+
+import com.muzima.utils.ConceptUtils;
+import com.muzima.utils.RelationshipViewUtil;
 
 public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavigation implements ClientSummaryFormsAdapter.OnFormClickedListener, FormsLoaderService.FormsLoadedCallback, ListAdapter.BackgroundListQueryTaskListener, RecyclerAdapter.BackgroundListQueryTaskListener, RelationshipsAdapter.RelationshipListClickListener {
     private static final String TAG = "PatientSummaryActivity";
@@ -358,7 +351,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     }
 
     private String getDateAsString(Date date) {
-        return (date!=null ? DateUtils.getFormattedDate(date, SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"-----------------");
+        return (date!=null ? DateUtils.getFormattedDate(date, DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT):"-----------------");
     }
     @SuppressLint("SuspiciousIndentation")
     private void loadPatientData() {
@@ -400,7 +393,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             Observation candidateConsentDateObs = getEncounterDateTimeByPatientUuidAndConceptIdAndValuedCodedAndEncounterTypeUuid(patientUuid,21155, 21154,6403,"4f215536-f90d-4e0c-81e1-074047eecd68");
 
             if (candidateConsentDateObs != null) {
-                lastConsentDate.setText(DateUtils.getFormattedDate(candidateConsentDateObs.getEncounter().getEncounterDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
+                lastConsentDate.setText(DateUtils.getFormattedDate(candidateConsentDateObs.getEncounter().getEncounterDatetime(), DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT));
             }
 
 
@@ -440,9 +433,9 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             if (observations.size() > 0) {
                 Observation obs = observations.get(0);
                 if (concept.isDatetime())
-                    return DateUtils.getFormattedDate(obs.getValueDatetime(), SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
+                    return DateUtils.getFormattedDate(obs.getValueDatetime(), DateUtils.SIMPLE_DAY_MONTH_YEAR_DATE_FORMAT);
                 else if (concept.isCoded())
-                    return getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(), applicationLanguage);
+                    return ConceptUtils.getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(), applicationLanguage);
                 else if (concept.isNumeric())
                     return String.valueOf(obs.getValueNumeric());
                 else
@@ -607,9 +600,11 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
                 }
             }
         });
+
         if (!isFGHCustomClientSummaryEnabled) {
             dadosDeConsentimento.setVisibility(View.GONE);
             artInitDateLayout.setVisibility(View.GONE);
+        } else {
             lastEncounterVolunteer.setVisibility(View.GONE);
             confidentName.setVisibility(View.GONE);
             confidentPhone.setVisibility(View.GONE);
@@ -957,7 +952,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     public void onFormClickedListener(int position) {
         AvailableForm form = forms.get(position);
         Intent intent = new FormViewIntent(this, form, patient, false);
-        intent.putExtra(INDEX_PATIENT, patient);
+        intent.putExtra(RelationshipsListActivity.INDEX_PATIENT, patient);
         this.startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 
@@ -1039,6 +1034,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
     @Override
     public void onItemClick(View view, int position) {
         Relationship relationship = patientRelationshipsAdapter.getRelationship(position);
-        listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship, patientRelationshipsAdapter);
+        RelationshipViewUtil.listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship, patientRelationshipsAdapter);
     }
 }

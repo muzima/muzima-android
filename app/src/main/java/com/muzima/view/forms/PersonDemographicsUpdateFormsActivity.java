@@ -33,8 +33,6 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.relationship.RelationshipsListActivity;
 
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
-
 public class PersonDemographicsUpdateFormsActivity extends AppCompatActivity {
     public static final String PERSON = "person";
     private RelationshipFormsAdapter relationshipFormsAdapter;
@@ -46,7 +44,7 @@ public class PersonDemographicsUpdateFormsActivity extends AppCompatActivity {
         ThemeUtils.getInstance().onCreate(this,true);
         super.onCreate(savedInstanceState);
 
-        indexPatient = (Patient) getIntent().getSerializableExtra(INDEX_PATIENT);
+        indexPatient = (Patient) getIntent().getSerializableExtra(RelationshipsListActivity.INDEX_PATIENT);
         Person selectedRelatedPerson = (Person) getIntent().getSerializableExtra(PERSON);
         if(selectedRelatedPerson != null) {
             person = new Patient();
@@ -115,7 +113,7 @@ public class PersonDemographicsUpdateFormsActivity extends AppCompatActivity {
 
     private void startWebViewActivity(AvailableForm form) {
         Intent intent = new FormViewIntent(this, form, person , true);
-        intent.putExtra(INDEX_PATIENT, indexPatient);
+        intent.putExtra(RelationshipsListActivity.INDEX_PATIENT, indexPatient);
 
         startActivity(intent);
 

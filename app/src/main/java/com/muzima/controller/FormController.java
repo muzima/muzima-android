@@ -60,6 +60,7 @@ import com.muzima.utils.StringUtils;
 import com.muzima.view.forms.GenericPatientRegistrationJSONMapper;
 import com.muzima.view.forms.HTMLPatientJSONMapper;
 import com.muzima.view.forms.PatientJSONMapper;
+
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
@@ -74,17 +75,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION;
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE;
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION;
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE;
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION;
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP;
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
-import static com.muzima.utils.Constants.STATUS_UPLOADED;
 
 public class FormController {
 
@@ -542,7 +532,7 @@ public class FormController {
                                     .withEncounterDate(formData.getEncounterDate())
                                     .build();
                             completeForms.add(completeForm);
-                        }else if (formData.getDiscriminator().equals(FORM_JSON_DISCRIMINATOR_RELATIONSHIP)) {
+                        }else if (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP)) {
                             CompleteFormWithPatientData completeForm = new CompleteFormWithPatientDataBuilder()
                                     .withRelationshipForm(form, context)
                                     .withFormDataUuid(formData.getUuid())
@@ -614,7 +604,7 @@ public class FormController {
             List<FormData>  completeFormData = formService.getFormDataByPatient(personUuid, Constants.STATUS_COMPLETE);
             formDataList.addAll(completeFormData);
 
-            List<FormData>  archivedFormData = formService.getFormDataByPatient(personUuid, STATUS_UPLOADED);
+            List<FormData>  archivedFormData = formService.getFormDataByPatient(personUuid, Constants.STATUS_UPLOADED);
             formDataList.addAll(archivedFormData);
         } catch (IOException e) {
             throw new FormFetchException(e);
@@ -727,19 +717,19 @@ public class FormController {
             boolean result = true;
             List<FormData> allFormData = formService.getAllFormData(Constants.STATUS_COMPLETE);
 
-            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_DISCRIMINATOR_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP), result);
-            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_REGISTRATION), result);
-            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION), result);
-            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_REGISTRATION), result);
+            result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_DEMOGRAPHICS_UPDATE), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_XML_DISCRIMINATOR_ENCOUNTER), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_ENCOUNTER), result);
             result = uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_SHR_ENCOUNTER), result);
-            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, FORM_JSON_DISCRIMINATOR_PERSON_UPDATE), result);
+            return uploadFormDataToServer(getFormsWithDiscriminator(allFormData, Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE), result);
         } catch (IOException e) {
             throw new UploadFormDataException(e);
         }
@@ -881,7 +871,7 @@ public class FormController {
             // replace media paths with base64 string
             formData = replaceMediaPathWithBase64String(formData);
             if (formService.syncFormData(formData)) {
-                formData.setStatus(STATUS_UPLOADED);
+                formData.setStatus(Constants.STATUS_UPLOADED);
 
                 //DO NOT save base64 string in DB
                 formData.setJsonPayload(rawPayload);
@@ -899,7 +889,7 @@ public class FormController {
         deletePatientDataRelatedToFormData(new ArrayList<FormData>() {{
             add(formData);
         }});
-        formData.setStatus(STATUS_INCOMPLETE);
+        formData.setStatus(Constants.STATUS_INCOMPLETE);
         saveFormData(formData);
     }
 
@@ -914,7 +904,7 @@ public class FormController {
 
     public List<FormData> getArchivedFormData() throws FormDataFetchException {
         try {
-            return formService.getAllFormData(STATUS_UPLOADED);
+            return formService.getAllFormData(Constants.STATUS_UPLOADED);
         } catch (IOException e) {
             throw new FormDataFetchException(e);
         }
@@ -930,7 +920,7 @@ public class FormController {
 
     private static FormData injectUuidToPayload(FormData formData) {
 
-        if (StringUtils.equals(formData.getDiscriminator(), FORM_JSON_DISCRIMINATOR_CONSULTATION)) {
+        if (StringUtils.equals(formData.getDiscriminator(), Constants.FORM_JSON_DISCRIMINATOR_CONSULTATION)) {
             try {
                 String base = "consultation";
                 JSONParser jp = new JSONParser(JSONParser.MODE_PERMISSIVE);
@@ -1056,44 +1046,44 @@ public class FormController {
     }
 
     public boolean isRegistrationFormData(FormData formData) {
-        return formData.getDiscriminator().equalsIgnoreCase(FORM_DISCRIMINATOR_REGISTRATION)
-                || formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_REGISTRATION)
-                || formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION);
+        return formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_DISCRIMINATOR_REGISTRATION)
+                || formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION)
+                || formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION);
     }
 
     public boolean isGenericRegistrationHTMLFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
-                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION);
+                && formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_GENERIC_REGISTRATION);
     }
 
     public boolean isPersonRegistrationHTMLFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
-                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
+                && formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
     }
 
     public boolean isPersonUpdateHTMLFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
-                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_PERSON_UPDATE);
+                && formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE);
     }
 
     private boolean isRegistrationHTMLFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
-                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_REGISTRATION);
+                && formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_REGISTRATION);
     }
 
     private boolean isRegistrationXMLFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
-                && formData.getDiscriminator().equalsIgnoreCase(FORM_DISCRIMINATOR_REGISTRATION);
+                && formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_DISCRIMINATOR_REGISTRATION);
     }
 
     public boolean isDemographicsUpdateFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
-                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE);
+                && formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_DEMOGRAPHICS_UPDATE);
     }
 
     private boolean isPersonDemographicsUpdateFormData(FormData formData) {
         return (formData.getDiscriminator() != null)
-                && formData.getDiscriminator().equalsIgnoreCase(FORM_JSON_DISCRIMINATOR_PERSON_UPDATE);
+                && formData.getDiscriminator().equalsIgnoreCase(Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE);
     }
 
     public boolean isEncounterFormData(FormData formData) {
@@ -1105,7 +1095,7 @@ public class FormController {
     }
 
     private boolean isArchivedFormData(FormData formData) {
-        return StringUtils.equals(formData.getStatus(), STATUS_UPLOADED);
+        return StringUtils.equals(formData.getStatus(), Constants.STATUS_UPLOADED);
     }
 
     public Map<String, List<FormData>> getFormDataGroupedByPatient(List<String> uuids) throws FormDataFetchException {

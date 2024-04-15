@@ -18,8 +18,6 @@ import com.muzima.R;
 import com.muzima.adapters.reports.DownloadedPatientReportAdapter;
 import com.muzima.controller.PatientReportController;
 
-import static com.muzima.view.reports.PatientReportWebActivity.PATIENT_REPORT_UUID;
-
 public class DownloadedPatientReportListFragment extends PatientReportListFragment implements AllPatientReportListFragment.OnPatientReportsDownloadListener {
     private static String patientUuid;
 
@@ -53,7 +51,7 @@ public class DownloadedPatientReportListFragment extends PatientReportListFragme
         String patientReportUuid = ((DownloadedPatientReportAdapter) listAdapter).getItem(position).getUuid();
         Intent intent = new Intent(getActivity(), PatientReportWebActivity.class);
 
-        intent.putExtra(PATIENT_REPORT_UUID, patientReportUuid);
+        intent.putExtra(PatientReportWebActivity.PATIENT_REPORT_UUID, patientReportUuid);
         startActivity(intent);
     }
 

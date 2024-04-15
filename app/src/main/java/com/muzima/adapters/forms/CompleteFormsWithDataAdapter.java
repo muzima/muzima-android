@@ -12,7 +12,6 @@ package com.muzima.adapters.forms;
 import android.content.Context;
 import android.util.Log;
 
-import com.muzima.api.model.Patient;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.CompleteFormWithPatientData;

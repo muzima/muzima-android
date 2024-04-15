@@ -13,10 +13,8 @@ package com.muzima.view;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
 import com.google.android.material.snackbar.Snackbar;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.SearchView;
@@ -41,9 +39,6 @@ import com.muzima.view.custom.PagerSlidingTabStrip;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.List;
-
-import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
-import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_WRITE_REQUEST_CODE;
 
 public class SHRObservationsDataActivity extends BroadcastListenerActivity {
 
@@ -152,7 +147,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
         super.onActivityResult(requestCode, resultCode, dataIntent);
         switch (requestCode) {
-            case SMARTCARD_READ_REQUEST_CODE:
+            case SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE:
                 SmartCardIntentResult cardReadIntentResult = null;
                 try {
                     cardReadIntentResult = SmartCardIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);
@@ -177,7 +172,7 @@ public class SHRObservationsDataActivity extends BroadcastListenerActivity {
                 }
                 break;
 
-            case SMARTCARD_WRITE_REQUEST_CODE:
+            case SmartCardIntentIntegrator.SMARTCARD_WRITE_REQUEST_CODE:
                 SmartCardIntentResult cardWriteIntentResult = null;
                 try {
                     cardWriteIntentResult = SmartCardIntentIntegrator.parseActivityResult(requestCode, resultCode, dataIntent);

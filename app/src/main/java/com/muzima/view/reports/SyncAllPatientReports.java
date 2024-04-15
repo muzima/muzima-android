@@ -14,13 +14,12 @@ import android.content.Context;
 
 import com.muzima.view.SyncIntent;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_ALL_PATIENT_REPORT_HEADERS_AND_REPORTS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import com.muzima.utils.Constants;
 
 public class SyncAllPatientReports extends SyncIntent {
 
     public SyncAllPatientReports(Context context) {
         super(context);
-        putExtra(SYNC_TYPE, SYNC_ALL_PATIENT_REPORT_HEADERS_AND_REPORTS);
+        putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_ALL_PATIENT_REPORT_HEADERS_AND_REPORTS);
     }
 }
