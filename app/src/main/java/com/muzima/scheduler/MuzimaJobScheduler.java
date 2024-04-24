@@ -194,9 +194,9 @@ public class MuzimaJobScheduler extends JobService {
         if (parameters == null) {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
+            new FormDataUploadBackgroundTask().execute();
             new SyncSetupConfigTemplatesBackgroundTask().execute();
             new CohortsAndPatientFullDataSyncBackgroundTask().execute();
-            new FormDataUploadBackgroundTask().execute();
             new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
             new SyncSettingsBackgroundTask().execute();
             if(muzimaSettingController.isClinicalSummaryEnabled()) {
