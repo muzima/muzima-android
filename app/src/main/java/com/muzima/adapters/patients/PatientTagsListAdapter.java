@@ -247,6 +247,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
         private PatientTag getAllTagsElement() {
             PatientTag tag = new PatientTag();
             tag.setName(getContext().getString(R.string.general_all));
+            tag.setDescription(getContext().getString(R.string.general_all_clients));
             return tag;
         }
     }
