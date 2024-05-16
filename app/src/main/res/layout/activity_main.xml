@@ -27,7 +27,7 @@
     <!-- The navigation drawer -->
     <FrameLayout
         android:id="@+id/tags_drawer"
-        android:layout_width="240dp"
+        android:layout_width="@dimen/tag_list_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="right"
         android:background="?attr/drawerBackgroundColor">
