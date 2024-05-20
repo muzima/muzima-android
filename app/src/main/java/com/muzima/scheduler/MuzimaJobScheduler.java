@@ -203,11 +203,11 @@ public class MuzimaJobScheduler extends JobService {
         if (parameters == null) {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
-            new SyncSetupConfigTemplatesBackgroundTask().execute();
+            new FormMetaDataSyncBackgroundTask().execute();
             new SyncSettingsBackgroundTask().execute();
             if (!isHtcUser()) {
-                new CohortsAndPatientFullDataSyncBackgroundTask().execute();
                 new FormDataUploadBackgroundTask().execute();
+                new CohortsAndPatientFullDataSyncBackgroundTask().execute();
                 new ProcessedTemporaryFormDataCleanUpBackgroundTask().execute();
                 if (muzimaSettingController.isClinicalSummaryEnabled()) {
                     new SyncAllPatientReportsBackgroundTask().execute();
