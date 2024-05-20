@@ -325,9 +325,6 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             List<CohortMember> cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
             CohortMemberSummary summary = summaryController.getByPatientUuid(patientUuid);
 
-            CohortMember cohortMember = cohortMembers.get(0);
-            //CohortMemberSummary summary = cohortMember.getCohortMemberSummary();
-
             lastVolunteerName.setText(getString(summary.getLastVolunteerName()));
             confidantName.setText(getString(summary.getConfidentName()));
             confidantContact1.setText(getString(summary.getConfidantContact()));
@@ -341,7 +338,7 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             lastCVResult.setText(getString(summary.getResultadoCV()));
             lastCVResultDate.setText(getDateAsString(summary.getDataResultadoCV()));
 
-        } catch (CohortController.CohortFetchException e) {
+        } catch (CohortController.CohortFetchException | IndexOutOfBoundsException e) {
             Log.e(getClass().getSimpleName(), "Exception occurred while loading derived observations", e);
         }
     }
