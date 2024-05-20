@@ -16,12 +16,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.controller.SmartCardController;
+
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.MuzimaPreferences;

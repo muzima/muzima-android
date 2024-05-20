@@ -32,15 +32,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import static com.muzima.utils.Constants.FGH.FormTemplateUuids.INDEX_CASE_PERSON_REGISTRATION_FORM;
-import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP;
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.PersonRegistrationUtils.createBirthDate;
-import static com.muzima.utils.PersonRegistrationUtils.createBirthDateEstimated;
-import static com.muzima.utils.PersonRegistrationUtils.createPersonAddresses;
-import static com.muzima.utils.PersonRegistrationUtils.createPersonAttributes;
-import static com.muzima.utils.PersonRegistrationUtils.createPersonName;
-
 public class RelationshipJsonMapper {
 
     private User loggedInUser;
@@ -58,7 +49,7 @@ public class RelationshipJsonMapper {
     public FormData createFormDataFromRelationship(Patient patient, Relationship relationship) throws JSONException {
         String templateUuid;
         if(muzimaApplication.getMuzimaSettingController().isPatientTagGenerationEnabled()){
-            templateUuid = INDEX_CASE_PERSON_REGISTRATION_FORM;
+            templateUuid = Constants.FGH.FormTemplateUuids.INDEX_CASE_PERSON_REGISTRATION_FORM;
         } else {
             templateUuid = UUID.randomUUID().toString();
         }
@@ -71,10 +62,10 @@ public class RelationshipJsonMapper {
         this.patient =patient;
         this.relationship = relationship;
         FormData formData = new FormData();
-        formData.setDiscriminator(FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
+        formData.setDiscriminator(Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
         formData.setEncounterDate(new Date());
         formData.setPatientUuid(personUuid);
-        formData.setStatus(STATUS_COMPLETE);
+        formData.setStatus(Constants.STATUS_COMPLETE);
         formData.setUserUuid(loggedInUser.getUuid());
         formData.setTemplateUuid(templateUuid);
         formData.setUuid(relationship.getUuid());
@@ -137,7 +128,7 @@ public class RelationshipJsonMapper {
 
         // Discriminator
         JSONObject discriminatorObject = new JSONObject();
-        discriminatorObject.put("discriminator", FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
+        discriminatorObject.put("discriminator", Constants.FORM_JSON_DISCRIMINATOR_RELATIONSHIP);
 
         JSONObject jsonMainObject = new JSONObject();
         jsonMainObject.put("uuid", relationship.getUuid());
@@ -205,12 +196,12 @@ public class RelationshipJsonMapper {
             person.setUuid(personUuid);
             person.setGender(personJSON.getString("patient.sex"));
             List<PersonName> names = new ArrayList<>();
-            names.add(createPersonName(personJSON));
+            names.add(PersonRegistrationUtils.createPersonName(personJSON));
             person.setNames(names);
-            person.setBirthdate(createBirthDate(personJSON));
-            person.setBirthdateEstimated(createBirthDateEstimated(personJSON));
-            person.setAddresses(createPersonAddresses(personJSON));
-            person.setAttributes(createPersonAttributes(personJSON, muzimaApplication));
+            person.setBirthdate(PersonRegistrationUtils.createBirthDate(personJSON));
+            person.setBirthdateEstimated(PersonRegistrationUtils.createBirthDateEstimated(personJSON));
+            person.setAddresses(PersonRegistrationUtils.createPersonAddresses(personJSON));
+            person.setAttributes(PersonRegistrationUtils.createPersonAttributes(personJSON, muzimaApplication));
             return person;
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), "Could not create new person", e);

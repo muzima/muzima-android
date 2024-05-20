@@ -27,6 +27,7 @@ import com.muzima.model.events.CohortSearchEvent;
 import com.muzima.model.events.CohortsDownloadedEvent;
 import com.muzima.utils.Constants;
 import com.muzima.view.custom.MuzimaRecyclerView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 

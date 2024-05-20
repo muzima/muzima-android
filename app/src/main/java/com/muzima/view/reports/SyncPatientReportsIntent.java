@@ -13,14 +13,12 @@ package com.muzima.view.reports;
 import android.app.Activity;
 import com.muzima.view.SyncIntent;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
-import static com.muzima.utils.Constants.SyncPatientReportsConstants.PATIENT_UUID;
+import com.muzima.utils.Constants;
 
 public class SyncPatientReportsIntent extends SyncIntent {
     public SyncPatientReportsIntent(Activity activity, String patientUuid) {
         super(activity);
-        putExtra(SYNC_TYPE, SYNC_PATIENT_REPORTS_HEADERS);
-        putExtra(PATIENT_UUID, patientUuid);
+        putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS);
+        putExtra(Constants.SyncPatientReportsConstants.PATIENT_UUID, patientUuid);
     }
 }

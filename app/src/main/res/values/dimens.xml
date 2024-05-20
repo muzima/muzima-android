@@ -18,6 +18,10 @@
     <dimen name="tag_selected_height">16dp</dimen>
     <dimen name="sync_bar_height">40dp</dimen>
     <dimen name="observation_element_padding">2dp</dimen>
+    <dimen name="dimen_1dp">1dp</dimen>
+    <dimen name="dimen_0dp">0dp</dimen>
+    <dimen name="dimen_2dp">2dp</dimen>
+
     <dimen name="tag_list_drawer_width">240dp</dimen>
     <dimen name="tag_list_name_font_size">18sp</dimen>
     <dimen name="tag_list_description_font_size">16sp</dimen>

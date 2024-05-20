@@ -48,4 +48,60 @@ public class MuzimaPreferences {
     public static boolean getBooleanPreference(Context context, String key, boolean defaultValue) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, defaultValue);
     }
+
+    public static void setStringPreference(Context context, String key, String value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, value).apply();
+    }
+
+    public static String getStringPreference(Context context, String key, String defaultValue) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(key, defaultValue);
+    }
+
+    private static int getIntegerPreference(Context context, String key, int defaultValue) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getInt(key, defaultValue);
+    }
+
+    private static void setIntegerPrefrence(Context context, String key, int value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(key, value).apply();
+    }
+
+    private static boolean setIntegerPrefrenceBlocking(Context context, String key, int value) {
+        return PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(key, value).commit();
+    }
+
+    private static long getLongPreference(Context context, String key, long defaultValue) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getLong(key, defaultValue);
+    }
+
+    private static void setLongPreference(Context context, String key, long value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(key, value).apply();
+    }
+
+    private static void removePreference(Context context, String key) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().remove(key).apply();
+    }
+
+    private static Set<String> getStringSetPreference(Context context, String key, Set<String> defaultValues) {
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        if (prefs.contains(key)) {
+            return prefs.getStringSet(key, Collections.<String>emptySet());
+        } else {
+            return defaultValues;
+        }
+    }
+
+    private static void createSetPreference(Context context, String key, Set<String> values) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        Set<String> set = new HashSet<>(values);
+        editor.putStringSet(key, set);
+        editor.apply();
+    }
+
+   /* public static void setAppLocalePreference(Context context, String localeDescription) {
+        setStringPreference(context, APP_LOCALE_PREFERENCE, localeDescription);
+    }
+
+    public static String getAppLocalePreference(Context context) {
+        return getStringPreference(context, APP_LOCALE_PREFERENCE, context.getString(R.string.language_portuguese));
+    }*/
 }

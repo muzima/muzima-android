@@ -20,7 +20,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.MuzimaSetting;
@@ -29,6 +28,8 @@ import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.MuzimaSettingService;
 
 import com.muzima.api.service.SetupConfigurationService;
+
+import com.muzima.R;
 import com.muzima.service.SntpService;
 import com.muzima.view.MainDashboardActivity;
 
@@ -39,6 +40,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Date;
 import java.util.List;
 
@@ -108,7 +110,7 @@ public class MuzimaSettingController {
                 return configLevelSetting;
             }
             return settingService.getSettingByProperty(property);
-        } catch (IOException | ArrayIndexOutOfBoundsException | ParseException e) { //Fails with ArrayIndexOutOfBoundsException onCall #getSettingByProperty
+        } catch (IOException | ArrayIndexOutOfBoundsException | ParseException | ConcurrentModificationException e) { //Fails with ArrayIndexOutOfBoundsException onCall #getSettingByProperty
             throw new MuzimaSettingFetchException(e);
         }
     }

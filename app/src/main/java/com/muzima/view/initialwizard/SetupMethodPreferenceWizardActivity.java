@@ -13,11 +13,8 @@ package com.muzima.view.initialwizard;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -25,7 +22,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,25 +30,17 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.setupconfiguration.SetupConfigurationRecyclerViewAdapter;
-import com.muzima.api.model.LastSyncTime;
+
 import com.muzima.api.model.SetupConfiguration;
-import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.SntpService;
+
 import com.muzima.tasks.DownloadSetupConfigurationsTask;
-import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.KeyboardWatcher;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivity implements KeyboardWatcher.OnKeyboardToggleListener,
         SetupConfigurationRecyclerViewAdapter.OnSetupConfigurationClickedListener {

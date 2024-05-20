@@ -13,12 +13,11 @@ package com.muzima.view.forms;
 import androidx.fragment.app.FragmentActivity;
 import com.muzima.view.SyncIntent;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_UPLOAD_FORMS;
+import com.muzima.utils.Constants;
 
 public class UploadFormIntent extends SyncIntent {
     public UploadFormIntent(FragmentActivity activity) {
         super(activity);
-        putExtra(SYNC_TYPE, SYNC_UPLOAD_FORMS);
+        putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_UPLOAD_FORMS);
     }
 }

@@ -20,13 +20,12 @@ import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
 import com.muzima.api.model.LastSyncTime;
-import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Provider;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.User;
 import com.muzima.api.service.CohortService;
 import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.model.ConceptIcons;
+
 import com.muzima.service.SntpService;
 import com.muzima.util.JsonUtils;
 import com.muzima.utils.StringUtils;

@@ -13,12 +13,11 @@ package com.muzima.view.cohort;
 import android.app.Activity;
 import com.muzima.view.SyncIntent;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_COHORTS_METADATA;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SYNC_TYPE;
+import com.muzima.utils.Constants;
 
 public class SyncCohortsIntent extends SyncIntent {
     public SyncCohortsIntent(Activity activity) {
         super(activity);
-        putExtra(SYNC_TYPE, SYNC_COHORTS_METADATA);
+        putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_COHORTS_METADATA);
     }
 }

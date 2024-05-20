@@ -10,9 +10,6 @@
 
 package com.muzima.view.forms;
 
-import android.app.ActionBar;
-import android.os.Build;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -45,6 +42,7 @@ import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Patient;
+import com.muzima.controller.ConceptController;
 import com.muzima.controller.FormController;
 import com.muzima.model.BaseForm;
 import com.muzima.model.FormWithData;
@@ -75,12 +73,10 @@ import java.util.UUID;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
 import static com.muzima.controller.FormController.FormFetchException;
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
-import static com.muzima.view.forms.BarCodeComponent.RC_BARCODE_CAPTURE;
-import static com.muzima.view.fragments.DashboardHomeFragment.SELECTED_PATIENT_UUIDS_KEY;
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
 import static java.text.MessageFormat.format;
+
+import com.muzima.view.fragments.DashboardHomeFragment;
+import com.muzima.view.relationship.RelationshipsListActivity;
 
 public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     public static final String PATIENT = "patient";
@@ -343,6 +339,44 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         messageView.setGravity(Gravity.CENTER);
     }
 
+    private void showErrorMessageMaximumAttemptNumberReached() {
+        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
+                .setCancelable(false)
+                .setIcon(ThemeUtils.getIconWarning(this))
+                .setTitle(getResources().getString(R.string.general_error))
+                .setMessage(getResources().getString(R.string.attempt_number_limit_reached))
+                //.setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                .setNegativeButton(getString(R.string.general_ok), positiveClickListener())
+                .create()
+                .show();
+    }
+
+    /*private void showErrorMessageVisitMadeSuccessfully() {
+        new AlertDialog.Builder(HTMLFormWebViewActivity.this)
+                .setCancelable(false)
+                .setIcon(ThemeUtils.getIconWarning(this))
+                .setTitle(getResources().getString(R.string.general_error))
+                .setMessage(getResources().getString(R.string.visit_made_sucessfully))
+                .setPositiveButton(getString(R.string.general_yes), positiveClickListener())
+                .setNegativeButton(getString(R.string.general_no), null)
+                .create()
+                .show();
+    }*/
+
+    private Dialog.OnClickListener duplicateFormDataClickListener(final String saveType) {
+
+        return new Dialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (saveType.equals(SAVE_AS_INCOMPLETE)) {
+                    webView.loadUrl("javascript:document.saveDraft()");
+                } else if (saveType.equals(SAVE_AS_COMPLETED)) {
+                    webView.loadUrl("javascript:document.submit()");
+                }
+            }
+        };
+    }
+
     private void autoSaveForm() {
         webView.loadUrl("javascript:document.autoSaveForm()");
     }
@@ -361,7 +395,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == RC_BARCODE_CAPTURE) {
+        if (requestCode == BarCodeComponent.RC_BARCODE_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (intent != null) {
                     Barcode barcode = intent.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
@@ -445,7 +479,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private boolean isFormComplete() {
-        return formData != null && formData.getStatus().equalsIgnoreCase(STATUS_COMPLETE);
+        return formData != null && formData.getStatus().equalsIgnoreCase(Constants.STATUS_COMPLETE);
     }
 
     private void setupFormData()
@@ -454,7 +488,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
         BaseForm baseForm = (BaseForm) getIntent().getSerializableExtra(FORM);
         form = formController.getFormByUuid(baseForm.getFormUuid());
         patient = (Patient) getIntent().getSerializableExtra(PATIENT);
-        indexPatient = (Patient) getIntent().getSerializableExtra(INDEX_PATIENT);
+        indexPatient = (Patient) getIntent().getSerializableExtra(RelationshipsListActivity.INDEX_PATIENT);
         formTemplate = formController.getFormTemplateByUuid(baseForm.getFormUuid());
 
         if (baseForm.hasData()) {
@@ -472,7 +506,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
             setPatientUuid(patient.getUuid());
             setUserSystemId(((MuzimaApplication) getApplicationContext()).getAuthenticatedUser().getSystemId());
             setUserUuid("userUuid");
-            setStatus(STATUS_INCOMPLETE);
+            setStatus(Constants.STATUS_INCOMPLETE);
             setTemplateUuid(form.getUuid());
             setDiscriminator(form.getDiscriminator());
         }};
@@ -521,6 +555,22 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
         HTMLFormDataStore htmlFormDataStore = new HTMLFormDataStore(this, formData, isFormReload,
                 (MuzimaApplication) getApplicationContext());
+
+        if (formData.getTemplateUuid().equals("fdd67221-5d1a-49e9-97e2-2f69aa5e26bc") && !isFormReload) {
+            boolean isLastAttemptReached;
+
+            try {
+                isLastAttemptReached = htmlFormDataStore.isLastAttemptReached(this.patient.getUuid(), 23842);
+            } catch (ConceptController.ConceptFetchException | JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (isLastAttemptReached) {
+                this.showErrorMessageMaximumAttemptNumberReached();
+                return;
+            }
+        }
+
         htmlFormDataStore.setSelectedPatientsUuids(getSelectedFormUuidsFromIntent());
         webView.addJavascriptInterface(htmlFormDataStore, HTML_DATA_STORE);
 
@@ -536,7 +586,7 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
     }
 
     private String getSelectedFormUuidsFromIntent(){
-        String selectedFormUuids = getIntent().getStringExtra(SELECTED_PATIENT_UUIDS_KEY);
+        String selectedFormUuids = getIntent().getStringExtra(DashboardHomeFragment.SELECTED_PATIENT_UUIDS_KEY);
         if (selectedFormUuids == null){
             return "[]";
         } else {

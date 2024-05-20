@@ -34,8 +34,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
-import static com.muzima.utils.Constants.STANDARD_DATE_LOCALE_FORMAT;
+import com.muzima.utils.Constants;
 
 /**
  * Responsible to list down the forms in the order of the Patient details. Here you can identify forms by the patient name.
@@ -92,7 +91,7 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
 
         if (!isEmpty()) {
             FormWithData formWithData = getItem(position);
-            SimpleDateFormat dateFormat = new SimpleDateFormat(STANDARD_DATE_FORMAT);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.STANDARD_DATE_FORMAT);
 
             if(StringUtils.isEmpty(filterPatientUuid)) {
                 holder.formName.setText(formWithData.getName());
@@ -112,7 +111,7 @@ public abstract class FormsWithDataAdapter<T extends FormWithData> extends Forms
             }
 
             if (formWithData.getLastModifiedDate() != null) {
-                dateFormat = new SimpleDateFormat(STANDARD_DATE_LOCALE_FORMAT);
+                dateFormat = new SimpleDateFormat(Constants.STANDARD_DATE_LOCALE_FORMAT);
                 String formSaveTime = dateFormat.format(formWithData.getLastModifiedDate());
                 holder.lastEditedTime.setText(formSaveTime);
             }

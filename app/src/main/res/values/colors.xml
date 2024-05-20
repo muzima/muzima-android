@@ -60,4 +60,15 @@
     <color name="orange">#FFA500</color>
     <color name="patient_summary_border">#ffffff</color>
     <color name="patient_summary_border_light">#303030</color>
+    <color name="button_stroke">#85D5FB</color>
+    <color name="colorPrimaryLight">#389b3c</color>
+    <color name="button_dark_back">#12531B</color>
+    <color name="colorPrimaryDark">#004912</color>
+    <color name="person_item_back">#f5f5f5</color>
+    <color name="background_layout">#389b3c</color>
+    <color name="input_labels">#6E6E6E</color>
+
+    <color name="person_item_divider">#bdbdbd</color>
+    <color name="spinner_back_color">#DFEAF7</color>
+
 </resources>

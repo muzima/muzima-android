@@ -23,7 +23,7 @@ import com.muzima.adapters.reports.ReportsAdapter;
 import com.muzima.controller.PatientReportController;
 import com.muzima.view.fragments.MuzimaListFragment;
 
-public abstract class PatientReportListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener{
+public abstract class PatientReportListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener {
 
     PatientReportController patientReportController;
     private FrameLayout progressBarContainer;

@@ -10,7 +10,6 @@
 
 package com.muzima.view.reports;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.ConsoleMessage;

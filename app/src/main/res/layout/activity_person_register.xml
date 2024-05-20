@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    style="@style/AppBaseTheme.Light.NoActionBar"
+    tools:context="com.muzima.view.person.PersonRegisterActivity">
+
+    <include layout="@layout/app_bar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/personExistsInSESPTxtView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pessoa existe no SESP?"
+                    style="@style/input_labels"
+                    />
+                <Spinner
+                    android:id="@+id/personExistsInSESP"
+                    android:layout_below="@+id/personExistsInSESPTxtView"
+                    android:layout_width="match_parent"
+                    style="@style/bottom_spinner_style"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/detailsTextView"
+                    android:layout_below="@+id/personExistsInSESP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Detalhes"
+                    style="@style/input_labels"
+                    />
+                <EditText
+                    android:id="@+id/details"
+                    android:layout_below="@+id/detailsTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="#000"
+                    android:padding="6dp"
+                    android:background="@drawable/fields_background" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/identification_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_normal"
+                    android:paddingVertical="6dp"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:text="Identificação"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:drawableLeft="@drawable/baseline_contact_page_24"
+                        android:gravity="center_vertical|left"
+                        android:paddingLeft="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_identification_data"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_layout"
+                        android:src="@drawable/sharp_arrow_drop_up_24"
+                        android:layout_marginRight="@dimen/dimen_2dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/identification_data_lyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Nome *"
+                        style="@style/input_labels"
+                        />
+                    <EditText
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="#000"
+                        android:padding="6dp"
+                        android:background="@drawable/fields_background" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Apelido *"
+                        style="@style/input_labels"
+                        />
+                    <EditText
+                        android:id="@+id/surname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="#000"
+                        android:padding="6dp"
+                        android:background="@drawable/fields_background" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/birth_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_normal"
+                    android:paddingVertical="6dp"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:text="Data de Nascimento"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:drawableLeft="@drawable/ic_calendar"
+                        android:gravity="center_vertical|left"
+                        android:paddingLeft="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_birth_data"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_layout"
+                        android:src="@drawable/sharp_arrow_drop_up_24"
+                        android:layout_marginRight="@dimen/dimen_2dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/birth_data_lyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/birth_date_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/birth_date_date"
+                                android:layout_weight="2"
+                                android:checked="true"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Indicar data" />
+
+                            <RadioButton
+                                android:id="@+id/birth_date_age"
+                                android:layout_weight="2"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_height="wrap_content"
+                                android:text="Indicar idade" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/birthDateOrAgeTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Data de Nascimento *"
+                            style="@style/input_labels"
+                            />
+                        <EditText
+                            android:id="@+id/birth_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:focusableInTouchMode="false"
+                            android:textColor="#000"
+                            android:padding="6dp"
+                            android:background="@drawable/fields_background" />
+                        <EditText
+                            android:id="@+id/htcPersonAge"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:textColor="#000"
+                            android:padding="6dp"
+                            android:background="@drawable/fields_background" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/sex_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_normal"
+                    android:paddingVertical="6dp"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:text="Sexo *"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:drawableLeft="@drawable/baseline_contact_page_24"
+                        android:gravity="center_vertical|left"
+                        android:paddingLeft="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_sex_data"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_layout"
+                        android:src="@drawable/sharp_arrow_drop_up_24"
+                        android:layout_marginRight="@dimen/dimen_2dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/sex_data_lyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/sex_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/male_rdb"
+                                android:layout_weight="2"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:layout_height="wrap_content"
+                                android:text="Masculino" />
+
+                            <RadioButton
+                                android:id="@+id/female_rdb"
+                                android:layout_weight="2"
+                                android:layout_width="@dimen/dimen_0dp"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:layout_height="wrap_content"
+                                android:text="Feminino" />
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/contact_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_normal"
+                    android:paddingVertical="6dp"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:text="Contacto"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:drawableLeft="@drawable/baseline_call_24"
+                        android:gravity="center_vertical|left"
+                        android:paddingLeft="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_contact_data"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_layout"
+                        android:src="@drawable/sharp_arrow_drop_up_24"
+                        android:layout_marginRight="@dimen/dimen_2dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/contact_data_lyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Contacto"
+                        style="@style/input_labels"
+                        />
+                    <EditText
+                        android:id="@+id/contact"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:textColor="#000"
+                        android:padding="6dp"
+                        android:background="@drawable/fields_background" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/address_data"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_normal"
+                    android:paddingVertical="6dp"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:text="Endereço"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:drawableLeft="@drawable/baseline_add_location_24"
+                        android:gravity="center_vertical|left"
+                        android:paddingLeft="10dp"/>
+
+                    <ImageButton
+                        android:id="@+id/btn_address_data"
+                        android:layout_width="@dimen/dimen_0dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/background_layout"
+                        android:src="@drawable/sharp_arrow_drop_up_24"
+                        android:layout_marginRight="@dimen/dimen_2dp"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/address_data_lyt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Rua/Avenida"
+                        style="@style/input_labels"
+                        />
+                    <EditText
+                        android:id="@+id/street"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="#000"
+                        android:padding="6dp"
+                        android:background="@drawable/fields_background" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Localidade"
+                        style="@style/input_labels"
+                        />
+                    <EditText
+                        android:id="@+id/localidade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="#000"
+                        android:padding="6dp"
+                        android:background="@drawable/fields_background" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Quarteirão"
+                        style="@style/input_labels"
+                        />
+                    <EditText
+                        android:id="@+id/quarteirao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="#000"
+                        android:padding="6dp"
+                        android:background="@drawable/fields_background" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Bairro"
+                        style="@style/input_labels"
+                        />
+                    <EditText
+                        android:id="@+id/bairro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textColor="#000"
+                        android:padding="6dp"
+                        android:background="@drawable/fields_background" />
+                </LinearLayout>
+                <LinearLayout
+                        android:id="@+id/additional_information_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/shape_normal"
+                        android:paddingVertical="6dp"
+                        android:layout_marginVertical="10dp"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="8"
+                            android:text="Informação Adicional"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:drawableLeft="@drawable/baseline_info_24"
+                            android:gravity="center_vertical|left"
+                            android:paddingLeft="10dp"/>
+
+                    <ImageButton
+                            android:id="@+id/btn_additional_information_data"
+                            android:layout_width="@dimen/dimen_0dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/background_layout"
+                            android:src="@drawable/sharp_arrow_drop_up_24"
+                            android:layout_marginRight="@dimen/dimen_2dp"
+                            android:layout_weight="1"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:id="@+id/additional_information_lyt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="4dp">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Data de criação"
+                            style="@style/input_labels"
+                    />
+                    <EditText
+                            android:id="@+id/dateOfCreation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:textColor="#000"
+                            android:padding="6dp"
+                            android:background="@drawable/fields_background" />
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Unidade Sanitária"
+                            style="@style/input_labels"
+                    />
+                    <EditText
+                            android:id="@+id/healthFacility"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:textColor="#000"
+                            android:padding="6dp"
+                            android:background="@drawable/fields_background" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+
+                    <ImageView
+                        android:id="@+id/save_and_continue"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_gravity="right"
+                        android:layout_marginStart="18dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginEnd="0dp"
+                        android:layout_marginBottom="18dp"
+                        android:background="@drawable/button_shape"
+                        app:srcCompat="@drawable/baseline_navigate_next_24" />
+
+
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout>

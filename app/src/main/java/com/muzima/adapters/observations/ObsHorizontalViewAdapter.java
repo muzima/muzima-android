@@ -10,9 +10,6 @@
 
 package com.muzima.adapters.observations;
 
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +38,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.muzima.utils.ConceptUtils;
 
 public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontalViewAdapter.ViewHolder> {
     private final List<Observation> observationList;
@@ -107,10 +106,10 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
                 holder.observationValue.setText(DateUtils.convertDateToStdString(observation.getValueDatetime()));
 
             if (observation.getConcept().isCoded())
-                holder.observationValue.setText(getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
+                holder.observationValue.setText(ConceptUtils.getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
 
             if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded()){
-                if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
+                if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == Constants.FGH.Concepts.HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
                     Provider provider = providerController.getProviderBySystemId(observation.getValueAsString());
                     if(provider != null){
                         holder.observationValue.setText(provider.getName());
@@ -246,7 +245,7 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
             obsValueTextView.setText("Complex Obs");
         } else {
             if(observation.getConcept().isCoded()) {
-                String observationValue = getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage);
+                String observationValue = ConceptUtils.getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage);
                 obsValueTextView.setText(observationValue);
             }else{
                 String observationValue = observation.getValueAsString();
@@ -254,7 +253,7 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
             }
         }
 
-        conceptNameTextView.setText(getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(),applicationLanguage));
+        conceptNameTextView.setText(ConceptUtils.getConceptNameFromConceptNamesByLocale(observation.getConcept().getConceptNames(),applicationLanguage));
         String conceptUnits = observation.getConcept().getUnit();
 
         if (!StringUtils.isEmpty(conceptUnits)) {

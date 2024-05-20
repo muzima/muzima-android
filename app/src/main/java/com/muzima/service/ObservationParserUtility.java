@@ -17,7 +17,6 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.ConceptType;
 import com.muzima.api.model.DerivedConcept;
-import com.muzima.api.model.DerivedConceptName;
 import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.EncounterType;

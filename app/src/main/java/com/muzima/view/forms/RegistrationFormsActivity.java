@@ -16,12 +16,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.material.appbar.MaterialToolbar;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.forms.RegistrationFormsAdapter;
@@ -32,14 +30,13 @@ import com.muzima.model.AvailableForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.BaseActivity;
 import com.muzima.view.BaseAuthenticatedActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 
 import java.util.UUID;
 
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
+import com.muzima.view.relationship.RelationshipsListActivity;
 
 public class RegistrationFormsActivity extends BaseAuthenticatedActivity {
     private RegistrationFormsAdapter registrationFormsAdapter;
@@ -55,7 +52,7 @@ public class RegistrationFormsActivity extends BaseAuthenticatedActivity {
         setContentView(R.layout.activity_registration_form_list);
 
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
-        indexPatient = (Patient) getIntent().getSerializableExtra(INDEX_PATIENT);
+        indexPatient = (Patient) getIntent().getSerializableExtra(RelationshipsListActivity.INDEX_PATIENT);
 
 
         FormController formController = ((MuzimaApplication) getApplicationContext()).getFormController();
@@ -127,7 +124,7 @@ public class RegistrationFormsActivity extends BaseAuthenticatedActivity {
             patient.setUuid(String.valueOf(UUID.randomUUID()));
         }
         Intent intent = new FormViewIntent(this, form, patient, false);
-        intent.putExtra(INDEX_PATIENT, indexPatient);
+        intent.putExtra(RelationshipsListActivity.INDEX_PATIENT, indexPatient);
         startActivity(intent);
         finish();
     }

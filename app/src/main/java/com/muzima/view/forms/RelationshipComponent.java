@@ -22,7 +22,7 @@ import com.muzima.controller.PersonController;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.relationship.RelationshipFormsActivity;
 
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
+import com.muzima.view.relationship.RelationshipsListActivity;
 
 public class RelationshipComponent {
 
@@ -46,7 +46,7 @@ public class RelationshipComponent {
         this.personUuidField = personUuidField;
 
         Intent intent = new Intent(activity, RelationshipFormsActivity.class);
-        intent.putExtra(INDEX_PATIENT, indexPatient);
+        intent.putExtra(RelationshipsListActivity.INDEX_PATIENT, indexPatient);
         activity.startActivityForResult(intent, CREATE_RELATIONSHIP_PERSON_REQUEST_CODE);
     }
 
@@ -60,7 +60,7 @@ public class RelationshipComponent {
             Person person = ((MuzimaApplication) activity.getApplicationContext()).getPersonController().getPersonByUuid(personUuid);
 
             Intent intent = new Intent(activity, PersonDemographicsUpdateFormsActivity.class);
-            intent.putExtra(INDEX_PATIENT, indexPatient);
+            intent.putExtra(RelationshipsListActivity.INDEX_PATIENT, indexPatient);
 
             if(person != null) {
                 intent.putExtra(PersonDemographicsUpdateFormsActivity.PERSON, person);

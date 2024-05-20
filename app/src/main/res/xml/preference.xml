@@ -50,7 +50,7 @@
         android:fontFamily="@font/montserrat_regular"
         android:title="@string/header_muzima_category">
         <EditTextPreference
-            android:defaultValue="5"
+            android:defaultValue="15"
             android:dialogMessage="@string/hint_session_timeout"
             android:dialogTitle="@string/title_session_timeout"
             android:fontFamily="@font/montserrat_regular"
@@ -71,6 +71,7 @@
             android:inputType="number"
             android:maxLength="3"
             android:key="@string/preference_auto_save_interval"
+            android:visibility="gone"
             android:negativeButtonText="@android:string/cancel"
             android:positiveButtonText="@android:string/ok"
             android:selectAllOnFocus="true"
@@ -101,7 +102,7 @@
             android:title="@string/title_light_mode" />
 
         <ListPreference
-            android:defaultValue="@string/language_english"
+            android:defaultValue="@string/language_portuguese"
             android:entries="@array/app_language_entries"
             android:entryValues="@array/app_language_values"
             android:icon="@drawable/ic_action_language"

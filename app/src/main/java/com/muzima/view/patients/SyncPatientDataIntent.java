@@ -15,18 +15,18 @@ import android.content.Context;
 
 import com.muzima.view.SyncIntent;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import com.muzima.utils.Constants;
 
 public class SyncPatientDataIntent extends SyncIntent {
     public SyncPatientDataIntent(Activity activity, String[] selectedCohortsArray) {
         super(activity);
-        putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA);
-        putExtra(DataSyncServiceConstants.COHORT_IDS, selectedCohortsArray);
+        putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA);
+        putExtra(Constants.DataSyncServiceConstants.COHORT_IDS, selectedCohortsArray);
     }
 
     public SyncPatientDataIntent(Context context, String[] selectedCohortsArray) {
         super(context);
-        putExtra(DataSyncServiceConstants.SYNC_TYPE, DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA);
-        putExtra(DataSyncServiceConstants.COHORT_IDS, selectedCohortsArray);
+        putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, Constants.DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA);
+        putExtra(Constants.DataSyncServiceConstants.COHORT_IDS, selectedCohortsArray);
     }
 }

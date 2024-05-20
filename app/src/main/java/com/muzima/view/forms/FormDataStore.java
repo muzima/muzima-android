@@ -29,9 +29,6 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.io.IOException;
 import java.text.ParseException;
 
-import static com.muzima.utils.Constants.FORM_DISCRIMINATOR_REGISTRATION;
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-
 class FormDataStore {
 
     private final FormWebViewActivity formWebViewActivity;
@@ -111,7 +108,7 @@ class FormDataStore {
 
 
     private boolean isRegistrationComplete(String status) {
-        return isRegistrationForm() && status.equals(STATUS_COMPLETE);
+        return isRegistrationForm() && status.equals(Constants.STATUS_COMPLETE);
     }
 
     @JavascriptInterface
@@ -130,6 +127,6 @@ class FormDataStore {
     }
 
     private boolean isRegistrationForm() {
-        return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(FORM_DISCRIMINATOR_REGISTRATION);
+        return (formData.getDiscriminator() != null) && formData.getDiscriminator().equals(Constants.FORM_DISCRIMINATOR_REGISTRATION);
     }
 }

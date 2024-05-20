@@ -4,8 +4,6 @@ import android.util.Log;
 
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.service.AppUsageLogsService;
-import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.service.SntpService;
 
 import org.apache.lucene.queryParser.ParseException;
 

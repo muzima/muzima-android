@@ -2,8 +2,6 @@ package com.muzima.controller;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_REPORT_DATASETS;
 
-import android.util.Log;
-
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.ReportDataset;
 import com.muzima.api.service.LastSyncTimeService;

@@ -14,6 +14,8 @@ import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
+
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,7 +68,7 @@ public class JSONPatientMapperTest{
     @Test
     public void shouldHaveDOBForPatient() throws Exception {
         Patient patient = mapper.getPatient();
-        assertThat(patient.getBirthdate(),is(DateUtils.parse("2013-10-28")));
+        assertThat(patient.getBirthdate(), Is.is(DateUtils.parse("2013-10-28")));
     }
 
     @Test

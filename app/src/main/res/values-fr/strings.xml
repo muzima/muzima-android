@@ -792,5 +792,106 @@
     <string name="general_female">Femelle</string>
     <string name="general_more">Plus</string>
     <string name="general_less">Moins</string>
+    <string name="general_error">Erreur!</string>
+    <string name="attempt_number_limit_reached">Nombre de tentatives de visite dépassé!</string>
+    <string name="visit_made_sucessfully">Visite déjà effectuée avec succès!</string>
+    <string name="todos_utentes">Todos os Utentes</string>
+
+    <string name="htc_identification_data">Identificação do Utente</string>
+    <string name="htc_retesting">Retestagem do ATS</string>
+
+    <string name="htc_book_info">Informação do Livro</string>
+    <string name="book_number">Número do livro</string>
+    <string name="book_page_number">Página do livro</string>
+    <string name="book_page_line">Linha</string>
+    <string name="testing_sector">Sector de testagem</string>
+
+    <string name="ats_testing_data">Dados do ATS</string>
+    <string name="testing_date">Data do teste *</string>
+    <string name="select_testing_date">Seleccione a data do teste</string>
+    <string name="pop_keys_miners">Pop Chaves e Mineiros</string>
+    <string name="index_case_contacts">Contacto de Casos Índice</string>
+    <string name="self_test_confirmation">Confirmação de Autoteste</string>
+    <string name="hiv_positive_results">Resultado HIV</string>
+
+    <string name="historical_testing_data">Historial de Testagem</string>
+    <string name="first_time_testing">Testado pela 1ª vez</string>
+    <string name="positive_in_the_past">Positivo no Passado</string>
+
+    <string name="testing_date_format_error">Preencha correctamente a data de teste!</string>
+    <string name="general_success">Sucesso</string>
+    <string name="record_saved_sucessfull">Registo feito com sucesso!</string>
+
+    <string name="htc_person_mandatory_fields">Os campos marcados com * são obrigatórios</string>
+    <string name="htc_person_register">ATS - Registo de Pessoa</string>
+
+    <string name="person_exist_in_sesp_field">Pessoa existe no SESP?</string>
+
+    <string name="htc_person_name_mandatory">Nome é obrigatório, e não pode conter símbolos ou números</string>
+    <string name="htc_person_surname_mandatory">Apelido é obrigatório, e não pode conter símbolos ou números</string>
+    <string name="htc_person_phone_number_error">O telefone deve conter 9 dígitos numéricos, com o primeiro dígito 8</string>
+    <string name="info_htc_person_download">Baixando registos de pessoas testadas</string>
+    <string name="info_htc_persons_download">Baixando Pessoas Testadas</string>
+    <string name="info_htc_person_not_downloaded">Não baixou registos de pessoas testadas</string>
+    <string name="error_htc_persons_download">Não foi possível baixar pessoastestadas</string>
+    <string name="info_htc_person_downloaded">Baixou uma pessoa testada</string>
+    <string name="info_htc_persons_downloaded">Baixou %d pessoas testadas</string>
+    <string name="error_htc_person_download">Não consuguiu baixar pessoas testadas</string>
+    <string name="info_htc_data_upload">Sincronizando novos dados de ATS para o servidor</string>
+    <string name="info_htc_data_upload_success">Sincronização dos dados de ATS efectuada com sucesso.</string>
+    <string name="htc_person_age_error">Idade deve conter no máximo 3 dígitos e deve estar entre 0 e 100</string>
+    <string name="htc_data_register">Formulário do ATS</string>
+    <string name="htc">mUzima ATS</string>
+
+    <string name="general_birth_date">Data de Nascimento *</string>
+    <string name="general_age">Idade *</string>
+    <string name="record_updated_successful">Registo actualizado com sucesso!</string>
+    <string name="htc_save_error">Erro ao gravar ATS!</string>
+    <string name="htc_person_no_identifier">Sem Identificador</string>
+    <string name="htc_search_persons_or_patients">Pesquisa de pessoas/pacientes</string>
+    <string name="welcome_message">Bem vindo, </string>
+    <string name="fill_the_intended_name_to_search_on_sesp">Indique o nome ou identificador da pessoa que pretende pesquisar no SESP!</string>
+    <string name="person_search">Pesquisa de Pessoas/Utentes</string>
+    <string name="no_search_results">Nenhum resultado foi encontrado.</string>
+    <string name="htc_person_gender_mandatory">O sexo é obrigatório.</string>
+    <string name="htc_person_exist_in_sesp_error">Deve indicar a secção ´Pessoa existe no SESP?´</string>
+
+    <string-array name="personExistsInSESPOptions">
+        <item></item>
+        <item>Sim</item>
+        <item>Não</item>
+        <item>Não sei</item>
+    </string-array>
+
+    <string-array name="testingSectors">
+        <item></item>
+        <item>UATS</item>
+        <item>Consultas Externas</item>
+        <item>Triagem</item>
+        <item>Enfermaria</item>
+        <item>Banco de Socorros</item>
+        <item>Outro ATIP</item>
+        <item>SMI</item>
+        <item>TB</item>
+        <item>ATS-C</item>
+        <item>Outro</item>
+    </string-array>
+
+    <string-array name="popKeysMiners">
+        <item></item>
+        <item>MTS</item>
+        <item>HSH</item>
+        <item>PID</item>
+        <item>REC</item>
+        <item>TG</item>
+        <item>MIN</item>
+    </string-array>
+
+    <string-array name="indexCaseContacts">
+        <item></item>
+        <item>Par. Sex</item>
+        <item>Filho &lt;15</item>
+        <item>Mãe/Pai do CI (&lt;15)</item>
+    </string-array>
     <string name="general_not_all_contacts_visited">Tous les contacts n\'ont pas été visités</string>
 </resources>

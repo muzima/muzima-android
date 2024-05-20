@@ -10,8 +10,6 @@
 
 package com.muzima.adapters.observations;
 
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -40,7 +38,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import com.muzima.utils.ConceptUtils;
 
 public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTypeAdapter.ViewHolder> {
     protected Context context;
@@ -86,7 +85,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
 
     private void bindViews(@NotNull ViewHolder holder, int position) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
 
         ConceptWithObservations conceptWithObservations = conceptWithObservationsList.get(position);
 
@@ -113,9 +112,9 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
 
     String getConceptDisplay(Concept concept) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_portuguese));
 
-        String text = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage);
+        String text = ConceptUtils.getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage);
         if (concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)) {
             text += " (" + concept.getUnit() + ")";
         }

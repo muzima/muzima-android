@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    style="@style/AppBaseTheme.Light.NoActionBar"
+    tools:context="com.muzima.view.main.HTCMainActivity">
+
+    <include layout="@layout/app_bar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:background="@drawable/fields_background"
+                android:inputType="text"
+                android:textColor="#000"
+                android:hint="Pesquisar"
+                android:textColorHint="#000"
+                android:padding="10dp"/>
+            <ImageButton
+                android:id="@+id/buttonSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:padding="@dimen/dimen_2dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/square_button_shape"
+                app:srcCompat="@drawable/ic_person_search" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/person_rv"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:id="@+id/no_search_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_search_results"
+                    android:textColor="@color/primary_black"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    android:drawableLeft="@drawable/baseline_info_green"
+                    android:gravity="center_vertical|left"
+                    android:paddingLeft="10dp"/>
+                <LinearLayout
+                    android:id="@+id/seach_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="horizontal">
+                    <ProgressBar
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:layout_gravity="right|bottom"/>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="Pesquisando, por favor aguarde ..."
+                        android:layout_weight="3"
+                        android:textSize="16sp"
+                        android:textColor="@color/primary_black"
+                        android:gravity="center_vertical"/>
+
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/new_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_add_patient"
+                app:backgroundTint="@color/colorPrimaryLight"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

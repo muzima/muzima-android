@@ -24,7 +24,7 @@ import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.SmartCardRecord;
-import com.muzima.api.model.User;
+
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.EncounterController;
 import com.muzima.controller.FormController;

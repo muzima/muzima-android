@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
@@ -28,10 +27,8 @@ import com.muzima.adapters.forms.ClientSummaryFormsAdapter;
 import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.model.AvailableForm;
-import com.muzima.model.DownloadedForm;
 import com.muzima.model.collections.AvailableForms;
 import com.muzima.tasks.FormsLoaderService;
-import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
 import com.muzima.view.forms.FormViewIntent;
 import com.muzima.view.forms.FormsWithDataActivity;
@@ -39,7 +36,7 @@ import com.muzima.view.forms.FormsWithDataActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
+import com.muzima.view.relationship.RelationshipsListActivity;
 
 public class PatientFillFormsFragment extends Fragment implements FormsLoaderService.FormsLoadedCallback, ClientSummaryFormsAdapter.OnFormClickedListener {
 
@@ -97,7 +94,7 @@ public class PatientFillFormsFragment extends Fragment implements FormsLoaderSer
     public void onFormClickedListener(int position) {
         AvailableForm form = forms.get(position);
         Intent intent = new FormViewIntent(getActivity(), form, patient , false);
-        intent.putExtra(INDEX_PATIENT, patient);
+        intent.putExtra(RelationshipsListActivity.INDEX_PATIENT, patient);
         requireActivity().startActivityForResult(intent, FormsWithDataActivity.FORM_VIEW_ACTIVITY_RESULT);
     }
 }
