@@ -17,5 +17,7 @@
     <dimen name="tag_selected_height">24dp</dimen>
     <dimen name="sync_bar_height">60dp</dimen>
     <dimen name="observation_element_padding">3dp</dimen>
-
+    <dimen name="tag_list_drawer_width">320dp</dimen>
+    <dimen name="tag_list_name_font_size">20sp</dimen>
+    <dimen name="tag_list_description_font_size">18sp</dimen>
 </resources>
