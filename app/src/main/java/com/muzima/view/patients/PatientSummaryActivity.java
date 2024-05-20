@@ -315,14 +315,11 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         providerController = ((MuzimaApplication) getApplicationContext()).getProviderController();
         formController =  ((MuzimaApplication) getApplicationContext()).getFormController();
         summaryController = ((MuzimaApplication) getApplicationContext()).getCohortMemberSummaryController();
-        DerivedConceptController derivedConceptController = ((MuzimaApplication) getApplicationContext()).getDerivedConceptController();
-        DerivedObservationController derivedObservationController = ((MuzimaApplication) getApplicationContext()).getDerivedObservationController();
 
     }
     private void loadPatientSummary() {
 
         try {
-            List<CohortMember> cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
             CohortMemberSummary summary = summaryController.getByPatientUuid(patientUuid);
 
             lastVolunteerName.setText(getString(summary.getLastVolunteerName()));
@@ -338,8 +335,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             lastCVResult.setText(getString(summary.getResultadoCV()));
             lastCVResultDate.setText(getDateAsString(summary.getDataResultadoCV()));
 
-        } catch (CohortController.CohortFetchException | IndexOutOfBoundsException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading derived observations", e);
+        } catch (IndexOutOfBoundsException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading patient summary", e);
         }
     }
 

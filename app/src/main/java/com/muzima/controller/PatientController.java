@@ -137,7 +137,7 @@ public class PatientController {
         try {
             boolean useFuzzySearch = true;
             return StringUtils.isEmpty(cohortUuid)
-                    ? patientService.searchPatients(term,useFuzzySearch)
+                    ? patientService.searchPatients(term)
                     : patientService.searchPatients(term, cohortUuid);
         } catch (IOException | ParseException e) {
             throw new PatientLoadException(e);

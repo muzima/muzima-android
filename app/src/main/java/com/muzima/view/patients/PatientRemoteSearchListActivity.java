@@ -29,6 +29,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.utils.ViewUtil;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import java.util.List;
@@ -228,8 +229,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            PatientRemoteSearchListActivity.this.getMenuInflater()
-                    .inflate(R.menu.actionmode_menu_download, menu);
+            //PatientRemoteSearchListActivity.this.getMenuInflater().inflate(R.menu.actionmode_menu_download, menu);
             return true;
         }
 
@@ -242,8 +242,9 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         public boolean onActionItemClicked(ActionMode actionMode, android.view.MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
-                    downloadPatients();
-                    finish();
+                    ViewUtil.displayAlertDialog(PatientRemoteSearchListActivity.this, "Operação não permitida, o download de pacientes para o aplicativo deverá ser feito através da coorte.").show();
+                    /*downloadPatients();
+                    finish();*/
             }
             return false;
         }
