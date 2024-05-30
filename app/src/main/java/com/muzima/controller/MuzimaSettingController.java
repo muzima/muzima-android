@@ -81,6 +81,7 @@ import static com.muzima.util.Constants.ServerSettings.ADD_CONTACT_POPUP_ENABLED
 import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CONFIDANT_INFORMATION_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.FGH_CUSTOM_CLINICAL_INFORMATION_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.USERNAME_AUTO_POPULATION_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.PATIENT_FUZZY_SEARCH_ENABLED_SETTING;
 
 public class MuzimaSettingController {
     private final MuzimaSettingService settingService;
@@ -602,6 +603,19 @@ public class MuzimaSettingController {
                 Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "FGH custom setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean isFuzzySearchEnabled() {
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(PATIENT_FUZZY_SEARCH_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Patient Fuzzy Search setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Patient Fuzzy Search setting is missing on this server");
         }
         return false;
     }

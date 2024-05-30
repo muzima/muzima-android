@@ -117,6 +117,7 @@ class HTMLFormDataStore {
     private final PersonController personController;
     private final DerivedConceptController derivedConceptController;
     private final DerivedObservationController derivedObservationController;
+    private boolean useFuzzySearch;
 
     private String selectedPatientsUuids;
 
@@ -137,6 +138,7 @@ class HTMLFormDataStore {
         this.derivedConceptController = application.getDerivedConceptController();
         this.derivedObservationController = application.getDerivedObservationController();
         this.application = application;
+        this.useFuzzySearch = settingController.isFuzzySearchEnabled();
         logFormStartEvent(isFormReload);
     }
 
@@ -603,7 +605,7 @@ class HTMLFormDataStore {
     public String searchPersonsLocally(String searchTerm) {
         JSONArray personsJsonArray = new JSONArray();
         try {
-            List<Patient> patientsOnDevice = patientController.searchPatientLocally(searchTerm, null);
+            List<Patient> patientsOnDevice = patientController.searchPatientLocally(searchTerm, null,useFuzzySearch);
             for (Patient patient : patientsOnDevice) {
                 if (personController.getPersonByUuid(patient.getUuid()) == null)
                     personsJsonArray.put(createPatientJsonObject(patient));

@@ -136,7 +136,10 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         relationshipController = ((MuzimaApplication) getApplicationContext()).getRelationshipController();
         patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
 
-        autoCompleteRelatedPersonAdapterAdapter = new AutoCompleteRelatedPersonAdapter(this, R.layout.item_option_autocomplete, autoCompletePersonTextView);
+        boolean useFuzzySearch  = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isFuzzySearchEnabled();
+        autoCompleteRelatedPersonAdapterAdapter = new AutoCompleteRelatedPersonAdapter(
+                this, R.layout.item_option_autocomplete, autoCompletePersonTextView, useFuzzySearch);
+
         autoCompletePersonTextView.setAdapter(autoCompleteRelatedPersonAdapterAdapter);
         autoCompletePersonTextView.setOnItemClickListener(autoCompleteOnClickListener());
         autoCompletePersonTextView.addTextChangedListener(autoCompleteTextWatcher());
