@@ -41,6 +41,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
     private int nextPageToLoad;
     private boolean isLoading = false;
     private boolean isSubsequentLazyFetchQuery = false;
+    private boolean useFuzzySearch;
     private int totalPageCount;
     private Map<Integer, PatientFilterPageNumberMap> totalPageCountMap = new HashMap<>();
 
@@ -64,6 +65,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
         }
 
         setCurrentLocation(currentLocation);
+        useFuzzySearch = muzimaSettingController.isFuzzySearchEnabled();
     }
 
     @Override
@@ -175,9 +177,9 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
             if (isSearch(params)) {
                 try {
                     if(cohortUuids.size() == 1)
-                        return patientController.searchPatientLocally(params[0], cohortUuids.get(0));
+                        return patientController.searchPatientLocally(params[0], cohortUuids.get(0), useFuzzySearch);
                     else
-                        return patientController.searchPatientLocally(params[0],null);
+                        return patientController.searchPatientLocally(params[0],null, useFuzzySearch);
                 } catch (PatientController.PatientLoadException e) {
                     Log.w(getClass().getSimpleName(), String.format("Exception occurred while searching patients for %s search string." , params[0]), e);
                 }
