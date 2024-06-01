@@ -211,7 +211,7 @@ public class RelationshipViewUtil {
             relationships = mApplication.getRelationshipController().getRelationshipsForPerson(patientUuid);
 
             MuzimaSetting allowPatientRelativesDisplaySetting = mApplication.getMuzimaSettingController().getSettingByProperty(ALLOW_PATIENT_RELATIVES_DISPLAY);
-            if(!allowPatientRelativesDisplaySetting.getValueBoolean()){
+            if(allowPatientRelativesDisplaySetting!=null && !allowPatientRelativesDisplaySetting.getValueBoolean()){
                 for(Relationship relationship:relationships){
                     Person relatedPerson = null;
                         if (StringUtils.equals(relationship.getPersonA().getUuid(), patientUuid)) {

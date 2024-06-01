@@ -88,23 +88,25 @@ public class ChronologicalObsViewFragment extends Fragment implements RecyclerAd
 
     @Override
     public void onQueryTaskFinish() {
-        MuzimaApplication muzimaApplication = (MuzimaApplication) requireActivity().getApplicationContext();
         String noDataTip = StringUtils.EMPTY;
-        try {
-            List<Concept> concepts;
-            concepts = muzimaApplication.getConceptController().getConcepts();
-            if(concepts.size()>0){
-                noDataTip = getString(R.string.info_no_observation_for_concept_data_tip);
-            }else{
-                noDataTip = getString(R.string.info_no_observation_and_concept_data_tip);
+        if(getActivity() != null) {
+            MuzimaApplication muzimaApplication = (MuzimaApplication) requireActivity().getApplicationContext();
+            try {
+                List<Concept> concepts;
+                concepts = muzimaApplication.getConceptController().getConcepts();
+                if (concepts.size() > 0) {
+                    noDataTip = getString(R.string.info_no_observation_for_concept_data_tip);
+                } else {
+                    noDataTip = getString(R.string.info_no_observation_and_concept_data_tip);
+                }
+            } catch (ConceptController.ConceptFetchException e) {
+                Log.e(getClass().getSimpleName(), "Exception while fetching concepts ", e);
             }
-        } catch (ConceptController.ConceptFetchException e) {
-            Log.e(getClass().getSimpleName(), "Exception while fetching concepts ",e);
-        }
 
-        conceptsListRecyclerView.setNoDataLayout(noDataLayout,
-                getString(R.string.info_observation_unavailable),
-                noDataTip);
+            conceptsListRecyclerView.setNoDataLayout(noDataLayout,
+                    getString(R.string.info_observation_unavailable),
+                    noDataTip);
+        }
     }
 
     @Override

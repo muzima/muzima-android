@@ -37,11 +37,13 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
     private boolean connectivityFailed = false;
     private RelationshipsListActivity relationshipsListActivity;
     private Context context;
+    private boolean useFuzzySearch;
 
-    public AutoCompleteRelatedPersonAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteProviderTextView) {
+    public AutoCompleteRelatedPersonAdapter(Context context, int textViewResourceId, AutoCompleteTextView autoCompleteProviderTextView, boolean useFuzzySearch) {
         super(context, textViewResourceId, autoCompleteProviderTextView);
         this.relationshipsListActivity = (RelationshipsListActivity) context;
         this.context = context;
+        this.useFuzzySearch = useFuzzySearch;
     }
 
     @Override
@@ -62,7 +64,7 @@ public class AutoCompleteRelatedPersonAdapter extends AutoCompleteBaseAdapter<Pe
                     connectivityFailed = true;
             } else {
                 personList = personController.searchPersonLocally(constraint.toString());
-                patientList = patientController.searchPatientLocally(constraint.toString(), null);
+                patientList = patientController.searchPatientLocally(constraint.toString(), null, useFuzzySearch);
             }
 
             for (Patient patient : patientList) {
