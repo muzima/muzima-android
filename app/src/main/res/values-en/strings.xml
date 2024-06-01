@@ -456,7 +456,7 @@
     <string name="info_form_upload_success">Forms uploaded successfully</string>
     <string name="info_forms_downloaded">Downloaded %d forms</string>
     <string name="info_forms_unavailable">No forms available</string>
-    <string name="info_htc_contact_form">HTC/Add Contact Form</string>
+    <string name="info_htc_contact_form">Index Case Contact Testing Form</string>
     <string name="info_incomplete_form">Incomplete Forms</string>
     <string name="info_incomplete_form_unavailable">No incomplete forms</string>
     <string name="info_initial_setup_progress">Initial setup running. Please wait…</string>
