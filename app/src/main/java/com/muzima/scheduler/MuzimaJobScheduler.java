@@ -40,13 +40,14 @@ import android.util.Log;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.model.User;
+
+import com.muzima.R;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
@@ -202,7 +203,7 @@ public class MuzimaJobScheduler extends JobService {
         if (parameters == null) {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
-            new FormMetaDataSyncBackgroundTask().execute();
+            new SyncSetupConfigTemplatesBackgroundTask().execute();
             new SyncSettingsBackgroundTask().execute();
             if (!isHtcUser()) {
                 new FormDataUploadBackgroundTask().execute();
