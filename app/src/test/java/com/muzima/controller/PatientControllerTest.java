@@ -122,7 +122,7 @@ public class PatientControllerTest {
 
         when(patientService.searchPatients(searchString)).thenReturn(patients);
 
-        assertThat(patientController.searchPatientLocally(searchString, null), is(patients));
+        assertThat(patientController.searchPatientLocally(searchString, null, false), is(patients));
         verify(patientService).searchPatients(searchString);
 
     }
