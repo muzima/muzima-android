@@ -145,7 +145,7 @@ public class DerivedObservationController {
     public boolean getDerivedObservationsByPatientUuidAndAfterIndexCaseMembershipDate(String personUuid, Date membershipDate, int derivedConceptId) throws IOException {
         List<DerivedObservation> derivedObservations = derivedObservationService.getDerivedObservationsByPatientUuidAndDerivedConceptId(personUuid,derivedConceptId);
         for(DerivedObservation derivedObservation : derivedObservations){
-            if(membershipDate.before(derivedObservation.getDateCreated())){
+            if(membershipDate.before(derivedObservation.getDateCreated()) || membershipDate.equals(derivedObservation.getDateCreated())){
                 return true;
             }
         }
