@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import com.muzima.api.model.Patient;
 import com.muzima.controller.PatientController;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
+import com.muzima.utils.ViewUtil;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.forms.RegistrationFormsActivity;
 import java.util.List;
@@ -61,6 +63,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_patient_remote_search_list);
         Bundle intentExtras = getIntent().getExtras();
         if (intentExtras != null) {
@@ -228,8 +231,7 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
 
         @Override
         public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            PatientRemoteSearchListActivity.this.getMenuInflater()
-                    .inflate(R.menu.actionmode_menu_download, menu);
+            //PatientRemoteSearchListActivity.this.getMenuInflater().inflate(R.menu.actionmode_menu_download, menu);
             return true;
         }
 
@@ -242,8 +244,9 @@ public class PatientRemoteSearchListActivity extends BroadcastListenerActivity i
         public boolean onActionItemClicked(ActionMode actionMode, android.view.MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.menu_download:
-                    downloadPatients();
-                    finish();
+                    ViewUtil.displayAlertDialog(PatientRemoteSearchListActivity.this, "Operação não permitida, o download de pacientes para o aplicativo deverá ser feito através da coorte.").show();
+                    /*downloadPatients();
+                    finish();*/
             }
             return false;
         }

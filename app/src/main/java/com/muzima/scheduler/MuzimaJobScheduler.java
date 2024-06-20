@@ -203,7 +203,7 @@ public class MuzimaJobScheduler extends JobService {
         if (parameters == null) {
             Log.e(getClass().getSimpleName(), "Parameters for job is null");
         } else {
-            new FormMetaDataSyncBackgroundTask().execute();
+            new SyncSetupConfigTemplatesBackgroundTask().execute();
             new SyncSettingsBackgroundTask().execute();
             if (!isHtcUser()) {
                 new FormDataUploadBackgroundTask().execute();

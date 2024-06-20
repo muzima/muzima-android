@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -161,6 +162,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         ThemeUtils.getInstance().onCreate(this, true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
         setContentView(R.layout.activity_client_summary);
         initializeResources();
         init();
@@ -315,14 +318,11 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
         providerController = ((MuzimaApplication) getApplicationContext()).getProviderController();
         formController =  ((MuzimaApplication) getApplicationContext()).getFormController();
         summaryController = ((MuzimaApplication) getApplicationContext()).getCohortMemberSummaryController();
-        DerivedConceptController derivedConceptController = ((MuzimaApplication) getApplicationContext()).getDerivedConceptController();
-        DerivedObservationController derivedObservationController = ((MuzimaApplication) getApplicationContext()).getDerivedObservationController();
 
     }
     private void loadPatientSummary() {
 
         try {
-            List<CohortMember> cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
             CohortMemberSummary summary = summaryController.getByPatientUuid(patientUuid);
 
             lastVolunteerName.setText(getString(summary.getLastVolunteerName()));
@@ -338,8 +338,8 @@ public class PatientSummaryActivity extends ActivityWithPatientSummaryBottomNavi
             lastCVResult.setText(getString(summary.getResultadoCV()));
             lastCVResultDate.setText(getDateAsString(summary.getDataResultadoCV()));
 
-        } catch (CohortController.CohortFetchException | IndexOutOfBoundsException e) {
-            Log.e(getClass().getSimpleName(), "Exception occurred while loading derived observations", e);
+        } catch (IndexOutOfBoundsException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading patient summary", e);
         }
     }
 

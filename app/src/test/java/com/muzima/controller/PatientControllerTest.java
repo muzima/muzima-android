@@ -122,7 +122,7 @@ public class PatientControllerTest {
 
         when(patientService.searchPatients(searchString)).thenReturn(patients);
 
-        assertThat(patientController.searchPatientLocally(searchString, null), is(patients));
+        assertThat(patientController.searchPatientLocally(searchString, null, false), is(patients));
         verify(patientService).searchPatients(searchString);
 
     }
@@ -131,11 +131,12 @@ public class PatientControllerTest {
     public void shouldSearchWithOutCohortUUIDIsEmpty() throws IOException, ParseException, PatientController.PatientLoadException {
         String searchString = "searchString";
         List<Patient> patients = new ArrayList<>();
+        boolean useFuzzySearch = false;
 
         when(patientService.searchPatients(searchString)).thenReturn(patients);
 
-        assertThat(patientController.searchPatientLocally(searchString, StringUtils.EMPTY), is(patients));
-        verify(patientService).searchPatients(searchString);
+        assertThat(patientController.searchPatientLocally(searchString, StringUtils.EMPTY, useFuzzySearch), is(patients));
+        verify(patientService).searchPatients(searchString, useFuzzySearch);
 
     }
 
@@ -144,9 +145,10 @@ public class PatientControllerTest {
         String searchString = "searchString";
         String cohortUUID = "cohortUUID";
         List<Patient> patients = new ArrayList<>();
+        boolean useFuzzySearch = false;
 
         when(patientService.searchPatients(searchString, cohortUUID)).thenReturn(patients);
-        assertThat(patientController.searchPatientLocally(searchString, cohortUUID), is(patients));
+        assertThat(patientController.searchPatientLocally(searchString, cohortUUID,useFuzzySearch), is(patients));
 
         verify(patientService).searchPatients(searchString, cohortUUID);
     }

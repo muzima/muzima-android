@@ -16,7 +16,7 @@
 		<item>@string/general_large</item>
 	</string-array>
 	<string-array name="app_language_entries">
-		<item>@string/language_portuguese</item>
+		<item>@string/language_english</item>
 		<item>@string/language_french</item>
 		<item>@string/language_portuguese</item>
 		<item>@string/language_swahili</item>

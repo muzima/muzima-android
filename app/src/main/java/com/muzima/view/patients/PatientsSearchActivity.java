@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -123,6 +124,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
     private TagPreferenceService tagPreferenceService;
     private final LanguageUtil languageUtil = new LanguageUtil();
     private MuzimaSettingController muzimaSettingController;
+    private boolean useFuzzySearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +132,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_patient_list, null);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(mainLayout);
         Bundle intentExtras = getIntent().getExtras();
 
@@ -167,7 +170,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
         muzimaSyncService = muzimaApplication.getMuzimaSyncService();
         patientController = muzimaApplication.getPatientController();
         muzimaSettingController = muzimaApplication.getMuzimaSettingController();
-
+        useFuzzySearch = muzimaSettingController.isFuzzySearchEnabled();
         serverSearchProgressDialog = new ProgressDialog(this);
 
         serverSearchProgressDialog.setCancelable(false);
@@ -605,7 +608,7 @@ public class PatientsSearchActivity extends BroadcastListenerActivity implements
             List<Patient> localSearchResultPatients = new ArrayList<>();
             try {
                 //for (Cohort cohort : cohortController.getSyncedCohorts()) {
-                localSearchResultPatients = patientController.searchPatientLocally(searchTerm, null);
+                localSearchResultPatients = patientController.searchPatientLocally(searchTerm, null, useFuzzySearch);
                 for (Patient searchResultPatient : localSearchResultPatients) {
                     if (searchResultPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier()
                             .equals(SHRPatient.getIdentifier(Constants.Shr.KenyaEmr.PersonIdentifierType.CARD_SERIAL_NUMBER.name).getIdentifier())) {

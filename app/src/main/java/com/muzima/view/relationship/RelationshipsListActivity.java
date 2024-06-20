@@ -24,6 +24,7 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -113,6 +114,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_patient_relationships);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         addRelationshipView = findViewById(R.id.add_relationship);
@@ -136,7 +138,10 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         relationshipController = ((MuzimaApplication) getApplicationContext()).getRelationshipController();
         patientController = ((MuzimaApplication) getApplicationContext()).getPatientController();
 
-        autoCompleteRelatedPersonAdapterAdapter = new AutoCompleteRelatedPersonAdapter(this, R.layout.item_option_autocomplete, autoCompletePersonTextView);
+        boolean useFuzzySearch  = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isFuzzySearchEnabled();
+        autoCompleteRelatedPersonAdapterAdapter = new AutoCompleteRelatedPersonAdapter(
+                this, R.layout.item_option_autocomplete, autoCompletePersonTextView, useFuzzySearch);
+
         autoCompletePersonTextView.setAdapter(autoCompleteRelatedPersonAdapterAdapter);
         autoCompletePersonTextView.setOnItemClickListener(autoCompleteOnClickListener());
         autoCompletePersonTextView.addTextChangedListener(autoCompleteTextWatcher());
