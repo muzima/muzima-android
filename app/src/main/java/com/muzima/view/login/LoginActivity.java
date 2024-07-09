@@ -61,6 +61,7 @@ import com.muzima.controller.AppReleaseController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientReportController;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
@@ -1001,13 +1002,25 @@ public class LoginActivity extends BaseActivity {
         Intent intent;
         if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
             downloadMissingServerSettings();
-            intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+            if(hasMoreThanOneConfig())
+                intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
+            else
+                intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
         } else {
             removeRemnantDataFromPreviousRunOfWizard();
             intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);
         }
         startActivity(intent);
         finish();
+    }
+
+    private boolean hasMoreThanOneConfig(){
+        try {
+            return ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController().getSetupConfigurationTemplates().size() > 1;
+        } catch (Throwable e) {
+            Log.e(getClass().getSimpleName(), "Could not fetch config templates",e);
+            return false;
+        }
     }
 
     private void downloadMissingServerSettings(){

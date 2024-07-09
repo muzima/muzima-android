@@ -31,7 +31,7 @@ public class SetupConfigurationRecyclerViewAdapter extends RecyclerView.Adapter<
     private Context context;
     private List<SetupConfiguration> setupConfigurationList;
     private List<SetupConfiguration> itemsCopy = new ArrayList<>();
-    private String selectedConfigurationUuid;
+    private ArrayList<String> selectedConfigsUuids = new ArrayList<>();
     private OnSetupConfigurationClickedListener onSetupConfigurationClickedListener;
 
     public SetupConfigurationRecyclerViewAdapter(Context context, List<SetupConfiguration> setupConfigurationList, OnSetupConfigurationClickedListener clickedListener) {
@@ -41,12 +41,8 @@ public class SetupConfigurationRecyclerViewAdapter extends RecyclerView.Adapter<
         setItemsCopy(setupConfigurationList);
     }
 
-    public void setSelectedConfigurationUuid(String selectedConfigurationUuid) {
-        this.selectedConfigurationUuid = selectedConfigurationUuid;
-    }
-
-    public String getSelectedConfigurationUuid() {
-        return selectedConfigurationUuid;
+    public ArrayList<String> getSelectedConfigs() {
+        return selectedConfigsUuids;
     }
 
     public void setItemsCopy(List<SetupConfiguration> itemsCopy) {
@@ -65,14 +61,6 @@ public class SetupConfigurationRecyclerViewAdapter extends RecyclerView.Adapter<
         SetupConfiguration setupConfiguration = setupConfigurationList.get(position);
         holder.nameTextView.setText(setupConfiguration.getName());
         holder.descriptionTextView.setText(setupConfiguration.getDescription());
-        if (setupConfiguration.getUuid().equalsIgnoreCase(selectedConfigurationUuid))
-            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_blue));
-        else {
-            if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getResources().getString(R.string.preference_light_mode), false)) {
-                holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_black));
-            } else
-                holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_background));
-        }
     }
 
     @Override
@@ -96,6 +84,28 @@ public class SetupConfigurationRecyclerViewAdapter extends RecyclerView.Adapter<
             notifyDataSetChanged();
         }
     }
+    public void toggleSelection(View view, int position){
+        MaterialCardView cardView = (MaterialCardView) view;
+        cardView.toggle();
+        boolean selected = cardView.isChecked();
+        SetupConfiguration configuration = setupConfigurationList.get(position);
+
+        if (selected && !selectedConfigsUuids.contains(configuration.getUuid())) {
+            selectedConfigsUuids.add(configuration.getUuid());
+            cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_blue));
+        } else if (!selected && selectedConfigsUuids.contains(configuration.getUuid())) {
+            selectedConfigsUuids.remove(configuration.getUuid());
+
+            if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getResources().getString(R.string.preference_light_mode), false)) {
+                cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_black));
+            } else
+                cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_background));
+        }
+    }
+
+    public SetupConfiguration getConfig(int position){
+        return setupConfigurationList.get(position);
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -112,15 +122,16 @@ public class SetupConfigurationRecyclerViewAdapter extends RecyclerView.Adapter<
             this.clickedListener = clickedListener;
 
             this.cardView.setOnClickListener(this);
+
         }
 
         @Override
         public void onClick(View view) {
-            this.clickedListener.onSetupConfigClicked(getAdapterPosition());
+            this.clickedListener.onSetupConfigClicked(view,getAdapterPosition());
         }
     }
 
     public interface OnSetupConfigurationClickedListener {
-        void onSetupConfigClicked(int position);
+        void onSetupConfigClicked(View view, int position);
     }
 }

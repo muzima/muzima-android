@@ -13,11 +13,9 @@ package com.muzima.view.initialwizard;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -25,7 +23,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,25 +31,22 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.setupconfiguration.SetupConfigurationRecyclerViewAdapter;
-import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.SetupConfiguration;
-import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.SntpService;
+import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.controller.SetupConfigurationController;
+import com.muzima.service.ActiveConfigPreferenceService;
+import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.DownloadSetupConfigurationsTask;
-import com.muzima.tasks.MuzimaAsyncTask;
+import com.muzima.utils.Constants;
 import com.muzima.utils.KeyboardWatcher;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
+import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.login.LoginActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivity implements KeyboardWatcher.OnKeyboardToggleListener,
         SetupConfigurationRecyclerViewAdapter.OnSetupConfigurationClickedListener {
@@ -75,10 +69,31 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         initializeResources();
-        loadConfigList();
+        if (new WizardFinishPreferenceService(this).isWizardFinished()){
+            loadLocalConfigs();
+        } else {
+            downLoadConfigList();
+        }
     }
 
-    private void loadConfigList() {
+    private void loadLocalConfigs(){
+        try {
+            List<SetupConfiguration> configurationList = new ArrayList<>();
+            for (SetupConfigurationTemplate template:((MuzimaApplication) getApplicationContext()).getSetupConfigurationController().getSetupConfigurationTemplates()) {
+                SetupConfiguration config = ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController().getSetupConfigurations(template.getUuid());
+                configurationList.add(config);
+            }
+            setupConfigurationList.clear();
+            setupConfigurationList.addAll(configurationList);
+            setupConfigurationAdapter.notifyDataSetChanged();
+            setupConfigurationAdapter.setItemsCopy(configurationList);
+        }  catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
+        }
+
+    }
+
+    private void downLoadConfigList() {
         turnOnProgressDialog(getString(R.string.info_setup_config_load));
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
                 .execute(new DownloadSetupConfigurationsTask(getApplicationContext(), new DownloadSetupConfigurationsTask.SetupConfigurationCompletedCallback() {
@@ -124,9 +139,9 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         activeNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String setupConfigUuid = setupConfigurationAdapter.getSelectedConfigurationUuid();
+                ArrayList<String> selectedConfigs = setupConfigurationAdapter.getSelectedConfigs();
                 Intent intent = new Intent(getApplicationContext(), GuidedConfigurationWizardActivity.class);
-                intent.putExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, setupConfigUuid);
+                intent.putStringArrayListExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, selectedConfigs);
                 startActivity(intent);
             }
         });
@@ -149,11 +164,23 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
     }
 
     @Override
-    public void onSetupConfigClicked(int position) {
-        activeNextButton.setVisibility(View.VISIBLE);
-        setupConfigurationAdapter.setSelectedConfigurationUuid(setupConfigurationList.get(position).getUuid());
-        setupConfigurationAdapter.notifyDataSetChanged();
-        hideKeyboard();
+    public void onSetupConfigClicked(View view, int position) {
+        if(new WizardFinishPreferenceService(this).isWizardFinished()){
+            SetupConfiguration configuration = setupConfigurationAdapter.getConfig(position);
+
+            (new ActiveConfigPreferenceService((MuzimaApplication) getApplicationContext())).setActiveConfigUuid(configuration.getUuid());
+            Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            setupConfigurationAdapter.toggleSelection(view, position);
+            setupConfigurationAdapter.notifyDataSetChanged();
+            hideKeyboard();
+            if (setupConfigurationAdapter.getSelectedConfigs().size() > 0) {
+                activeNextButton.setVisibility(View.VISIBLE);
+            } else
+                activeNextButton.setVisibility(View.GONE);
+        }
     }
 
     @Override

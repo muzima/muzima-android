@@ -12,7 +12,6 @@ package com.muzima.view.initialwizard;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
@@ -58,12 +57,10 @@ import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupCardsViewPagerAdapter;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Form;
-import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Media;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
-import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
@@ -72,7 +69,6 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.SntpService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.JsonUtils;
@@ -83,7 +79,6 @@ import com.muzima.utils.MemoryUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
-import com.muzima.view.barcode.BarcodeCaptureActivity;
 
 import net.minidev.json.JSONObject;
 
@@ -101,7 +96,7 @@ import java.util.UUID;
 @SuppressWarnings("staticFieldLeak")
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
-    private SetupConfigurationTemplate setupConfigurationTemplate;
+    private List<SetupConfigurationTemplate> setupConfigurationTemplateList = new ArrayList<>();
     private int wizardLevel = 0;
     private boolean wizardcompletedSuccessfully = true;
     private GuidedSetupActionLogAdapter setupActionLogAdapter;
@@ -119,7 +114,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private GuidedSetupCardsViewPagerAdapter guidedSetupCardsViewPagerAdapter;
     private int pageCount;
     private boolean isOnlineOnlyModeEnabled;
-    private String setupConfigTemplateUuid;
+    private List<String> setupConfigTemplateUuidList;
     private PowerManager.WakeLock wakeLock = null;
     private static final int EXTERNAL_STORAGE_MANAGEMENT = 9002;
     private List<Media> mediaList = new ArrayList<>();
@@ -171,12 +166,16 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPreExecute() {
                 ((MuzimaApplication) getApplication()).cancelTimer();
                 keepPhoneAwake(true);
-                setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
+                setupConfigTemplateUuidList = getIntent().getStringArrayListExtra(SETUP_CONFIG_UUID_INTENT_KEY);
             }
 
             @Override
             protected int[] doInBackground(Void... voids) {
-                return downloadSetupConfiguration(setupConfigTemplateUuid);
+                int result[] = null;
+                for(String configuration: setupConfigTemplateUuidList) {
+                    result = downloadSetupConfiguration(configuration);
+                }
+                return result;
             }
 
             @Override
@@ -267,15 +266,19 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private void initiateSetupConfiguration() {
-        fetchConfigurationTemplate(setupConfigTemplateUuid);
+        fetchConfigurationTemplates();
         downloadSettings();
     }
 
-    private void fetchConfigurationTemplate(String setupConfigTemplateUuid) {
+    private void fetchConfigurationTemplates() {
         try {
+
             SetupConfigurationController setupConfigurationController =
                     ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController();
-            setupConfigurationTemplate = setupConfigurationController.getSetupConfigurationTemplate(setupConfigTemplateUuid);
+            setupConfigurationTemplateList.clear();
+            for(String configuuid: setupConfigTemplateUuidList) {
+                setupConfigurationTemplateList.add(setupConfigurationController.getSetupConfigurationTemplate(configuuid));
+            }
         } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not get setup configuration template", e);
         }
@@ -1240,11 +1243,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractConceptsUuids() {
         List<String> conceptsUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['concepts']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                conceptsUuids.add((String) cohort.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['concepts']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    conceptsUuids.add((String) cohort.get("uuid"));
+                }
             }
         }
         return conceptsUuids;
@@ -1252,11 +1257,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractProvidersUuids() {
         List<String> providerUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['providers']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                providerUuids.add((String) cohort.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['providers']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    providerUuids.add((String) cohort.get("uuid"));
+                }
             }
         }
         return providerUuids;
@@ -1264,11 +1271,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractLocationsUuids() {
         List<String> locationUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['locations']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                locationUuids.add((String) cohort.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['locations']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    locationUuids.add((String) cohort.get("uuid"));
+                }
             }
         }
         return locationUuids;
@@ -1276,11 +1285,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractFormTemplatesUuids() {
         List<String> formsuuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['forms']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                formsuuids.add((String) cohort.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['forms']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    formsuuids.add((String) cohort.get("uuid"));
+                }
             }
         }
         return formsuuids;
@@ -1288,11 +1299,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractCohortsUuids() {
         List<String> cohortUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['cohorts']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                cohortUuids.add((String) cohort.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['cohorts']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    cohortUuids.add((String) cohort.get("uuid"));
+                }
             }
         }
         return cohortUuids;
@@ -1300,11 +1313,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractDerivedConceptsUuids() {
         List<String> derivedConceptsUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['derivedConcepts']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject derivedConcept = (JSONObject) object;
-                derivedConceptsUuids.add((String) derivedConcept.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['derivedConcepts']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject derivedConcept = (JSONObject) object;
+                    derivedConceptsUuids.add((String) derivedConcept.get("uuid"));
+                }
             }
         }
         return derivedConceptsUuids;
@@ -1312,13 +1327,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     public void checkIfCohortWithFilterByLocationExists() {
         boolean isCohortLocationBased = false;
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['cohorts']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                if (cohort.get("isFilterByLocationEnabled") != null) {
-                    if ((Boolean) cohort.get("isFilterByLocationEnabled")) {
-                        isCohortLocationBased = true;
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['cohorts']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    if (cohort.get("isFilterByLocationEnabled") != null) {
+                        if ((Boolean) cohort.get("isFilterByLocationEnabled")) {
+                            isCohortLocationBased = true;
+                        }
                     }
                 }
             }
@@ -1382,16 +1399,6 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
             SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
             try {
-                AppUsageLogs setupConfig = new AppUsageLogs();
-                setupConfig.setUuid(UUID.randomUUID().toString());
-                setupConfig.setLogKey(com.muzima.util.Constants.AppUsageLogs.SET_UP_CONFIG_UUID);
-                setupConfig.setLogvalue(setupConfigTemplateUuid);
-                setupConfig.setUpdateDatetime(new Date());
-                setupConfig.setUserName(loggedInUser);
-                setupConfig.setDeviceId(pseudoDeviceId);
-                setupConfig.setLogSynced(false);
-                appUsageLogsController.saveOrUpdateAppUsageLog(setupConfig);
-
                 AppUsageLogs setUpTime = new AppUsageLogs();
                 setUpTime.setUuid(UUID.randomUUID().toString());
                 setUpTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.SETUP_TIME);
@@ -1460,11 +1467,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<Integer> extractDatasetDefinitionIds() {
         List<Integer> datasetIds = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['datasets']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject dataset = (JSONObject) object;
-                datasetIds.add((Integer) dataset.get("id"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['datasets']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject dataset = (JSONObject) object;
+                    datasetIds.add((Integer) dataset.get("id"));
+                }
             }
         }
         return datasetIds;
@@ -1472,11 +1481,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractMediaCategoryUuids() {
         List<String> mediaCategoryUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['mediaCategories']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject mediaCategory = (JSONObject) object;
-                mediaCategoryUuids.add((String)mediaCategory.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['mediaCategories']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject mediaCategory = (JSONObject) object;
+                    mediaCategoryUuids.add((String) mediaCategory.get("uuid"));
+                }
             }
         }
         return mediaCategoryUuids;
