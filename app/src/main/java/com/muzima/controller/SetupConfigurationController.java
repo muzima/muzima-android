@@ -40,6 +40,7 @@ public class SetupConfigurationController {
         this.setupConfigurationService = setupConfigurationService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
+        this.muzimaApplication = muzimaApplication;
     }
 
     public List<SetupConfiguration> downloadAllSetupConfigurations() throws SetupConfigurationDownloadException{

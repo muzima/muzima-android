@@ -119,21 +119,30 @@ public class MuzimaSettingController {
             // Currently mUzima supports one config. So the expectation here is that only one config may be available
             // If the app is ever modified to support multiple configs, there should be an option to specify
             // the priority of the configs so that the setting in highest priority config is returned to avoid ambiguity
-            List<SetupConfigurationTemplate> configurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
-            for(SetupConfigurationTemplate configurationTemplate:configurationTemplates){
-                JSONObject configJson = new JSONObject(configurationTemplate.getConfigJson());
-                configJson = configJson.getJSONObject("config");
-                if(configJson.has("settings")) {
-                    JSONArray settingsArray = configJson.getJSONArray("settings");
-                    for (int i = 0; i < settingsArray.length(); i++) {
-                        JSONObject settingObject = settingsArray.getJSONObject(i);
-                        if (settingObject.has(keyType) && keyValue.equals(settingObject.get(keyType))) {
-                            return parseMuzimaSettingFromJsonObjectRepresentation(settingObject);
-                        }
+            SetupConfigurationTemplate activeSetupConfig = null;
+            try{
+                activeSetupConfig = muzimaApplication.getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+            } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+                Log.e(getClass().getSimpleName(), "Cannot load active config",e);
+            }
+
+            if(activeSetupConfig == null){
+                List<SetupConfigurationTemplate> configurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
+                activeSetupConfig = configurationTemplates.get(0);
+            }
+
+            JSONObject configJson = new JSONObject(activeSetupConfig.getConfigJson());
+            configJson = configJson.getJSONObject("config");
+            if(configJson.has("settings")) {
+                JSONArray settingsArray = configJson.getJSONArray("settings");
+                for (int i = 0; i < settingsArray.length(); i++) {
+                    JSONObject settingObject = settingsArray.getJSONObject(i);
+                    if (settingObject.has(keyType) && keyValue.equals(settingObject.get(keyType))) {
+                        return parseMuzimaSettingFromJsonObjectRepresentation(settingObject);
                     }
                 }
             }
-        } catch (IOException | JSONException e ) {
+        } catch (Exception e ) {
             throw new MuzimaSettingFetchException(e);
         }
         return null;
@@ -859,6 +868,19 @@ public class MuzimaSettingController {
     public Boolean isUsernameAutoPopulationEnabled(){
         try {
             MuzimaSetting muzimaSetting = getSettingByProperty(USERNAME_AUTO_POPULATION_ENABLED_SETTING);
+            if (muzimaSetting != null)
+                return muzimaSetting.getValueBoolean();
+            else
+                Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+        }
+        return false;
+    }
+
+    public Boolean ismultipleConfigsSupported(){
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(GEOMAPPING_FEATURE_ENABLED_SETTING);
             if (muzimaSetting != null)
                 return muzimaSetting.getValueBoolean();
             else

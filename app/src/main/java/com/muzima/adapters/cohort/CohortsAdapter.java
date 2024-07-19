@@ -86,15 +86,6 @@ public class CohortsAdapter extends RecyclerAdapter<CohortsAdapter.ViewHolder> i
         } else
             holder.iconImageView.setImageDrawable(null);
 
-        //        Tag tag1 = new Tag();
-//        tag1.setName("Tag1");
-//        Tag tag2 = new Tag();
-//        tag2.setName("Tag2");
-//        Tag[] tags = new Tag[]{tag1, tag2};
-//        TagsAdapter tagsAdapter = new TagsAdapter(tags);
-//        holder.tagsListView.setAdapter(tagsAdapter);
-//        holder.tagsListView.setLayoutManager(new LinearLayoutManager(context.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-
         highlightCohorts(cohortItem, holder.container);
     }
 

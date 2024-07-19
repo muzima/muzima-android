@@ -247,6 +247,8 @@ public class LoginActivity extends BaseActivity {
         if(isOnlineModeEnabled){
             removeChangedPasswordRecentlyCheckbox();
         }
+        usernameText.setText("admin");
+        passwordText.setText("Test2019");
     }
 
     private void setupStatusView() {
