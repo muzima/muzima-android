@@ -798,4 +798,6 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="general_more">More</string>
     <string name="general_less">Less</string>
     <string name="general_not_all_contacts_visited">Not All Contacts Visited</string>
+    <string name="error_patient_fetch">Something went wrong while fetching patients</string>
+    <string name="error_setup_fetch">Something went wrong while fetching setup configs</string>
 </resources>

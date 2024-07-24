@@ -161,8 +161,31 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
                 syncErrorOccured = true;
                 break;
             case SyncStatusConstants.LOAD_ERROR:
-                msg = getString(R.string.error_exception_data_load);
+                int syncTypes = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
                 syncErrorOccured = true;
+                msg = getString(R.string.error_exception_data_load);
+                switch (syncTypes) {
+                    case DataSyncServiceConstants.SYNC_TEMPLATES:
+                    case DataSyncServiceConstants.SYNC_PROVIDERS_BASED_ON_CHANGES_IN_CONFIG:
+                        msg = getString(R.string.error_provider_fetch);
+                        break;
+                    case DataSyncServiceConstants.SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA:
+                    case DataSyncServiceConstants.SYNC_OBSERVATIONS:
+                        msg = getString(R.string.error_concept_fetch);
+                        break;
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_DATA_ONLY:
+                        msg = getString(R.string.error_patient_fetch);
+                        break;
+                    case DataSyncServiceConstants.SYNC_SETUP_CONFIGURATION_TEMPLATES:
+                    case DataSyncServiceConstants.SYNC_MEDIA_CATEGORIES:
+                    case DataSyncServiceConstants.SYNC_LOCATIONS_BASED_ON_CHANGES_IN_CONFIG:
+                        msg = getString(R.string.error_setup_fetch);
+                        break;
+                    case DataSyncServiceConstants.SYNC_REPORT_DATASETS:
+                        msg = getString(R.string.error_report_dataset_load);
+                        break;
+                }
                 break;
             case SyncStatusConstants.UPLOAD_ERROR:
                 msg = getString(R.string.error_exception_data_upload);

@@ -792,4 +792,6 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_more">Mais</string>
     <string name="general_less">Menos</string>
     <string name="general_not_all_contacts_visited">Nem todos os contatos visitados</string>
+    <string name="error_patient_fetch">Algo deu errado ao buscar pacientes</string>
+    <string name="error_setup_fetch">Algo deu errado ao buscar as configurações de instalação</string>
 </resources>
