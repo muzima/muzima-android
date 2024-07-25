@@ -10,11 +10,15 @@
 
 package com.muzima.tasks;
 
+import static com.muzima.util.Constants.ServerSettings.MULTIPLE_CONFIGS_ENABLED_SETTING;
+
 import android.content.Context;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfiguration;
+import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.SetupConfigurationController;
 
 import java.util.ArrayList;
@@ -33,17 +37,23 @@ public class DownloadSetupConfigurationsTask implements Runnable {
     @Override
     public void run() {
         List<SetupConfiguration> setupConfigurations = new ArrayList<>();
+        MuzimaSetting multipleConfigsSupportSetting = null;
+
         try {
+            multipleConfigsSupportSetting = ((MuzimaApplication)context).getMuzimaSettingController().downloadSettingByProperty(MULTIPLE_CONFIGS_ENABLED_SETTING);
+
             ((MuzimaApplication) context.getApplicationContext()).getMuzimaSyncService().downloadSetupConfigurations();
             setupConfigurations = ((MuzimaApplication) context.getApplicationContext()).getSetupConfigurationController().getAllSetupConfigurations();
             Log.e(TAG, "#SetupConfigurations: " + setupConfigurations.size());
         } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
             Log.e(TAG, "Exception occurred while fetching the downloaded Setup Configurations", e);
+        } catch (MuzimaSettingController.MuzimaSettingDownloadException e) {
+            Log.e(TAG, "Exception occurred while downloading setting", e);
         }
-        callback.setupConfigDownloadCompleted(setupConfigurations);
+        callback.setupConfigDownloadCompleted(setupConfigurations, multipleConfigsSupportSetting);
     }
 
     public interface SetupConfigurationCompletedCallback {
-        void setupConfigDownloadCompleted(List<SetupConfiguration> configurationList);
+        void setupConfigDownloadCompleted(List<SetupConfiguration> configurationList, MuzimaSetting multipleConfigsSupportSetting);
     }
 }

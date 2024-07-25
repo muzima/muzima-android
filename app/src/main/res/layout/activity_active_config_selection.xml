@@ -42,7 +42,6 @@
         android:id="@+id/configs_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/next_button_layout"
         android:layout_below="@+id/guided_setup_header"
         android:focusableInTouchMode="true"
         android:orientation="vertical">

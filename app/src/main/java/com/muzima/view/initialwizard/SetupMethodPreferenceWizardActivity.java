@@ -10,6 +10,8 @@
 
 package com.muzima.view.initialwizard;
 
+import static com.muzima.util.Constants.ServerSettings.MULTIPLE_CONFIGS_ENABLED_SETTING;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,19 +33,15 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.setupconfiguration.SetupConfigurationRecyclerViewAdapter;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfiguration;
-import com.muzima.api.model.SetupConfigurationTemplate;
-import com.muzima.controller.SetupConfigurationController;
-import com.muzima.service.ActiveConfigPreferenceService;
-import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.DownloadSetupConfigurationsTask;
-import com.muzima.utils.Constants;
 import com.muzima.utils.KeyboardWatcher;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.MainDashboardActivity;
-import com.muzima.view.login.LoginActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
+
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +75,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
                 .execute(new DownloadSetupConfigurationsTask(getApplicationContext(), new DownloadSetupConfigurationsTask.SetupConfigurationCompletedCallback() {
                     @Override
-                    public void setupConfigDownloadCompleted(final List<SetupConfiguration> configurationList) {
+                    public void setupConfigDownloadCompleted(final List<SetupConfiguration> configurationList, final MuzimaSetting multipleConfigsSupportSetting) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -94,9 +92,25 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                                     intent.putExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, setupConfigurationList.get(0).getUuid());
                                     startActivity(intent);
                                 }else {
-                                    setupConfigurationAdapter.notifyDataSetChanged();
-                                    setupConfigurationAdapter.setItemsCopy(configurationList);
-                                    dismissProgressDialog();
+                                    ArrayList<String> assignedConfigs = new ArrayList<>();
+                                    MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
+                                    if (multipleConfigsSupportSetting.getValueBoolean()) {
+                                        for (SetupConfiguration config : configurationList) {
+                                            if (StringUtils.contains(config.getAssignedUserIds(), muzimaApplication.getAuthenticatedUserId())) {
+                                                assignedConfigs.add(config.getUuid());
+                                            }
+                                        }
+                                    }
+                                    if (!assignedConfigs.isEmpty()) {
+                                        Intent intent = new Intent(getApplicationContext(), GuidedConfigurationWizardActivity.class);
+                                        intent.putStringArrayListExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, assignedConfigs);
+                                        startActivity(intent);
+                                    } else {
+                                        setupConfigurationAdapter.notifyDataSetChanged();
+                                        setupConfigurationAdapter.setItemsCopy(configurationList);
+                                        setupConfigurationAdapter.setEnableMultiSelect(multipleConfigsSupportSetting.getValueBoolean());
+                                        dismissProgressDialog();
+                                    }
                                 }
                             }
                         });

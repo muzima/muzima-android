@@ -41,7 +41,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -226,7 +225,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     }
 
     private boolean multipleConfigsSupported(){
-        return ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().ismultipleConfigsSupported();
+        return ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().isMultipleConfigsSupported();
     }
 
     private void initPatientRegistrationSearchView(LayoutInflater inflater){

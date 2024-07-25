@@ -27,6 +27,7 @@ import java.util.List;
 import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 
 import android.content.Context;
+import android.util.Log;
 
 public class SetupConfigurationController {
 
@@ -99,6 +100,15 @@ public class SetupConfigurationController {
             return setupConfigurationService.getSetupConfigurationTemplates();
         }catch (IOException e){
             throw new SetupConfigurationFetchException(e);
+        }
+    }
+
+    public boolean hasMultipleConfigTemplates(){
+        try {
+            return getSetupConfigurationTemplates().size() > 1;
+        } catch (Throwable e) {
+            Log.e(getClass().getSimpleName(), "Could not fetch config templates",e);
+            return false;
         }
     }
 

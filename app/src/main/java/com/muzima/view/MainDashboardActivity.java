@@ -66,6 +66,7 @@ import com.muzima.api.model.SmartCardRecord;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.domain.Credentials;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.CohortWithFilter;
@@ -423,6 +424,10 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
             showExitAlertDialog();
             return true;
         });
+
+        MenuItem navSwitchConfigs = navigationView.getMenu().findItem(R.id.nav_active_config_selection);
+        SetupConfigurationController configController = ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController();
+        navSwitchConfigs.setVisible(configController.hasMultipleConfigTemplates());
 
         credentials = new Credentials(this);
 

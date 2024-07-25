@@ -21,8 +21,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.SetupConfiguration;
+import com.muzima.controller.MuzimaSettingController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ public class SetupConfigurationRecyclerViewAdapter extends RecyclerView.Adapter<
     private List<SetupConfiguration> itemsCopy = new ArrayList<>();
     private ArrayList<String> selectedConfigsUuids = new ArrayList<>();
     private OnSetupConfigurationClickedListener onSetupConfigurationClickedListener;
+    private boolean enableMultiSelect;
 
     public SetupConfigurationRecyclerViewAdapter(Context context, List<SetupConfiguration> setupConfigurationList, OnSetupConfigurationClickedListener clickedListener) {
         this.context = context;
@@ -49,6 +52,10 @@ public class SetupConfigurationRecyclerViewAdapter extends RecyclerView.Adapter<
         this.itemsCopy = itemsCopy;
     }
 
+    public void setEnableMultiSelect(boolean enableMultiSelect){
+        this.enableMultiSelect = enableMultiSelect;
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,6 +68,16 @@ public class SetupConfigurationRecyclerViewAdapter extends RecyclerView.Adapter<
         SetupConfiguration setupConfiguration = setupConfigurationList.get(position);
         holder.nameTextView.setText(setupConfiguration.getName());
         holder.descriptionTextView.setText(setupConfiguration.getDescription());
+        if (selectedConfigsUuids.contains(setupConfiguration.getUuid())) {
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_blue));
+            holder.cardView.setChecked(true);
+        } else {
+            holder.cardView.setChecked(false);
+            if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getResources().getString(R.string.preference_light_mode), false)) {
+                holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_black));
+            } else
+                holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_background));
+        }
     }
 
     @Override
@@ -91,11 +108,13 @@ public class SetupConfigurationRecyclerViewAdapter extends RecyclerView.Adapter<
         SetupConfiguration configuration = setupConfigurationList.get(position);
 
         if (selected && !selectedConfigsUuids.contains(configuration.getUuid())) {
+            if(!enableMultiSelect)
+                selectedConfigsUuids.clear();
+
             selectedConfigsUuids.add(configuration.getUuid());
             cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_blue));
         } else if (!selected && selectedConfigsUuids.contains(configuration.getUuid())) {
             selectedConfigsUuids.remove(configuration.getUuid());
-
             if (!PreferenceManager.getDefaultSharedPreferences(context).getBoolean(context.getResources().getString(R.string.preference_light_mode), false)) {
                 cardView.setCardBackgroundColor(context.getResources().getColor(R.color.primary_black));
             } else

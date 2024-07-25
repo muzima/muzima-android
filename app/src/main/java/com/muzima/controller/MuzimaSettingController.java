@@ -64,6 +64,7 @@ import static com.muzima.util.Constants.ServerSettings.FORM_DUPLICATE_CHECK_ENAB
 import static com.muzima.util.Constants.ServerSettings.GEOMAPPING_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.GPS_FEATURE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.HISTORICAL_DATA_TAB_ENABLED_SETTING;
+import static com.muzima.util.Constants.ServerSettings.MULTIPLE_CONFIGS_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.OBS_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
 import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
@@ -878,18 +879,20 @@ public class MuzimaSettingController {
         return false;
     }
 
-    public Boolean ismultipleConfigsSupported(){
+    public Boolean isMultipleConfigsSupported(){
         try {
-            MuzimaSetting muzimaSetting = getSettingByProperty(GEOMAPPING_FEATURE_ENABLED_SETTING);
+            MuzimaSetting muzimaSetting = getSettingByProperty(MULTIPLE_CONFIGS_ENABLED_SETTING);
             if (muzimaSetting != null)
                 return muzimaSetting.getValueBoolean();
             else
-                Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+                Log.e(getClass().getSimpleName(), "Setting is missing on the server");
         } catch (MuzimaSettingFetchException e) {
-            Log.e(getClass().getSimpleName(), "Setting is missing on this server");
+            Log.e(getClass().getSimpleName(), "Setting is missing on the server");
         }
         return false;
     }
+
+
 
     public static class MuzimaSettingFetchException extends Throwable {
         MuzimaSettingFetchException(Throwable throwable) {
