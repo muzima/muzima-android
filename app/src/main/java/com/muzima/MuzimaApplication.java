@@ -238,7 +238,7 @@ public class MuzimaApplication extends MultiDexApplication {
         if (conceptController == null) {
             try {
                 conceptController = new ConceptController(muzimaContext.getService(ConceptService.class),
-                        muzimaContext.getService(ObservationService.class));
+                        muzimaContext.getService(ObservationService.class), this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

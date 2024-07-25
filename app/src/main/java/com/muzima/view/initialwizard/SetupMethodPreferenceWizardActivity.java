@@ -69,28 +69,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         initializeResources();
-        if (new WizardFinishPreferenceService(this).isWizardFinished()){
-            loadLocalConfigs();
-        } else {
-            downLoadConfigList();
-        }
-    }
-
-    private void loadLocalConfigs(){
-        try {
-            List<SetupConfiguration> configurationList = new ArrayList<>();
-            for (SetupConfigurationTemplate template:((MuzimaApplication) getApplicationContext()).getSetupConfigurationController().getSetupConfigurationTemplates()) {
-                SetupConfiguration config = ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController().getSetupConfigurations(template.getUuid());
-                configurationList.add(config);
-            }
-            setupConfigurationList.clear();
-            setupConfigurationList.addAll(configurationList);
-            setupConfigurationAdapter.notifyDataSetChanged();
-            setupConfigurationAdapter.setItemsCopy(configurationList);
-        }  catch (SetupConfigurationController.SetupConfigurationFetchException e) {
-            Log.e(getClass().getSimpleName(), "Exception when trying to save setup configs");
-        }
-
+        downLoadConfigList();
     }
 
     private void downLoadConfigList() {
@@ -165,22 +144,13 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
 
     @Override
     public void onSetupConfigClicked(View view, int position) {
-        if(new WizardFinishPreferenceService(this).isWizardFinished()){
-            SetupConfiguration configuration = setupConfigurationAdapter.getConfig(position);
-
-            (new ActiveConfigPreferenceService((MuzimaApplication) getApplicationContext())).setActiveConfigUuid(configuration.getUuid());
-            Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            setupConfigurationAdapter.toggleSelection(view, position);
-            setupConfigurationAdapter.notifyDataSetChanged();
-            hideKeyboard();
-            if (setupConfigurationAdapter.getSelectedConfigs().size() > 0) {
-                activeNextButton.setVisibility(View.VISIBLE);
-            } else
-                activeNextButton.setVisibility(View.GONE);
-        }
+        setupConfigurationAdapter.toggleSelection(view, position);
+        setupConfigurationAdapter.notifyDataSetChanged();
+        hideKeyboard();
+        if (setupConfigurationAdapter.getSelectedConfigs().size() > 0) {
+            activeNextButton.setVisibility(View.VISIBLE);
+        } else
+            activeNextButton.setVisibility(View.GONE);
     }
 
     @Override

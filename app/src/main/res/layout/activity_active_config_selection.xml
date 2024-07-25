@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~ this code in a for-profit venture, please contact the copyright holder.
+  -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/primaryBackgroundColor"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/guided_setup_header"
+        style="@style/NotClickableSummaryItem"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            style="@style/SummaryHeader"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="Program Selection" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/hint_guided_setup"
+            android:textAlignment="center"
+            android:textColor="?attr/primaryTextColor" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/configs_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/next_button_layout"
+        android:layout_below="@+id/guided_setup_header"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <ScrollView
+            style="@style/setupMethodConfigurationsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scroll_view"
+            android:layout_below="@+id/guided_setup_header"
+            android:fillViewport="true"
+            android:scrollbars="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/configs_wizard_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:choiceMode="singleChoice"
+                android:divider="#00000000"
+                android:dividerHeight="10dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:scrollbarSize="1dp"
+                android:scrollbarStyle="outsideOverlay" />
+        </ScrollView>
+
+        <include layout="@layout/recycler_no_data_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"/>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -79,6 +79,7 @@ import com.muzima.utils.MemoryUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.login.ActiveConfigSelectionActivity;
 
 import net.minidev.json.JSONObject;
 
@@ -248,7 +249,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             @Override
             public void onClick(View view) {
                 new WizardFinishPreferenceService(GuidedConfigurationWizardActivity.this).finishWizard();
-                Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+
+                Intent intent;
+                if(hasMoreThanOneConfig()){
+                    intent = new Intent(getApplicationContext(), ActiveConfigSelectionActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+                }
                 startActivity(intent);
                 finish();
             }
@@ -263,6 +270,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         viewPager.setVisibility(View.GONE);
         viewPagerLg.setVisibility(View.VISIBLE);
         logEvent("VIEW_GUIDED_SETUP_METHOD");
+    }
+
+    private boolean hasMoreThanOneConfig(){
+        try {
+            return ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController().getSetupConfigurationTemplates().size() > 1;
+        } catch (Throwable e) {
+            Log.e(getClass().getSimpleName(), "Could not fetch config templates",e);
+            return false;
+        }
     }
 
     private void initiateSetupConfiguration() {
