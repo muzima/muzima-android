@@ -9,9 +9,13 @@
  */
 package com.muzima.controller;
 
+import android.util.Log;
+
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Observation;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.util.JsonUtils;
@@ -30,8 +34,10 @@ public class ConceptController {
     private List<Concept> newConcepts = new ArrayList<>();
     private final ConceptService conceptService;
     private final ObservationService observationService;
+    private final MuzimaApplication muzimaApplication;
 
-    public ConceptController(ConceptService conceptService, ObservationService observationService) {
+    public ConceptController(ConceptService conceptService, ObservationService observationService, MuzimaApplication muzimaApplication) {
+        this.muzimaApplication = muzimaApplication;
         this.observationService = observationService;
         this.conceptService = conceptService;
     }
@@ -147,6 +153,50 @@ public class ConceptController {
         }
     }
 
+    public List<Concept> getActiveConfigConcepts() throws ConceptFetchException {
+        List<Concept> configConcepts = new ArrayList<>();
+        try {
+            List<String> conceptUuids = new ArrayList<>();
+            SetupConfigurationTemplate activeSetupConfig = muzimaApplication.getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+            String configJson = activeSetupConfig.getConfigJson();
+
+            boolean isGroupingEnabled = JsonUtils.readAsBoolean(configJson, "$['config']['requireConceptGroups']");
+            if(isGroupingEnabled) {
+                List<Object> objects = JsonUtils.readAsObjectList(configJson, "$['config']['configConceptGroups']");
+                if (objects != null) {
+                    for (Object object : objects) {
+                        net.minidev.json.JSONObject configConceptGroups = (net.minidev.json.JSONObject) object;
+
+                        net.minidev.json.JSONObject jsonObject = configConceptGroups;
+                        List<Object> concepts = JsonUtils.readAsObjectList(configConceptGroups.toJSONString(), "concepts");
+                        Object group = jsonObject.get("name");
+                        for (Object concept : concepts) {
+                            net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
+                            String conceptUuid = concept1.get("uuid").toString();
+                            conceptUuids.add(conceptUuid);
+                        }
+                    }
+                }
+            } else {
+                List<Object> concepts = JsonUtils.readAsObjectList(configJson, "$['config']['concepts']");
+                for (Object concept : concepts) {
+                    net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;
+                    String conceptUuid = concept1.get("uuid").toString();
+                    conceptUuids.add(conceptUuid);
+                }
+            }
+            for(String conceptUuid : conceptUuids) {
+
+                Concept concept = muzimaApplication.getConceptController().getConceptByUuid(conceptUuid);
+                configConcepts.add(concept);
+            }
+        } catch (Throwable e) {
+            Log.e(getClass().getSimpleName(),"Encountered an exception while fetching config concepts", e);
+        }
+
+        return configConcepts;
+    }
+
     public void newConcepts(List<Concept> concepts) throws ConceptFetchException {
         newConcepts = concepts;
         List<Concept> savedConcepts = getConcepts();
@@ -180,7 +230,12 @@ public class ConceptController {
     }
 
     public void deleteAllConcepts() throws ConceptDeleteException, ConceptFetchException {
-        deleteConcepts(getConcepts());
+        try {
+            List<Concept> allConcepts = conceptService.getAllConcepts();
+            deleteConcepts(allConcepts);
+        } catch (IOException e){
+            throw new ConceptDeleteException(e);
+        }
     }
 
     public static class ConceptDownloadException extends Throwable {

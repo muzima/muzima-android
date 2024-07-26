@@ -25,6 +25,10 @@
             android:name="com.muzima.view.preferences.SettingsActivity"/>
 
     <activity
+            android:id="@+id/nav_active_config_selection"
+            android:name="com.muzima.view.login.ActiveConfigSelectionActivity"/>
+
+    <activity
             android:id="@+id/nav_help"
             android:name="com.muzima.view.help.HelpActivity"
             tools:layout="@layout/activity_help_new"/>

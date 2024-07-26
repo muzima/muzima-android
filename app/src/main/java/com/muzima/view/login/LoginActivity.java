@@ -55,12 +55,11 @@ import com.muzima.api.context.Context;
 import com.muzima.api.model.AppRelease;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.MinimumSupportedAppVersion;
-import com.muzima.api.model.PatientReport;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.AppReleaseController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
 import com.muzima.controller.MuzimaSettingController;
-import com.muzima.controller.PatientReportController;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.domain.Credentials;
 import com.muzima.scheduler.MuzimaJobScheduleBuilder;
 import com.muzima.scheduler.RealTimeFormUploader;
@@ -453,6 +452,7 @@ public class LoginActivity extends BaseActivity {
                 //CustomConceptWizardActivity
                 context.getObservationService().deleteAll();
                 context.getEncounterService().deleteAll();
+                context.getSetupConfigurationService().deleteAll();
             } catch (Throwable e) {
                 Log.e(getClass().getSimpleName(), "Unable to delete previous wizard run data. Error: " + e);
             }
@@ -1001,7 +1001,11 @@ public class LoginActivity extends BaseActivity {
         Intent intent;
         if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
             downloadMissingServerSettings();
-            intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+            SetupConfigurationController configController = ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController();
+            if(configController.hasMultipleConfigTemplates())
+                intent = new Intent(getApplicationContext(), ActiveConfigSelectionActivity.class);
+            else
+                intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
         } else {
             removeRemnantDataFromPreviousRunOfWizard();
             intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);

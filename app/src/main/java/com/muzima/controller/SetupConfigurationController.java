@@ -10,11 +10,13 @@
 
 package com.muzima.controller;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.api.service.SetupConfigurationService;
+import com.muzima.service.ActiveConfigPreferenceService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.StringUtils;
 
@@ -24,17 +26,22 @@ import java.util.List;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 
+import android.content.Context;
+import android.util.Log;
+
 public class SetupConfigurationController {
 
     private final SetupConfigurationService setupConfigurationService;
     private final LastSyncTimeService lastSyncTimeService;
     private final SntpService sntpService;
+    private MuzimaApplication muzimaApplication;
 
     public SetupConfigurationController(SetupConfigurationService setupConfigurationService,
-                                        LastSyncTimeService lastSyncTimeService, SntpService sntpService){
+                                        LastSyncTimeService lastSyncTimeService, SntpService sntpService, MuzimaApplication muzimaApplication){
         this.setupConfigurationService = setupConfigurationService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
+        this.muzimaApplication = muzimaApplication;
     }
 
     public List<SetupConfiguration> downloadAllSetupConfigurations() throws SetupConfigurationDownloadException{
@@ -96,6 +103,15 @@ public class SetupConfigurationController {
         }
     }
 
+    public boolean hasMultipleConfigTemplates(){
+        try {
+            return getSetupConfigurationTemplates().size() > 1;
+        } catch (Throwable e) {
+            Log.e(getClass().getSimpleName(), "Could not fetch config templates",e);
+            return false;
+        }
+    }
+
     public SetupConfigurationTemplate getSetupConfigurationTemplate(final String uuid) throws SetupConfigurationFetchException{
         try{
             return setupConfigurationService.getSetupConfigurationTemplate(uuid);
@@ -134,9 +150,9 @@ public class SetupConfigurationController {
             if(setupConfigurationTemplates.size() == 1){
                 return setupConfigurationTemplates.get(0);
             } else if(setupConfigurationTemplates.size() > 1){
-                //For now, the app supports only one setup config template
-                //Logic should be updated here in case multiple configs are supported in future
-                throw new SetupConfigurationFetchException("Could not uniquely identify active setup config templates");
+                ActiveConfigPreferenceService service = new ActiveConfigPreferenceService(muzimaApplication);
+                String activeConfigUuid = service.getActiveConfigUuid();
+                return getSetupConfigurationTemplate(activeConfigUuid);
             } else {
                 throw new SetupConfigurationFetchException("Could not find any setup config templates");
             }

@@ -13,11 +13,8 @@ package com.muzima.view.initialwizard;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -25,7 +22,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,25 +30,18 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.setupconfiguration.SetupConfigurationRecyclerViewAdapter;
-import com.muzima.api.model.LastSyncTime;
+import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfiguration;
-import com.muzima.api.service.LastSyncTimeService;
-import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.SntpService;
 import com.muzima.tasks.DownloadSetupConfigurationsTask;
-import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.KeyboardWatcher;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
-import java.io.IOException;
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivity implements KeyboardWatcher.OnKeyboardToggleListener,
         SetupConfigurationRecyclerViewAdapter.OnSetupConfigurationClickedListener {
@@ -75,15 +64,15 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         ThemeUtils.getInstance().onCreate(this,false);
         super.onCreate(savedInstanceState);
         initializeResources();
-        loadConfigList();
+        downLoadConfigList();
     }
 
-    private void loadConfigList() {
+    private void downLoadConfigList() {
         turnOnProgressDialog(getString(R.string.info_setup_config_load));
         ((MuzimaApplication) getApplicationContext()).getExecutorService()
                 .execute(new DownloadSetupConfigurationsTask(getApplicationContext(), new DownloadSetupConfigurationsTask.SetupConfigurationCompletedCallback() {
                     @Override
-                    public void setupConfigDownloadCompleted(final List<SetupConfiguration> configurationList) {
+                    public void setupConfigDownloadCompleted(final List<SetupConfiguration> configurationList, final MuzimaSetting multipleConfigsSupportSetting) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -100,9 +89,25 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                                     intent.putExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, setupConfigurationList.get(0).getUuid());
                                     startActivity(intent);
                                 }else {
-                                    setupConfigurationAdapter.notifyDataSetChanged();
-                                    setupConfigurationAdapter.setItemsCopy(configurationList);
-                                    dismissProgressDialog();
+                                    ArrayList<String> assignedConfigs = new ArrayList<>();
+                                    MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
+                                    if (multipleConfigsSupportSetting.getValueBoolean()) {
+                                        for (SetupConfiguration config : configurationList) {
+                                            if (StringUtils.contains(config.getAssignedUserIds(), muzimaApplication.getAuthenticatedUser().getSystemId())) {
+                                                assignedConfigs.add(config.getUuid());
+                                            }
+                                        }
+                                    }
+                                    if (!assignedConfigs.isEmpty()) {
+                                        Intent intent = new Intent(getApplicationContext(), GuidedConfigurationWizardActivity.class);
+                                        intent.putStringArrayListExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, assignedConfigs);
+                                        startActivity(intent);
+                                    } else {
+                                        setupConfigurationAdapter.notifyDataSetChanged();
+                                        setupConfigurationAdapter.setItemsCopy(configurationList);
+                                        setupConfigurationAdapter.setEnableMultiSelect(multipleConfigsSupportSetting.getValueBoolean());
+                                        dismissProgressDialog();
+                                    }
                                 }
                             }
                         });
@@ -124,9 +129,9 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
         activeNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String setupConfigUuid = setupConfigurationAdapter.getSelectedConfigurationUuid();
+                ArrayList<String> selectedConfigs = setupConfigurationAdapter.getSelectedConfigs();
                 Intent intent = new Intent(getApplicationContext(), GuidedConfigurationWizardActivity.class);
-                intent.putExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, setupConfigUuid);
+                intent.putStringArrayListExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, selectedConfigs);
                 startActivity(intent);
             }
         });
@@ -149,11 +154,14 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
     }
 
     @Override
-    public void onSetupConfigClicked(int position) {
-        activeNextButton.setVisibility(View.VISIBLE);
-        setupConfigurationAdapter.setSelectedConfigurationUuid(setupConfigurationList.get(position).getUuid());
+    public void onSetupConfigClicked(View view, int position) {
+        setupConfigurationAdapter.toggleSelection(view, position);
         setupConfigurationAdapter.notifyDataSetChanged();
         hideKeyboard();
+        if (setupConfigurationAdapter.getSelectedConfigs().size() > 0) {
+            activeNextButton.setVisibility(View.VISIBLE);
+        } else
+            activeNextButton.setVisibility(View.GONE);
     }
 
     @Override

@@ -24,6 +24,11 @@
             android:id="@+id/nav_settings"
             android:title="@string/general_settings"
             android:icon="@drawable/ic_action_settings"/>
+
+        <item
+            android:id="@+id/nav_active_config_selection"
+            android:title="Switch Program"
+            android:icon="@drawable/ic_action_settings"/>
     </group>
 
     <group

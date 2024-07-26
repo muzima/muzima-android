@@ -28,4 +28,5 @@
     <string translatable="false" name="preference_app_token_synced">appTokenSynced</string>
     <string translatable="false" name="preference_recently_viewed_media">recentlyViewedMedia</string>
     <string translatable="false" name="preference_confidentiality_notice_display">confidentialityNoticeDisplay</string>
+    <string translatable="false" name="active_config_uuid">activeConfigUuid</string>
 </resources>

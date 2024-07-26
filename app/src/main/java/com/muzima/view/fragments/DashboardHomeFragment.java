@@ -41,7 +41,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -57,9 +56,11 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PersonName;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.FormController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.AvailableForm;
 import com.muzima.model.CohortFilter;
 import com.muzima.model.events.BottomSheetToggleEvent;
@@ -69,6 +70,7 @@ import com.muzima.model.events.ShowCohortFilterEvent;
 import com.muzima.model.events.UploadedFormDataEvent;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.service.MuzimaGPSLocationService;
+import com.muzima.util.JsonUtils;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
@@ -179,8 +181,26 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
     private void setupListView(View view) {
         recyclerView = view.findViewById(R.id.list);
         Context context = mActivity.getApplicationContext();
+
+        List<String> cohortUuids = new ArrayList<>();
+        SetupConfigurationTemplate activeSetupConfig = null;
+
+        try {
+            activeSetupConfig = ((MuzimaApplication) mActivity.getApplicationContext()).getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+            if (multipleConfigsSupported() && activeSetupConfig != null) {
+                // We restrict all patients list to only those in active config cohorts
+                List<Object> objects = JsonUtils.readAsObjectList(activeSetupConfig.getConfigJson(), "$['config']['cohorts']");
+                for (Object obj : objects) {
+                    net.minidev.json.JSONObject cohort = (net.minidev.json.JSONObject) obj;
+                    cohortUuids.add(cohort.get("uuid").toString());
+                }
+            }
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Cannot load active config", e);
+        }
+
         patientSearchAdapter = new PatientsLocalSearchAdapter(context,
-                ((MuzimaApplication) context).getPatientController(), null, null, getCurrentGPSLocation(),  ((MuzimaApplication) context).getMuzimaSettingController());
+                ((MuzimaApplication) context).getPatientController(), cohortUuids, null, getCurrentGPSLocation(),  ((MuzimaApplication) context).getMuzimaSettingController());
 
         patientSearchAdapter.setBackgroundListQueryTaskListener(this);
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity().getApplicationContext());
@@ -202,6 +222,10 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
             }
         });
         patientSearchAdapter.setPatientListClickListener(this);
+    }
+
+    private boolean multipleConfigsSupported(){
+        return ((MuzimaApplication) mActivity.getApplicationContext()).getMuzimaSettingController().isMultipleConfigsSupported();
     }
 
     private void initPatientRegistrationSearchView(LayoutInflater inflater){
@@ -888,7 +912,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
                         if(formUuidSetting==null || StringUtils.isEmpty(formUuidSetting.getValueString())) {
                             Toast.makeText(mActivity.getApplicationContext(),R.string.assignment_form_uuid_missing_warning, Toast.LENGTH_LONG).show();
-                        }else {
+                        }  else {
                             FormController formController = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController();
                             String formUuid = formUuidSetting.getValueString();
                             AvailableForm assignmentForm = ((MuzimaApplication) mActivity.getApplicationContext()).getFormController().getAvailableFormByFormUuid(formUuid);
@@ -896,9 +920,9 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
                             Patient patient = ((MuzimaApplication) mActivity.getApplicationContext()).getPatientController().getPatientByUuid(patientUuid);
 
                             FormTemplate formTemplate = formController.getFormTemplateByUuid(assignmentForm.getFormUuid());
-                            if(formTemplate == null){
+                            if (formTemplate == null) {
                                 Toast.makeText(((MuzimaApplication) mActivity.getApplicationContext()),R.string.assignment_form_not_downloaded_warning, Toast.LENGTH_LONG).show();
-                            }else {
+                            } else {
                                 formUuidSettingAndFormAvailable = true;
                                 FormViewIntent intent = new FormViewIntent(mActivity, assignmentForm, patient, false);
                                 intent.putExtra(FormViewIntent.FORM_COMPLETION_STATUS_INTENT, FormViewIntent.FORM_COMPLETION_STATUS_RECOMMENDED);
