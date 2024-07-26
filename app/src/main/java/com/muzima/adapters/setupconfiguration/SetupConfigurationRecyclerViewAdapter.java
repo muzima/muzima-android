@@ -141,7 +141,6 @@ public class SetupConfigurationRecyclerViewAdapter extends RecyclerView.Adapter<
             this.clickedListener = clickedListener;
 
             this.cardView.setOnClickListener(this);
-
         }
 
         @Override
