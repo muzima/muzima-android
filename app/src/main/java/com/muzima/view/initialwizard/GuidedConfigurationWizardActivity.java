@@ -12,8 +12,10 @@ package com.muzima.view.initialwizard;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-import static com.muzima.api.model.APIName.DOWNLOAD_SETUP_CONFIGURATIONS;
 import static com.muzima.util.Constants.ServerSettings.DEFAULT_ENCOUNTER_LOCATION_SETTING;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
+import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
+import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
 import android.app.DownloadManager;
 import android.content.Context;
@@ -55,7 +57,6 @@ import com.muzima.adapters.setupconfiguration.GuidedSetupActionLogAdapter;
 import com.muzima.adapters.setupconfiguration.GuidedSetupCardsViewPagerAdapter;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.Form;
-import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.Location;
 import com.muzima.api.model.Media;
 import com.muzima.api.model.MuzimaSetting;
@@ -70,16 +71,17 @@ import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.SetupActionLogModel;
 import com.muzima.service.DefaultEncounterLocationPreferenceService;
 import com.muzima.service.MuzimaSyncService;
-import com.muzima.service.SntpService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.JsonUtils;
-
 import com.muzima.utils.Constants;
+import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import com.muzima.utils.Constants.SetupLogConstants;
 import com.muzima.utils.MemoryUtil;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
+import com.muzima.view.login.ActiveConfigSelectionActivity;
 import com.muzima.view.main.HTCMainActivity;
 
 import net.minidev.json.JSONObject;
@@ -100,7 +102,7 @@ import com.muzima.utils.DeviceDetailsUtil;
 @SuppressWarnings("staticFieldLeak")
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
     public static final String SETUP_CONFIG_UUID_INTENT_KEY = "SETUP_CONFIG_UUID";
-    private SetupConfigurationTemplate setupConfigurationTemplate;
+    private List<SetupConfigurationTemplate> setupConfigurationTemplateList = new ArrayList<>();
     private int wizardLevel = 0;
     private boolean wizardcompletedSuccessfully = true;
     private GuidedSetupActionLogAdapter setupActionLogAdapter;
@@ -118,7 +120,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private GuidedSetupCardsViewPagerAdapter guidedSetupCardsViewPagerAdapter;
     private int pageCount;
     private boolean isOnlineOnlyModeEnabled;
-    private String setupConfigTemplateUuid;
+    private List<String> setupConfigTemplateUuidList;
     private PowerManager.WakeLock wakeLock = null;
     private static final int EXTERNAL_STORAGE_MANAGEMENT = 9002;
     private List<Media> mediaList = new ArrayList<>();
@@ -172,19 +174,23 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             protected void onPreExecute() {
                 ((MuzimaApplication) getApplication()).cancelTimer();
                 keepPhoneAwake(true);
-                setupConfigTemplateUuid = getIntent().getStringExtra(SETUP_CONFIG_UUID_INTENT_KEY);
+                setupConfigTemplateUuidList = getIntent().getStringArrayListExtra(SETUP_CONFIG_UUID_INTENT_KEY);
             }
 
             @Override
             protected int[] doInBackground(Void... voids) {
-                return downloadSetupConfiguration(setupConfigTemplateUuid);
+                int result[] = null;
+                for(String configuration: setupConfigTemplateUuidList) {
+                    result = downloadSetupConfiguration(configuration);
+                }
+                return result;
             }
 
             @Override
             protected void onPostExecute(int[] result) {
                 Log.i(getClass().getSimpleName(), "Restarting timeout timer!");
                 ((MuzimaApplication) getApplication()).restartTimer();
-                if (result[0] != Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                if (result[0] != SUCCESS) {
                     Toast.makeText(GuidedConfigurationWizardActivity.this,
                             getString(R.string.error_setup_configuration_template_download), Toast.LENGTH_SHORT).show();
                 } else {
@@ -246,20 +252,22 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         guidedSetupCardsViewPagerAdapter = new GuidedSetupCardsViewPagerAdapter(getSupportFragmentManager(), getApplicationContext());
         viewPager.setAdapter(guidedSetupCardsViewPagerAdapter);
         viewPagerLg.setAdapter(guidedSetupCardsViewPagerAdapter);
-
-
-        //setupConfigurationTemplate.getConfigJson();
         finishSetupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new WizardFinishPreferenceService(GuidedConfigurationWizardActivity.this).finishWizard();
-                Intent intent;
-                if (isAtsSetup()) {
-                    intent = new Intent(getApplicationContext(), HTCMainActivity.class);
-                } else {
-                    intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
-                }
 
+
+                Intent intent;
+                if(hasMoreThanOneConfig()){
+                    intent = new Intent(getApplicationContext(), ActiveConfigSelectionActivity.class);
+                } else {
+                    if (isAtsSetup()) {
+                        intent = new Intent(getApplicationContext(), HTCMainActivity.class);
+                    } else {
+                        intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+                    }
+                }
                 startActivity(intent);
                 finish();
             }
@@ -276,16 +284,29 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         logEvent("VIEW_GUIDED_SETUP_METHOD");
     }
 
+    private boolean hasMoreThanOneConfig(){
+        try {
+            return ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController().getSetupConfigurationTemplates().size() > 1;
+        } catch (Throwable e) {
+            Log.e(getClass().getSimpleName(), "Could not fetch config templates",e);
+            return false;
+        }
+    }
+
     private void initiateSetupConfiguration() {
-        fetchConfigurationTemplate(setupConfigTemplateUuid);
+        fetchConfigurationTemplates();
         downloadSettings();
     }
 
-    private void fetchConfigurationTemplate(String setupConfigTemplateUuid) {
+    private void fetchConfigurationTemplates() {
         try {
+
             SetupConfigurationController setupConfigurationController =
                     ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController();
-            setupConfigurationTemplate = setupConfigurationController.getSetupConfigurationTemplate(setupConfigTemplateUuid);
+            setupConfigurationTemplateList.clear();
+            for(String configuuid: setupConfigTemplateUuidList) {
+                setupConfigurationTemplateList.add(setupConfigurationController.getSetupConfigurationTemplate(configuuid));
+            }
         } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
             Log.e(getClass().getSimpleName(), "Could not get setup configuration template", e);
         }
@@ -313,8 +334,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultDescription = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_cohort_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SUCCESS) {
                     if (result[1] == 0) {
                         resultDescription = getString(R.string.info_settings_not_download);
                     } else if (result[1] == 1) {
@@ -322,11 +343,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     } else {
                         resultDescription = getString(R.string.info_settings_downloaded, result[1]);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_settings_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
 
                 MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
@@ -372,18 +393,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultDescription = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_cohort_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     if (result[1] == 1) {
                         resultDescription = getString(R.string.info_cohort_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_cohorts_downloaded, result[1]);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_cohort_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
                 downloadCohortsLog.setSetupActionResult(resultDescription);
                 downloadCohortsLog.setSetupActionResultStatus(resultStatus);
@@ -433,8 +454,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_cohort_patient_not_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     if (result[1] == 1 && result[2] == 1) {
                         resultDescription = getString(R.string.info_cohort_patient_download);
                     } else if (result[1] == 1) {
@@ -444,11 +465,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     } else {
                         resultDescription = getString(R.string.info_cohorts_patients_download, result[1], result[2]);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_patient_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
 
                 }
                 downloadPatientsLog.setSetupActionResult(resultDescription);
@@ -486,18 +507,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_form_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     if (result[1] == 1) {
                         resultDescription = getString(R.string.info_form_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_forms_downloaded, result[1]);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_form_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
                 downloadFormsLog.setSetupActionResult(resultDescription);
                 downloadFormsLog.setSetupActionResultStatus(resultStatus);
@@ -554,18 +575,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_form_template_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     if (result[1] == 1) {
                         resultDescription = getString(R.string.info_form_template_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_form_templates_downloaded, result[1]);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_form_templates_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
                 downloadFormTemplatesLog.setSetupActionResult(resultDescription);
                 downloadFormTemplatesLog.setSetupActionResultStatus(resultStatus);
@@ -647,18 +668,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_location_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     if (result[1] == 1) {
                         resultDescription = getString(R.string.info_location_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_locations_downloaded, result[1]);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_location_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
                 if(!isOnlineOnlyModeEnabled){
                     checkIfCohortWithFilterByLocationExists();
@@ -718,18 +739,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_provider_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     if (result[1] == 1) {
                         resultDescription = getString(R.string.info_provider_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_providers_downloaded, result[1]);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_provider_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
                 downloadProvidersLog.setSetupActionResult(resultDescription);
                 downloadProvidersLog.setSetupActionResultStatus(resultStatus);
@@ -777,18 +798,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_concept_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     if (result[1] == 1) {
                         resultDescription = getString(R.string.info_concept_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_concepts_downloaded, result[1]);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_concept_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
                 downloadConceptsLog.setSetupActionResult(resultDescription);
                 downloadConceptsLog.setSetupActionResultStatus(resultStatus);
@@ -843,8 +864,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_observation_patient_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedObs = result[1];
                     int patients = result[3];
                     if (downloadedObs == 1 && patients == 1) {
@@ -858,11 +879,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     } else {
                         resultDescription = getString(R.string.info_observations_patients_downloaded, downloadedObs, patients);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_observation_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
                 downloadObservationsLog.setSetupActionResult(resultDescription);
                 downloadObservationsLog.setSetupActionResultStatus(resultStatus);
@@ -901,19 +922,19 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_report_datasets_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedReportDatasets = result[1];
                     if (downloadedReportDatasets == 0) {
                         resultDescription = getString(R.string.info_report_datasets_not_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_report_dataset_downloaded, downloadedReportDatasets);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_report_dataset_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
 
                 downloadReportDatasetLog.setSetupActionResult(resultDescription);
@@ -955,19 +976,19 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_media_categories_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedCategories = result[1];
                     if (downloadedCategories == 0) {
                         resultDescription = getString(R.string.info_media_categories_not_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_media_category_downloaded, downloadedCategories);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_media_category_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
 
                 downloadMediaCategoryLog.setSetupActionResult(resultDescription);
@@ -1021,7 +1042,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     }
                 }else {
                     String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
-                    String pseudoDeviceId = DeviceDetailsUtil.generatePseudoDeviceId();
+                    String pseudoDeviceId = generatePseudoDeviceId();
                     AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
                     AppUsageLogs noEnoughSpaceLog = null;
                     try {
@@ -1062,19 +1083,19 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_media_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedCategories = result[1];
                     if (downloadedCategories == 0) {
                         resultDescription = getString(R.string.info_media_not_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_media_downloaded, downloadedCategories);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_media_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
 
                 downloadMediaLog.setSetupActionResult(resultDescription);
@@ -1119,18 +1140,18 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_derived_concept_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     if (result[1] == 1) {
                         resultDescription = getString(R.string.info_derived_concept_downloaded);
                     } else {
                         resultDescription = getString(R.string.info_derived_concepts_downloaded, result[1]);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_derived_concept_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
                 downloadDerivedConceptsLog.setSetupActionResult(resultDescription);
                 downloadDerivedConceptsLog.setSetupActionResultStatus(resultStatus);
@@ -1181,8 +1202,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 String resultStatus = null;
                 if (result == null) {
                     resultDescription = getString(R.string.info_derived_observation_patient_not_downloaded);
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == SyncStatusConstants.SUCCESS) {
                     int downloadedObs = result[1];
                     int patients = result[3];
                     if (downloadedObs == 1 && patients == 1) {
@@ -1196,11 +1217,11 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     } else {
                         resultDescription = getString(R.string.info_derived_observations_patients_downloaded, downloadedObs, patients);
                     }
-                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
                 } else {
                     wizardcompletedSuccessfully = false;
                     resultDescription = getString(R.string.error_derived_observation_download);
-                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                    resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
                 downloadDerivedObservationsLog.setSetupActionResult(resultDescription);
                 downloadDerivedObservationsLog.setSetupActionResultStatus(resultStatus);
@@ -1319,11 +1340,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractConceptsUuids() {
         List<String> conceptsUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['concepts']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                conceptsUuids.add((String) cohort.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['concepts']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    conceptsUuids.add((String) cohort.get("uuid"));
+                }
             }
         }
         return conceptsUuids;
@@ -1331,11 +1354,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractProvidersUuids() {
         List<String> providerUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['providers']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                providerUuids.add((String) cohort.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['providers']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    providerUuids.add((String) cohort.get("uuid"));
+                }
             }
         }
         return providerUuids;
@@ -1343,11 +1368,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractLocationsUuids() {
         List<String> locationUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['locations']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                locationUuids.add((String) cohort.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['locations']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    locationUuids.add((String) cohort.get("uuid"));
+                }
             }
         }
         return locationUuids;
@@ -1355,11 +1382,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractFormTemplatesUuids() {
         List<String> formsuuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['forms']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                formsuuids.add((String) cohort.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['forms']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    formsuuids.add((String) cohort.get("uuid"));
+                }
             }
         }
         return formsuuids;
@@ -1367,11 +1396,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractCohortsUuids() {
         List<String> cohortUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['cohorts']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                cohortUuids.add((String) cohort.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['cohorts']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    cohortUuids.add((String) cohort.get("uuid"));
+                }
             }
         }
         return cohortUuids;
@@ -1379,11 +1410,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<String> extractDerivedConceptsUuids() {
         List<String> derivedConceptsUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['derivedConcepts']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject derivedConcept = (JSONObject) object;
-                derivedConceptsUuids.add((String) derivedConcept.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['derivedConcepts']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject derivedConcept = (JSONObject) object;
+                    derivedConceptsUuids.add((String) derivedConcept.get("uuid"));
+                }
             }
         }
         return derivedConceptsUuids;
@@ -1391,13 +1424,15 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     public void checkIfCohortWithFilterByLocationExists() {
         boolean isCohortLocationBased = false;
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['cohorts']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject cohort = (JSONObject) object;
-                if (cohort.get("isFilterByLocationEnabled") != null) {
-                    if ((Boolean) cohort.get("isFilterByLocationEnabled")) {
-                        isCohortLocationBased = true;
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['cohorts']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject cohort = (JSONObject) object;
+                    if (cohort.get("isFilterByLocationEnabled") != null) {
+                        if ((Boolean) cohort.get("isFilterByLocationEnabled")) {
+                            isCohortLocationBased = true;
+                        }
                     }
                 }
             }
@@ -1460,20 +1495,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
 
             String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
-            String pseudoDeviceId = DeviceDetailsUtil.generatePseudoDeviceId();
+            String pseudoDeviceId = generatePseudoDeviceId();
             AppUsageLogsController appUsageLogsController = ((MuzimaApplication) getApplicationContext()).getAppUsageLogsController();
-            SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(Constants.STANDARD_DATE_TIMEZONE_FORMAT);
+            SimpleDateFormat simpleDateTimezoneFormat = new SimpleDateFormat(STANDARD_DATE_TIMEZONE_FORMAT);
             try {
-                AppUsageLogs setupConfig = new AppUsageLogs();
-                setupConfig.setUuid(UUID.randomUUID().toString());
-                setupConfig.setLogKey(com.muzima.util.Constants.AppUsageLogs.SET_UP_CONFIG_UUID);
-                setupConfig.setLogvalue(setupConfigTemplateUuid);
-                setupConfig.setUpdateDatetime(new Date());
-                setupConfig.setUserName(loggedInUser);
-                setupConfig.setDeviceId(pseudoDeviceId);
-                setupConfig.setLogSynced(false);
-                appUsageLogsController.saveOrUpdateAppUsageLog(setupConfig);
-
                 AppUsageLogs setUpTime = new AppUsageLogs();
                 setUpTime.setUuid(UUID.randomUUID().toString());
                 setUpTime.setLogKey(com.muzima.util.Constants.AppUsageLogs.SETUP_TIME);
@@ -1547,11 +1572,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private List<Integer> extractDatasetDefinitionIds() {
         List<Integer> datasetIds = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['datasets']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject dataset = (JSONObject) object;
-                datasetIds.add((Integer) dataset.get("id"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['datasets']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject dataset = (JSONObject) object;
+                    datasetIds.add((Integer) dataset.get("id"));
+                }
             }
         }
         return datasetIds;
@@ -1575,11 +1602,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
     private List<String> extractMediaCategoryUuids() {
         List<String> mediaCategoryUuids = new ArrayList<>();
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['mediaCategories']");
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject mediaCategory = (JSONObject) object;
-                mediaCategoryUuids.add((String)mediaCategory.get("uuid"));
+        for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {
+            List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['mediaCategories']");
+            if (objects != null) {
+                for (Object object : objects) {
+                    JSONObject mediaCategory = (JSONObject) object;
+                    mediaCategoryUuids.add((String) mediaCategory.get("uuid"));
+                }
             }
         }
         return mediaCategoryUuids;

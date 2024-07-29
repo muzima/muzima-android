@@ -240,7 +240,7 @@ public class MuzimaApplication extends MultiDexApplication {
         if (conceptController == null) {
             try {
                 conceptController = new ConceptController(muzimaContext.getService(ConceptService.class),
-                        muzimaContext.getService(ObservationService.class));
+                        muzimaContext.getService(ObservationService.class), this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -356,7 +356,7 @@ public class MuzimaApplication extends MultiDexApplication {
         if (setupConfigurationController == null) {
             try {
                 setupConfigurationController = new SetupConfigurationController(muzimaContext.getSetupConfigurationService(),
-                        muzimaContext.getLastSyncTimeService(), getSntpService());
+                        muzimaContext.getLastSyncTimeService(), getSntpService(), this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -1,9 +1,7 @@
 package com.muzima.controller;
 
 import static com.muzima.api.model.APIName.DOWNLOAD_DERIVED_OBSERVATIONS;
-import static com.muzima.util.Constants.UUID_SEPARATOR;
 import static com.muzima.util.Constants.UUID_TYPE_SEPARATOR;
-import static java.util.Arrays.asList;
 
 import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedObservation;
@@ -17,9 +15,7 @@ import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 
 public class DerivedObservationController {

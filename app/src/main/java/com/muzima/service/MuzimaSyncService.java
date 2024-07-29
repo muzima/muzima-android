@@ -2435,6 +2435,8 @@ public class MuzimaSyncService {
 
             SetupConfigurationTemplate activeSetupConfig = setupConfigurationController.getActiveSetupConfigurationTemplate();
             String configJson = activeSetupConfig.getConfigJson();
+
+            // ToDo: This should parse concepts in groups as well
             List<Object> concepts = JsonUtils.readAsObjectList(configJson, "$['config']['concepts']");
             for (Object concept : concepts) {
                 net.minidev.json.JSONObject concept1 = (net.minidev.json.JSONObject) concept;

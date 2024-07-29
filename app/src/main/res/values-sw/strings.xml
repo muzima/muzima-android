@@ -888,4 +888,6 @@
         <item>Mãe/Pai do CI (&lt;15)</item>
     </string-array>
     <string name="general_not_all_contacts_visited">Sio Washiriki wote waliotembelewa</string>
+    <string name="error_patient_fetch">Hitilafu fulani imetokea wakati wa kuleta wagonjwa</string>
+    <string name="error_setup_fetch">Hitilafu fulani imetokea wakati wa kuleta usanidi</string>
 </resources>
