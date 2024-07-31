@@ -191,6 +191,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                     if(!isSubsequentLazyFetchQuery) {
                         totalPageCountMap.clear();
                         patientCount = 0;
+                        totalPageCount = 0;
 
                         int pageCountForCohort = 0;
                         int uiPageNumber = 0;
@@ -204,6 +205,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                                 patientFilterPageNumberMap.setPageNumber(page);
 
                                 totalPageCountMap.put(++uiPageNumber, patientFilterPageNumberMap);
+                                totalPageCount++;
                             }
                         }
                     }

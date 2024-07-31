@@ -33,14 +33,16 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.muzima.service.DataSyncService.hasOngoingSyncTasks;
-
-import com.muzima.utils.Constants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivity {
     public static final String MESSAGE_SENT_ACTION = "com.muzima.MESSAGE_RECEIVED_ACTION";
@@ -116,8 +118,8 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
             return;
         }
 
-        int syncStatus = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_STATUS,
-                Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR);
+        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS,
+                SyncStatusConstants.UNKNOWN_ERROR);
 
 
         if(isSyncCompletedIntent(intent)){
@@ -131,42 +133,65 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
             return;
         }
 
-        String msg = intent.getStringExtra(Constants.DataSyncServiceConstants.SYNC_RESULT_MESSAGE);
+        String msg = intent.getStringExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE);
 
         switch (syncStatus) {
-            case Constants.DataSyncServiceConstants.SyncStatusConstants.DOWNLOAD_ERROR:
+            case SyncStatusConstants.DOWNLOAD_ERROR:
                 msg = getString(R.string.error_data_download);
                 syncErrorOccured = true;
                 break;
-            case Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_ERROR:
+            case SyncStatusConstants.AUTHENTICATION_ERROR:
                 msg = getString(R.string.error_authentication_occur);
                 syncErrorOccured = true;
                 break;
-            case Constants.DataSyncServiceConstants.SyncStatusConstants.DELETE_ERROR:
+            case SyncStatusConstants.DELETE_ERROR:
                 msg = getString(R.string.error_local_repo_data_delete);
                 syncErrorOccured = true;
                 break;
-            case Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR:
+            case SyncStatusConstants.SAVE_ERROR:
                 msg = getString(R.string.error_data_save);
                 syncErrorOccured = true;
                 break;
-            case Constants.DataSyncServiceConstants.SyncStatusConstants.LOCAL_CONNECTION_ERROR:
+            case SyncStatusConstants.LOCAL_CONNECTION_ERROR:
                 msg = getString(R.string.error_local_connection_unavailable);
                 syncErrorOccured = true;
                 break;
-            case Constants.DataSyncServiceConstants.SyncStatusConstants.SERVER_CONNECTION_ERROR:
+            case SyncStatusConstants.SERVER_CONNECTION_ERROR:
                 msg = getString(R.string.error_server_connection_unavailable);
                 syncErrorOccured = true;
                 break;
-            case Constants.DataSyncServiceConstants.SyncStatusConstants.PARSING_ERROR:
+            case SyncStatusConstants.PARSING_ERROR:
                 msg = getString(R.string.error_parse_exception_data_fetch);
                 syncErrorOccured = true;
                 break;
-            case Constants.DataSyncServiceConstants.SyncStatusConstants.LOAD_ERROR:
-                msg = getString(R.string.error_exception_data_load);
+            case SyncStatusConstants.LOAD_ERROR:
+                int syncTypes = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
                 syncErrorOccured = true;
+                msg = getString(R.string.error_exception_data_load);
+                switch (syncTypes) {
+                    case DataSyncServiceConstants.SYNC_TEMPLATES:
+                    case DataSyncServiceConstants.SYNC_PROVIDERS_BASED_ON_CHANGES_IN_CONFIG:
+                        msg = getString(R.string.error_provider_fetch);
+                        break;
+                    case DataSyncServiceConstants.SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA:
+                    case DataSyncServiceConstants.SYNC_OBSERVATIONS:
+                        msg = getString(R.string.error_concept_fetch);
+                        break;
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_DATA_ONLY:
+                        msg = getString(R.string.error_patient_fetch);
+                        break;
+                    case DataSyncServiceConstants.SYNC_SETUP_CONFIGURATION_TEMPLATES:
+                    case DataSyncServiceConstants.SYNC_MEDIA_CATEGORIES:
+                    case DataSyncServiceConstants.SYNC_LOCATIONS_BASED_ON_CHANGES_IN_CONFIG:
+                        msg = getString(R.string.error_setup_fetch);
+                        break;
+                    case DataSyncServiceConstants.SYNC_REPORT_DATASETS:
+                        msg = getString(R.string.error_report_dataset_load);
+                        break;
+                }
                 break;
-            case Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR:
+            case SyncStatusConstants.UPLOAD_ERROR:
                 msg = getString(R.string.error_exception_data_upload);
                 syncErrorOccured = true;
                 break;

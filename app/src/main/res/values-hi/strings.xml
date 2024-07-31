@@ -885,5 +885,7 @@
         <item>Mãe/Pai do CI (&lt;15)</item>
     </string-array>
     <string name="general_not_all_contacts_visited">सभी संपर्क नहीं देखे गए</string>
+    <string name="error_patient_fetch">मरीज़ों को लाते समय कुछ ग़लत हो गया</string>
+    <string name="error_setup_fetch">सेटअप कॉन्फ़िगरेशन लाते समय कुछ गलत हो गया</string>
     <string name="sync_server_side_cohort_definition_running_error">Can not performe sync action now because there is a Cohort Definition running, try again later.</string>
 </resources>

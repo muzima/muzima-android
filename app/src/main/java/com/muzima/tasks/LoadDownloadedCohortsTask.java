@@ -28,12 +28,15 @@ import com.muzima.api.model.Concept;
 import com.muzima.api.model.DerivedConcept;
 import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
 import com.muzima.controller.DerivedConceptController;
 import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.MuzimaSettingController;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.CohortWithFilter;
+import com.muzima.util.JsonUtils;
 import com.muzima.utils.StringUtils;
 
 import org.json.JSONArray;
@@ -85,9 +88,12 @@ public class LoadDownloadedCohortsTask implements Runnable {
             }
 
             List<String> cohortUuids = new ArrayList<>();
+            SetupConfigurationTemplate activeTemplate = ((MuzimaApplication) context.getApplicationContext()).getSetupConfigurationController().getActiveSetupConfigurationTemplate();
             for (Cohort cohort : ((MuzimaApplication) context.getApplicationContext()).getCohortController()
                     .getCohorts()) {
-                if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(cohort)) {
+                if (((MuzimaApplication) context.getApplicationContext()).getCohortController().isDownloaded(cohort)
+                    && configHasCohort(activeTemplate, cohort.getUuid())
+                ) {
                     if(cohortFilterDerivedConceptMapSetting != null && cohortFilterDerivedConceptMapSetting.getValueString() != null) {
                         String settingValue = cohortFilterDerivedConceptMapSetting.getValueString();
                         String derivedConceptUuid = "";
@@ -260,9 +266,22 @@ public class LoadDownloadedCohortsTask implements Runnable {
             Log.e(getClass().getSimpleName(),"Encountered an error while fetching derived concepts ",e);
         } catch (ConceptController.ConceptFetchException e) {
             Log.e(getClass().getSimpleName(),"Encountered an error while fetching concepts",e);
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(),"Encountered an error while fetching setup config",e);
         } finally {
             cohortsLoadedCallback.onCohortsLoaded(cohortWithFilters);
         }
+    }
+    private boolean configHasCohort(SetupConfigurationTemplate template, String cohortuuid) {
+        List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['cohorts']");
+        if (objects != null) {
+            for (Object object : objects) {
+                net.minidev.json.JSONObject cohort = (net.minidev.json.JSONObject) object;
+                if(StringUtils.equals(cohortuuid, (String) cohort.get("uuid")))
+                    return true;
+            }
+        }
+        return false;
     }
 
     public interface OnDownloadedCohortsLoadedCallback {

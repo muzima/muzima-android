@@ -93,7 +93,7 @@ public class ChronologicalObsViewFragment extends Fragment implements RecyclerAd
             MuzimaApplication muzimaApplication = (MuzimaApplication) requireActivity().getApplicationContext();
             try {
                 List<Concept> concepts;
-                concepts = muzimaApplication.getConceptController().getConcepts();
+                concepts = muzimaApplication.getConceptController().getActiveConfigConcepts();
                 if (concepts.size() > 0) {
                     noDataTip = getString(R.string.info_no_observation_for_concept_data_tip);
                 } else {
