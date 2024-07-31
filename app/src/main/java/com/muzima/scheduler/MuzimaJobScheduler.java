@@ -138,7 +138,7 @@ public class MuzimaJobScheduler extends JobService {
 
     public static final String MESSAGE_SENT_ACTION = "com.muzima.MESSAGE_RECEIVED_ACTION";
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             MuzimaJobScheduler.this.onReceive(intent);
@@ -443,21 +443,21 @@ public class MuzimaJobScheduler extends JobService {
                         muzimaSettingController.toggleTheme();
                         if(muzimaSetting.getValueBoolean()) {
                             Intent intent;
-                            intent = new Intent(((MuzimaApplication) context), MainDashboardActivity.class);
+                            intent = new Intent(context, MainDashboardActivity.class);
                             intent.putExtra("OnlineMode", muzimaSetting.getValueBoolean());
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             }
-                            ((MuzimaApplication) context).startActivity(intent);
+                            context.startActivity(intent);
                         }else{
-                            ActivityManager am = (ActivityManager) ((MuzimaApplication) context).getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+                            ActivityManager am = (ActivityManager) context.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
                             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                             Intent intent = new Intent();
                             intent.setComponent(cn);
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             }
-                            ((MuzimaApplication) context).getApplicationContext().startActivity(intent);
+                            context.getApplicationContext().startActivity(intent);
                         }
                     }
                     new OnlineOnlyModePreferenceService(((MuzimaApplication) context)).updateOnlineOnlyModePreferenceValue();
@@ -731,6 +731,9 @@ public class MuzimaJobScheduler extends JobService {
                 break;
             case Constants.DataSyncServiceConstants.SyncStatusConstants.UPLOAD_ERROR:
                 msg = getString(R.string.error_exception_data_upload);
+                break;
+            case Constants.DataSyncServiceConstants.SyncStatusConstants.SYNC_COHORT_RUNNING_ON_SERVER_SIDE_ERROR:
+                msg = getString(R.string.sync_server_side_cohort_definition_running_error);
                 break;
             case Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS:
                 int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);

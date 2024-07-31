@@ -894,4 +894,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
         <item>Mãe/Pai do CI (&lt;15)</item>
     </string-array>
     <string name="general_not_all_contacts_visited">Nem todos os contatos visitados</string>
+    <string name="sync_server_side_cohort_definition_running_error">Não é possível sincronizar dados agora pois há uma coorte sendo executada no servidor agora, por favor tente mais tarde.</string>
 </resources>

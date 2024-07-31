@@ -899,4 +899,5 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="general_more">More</string>
     <string name="general_less">Less</string>
     <string name="general_not_all_contacts_visited">Not All Contacts Visited</string>
+    <string name="sync_server_side_cohort_definition_running_error">Can not performe sync action now because there is a Cohort Definition running, try again later.</string>
 </resources>
