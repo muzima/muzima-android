@@ -35,6 +35,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.initialwizard.GuidedConfigurationWizardActivity;
+import com.muzima.view.main.HTCMainActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 import java.util.ArrayList;
@@ -97,9 +98,15 @@ public class ActiveConfigSelectionActivity extends BroadcastListenerActivity
     public void onSetupConfigClicked(View view, int position) {
         SetupConfiguration configuration = setupConfigurationAdapter.getConfig(position);
         (new ActiveConfigPreferenceService((MuzimaApplication) getApplicationContext())).setActiveConfigUuid(configuration.getUuid());
-        Intent intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+        Class mainClass = isAtsConfiguration(configuration) ? HTCMainActivity.class : MainDashboardActivity.class;
+
+        Intent intent = new Intent(getApplicationContext(), mainClass);
         startActivity(intent);
         finish();
+    }
+
+    private boolean isAtsConfiguration(SetupConfiguration configuration) {
+        return configuration.getUuid().equals("1eaa9574-fa5a-4655-bd63-466b538c5b5d");
     }
 
     @Override

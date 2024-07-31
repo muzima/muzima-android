@@ -86,7 +86,9 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                                 }
                                 else if(setupConfigurationList.size()==1){
                                     Intent intent = new Intent(getApplicationContext(), GuidedConfigurationWizardActivity.class);
-                                    intent.putExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, setupConfigurationList.get(0).getUuid());
+                                    ArrayList<String> configUuidList = new ArrayList();
+                                    configUuidList.add(setupConfigurationList.get(0).getUuid());
+                                    intent.putStringArrayListExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, configUuidList);
                                     startActivity(intent);
                                 }else {
                                     ArrayList<String> assignedConfigs = new ArrayList<>();

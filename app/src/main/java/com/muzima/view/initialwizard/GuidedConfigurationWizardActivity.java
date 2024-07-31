@@ -1585,20 +1585,14 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     }
 
     private boolean isAtsSetup() {
-        List<Object> objects = JsonUtils.readAsObjectList(setupConfigurationTemplate.getConfigJson(), "$['config']['settings']");
-        MuzimaSetting muzimaSetting = new MuzimaSetting();
 
-        if (objects != null) {
-            for (Object object : objects) {
-                JSONObject dataset = (JSONObject) object;
-                if (dataset.get("value").equals("ATS")) {
-                    muzimaSetting.setName((String) dataset.get("name"));
-                    muzimaSetting.setValueString((String) dataset.get("value"));
-                    muzimaSetting.setUuid((String) dataset.get("uuid"));
-                }
+        for ( SetupConfigurationTemplate setupConfigurationTemplate : setupConfigurationTemplateList) {
+            if (setupConfigurationTemplate.getUuid().equals("1eaa9574-fa5a-4655-bd63-466b538c5b5d")) {
+                return true;
             }
         }
-        return muzimaSetting.getValueString() != null && muzimaSetting.getValueString().equals("ATS");
+
+        return false;
     }
     private List<String> extractMediaCategoryUuids() {
         List<String> mediaCategoryUuids = new ArrayList<>();

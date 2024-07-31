@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
