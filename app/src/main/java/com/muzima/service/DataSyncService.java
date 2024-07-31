@@ -76,8 +76,8 @@ public class DataSyncService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {Integer syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
         configBeforeUpdate = (SetupConfigurationTemplate) intent.getSerializableExtra(Constants.DataSyncServiceConstants.CONFIG_BEFORE_UPDATE);
-        String[] credentials = intent.getStringArrayExtra(Constants.DataSyncServiceConstants.CREDENTIALS);
         Intent broadcastIntent = new Intent();
+        String[] credentials = intent.getStringArrayExtra(Constants.DataSyncServiceConstants.CREDENTIALS);
         broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, syncType);
         User user = ((MuzimaApplication) getApplication()).getAuthenticatedUser();
