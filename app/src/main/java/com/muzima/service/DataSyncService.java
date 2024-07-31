@@ -23,7 +23,6 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.FormData;
-import com.muzima.api.model.MuzimaCoreModuleVersion;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.Role;
 import com.muzima.api.model.SetupConfigurationTemplate;
@@ -31,10 +30,7 @@ import com.muzima.api.model.User;
 import com.muzima.api.service.MuzimaCohortExecutionStatusService;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.utils.Constants;
-import com.muzima.utils.ViewUtil;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.person.PersonRegisterActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,9 +74,9 @@ public class DataSyncService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {Integer syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
-        Intent broadcastIntent = new Intent();
         configBeforeUpdate = (SetupConfigurationTemplate) intent.getSerializableExtra(Constants.DataSyncServiceConstants.CONFIG_BEFORE_UPDATE);
         String[] credentials = intent.getStringArrayExtra(Constants.DataSyncServiceConstants.CREDENTIALS);
+        Intent broadcastIntent = new Intent();
         broadcastIntent.setAction(BroadcastListenerActivity.MESSAGE_SENT_ACTION);
         broadcastIntent.putExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, syncType);
         User user = ((MuzimaApplication) getApplication()).getAuthenticatedUser();
