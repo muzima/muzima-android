@@ -14,10 +14,8 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 
 import androidx.annotation.RequiresApi;
 
@@ -27,8 +25,10 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedulerConstants.MESSAGE_SYNC_JOB_ID;
+
 import static com.muzima.utils.Constants.DataSyncServiceConstants.MuzimaJobSchedulerConstants.MUZIMA_JOB_PERIODIC;
+
+import com.muzima.utils.Constants;
 
 public class MuzimaJobScheduleBuilder {
     private MuzimaApplication muzimaApplication;
@@ -78,7 +78,7 @@ public class MuzimaJobScheduleBuilder {
         boolean hasBeenScheduled = false;
 
         for (JobInfo jobInfo : scheduler.getAllPendingJobs()) {
-            if (jobInfo.getId() == MESSAGE_SYNC_JOB_ID) {
+            if (jobInfo.getId() == Constants.DataSyncServiceConstants.MuzimaJobSchedulerConstants.MESSAGE_SYNC_JOB_ID) {
                 hasBeenScheduled = true;
                 break;
             }
@@ -92,7 +92,7 @@ public class MuzimaJobScheduleBuilder {
         JobInfo mUzimaJobInfo;
 
             mUzimaJobInfo = new JobInfo
-                    .Builder(MESSAGE_SYNC_JOB_ID, componentName)
+                    .Builder(Constants.DataSyncServiceConstants.MuzimaJobSchedulerConstants.MESSAGE_SYNC_JOB_ID, componentName)
                     .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
                     .setOverrideDeadline(MUZIMA_JOB_PERIODIC)
                     .build();

@@ -28,8 +28,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.muzima.utils.DateUtils.getFormattedDate;
-import static com.muzima.utils.DateUtils.parse;
 import static java.util.Arrays.asList;
+
+import com.muzima.utils.DateUtils;
 
 public class PatientJSONMapper {
 
@@ -88,7 +89,7 @@ public class PatientJSONMapper {
     private Date getDate(Map<String, String> paramsMap) {
         String dateAsString = paramsMap.get("patient.birthdate");
         try {
-            return dateAsString == null ? null : parse(dateAsString);
+            return dateAsString == null ? null : DateUtils.parse(dateAsString);
         } catch (ParseException e) {
             return null;
         }
@@ -125,7 +126,7 @@ public class PatientJSONMapper {
         patientValueMap.put("patient.uuid", StringUtils.defaultString(patient.getUuid()));
         patientValueMap.put("encounter.form_uuid", StringUtils.defaultString(formData.getTemplateUuid()));
         if (patient.getBirthdate() != null) {
-            patientValueMap.put("patient.birthdate", getFormattedDate(patient.getBirthdate()));
+            patientValueMap.put("patient.birthdate", DateUtils.getFormattedDate(patient.getBirthdate()));
         }
         return patientValueMap;
     }

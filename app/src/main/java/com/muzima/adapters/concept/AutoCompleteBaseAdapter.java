@@ -30,7 +30,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import com.muzima.utils.Constants;
 
 /**
  * Responsible to display auto-complete menu for Models.
@@ -84,7 +84,7 @@ public abstract class AutoCompleteBaseAdapter<T> extends ArrayAdapter<T> {
                 Credentials credentials = new Credentials(getContext());
                 MuzimaApplication muzimaApplicationContext = getMuzimaApplicationContext();
                 try {
-                    if (muzimaSyncService.authenticate(credentials.getCredentialsArray(),false) == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
+                    if (muzimaSyncService.authenticate(credentials.getCredentialsArray(),false) == Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                         options = getOptions(constraint);
                         previousConstraint = constraint.toString();
                         previousResult = options;

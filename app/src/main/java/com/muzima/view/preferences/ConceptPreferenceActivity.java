@@ -12,7 +12,6 @@ package com.muzima.view.preferences;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -41,8 +40,7 @@ import java.util.List;
 
 import androidx.appcompat.app.ActionBar;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants;
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import com.muzima.utils.Constants;
 
 public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     private SelectedConceptAdapter selectedConceptAdapter;
@@ -154,11 +152,11 @@ public class ConceptPreferenceActivity extends BroadcastListenerActivity {
     protected void onReceive(Context context, Intent intent){
            super.onReceive(context, intent);
 
-        int syncStatus = intent.getIntExtra(DataSyncServiceConstants.SYNC_STATUS, SyncStatusConstants.UNKNOWN_ERROR);
-        int syncType = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
+        int syncStatus = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_STATUS, Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR);
+        int syncType = intent.getIntExtra(Constants.DataSyncServiceConstants.SYNC_TYPE, -1);
 
-        if (syncType == DataSyncServiceConstants.SYNC_TEMPLATES) {
-            if (syncStatus == SyncStatusConstants.SUCCESS) {
+        if (syncType == Constants.DataSyncServiceConstants.SYNC_TEMPLATES) {
+            if (syncStatus == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
                 selectedConceptAdapter.reloadData();
             }
         }

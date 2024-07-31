@@ -61,6 +61,8 @@ import com.muzima.api.model.Location;
 import com.muzima.api.model.Media;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.api.model.User;
+import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
@@ -80,6 +82,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.ActiveConfigSelectionActivity;
+import com.muzima.view.main.HTCMainActivity;
 
 import net.minidev.json.JSONObject;
 
@@ -93,6 +96,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+import com.muzima.utils.DeviceDetailsUtil;
 
 @SuppressWarnings("staticFieldLeak")
 public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity implements ListAdapter.BackgroundListQueryTaskListener {
@@ -119,6 +124,8 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
     private PowerManager.WakeLock wakeLock = null;
     private static final int EXTERNAL_STORAGE_MANAGEMENT = 9002;
     private List<Media> mediaList = new ArrayList<>();
+
+    MuzimaSetting setting = null;
 
     public void onCreate(Bundle savedInstanceState) {
         ThemeUtils.getInstance().onCreate(this,false);
@@ -250,11 +257,16 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             public void onClick(View view) {
                 new WizardFinishPreferenceService(GuidedConfigurationWizardActivity.this).finishWizard();
 
+
                 Intent intent;
                 if(hasMoreThanOneConfig()){
                     intent = new Intent(getApplicationContext(), ActiveConfigSelectionActivity.class);
                 } else {
-                    intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+                    if (isAtsSetup()) {
+                        intent = new Intent(getApplicationContext(), HTCMainActivity.class);
+                    } else {
+                        intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+                    }
                 }
                 startActivity(intent);
                 finish();
@@ -337,6 +349,14 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     resultDescription = getString(R.string.error_settings_download);
                     resultStatus = SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
                 }
+
+                MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+                try {
+                    setting = muzimaSettingController.getSettingByProperty("Program.defintion");
+                } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                    e.printStackTrace();
+                }
+
                 downloadSettingsLog.setSetupActionResult(resultDescription);
                 downloadSettingsLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
@@ -735,7 +755,13 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 downloadProvidersLog.setSetupActionResult(resultDescription);
                 downloadProvidersLog.setSetupActionResultStatus(resultStatus);
                 onQueryTaskFinish();
-                downloadCohorts();
+                // analisar este ponto
+                if ((setting != null && setting.getValueString() != null) && setting.getValueString().equals("ATS")) {
+                    downloadHtcPersons();
+                } else {
+                    downloadCohorts();
+                }
+
             }
 
             @Override
@@ -1209,6 +1235,61 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         }.execute();
     }
 
+    public void downloadHtcPersons(){
+        final SetupActionLogModel downloadHtcPersonsLog = new SetupActionLogModel();
+        addSetupActionLog(downloadHtcPersonsLog);
+        new MuzimaAsyncTask<Void, Void, int[]>() {
+            @Override
+            protected void onPreExecute() {
+                downloadHtcPersonsLog.setSetupAction(getString(R.string.info_htc_persons_download));
+                onQueryTaskStarted();
+            }
+
+            @Override
+            protected int[] doInBackground(Void... voids) {
+                User authenticatedUser = ((MuzimaApplication) getApplication()).getAuthenticatedUser();
+
+                if (authenticatedUser.getUuid() != null) {
+                    MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplicationContext()).getMuzimaSyncService();
+
+                    int[] resultForHtcPersons = muzimaSyncService.downloadHtcPersons(authenticatedUser.getUuid());
+
+                    return resultForHtcPersons;
+
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(int[] result) {
+                String resultDescription = null;
+                String resultStatus = null;
+                if (result == null) {
+                    resultDescription = getString(R.string.info_htc_person_not_downloaded);
+                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else if (result[0] == Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS) {
+                    if (result[1] == 1) {
+                        resultDescription = getString(R.string.info_htc_person_downloaded);
+                    } else {
+                        resultDescription = getString(R.string.info_htc_persons_downloaded, result[3]);
+                    }
+                    resultStatus = Constants.SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
+                } else  {
+                    wizardcompletedSuccessfully = false;
+                    resultDescription = getString(R.string.error_htc_persons_download);
+                    resultStatus = Constants.SetupLogConstants.ACTION_FAILURE_STATUS_LOG;
+                }
+                downloadHtcPersonsLog.setSetupActionResult(resultDescription);
+                downloadHtcPersonsLog.setSetupActionResultStatus(resultStatus);
+                onQueryTaskFinish();
+            }
+
+            @Override
+            protected void onBackgroundError(Exception e) {
+
+            }
+        }.execute();
+    }
     public void downloadFile(Media media){
         try {
             //Delete file if exists
@@ -1408,6 +1489,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private synchronized void evaluateFinishStatus() {
         int TOTAL_WIZARD_STEPS = isOnlineOnlyModeEnabled ? 11 : 14;
+        if (isAtsSetup()) {
+            TOTAL_WIZARD_STEPS = 4;
+        }
         if (wizardLevel == (TOTAL_WIZARD_STEPS)) {
 
             String loggedInUser = ((MuzimaApplication) getApplicationContext()).getAuthenticatedUserId();
@@ -1478,7 +1562,12 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
     private void updateOnlineOnlyModeSettingValue(){
         isOnlineOnlyModeEnabled = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController().isOnlineOnlyModeEnabled();
-        mainProgressbar.setMax(isOnlineOnlyModeEnabled ? 11 : 14);
+
+        if (isAtsSetup()) {
+            mainProgressbar.setMax(4);
+        } else {
+            mainProgressbar.setMax(isOnlineOnlyModeEnabled ? 11 : 14);
+        }
     }
 
     private List<Integer> extractDatasetDefinitionIds() {
@@ -1495,6 +1584,16 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
         return datasetIds;
     }
 
+    private boolean isAtsSetup() {
+
+        for ( SetupConfigurationTemplate setupConfigurationTemplate : setupConfigurationTemplateList) {
+            if (setupConfigurationTemplate.getUuid().equals("1eaa9574-fa5a-4655-bd63-466b538c5b5d")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     private List<String> extractMediaCategoryUuids() {
         List<String> mediaCategoryUuids = new ArrayList<>();
         for(SetupConfigurationTemplate template: setupConfigurationTemplateList) {

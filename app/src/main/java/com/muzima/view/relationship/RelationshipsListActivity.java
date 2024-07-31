@@ -9,11 +9,9 @@
  */
 package com.muzima.view.relationship;
 
-import static com.muzima.utils.RelationshipViewUtil.listOnClickListeners;
 import static com.muzima.view.patients.PatientSummaryActivity.CALLING_ACTIVITY;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +24,7 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -61,7 +60,9 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.patients.PatientSummaryActivity;
 import com.muzima.view.patients.UpdatePatientTagsIntent;
 
+import com.muzima.utils.RelationshipViewUtil;
 import es.dmoral.toasty.Toasty;
+
 import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
@@ -113,6 +114,7 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
         ThemeUtils.getInstance().onCreate(this,true);
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_patient_relationships);
         patient = (Patient) getIntent().getSerializableExtra(PatientSummaryActivity.PATIENT);
         addRelationshipView = findViewById(R.id.add_relationship);
@@ -603,6 +605,6 @@ public class RelationshipsListActivity extends BroadcastListenerActivity impleme
     @Override
     public void onItemClick(View view, int position) {
         Relationship relationship = patientRelationshipsAdapter.getRelationship(position);
-        listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship, patientRelationshipsAdapter);
+        RelationshipViewUtil.listOnClickListeners(this,((MuzimaApplication) getApplicationContext()), patient, false,lvwPatientRelationships, view, relationship, patientRelationshipsAdapter);
     }
 }

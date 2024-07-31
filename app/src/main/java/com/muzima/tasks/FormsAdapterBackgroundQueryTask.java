@@ -18,7 +18,7 @@ import com.muzima.model.BaseForm;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
+import com.muzima.adapters.ListAdapter;
 
 public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extends MuzimaAsyncTask<Void, Void, List<T>> {
 
@@ -33,7 +33,7 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
     protected void onPreExecute() {
         if (adapterWeakReference.get() != null) {
             FormsAdapter formsAdapter = adapterWeakReference.get();
-            BackgroundListQueryTaskListener backgroundListQueryTaskListener = formsAdapter.getBackgroundListQueryTaskListener();
+            ListAdapter.BackgroundListQueryTaskListener backgroundListQueryTaskListener = formsAdapter.getBackgroundListQueryTaskListener();
             if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskStarted();
             }
@@ -54,7 +54,7 @@ public abstract class FormsAdapterBackgroundQueryTask<T extends BaseForm> extend
             FormsAdapter formsAdapter = adapterWeakReference.get();
             formsAdapter.notifyDataSetChanged();
 
-            BackgroundListQueryTaskListener backgroundListQueryTaskListener = formsAdapter.getBackgroundListQueryTaskListener();
+            ListAdapter.BackgroundListQueryTaskListener backgroundListQueryTaskListener = formsAdapter.getBackgroundListQueryTaskListener();
             if (backgroundListQueryTaskListener != null) {
                 backgroundListQueryTaskListener.onQueryTaskFinish();
             }

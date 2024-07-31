@@ -16,11 +16,13 @@ import android.os.CountDownTimer;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
+import com.muzima.controller.SetupConfigurationController;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.service.TimeoutPreferenceService;
 import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.LoginActivity;
+import com.muzima.view.main.HTCMainActivity;
 
 public class MuzimaTimer extends CountDownTimer {
 
@@ -55,7 +57,13 @@ public class MuzimaTimer extends CountDownTimer {
             if (muzimaApplication.getAuthenticatedUser() != null && isWizardComplete) {
                 if (l * 0.001 <= 30) {
                     Intent intent;
-                    intent = new Intent(muzimaApplication, MainDashboardActivity.class);
+                    Class mainClass = MainDashboardActivity.class;
+
+                    if (muzimaApplication.getSetupConfigurationController().getAllSetupConfigurations().get(0).getUuid().equals("1eaa9574-fa5a-4655-bd63-466b538c5b5d")) {
+                        mainClass = HTCMainActivity.class;
+                        return;
+                    }
+                    intent = new Intent(muzimaApplication, mainClass);
                     intent.putExtra("AutoLogOutTimer", true);
                     intent.putExtra("RemainingTime", l);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -66,6 +74,8 @@ public class MuzimaTimer extends CountDownTimer {
             }
         }catch (Exception e){
             Log.e(getClass().getSimpleName(),"Encountered Exception ",e);
+        } catch (SetupConfigurationController.SetupConfigurationDownloadException e) {
+            throw new RuntimeException(e);
         }
     }
 

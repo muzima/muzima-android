@@ -50,4 +50,12 @@ public class StringUtils {
         return str1 == null ? str2 == null ? 0 : -1 :
                 str2 == null ? 1 : str1.compareTo(str2);
     }
+
+    public static boolean hasNumbers(String input) {
+        return input.matches(".*\\d.*");
+    }
+
+    public static boolean stringHasValue(String string){
+        return string != null && !string.isEmpty() && !string.trim().isEmpty();
+    }
 }

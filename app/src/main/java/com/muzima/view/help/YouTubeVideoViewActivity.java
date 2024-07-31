@@ -19,8 +19,6 @@ import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.TimeoutPreferenceService;
-import com.muzima.view.help.BaseHelpActivity;
-import com.muzima.view.help.HelpActivity;
 
 public class YouTubeVideoViewActivity extends BaseHelpActivity implements YouTubePlayer.OnInitializedListener {
 

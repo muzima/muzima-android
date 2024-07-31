@@ -47,7 +47,7 @@ public class CohortsAdapter extends RecyclerAdapter<CohortsAdapter.ViewHolder> i
     private final CohortsAdapter.OnCohortClickedListener cohortClickedListener;
     private MuzimaAsyncTask<Void, Void, List<Cohort>> backgroundQueryTask;
     private BackgroundListQueryTaskListener backgroundListQueryTaskListener;
-    private final CohortController  cohortController;
+    private final CohortController cohortController;
     private final int cohortType;
     private final List<String> selectedCohortsUuid;
 

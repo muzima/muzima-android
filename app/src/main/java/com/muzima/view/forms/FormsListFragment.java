@@ -12,7 +12,7 @@ package com.muzima.view.forms;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +24,9 @@ import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.view.fragments.MuzimaListFragment;
 
-import static com.muzima.adapters.ListAdapter.BackgroundListQueryTaskListener;
+import com.muzima.adapters.ListAdapter;
 
-public abstract class FormsListFragment extends MuzimaListFragment implements BackgroundListQueryTaskListener{
+public abstract class FormsListFragment extends MuzimaListFragment implements ListAdapter.BackgroundListQueryTaskListener {
 
     FormController formController;
     ObservationController observationController;

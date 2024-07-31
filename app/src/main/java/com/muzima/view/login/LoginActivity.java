@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -55,6 +56,10 @@ import com.muzima.api.context.Context;
 import com.muzima.api.model.AppRelease;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.MinimumSupportedAppVersion;
+import com.muzima.api.model.MuzimaSetting;
+
+import com.muzima.api.model.MuzimaSetting;
+import com.muzima.api.model.PatientReport;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.AppReleaseController;
 import com.muzima.controller.MinimumSupportedAppVersionController;
@@ -83,12 +88,14 @@ import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.help.HelpActivity;
 import com.muzima.view.initialwizard.SetupMethodPreferenceWizardActivity;
+import com.muzima.view.main.HTCMainActivity;
 
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import static com.muzima.utils.Constants.STANDARD_DATE_TIMEZONE_FORMAT;
 import static com.muzima.utils.Constants.STANDARD_TIME_FORMAT;
 import static com.muzima.utils.DateUtils.convertLongToDateString;
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
+import com.muzima.view.main.HTCMainActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -107,6 +114,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+import com.muzima.utils.DateUtils;
+import com.muzima.utils.DeviceDetailsUtil;
 
 
 //This class shouldn't extend BaseAuthenticatedActivity. Since it is independent of the application's context
@@ -148,6 +158,7 @@ public class LoginActivity extends BaseActivity {
         languageUtil.onCreate(this);
         super.onCreate(savedInstanceState);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         ((MuzimaApplication) getApplication()).cancelTimer();
         setContentView(R.layout.activity_login);
         showSessionTimeOutPopUpIfNeeded();
@@ -1001,11 +1012,27 @@ public class LoginActivity extends BaseActivity {
         Intent intent;
         if (new WizardFinishPreferenceService(LoginActivity.this).isWizardFinished()) {
             downloadMissingServerSettings();
+
+            MuzimaSettingController muzimaSettingController = ((MuzimaApplication) getApplicationContext()).getMuzimaSettingController();
+            MuzimaSetting setting = null;
+            try {
+                setting = muzimaSettingController.getSettingByProperty("Program.defintion");
+            } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                e.printStackTrace();
+            }
+
+
             SetupConfigurationController configController = ((MuzimaApplication) getApplicationContext()).getSetupConfigurationController();
             if(configController.hasMultipleConfigTemplates())
                 intent = new Intent(getApplicationContext(), ActiveConfigSelectionActivity.class);
             else
-                intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+            {
+                if ((setting != null && setting.getValueString() != null) && setting.getValueString().equals("ATS")) {
+                    intent = new Intent(getApplicationContext(), HTCMainActivity.class);
+                } else {
+                    intent = new Intent(getApplicationContext(), MainDashboardActivity.class);
+                }
+            }
         } else {
             removeRemnantDataFromPreviousRunOfWizard();
             intent = new Intent(getApplicationContext(), SetupMethodPreferenceWizardActivity.class);

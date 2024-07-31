@@ -19,6 +19,7 @@ import com.muzima.api.service.FormService;
 import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PatientService;
 import com.muzima.api.service.PatientTagService;
+
 import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 import org.apache.lucene.queryParser.ParseException;
@@ -118,12 +119,11 @@ public class PatientControllerTest {
     public void shouldSearchWithOutCohortUUIDIsNull() throws IOException, ParseException, PatientController.PatientLoadException {
         String searchString = "searchString";
         List<Patient> patients = new ArrayList<>();
-        boolean useFuzzySearch = false;
 
         when(patientService.searchPatients(searchString)).thenReturn(patients);
 
-        assertThat(patientController.searchPatientLocally(searchString, null, useFuzzySearch), is(patients));
-        verify(patientService).searchPatients(searchString,useFuzzySearch);
+        assertThat(patientController.searchPatientLocally(searchString, null, false), is(patients));
+        verify(patientService).searchPatients(searchString);
 
     }
 

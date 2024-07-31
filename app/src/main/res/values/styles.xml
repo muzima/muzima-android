@@ -447,4 +447,41 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/hint_text_grey</item>
     </style>
+
+    <style name="MyToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="colorControlNormal">#1A3963</item>
+        <item name="titleTextColor">#1C3B65</item>
+        <item name="android:textColorPrimary">#1C3B65</item>
+        <item name="android:textColorSecondary">#1C3B65</item>
+        <item name="actionMenuTextColor">#1C3B65</item>
+    </style>
+
+    <style name="input_labels">
+        <item name="android:textColor">@color/input_labels</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">10dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+    </style>
+
+    <style name="display_labels">
+        <item name="android:textColor">@color/input_labels</item>
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">13dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+    </style>
+
+    <style name="bottom_spinner_style" parent="android:Widget.Spinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/spinner_normal</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">50dp</item>
+        <item name="android:popupBackground">@color/spinner_back_color</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 </resources>

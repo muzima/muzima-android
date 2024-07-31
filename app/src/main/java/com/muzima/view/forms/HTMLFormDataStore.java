@@ -82,22 +82,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale;
-import static com.muzima.utils.Constants.STANDARD_DATE_FORMAT;
-import static com.muzima.utils.Constants.STATUS_COMPLETE;
-import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
-import static com.muzima.view.relationship.RelationshipsListActivity.INDEX_PATIENT;
+import com.muzima.utils.ConceptUtils;
+import com.muzima.view.relationship.RelationshipsListActivity;
 
 
 class HTMLFormDataStore {
@@ -153,8 +146,7 @@ class HTMLFormDataStore {
     }
 
     @JavascriptInterface
-    public void saveHTML(String jsonPayload, final String status, boolean keepFormOpen) {
-        String selectedPatients = getSelectedPatientsUuids();
+    public void saveHTML(String jsonPayload, final String status, boolean keepFormOpen) {String selectedPatients = getSelectedPatientsUuids();
         final MuzimaApplication applicationContext = (MuzimaApplication) formWebViewActivity.getApplicationContext();
         if (selectedPatients.equals("[]") || selectedPatients.equals("")) {
             processForm(jsonPayload, status, keepFormOpen, formData);
@@ -175,9 +167,9 @@ class HTMLFormDataStore {
                 }};
 
                 if (i == (patients.size() - 1))
-                    processForm(separatePatientJsonPayload, STATUS_COMPLETE, false, formDatas);
+                    processForm(separatePatientJsonPayload, Constants.STATUS_COMPLETE, false, formDatas);
                 else
-                    processForm(separatePatientJsonPayload, STATUS_COMPLETE, true, formDatas);
+                    processForm(separatePatientJsonPayload, Constants.STATUS_COMPLETE, true, formDatas);
             }
 
             Intent intent = new Intent(applicationContext, MainDashboardActivity.class);
@@ -194,6 +186,14 @@ class HTMLFormDataStore {
 
         final String patientUuid = formData.getPatientUuid();
         boolean encounterDetailsValidityStatus = true;
+
+        String errorMsg = isValidForm(jsonPayload, status, true, formData);
+        if (!StringUtils.isEmpty(errorMsg)) {
+            Toast.makeText(formWebViewActivity, errorMsg, Toast.LENGTH_LONG).show();
+            Log.e(getClass().getSimpleName(), errorMsg);
+            return;
+        }
+
         try {
             if (status.equals("complete")) {
                 encounterDetailsValidityStatus = areMandatoryEncounterDetailsInForm(jsonPayload);
@@ -358,7 +358,7 @@ class HTMLFormDataStore {
 
                     if (formData.getDiscriminator() != null &&
                             (formData.getDiscriminator().equals(Constants.FORM_JSON_DISCRIMINATOR_PERSON_UPDATE))) {
-                        Patient indexPatient = (Patient) formWebViewActivity.getIntent().getSerializableExtra(INDEX_PATIENT);
+                        Patient indexPatient = (Patient) formWebViewActivity.getIntent().getSerializableExtra(RelationshipsListActivity.INDEX_PATIENT);
                         if (indexPatient != null) {
                             initiatePatientTagsUpdate(new ArrayList<String>() {{
                                 add(indexPatient.getUuid());
@@ -703,7 +703,187 @@ class HTMLFormDataStore {
                 HTMLFormWebViewActivity.DEFAULT_FONT_SIZE).toLowerCase();
     }
 
+    private String isValidForm(String jsonPayload, String status, boolean parseForPerson, FormData formData) {
+        String homeVisitFormUuid = "fdd67221-5d1a-49e9-97e2-2f69aa5e26bc";
+        if(homeVisitFormUuid.equalsIgnoreCase(formData.getTemplateUuid()) && Constants.STATUS_COMPLETE.equalsIgnoreCase(status)){
+            HTMLFormObservationCreator observationCreator = getFormParser(parseForPerson);
+            observationCreator.parseObservationsJSONResponse(jsonPayload, this.formData.getUuid());
+            List<Observation> observations = observationCreator.getObservations();
 
+            return validateRequiredHomeVisitFormFields(observations, jsonPayload);
+        }
+
+        return "";
+    }
+    private String validateRequiredHomeVisitFormFields(final List<Observation> observations, String jsonPayload) {
+
+        String errorMessage = validateVisitTypeObs(observations, jsonPayload);
+        if(!StringUtils.isEmpty(errorMessage)){
+           return errorMessage;
+        }
+
+        errorMessage = validateAttemptNumberObs(observations);
+        if(!StringUtils.isEmpty(errorMessage)){
+            return errorMessage;
+        }
+
+        errorMessage = validatePatientFoundAttemptNumberObs(observations);
+        if(!StringUtils.isEmpty(errorMessage)){
+            return errorMessage;
+        }
+
+        errorMessage = validatePatientFoundObs(observations);
+        if(!StringUtils.isEmpty(errorMessage)){
+            return errorMessage;
+        }
+
+        Observation visitTypeObs = getVisitType(observations);
+        Concept visitTypeConcept = visitTypeObs.getValueCoded();
+
+        Observation patientFoundObs = getObs(observations, 2003);
+        Concept patientFoundConcept = patientFoundObs.getValueCoded();
+        if(2161 == visitTypeConcept.getId()
+                || 23914 == visitTypeConcept.getId()) {
+            if(1066 == patientFoundConcept.getId()){
+
+                String informationGivenByErrorMessage = validateObsForInformationGivenBy(observations, jsonPayload);
+                if(!StringUtils.isEmpty(informationGivenByErrorMessage)){
+                    return informationGivenByErrorMessage;
+                }
+            }
+            else if(1065 == patientFoundConcept.getId()){
+                Observation visitReportObs = getObs(observations, 2158);
+                Concept visitReportObsValueCoded = visitReportObs.getValueCoded();
+                List<Integer> conceptsIds = getObsConcepts(observations);
+                if(1383 == visitReportObsValueCoded.getId()){
+                        // Ok
+                }
+                else if(2157 == visitReportObsValueCoded.getId()) {
+                    if (!jsonPayload.contains("2157")) {
+                        return "Relatório da visita é de preenchimento obrigatório";
+                    }
+                }
+                if (!jsonPayload.contains("23947")) {
+                    return "Paciente ou cuidador encaminhado para US é de preenchimento obrigatório!";
+                }
+                return validateReturnDate(observations, conceptsIds);
+            }
+        }
+        else if(2160 == visitTypeConcept.getId()) {
+            if(1066 == patientFoundConcept.getId()){
+
+                String informationGivenByErrorMessage = validateObsForInformationGivenBy(observations, jsonPayload);
+                if(!StringUtils.isEmpty(informationGivenByErrorMessage)){
+                    return informationGivenByErrorMessage;
+                }
+
+            }
+            else if(1065 == patientFoundConcept.getId()){
+                List<Integer> conceptsIds = getObsConcepts(observations);
+                if (!conceptsIds.contains(23947)) {
+                    return "Paciente ou cuidador encaminhado para US é de preenchimento obrigatório!";
+                }
+                Observation observation = getObs(observations, 165268);
+                if(observation == null) {
+                    return validateReturnDate(observations, conceptsIds);
+                }
+            }
+        }
+        return "";
+    }
+
+    private String validateReturnDate(final List<Observation> observations, final List<Integer> conceptsIds) {
+        Observation patientReferredToUsObs = getObs(observations, 23947);
+        Concept patientReferredToUsObsValueCoded = patientReferredToUsObs.getValueCoded();
+        if(conceptsIds.contains(24008) && 1065 == patientReferredToUsObsValueCoded.getId()) {
+            if (!conceptsIds.contains(23933)) {
+                return "Data combinada para retorno a US é de preenchimento obrigatório!";
+            }
+        }
+        else if(conceptsIds.contains(24009) && 1065 == patientReferredToUsObsValueCoded.getId()) {
+            if (!conceptsIds.contains(23934)) {
+                return "Data combinada para retorno a US é de preenchimento obrigatório!";
+            }
+        }
+        else if(conceptsIds.contains(24010) && 1065 == patientReferredToUsObsValueCoded.getId()) {
+            if (!conceptsIds.contains(23935)) {
+                return "Data combinada para retorno a US é de preenchimento obrigatório!";
+            }
+        }
+        return "";
+    }
+
+    private String validateObsForInformationGivenBy(final List<Observation> observations, String jsonpayload) {
+        List<Integer> conceptsIds = getObsConcepts(observations);
+        if (jsonpayload.contains("2037")) {
+            return "";
+        }
+        return "Dados do Informante é de preenchimento obrigatório!";
+    }
+    private Observation getObs(final List<Observation> observations, final Integer conceptId) {
+        for (Observation observation :observations) {
+            if(conceptId == observation.getConcept().getId()){
+                return observation;
+            }
+        }
+        return null;
+    }
+
+    private List<Integer> getObsConcepts (final List<Observation> observations) {
+        List<Integer> conceptsIds = new ArrayList<>();
+        for (Observation observation :observations) {
+            conceptsIds.add(observation.getConcept().getId());
+        }
+        return conceptsIds;
+    }
+    private String validateVisitTypeObs(final List<Observation> observations, String jsonPayload){
+        Integer conceptId = 1981;
+        for (Observation observation :observations) {
+            if(conceptId == observation.getConcept().getId()
+                    && (2160 == observation.getValueCoded().getId() || 2161 == observation.getValueCoded().getId() || 23914 == observation.getValueCoded().getId())){
+                return  "";
+            }
+        }
+        return "Tipo de visita é de preenchimento obrigatório!";
+    }
+    private String validateAttemptNumberObs(final List<Observation> observations) {
+        Integer conceptId = 23842;
+        for (Observation observation :observations) {
+            if(conceptId == observation.getConcept().getId()
+                    && (6440 == observation.getValueCoded().getId() || 6254 == observation.getValueCoded().getId() || 6255 == observation.getValueCoded().getId())){
+                return  "";
+            }
+        }
+        return "Número de Tentativa é de preenchimento obrigatório!";
+    }
+    private String validatePatientFoundAttemptNumberObs(final List<Observation> observations) {
+        for (Observation observation :observations) {
+            if(24008 == observation.getConcept().getId() || 24009 == observation.getConcept().getId() || 24010 == observation.getConcept().getId()){
+                return  "";
+            }
+        }
+        return "Número da tentiva em que paciente foi encontrado é de preenchimento obrigatório!";
+    }
+    private Observation getVisitType(final List<Observation> observations){
+        Integer conceptId = 1981;
+        for (Observation observation :observations) {
+            if(conceptId == observation.getConcept().getId()
+                    && (2160 == observation.getValueCoded().getId() || 2161 == observation.getValueCoded().getId() || 23914 == observation.getValueCoded().getId())){
+                return  observation;
+            }
+        }
+        return null;
+    }
+    private String validatePatientFoundObs(final List<Observation> observations) {
+        Integer conceptId = 2003;
+        for (Observation observation :observations) {
+            if(conceptId == observation.getConcept().getId()
+                    && (1065 == observation.getValueCoded().getId() || 1066 == observation.getValueCoded().getId())){
+                return  "";
+            }
+        }
+        return "Encontrou o Paciente é de preenchimento obrigatório!";
+    }
     private void parseObsFromCompletedForm(String jsonPayload, String status, boolean parseForPerson) {
         if (status.equals(Constants.STATUS_INCOMPLETE)) {
             return;
@@ -849,10 +1029,10 @@ class HTMLFormDataStore {
             String conceptUuid = obs.getConcept().getUuid();
             for (Concept concept : concepts) {
                 if (concept.getUuid().equals(conceptUuid)) {
-                    conceptName = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), getApplicationLanguage());
+                    conceptName = ConceptUtils.getConceptNameFromConceptNamesByLocale(concept.getConceptNames(), getApplicationLanguage());
                 }
             }
-            final String dateFormat = STANDARD_DATE_FORMAT;
+            final String dateFormat = Constants.STANDARD_DATE_FORMAT;
             SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
             Date obsDateTime = null;
             Date valueDateTime = null;
@@ -886,7 +1066,7 @@ class HTMLFormDataStore {
             if (obs.getValueCoded() != null) {
                 codedConcept.put("uuid", obs.getValueCoded().getUuid());
                 codedConcept.put("id", obs.getValueCoded().getId());
-                codedConcept.put("name", getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(), getApplicationLanguage()));
+                codedConcept.put("name", ConceptUtils.getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(), getApplicationLanguage()));
                 ;
                 json.put("valueCoded", codedConcept);
             } else {
@@ -1172,10 +1352,10 @@ class HTMLFormDataStore {
             eventDetails.put("formUuid", formData.getTemplateUuid());
 
             switch (status) {
-                case STATUS_COMPLETE:
+                case Constants.STATUS_COMPLETE:
                     logEvent("SAVE_COMPLETE_FORM", eventDetails.toString());
                     break;
-                case STATUS_INCOMPLETE:
+                case Constants.STATUS_INCOMPLETE:
                     logEvent("SAVE_DRAFT_FORM", eventDetails.toString());
                     break;
             }
@@ -1188,6 +1368,13 @@ class HTMLFormDataStore {
         @Override
         public int compare(Observation lhs, Observation rhs) {
             return -lhs.getObservationDatetime().compareTo(rhs.getObservationDatetime());
+        }
+    };
+
+    private final Comparator<Observation> observationValueCodedComparator = new Comparator<Observation>() {
+        @Override
+        public int compare(Observation lhs, Observation rhs) {
+            return Integer.compare(lhs.getValueCoded().getId(), rhs.getValueCoded().getId());
         }
     };
 
@@ -1212,7 +1399,7 @@ class HTMLFormDataStore {
     @JavascriptInterface
     public String getApplicationLanguage() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
-        String applicationLanguage = preferences.getString(formWebViewActivity.getResources().getString(R.string.preference_app_language), formWebViewActivity.getResources().getString(R.string.language_english));
+        String applicationLanguage = preferences.getString(formWebViewActivity.getResources().getString(R.string.preference_app_language), formWebViewActivity.getResources().getString(R.string.language_portuguese));
         return applicationLanguage;
     }
 
@@ -1436,10 +1623,10 @@ class HTMLFormDataStore {
             }
 
             if (lastTriangulation != null) {
-                List<Observation> lastAttempts = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
-                Collections.sort(lastAttempts, observationDateTimeComparator);
-                Observation lastAttempt = lastAttempts.get(0);
-                if (lastAttempt.getObservationDatetime().after(lastTriangulation.getObservationDatetime())) {
+                /*List<Observation> lastAttempts = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+                Collections.sort(lastAttempts, observationDateTimeComparator);*/
+                Observation lastAttempt = getLastVisitAttemptNumber(patientUuid, conceptId);
+                if (lastAttempt != null && lastAttempt.getObservationDatetime().after(lastTriangulation.getObservationDatetime())) {
                     observations.add(lastAttempt);
                 }
             }
@@ -1459,10 +1646,10 @@ class HTMLFormDataStore {
             String conceptUuid = derivedObservation.getDerivedConcept().getUuid();
             for (DerivedConcept derivedConcept : derivedConcepts) {
                 if (derivedConcept.getUuid().equals(conceptUuid)) {
-                    derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), getApplicationLanguage());
+                    derivedConceptName = ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), getApplicationLanguage());
                 }
             }
-            final String dateFormat = STANDARD_DATE_FORMAT;
+            final String dateFormat = Constants.STANDARD_DATE_FORMAT;
             SimpleDateFormat newDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm:ss");
             Date dateCreated = null;
             Date valueDateTime = null;
@@ -1496,7 +1683,7 @@ class HTMLFormDataStore {
             if (derivedObservation.getValueCoded() != null) {
                 derivedCodedConcept.put("uuid", derivedObservation.getValueCoded().getUuid());
                 derivedCodedConcept.put("id", derivedObservation.getValueCoded().getId());
-                derivedCodedConcept.put("name", getConceptNameFromConceptNamesByLocale(derivedObservation.getValueCoded().getConceptNames(), getApplicationLanguage()));
+                derivedCodedConcept.put("name", ConceptUtils.getConceptNameFromConceptNamesByLocale(derivedObservation.getValueCoded().getConceptNames(), getApplicationLanguage()));
                 ;
                 json.put("valueCoded", derivedCodedConcept);
             } else {
@@ -1525,5 +1712,91 @@ class HTMLFormDataStore {
         }
 
         return createObsJsonArray(observations);
+    }
+
+    public Observation getLastTriangulation(String patientUuid) throws ConceptController.ConceptFetchException, JSONException {
+        try {
+            List<Observation> lastTriangulations = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 1912);
+            Collections.sort(lastTriangulations, observationDateTimeComparator);
+            for (Observation observation: lastTriangulations) {
+                if (!StringUtils.isEmpty(observation.getComment())) return observation;
+            }
+            return null;
+        } catch (ObservationController.LoadObservationException | RuntimeException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return null;
+    }
+
+    public Observation getLastVisitAttemptNumber(String patientUuid, int conceptId) throws ConceptController.ConceptFetchException, JSONException {
+        try {
+                List<Observation> lastAttempts = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, conceptId);
+                if (lastAttempts == null || lastAttempts.size() <= 0) return null;
+
+                List<Observation> lastAttemptsAfterTriangulation = new ArrayList<>();
+
+                Observation lastTriangulation = getLastTriangulation(patientUuid);
+                for (Observation observation : lastAttempts) {
+                    if(observation.getObservationDatetime().compareTo(lastTriangulation.getObservationDatetime())==1) {
+                        lastAttemptsAfterTriangulation.add(observation);
+                    }
+                }
+                if (lastAttemptsAfterTriangulation.size() <= 0) return null;
+
+                if (listContains(lastAttemptsAfterTriangulation, 6255)) {
+                    return getAttemptFromList(lastAttemptsAfterTriangulation,6255);
+                } else if (listContains(lastAttemptsAfterTriangulation, 6254)) {
+                    return getAttemptFromList(lastAttemptsAfterTriangulation,6254);
+                } else if (listContains(lastAttemptsAfterTriangulation, 6440)) {
+                    return getAttemptFromList(lastAttemptsAfterTriangulation,6440);
+                }
+                return null;
+        } catch (ObservationController.LoadObservationException | RuntimeException e) {
+            Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+        }
+        return null;
+    }
+
+    private Observation getAttemptFromList(List<Observation> lastAttemptsAfterTriangulation, int valueCodedId) {
+        for (Observation observation : lastAttemptsAfterTriangulation) {
+            if (observation.getValueCoded().getId() == valueCodedId) return observation;
+        }
+        return null;
+    }
+
+    private boolean listContains(List<Observation> lastAttemptsAfterTriangulation, int valueCodedId) {
+        for (Observation observation : lastAttemptsAfterTriangulation) {
+            if (observation.getValueCoded().getId() == valueCodedId) return true;
+        }
+        return false;
+    }
+
+
+    public boolean isLastAttemptReached(String patientUuid, int conceptId) throws ConceptController.ConceptFetchException, JSONException {
+        Observation lastAttempt = getLastVisitAttemptNumber(patientUuid, conceptId);
+        if (lastAttempt == null) return false;
+
+        Concept concept = conceptController.getConceptById(6255);
+        return  concept.getId() == lastAttempt.getValueCoded().getId();
+    }
+
+    public boolean wasLastVisitMadeSuccessfully(String patientUuid) throws ObservationController.LoadObservationException, ConceptController.ConceptFetchException, JSONException {
+        try {
+            Observation lastTriangulation = getLastTriangulation(patientUuid);
+            List<Observation> patientFoundAtFirstAttempt = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 24008);
+            Collections.sort(patientFoundAtFirstAttempt, observationDateTimeComparator);
+            if(patientFoundAtFirstAttempt.get(0).getObservationDatetime().compareTo(lastTriangulation.getObservationDatetime())==1){
+               return true;
+            }
+            List<Observation> patientFoundAtSecondAttempt = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, 24009);
+            Collections.sort(patientFoundAtSecondAttempt, observationDateTimeComparator);
+            if(patientFoundAtSecondAttempt.get(0).getObservationDatetime().compareTo(lastTriangulation.getObservationDatetime())==1){
+                return true;
+            }
+
+            } catch (ObservationController.LoadObservationException | RuntimeException e) {
+               Log.e(getClass().getSimpleName(), "Exception occurred while loading observations", e);
+             }
+        return false;
     }
 }

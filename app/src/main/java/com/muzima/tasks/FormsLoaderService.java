@@ -14,10 +14,7 @@ import android.content.Context;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.controller.FormController;
-import com.muzima.model.DownloadedForm;
 import com.muzima.model.collections.AvailableForms;
-
-import java.util.List;
 
 public class FormsLoaderService implements Runnable {
 

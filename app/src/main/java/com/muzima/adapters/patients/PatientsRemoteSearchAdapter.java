@@ -14,18 +14,17 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
-import com.muzima.adapters.RecyclerAdapter;
+
 import com.muzima.api.model.Patient;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.domain.Credentials;
-import com.muzima.utils.Constants.SERVER_CONNECTIVITY_STATUS;
 import com.muzima.utils.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
+import com.muzima.utils.Constants;
 
 public class PatientsRemoteSearchAdapter extends PatientAdapterHelper {
     private final PatientController patientController;
@@ -45,11 +44,11 @@ public class PatientsRemoteSearchAdapter extends PatientAdapterHelper {
         new ServerSearchBackgroundTask().execute(searchString);
     }
 
-    public void onAuthenticationError(int searchResutStatus, RecyclerAdapter.BackgroundListQueryTaskListener backgroundListQueryTaskListener){
+    public void onAuthenticationError(int searchResutStatus, BackgroundListQueryTaskListener backgroundListQueryTaskListener){
         backgroundListQueryTaskListener.onQueryTaskCancelled(searchResutStatus);
     }
 
-    public void onNetworkError(SERVER_CONNECTIVITY_STATUS networkStatus, RecyclerAdapter.BackgroundListQueryTaskListener backgroundListQueryTaskListener){
+    public void onNetworkError(Constants.SERVER_CONNECTIVITY_STATUS networkStatus, BackgroundListQueryTaskListener backgroundListQueryTaskListener){
         if (backgroundListQueryTaskListener != null) {
             backgroundListQueryTaskListener.onQueryTaskCancelled(networkStatus);
         }
@@ -69,8 +68,8 @@ public class PatientsRemoteSearchAdapter extends PatientAdapterHelper {
 
         @Override
         protected void onCancelled(Object result){
-            if(result instanceof SERVER_CONNECTIVITY_STATUS){
-                onNetworkError((SERVER_CONNECTIVITY_STATUS)result,getBackgroundListQueryTaskListener());
+            if(result instanceof Constants.SERVER_CONNECTIVITY_STATUS){
+                onNetworkError((Constants.SERVER_CONNECTIVITY_STATUS)result,getBackgroundListQueryTaskListener());
             } else {
                 int authenticateResult = (int) result;
                 onAuthenticationError(authenticateResult, getBackgroundListQueryTaskListener());
@@ -83,10 +82,10 @@ public class PatientsRemoteSearchAdapter extends PatientAdapterHelper {
 
             Credentials credentials = new Credentials(applicationContext);
             try {
-                SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(applicationContext, credentials.getServerUrl());
-                if(serverStatus == SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE) {
+                Constants.SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(applicationContext, credentials.getServerUrl());
+                if(serverStatus == Constants.SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE) {
                     int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
-                    if (authenticateResult == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
+                    if (authenticateResult == Constants.DataSyncServiceConstants.SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                         return patientController.searchPatientOnServer(strings[0]);
                     } else {
                         cancel(true);

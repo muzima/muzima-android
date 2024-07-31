@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--
+  ~ Copyright (c) The Trustees of Indiana University, Moi University
+  ~ and Vanderbilt University Medical Center. All Rights Reserved.
+  ~
+  ~ This version of the code is licensed under the MPL 2.0 Open Source license
+  ~ with additional health care disclaimer.
+  ~ If the user is an entity intending to commercialize any application that uses
+  ~ this code in a for-profit venture, please contact the copyright holder.
+-->
+<resources>
+    <string name="SHR_card_text">SHR Card</string>
+    <string name="add_individual_observation_text">Add Individual Observation</string>
+    <string name="app_name">mUzima</string>
+    <string name="app_sub_title">for health providers</string>
+    <string name="app_title">mUzima for Health Providers</string>
+    <string name="app_version">App version</string>
+    <string name="ask_help">Asking help</string>
+    <string name="assignment_form_not_downloaded_warning">Seems like the assignment form is not downloaded, please confirm it is downloaded or contact administrator.</string>
+    <string name="assignment_form_uuid_missing_warning">Sorry, assignment form has not been set. Please contact administrator.</string>
+    <string name="autocomplete_server_not_found">Server is unreachable! \nPlease connect your device and try again OR create a new person</string>
+    <string name="captured_date">Captured Date:</string>
+    <string name="client_registration_question_text">Would you like to register client in mUzima?</string>
+    <string name="clinical_information_details">Clinical Information</string>
+    <string name="complex_obs">Complex Obs</string>
+    <string name="concept_description">Concept Description</string>
+    <string name="concept_details">Concept Details</string>
+    <string name="concept_name">Concept Name:</string>
+    <string name="confidant_details">Confidant Details</string>
+    <string name="confidant_name">Confidant Name:</string>
+    <string name="confidant_phone_number_1">Phone Number:</string>
+    <string name="confirm_create_patient_from_person">This will register this person as a client. Are you sure you would like to do this?</string>
+    <string name="confirm_duplicate_form_data_save">Save Duplicate Form Data</string>
+    <string name="confirm_patient_id_exists">Does the client already have existing ID?</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="default_auto_save_interval" translatable="false">2</string>
+    <string name="default_server" translatable="false">http://10.10.2.17:8088/openmrschabeco</string>
+    <string name="delete_individual_obs">Deleting individual obs</string>
+    <string name="downloaded_reports">Downloaded Reports</string>
+    <string name="drawer_close" translatable="false">close</string>
+    <string name="encounter_date">Encounter Date:</string>
+    <string name="encounter_details">Encounter Details</string>
+    <string name="encounter_location">Encounter Location:</string>
+    <string name="encounter_type">Encounter Type:</string>
+    <string name="enter_concept_name_text">Search Concepts</string>
+    <string name="enter_location_name">Enter location name …</string>
+    <string name="enter_provider_name_hint">Enter provider name …</string>
+    <string name="erro_coded_concepts_not_supported">Invalid coded concepts are not support</string>
+    <string name="error_audio_chose_activity_find">Error: Activity for choosing audio not found</string>
+    <string name="error_audio_play_activity_find">Error: Activity for playing audio not found</string>
+    <string name="error_audio_record_activity_find">Error: Activity for recording audio not found</string>
+    <string name="error_authentication_fail">Authentication failed</string>
+    <string name="error_authentication_occur">Authentication error occurred</string>
+    <string name="error_cohort_download">Could not download cohorts</string>
+    <string name="error_cohort_fetch">Something went wrong while fetching cohorts from local repo</string>
+    <string name="error_concept_download">Could not download concepts</string>
+    <string name="error_concept_fetch">Something went wrong while fetching concepts from local repo</string>
+    <string name="error_concept_parse">An error occurred while parsing concepts in the form</string>
+    <string name="error_credential_invalid">Invalid Username, Password, Server combination.</string>
+    <string name="error_current_gps_not_obtained">Could not obtain the current GPS location.Loading default location on the map.</string>
+    <string name="error_data_download">An error occurred while downloading data form server</string>
+    <string name="error_data_save">An error occurred while saving data to local repo</string>
+    <string name="error_derived_concept_download">Could not download derived concepts</string>
+    <string name="error_derived_observation_download">Could not download derived observations for clients</string>
+    <string name="error_encounter_observation_download">Could not download observations for clients</string>
+    <string name="error_exception_data_load">Load exception has been thrown while loading data</string>
+    <string name="error_exception_data_upload">Server could not process uploaded data</string>
+    <string name="error_form_data_delete">Could not delete some form data</string>
+    <string name="error_form_data_processing">An error occurred while processing form data</string>
+    <string name="error_form_download">Could not download forms</string>
+    <string name="error_form_fetch">Something went wrong while fetching forms from local repo</string>
+    <string name="error_form_load">Could not load forms</string>
+    <string name="error_form_location_load">An error occurred while loading locations for the form</string>
+    <string name="error_form_provider_load">An error occurred while loading provider for the form</string>
+    <string name="error_form_save">An error occurred while saving the form</string>
+    <string name="error_form_templates_download">Could not download form templates</string>
+    <string name="error_geolocation_update_failure">There was an error updating location information.</string>
+    <string name="error_image_capture_activity_unavailable">Error: Application for capturing an image not found</string>
+    <string name="error_image_chose_activity_unavailable">Error: Application for choosing image not found</string>
+    <string name="error_image_view_activity_unavailable">Error: Application for viewing image not found</string>
+    <string name="error_local_connection_unavailable">Network connection not found</string>
+    <string name="error_local_repo_data_delete">An error occurred while deleting data from local repo</string>
+    <string name="error_location_download">Could not download locations</string>
+    <string name="error_location_fetch">Something went wrong while fetching locations from local repo</string>
+    <string name="error_media_category_download">Could not download media categories</string>
+    <string name="error_media_download">Could not download media</string>
+    <string name="error_observation_download">Could not download observations</string>
+    <string name="error_observation_form_save">An error occurred while saving observations in the form</string>
+    <string name="error_parse_exception_data_fetch">Parse exception has been thrown while fetching data</string>
+    <string name="error_patient_address_not_updated">The GPS address could not be obtained</string>
+    <string name="error_patient_data_form_exist">There is existing form data.
+        Finish Incomplete data and sync it to the Server first before syncing form templates.
+    </string>
+    <string name="error_patient_download">Could not download clients</string>
+    <string name="error_patient_repo_fetch">Something went wrong while fetching clients from local repo</string>
+    <string name="error_patient_report_fetch">Something went wrong while fetching client reports from local repo</string>
+    <string name="error_patient_search">Something went wrong while searching client(s)</string>
+    <string name="error_policy_not_accepted">Accept policy statements to proceed</string>
+    <string name="error_provider_download">Could not download providers</string>
+    <string name="error_provider_fetch">Something went wrong while fetching providers from local repo</string>
+    <string name="error_relationship_load">Relationships could not be loaded</string>
+    <string name="error_relationship_type_load">Relationship Types could not be loaded</string>
+    <string name="error_report_dataset_download">Could not download report datasets</string>
+    <string name="error_report_dataset_load">An error occurred while loading report dataset for the form</string>
+    <string name="error_server_connection_unavailable">Server unreachable</string>
+    <string name="error_server_url_invalid">Invalid Server URL.</string>
+    <string name="error_settings_download">Could not download settings</string>
+    <string name="error_setup_configuration_template_download">Could not download Setup Configuration template</string>
+    <string name="error_smartcard_client_not_in_server">Smartcard client  not in server. Register client in mUzima now ?</string>
+    <string name="error_sync_not_allowed">Action not allowed while sync is in progress</string>
+    <string name="error_tag_fetch">Something went wrong while fetching tags from local repo</string>
+    <string name="error_username_invalid_format">Invalid Character in Username. These are not allowed: %s</string>
+    <string name="error_wizard_interrupted">Wizard was interrupted, please logout and run the wizard again.</string>
+    <string name="failure_obtain_smartcard_record">Could not obtain smartcard record for writing to card.</string>
+    <string name="failure_writing_smartcard">Failed writing Smart card data.</string>
+    <string name="feedback_header">Please send us your comments and feedback</string>
+    <string name="feedback_hint">What is in your mind?</string>
+    <string name="feedback_rating_question">How easy to use mUzima App?</string>
+    <string name="form_encounter_date">Encounter date</string>
+    <string name="form_encounter_location">Encounter location</string>
+    <string name="form_encounter_provider">Encounter provider</string>
+    <string name="forms_general_sort_by">Sort Forms</string>
+    <string name="gender_image_content_description">Gender Image</string>
+    <string name="general_about_muzima">About mUzima</string>
+    <string name="general_accept">Accept</string>
+    <string name="general_add">Add</string>
+    <string name="general_add_reading">Add reading</string>
+    <string name="general_add_single_element">Add single element</string>
+    <string name="general_address">Address:</string>
+    <string name="general_alert">Alert!</string>
+    <string name="general_all">All</string>
+    <string name="general_all_clients">All Clients</string>
+    <string name="general_all_contacts_visited">All Contacts Visited</string>
+    <string name="general_already_assigned">Already Assigned</string>
+    <string name="general_application_version">Version %1$s</string>
+    <string name="general_art_start_date">"ART start date:"</string>
+    <string name="general_available_online">Available Online</string>
+    <string name="general_awaiting_assignment">Awaiting Assignment</string>
+    <string name="general_cancel">Cancel</string>
+    <string name="general_card_read_failed_msg">Card read failed.</string>
+    <string name="general_caution">Caution!</string>
+    <string name="general_client_list">Client List</string>
+    <string name="general_client_register">Register client</string>
+    <string name="general_clients">Clients</string>
+    <string name="general_clinical_summary">"Clinical Summary"</string>
+    <string name="general_clinical_summary_description">The feature utilizes the OpenMRS Reporting Module to design and generate HTML reports that are then rendered on the app.</string>
+    <string name="general_close">Close</string>
+    <string name="general_cohort_management">"Cohort Management"</string>
+    <string name="general_cohort_management_description">This feature allows for the management of different patient or client groups on a mobile device.</string>
+    <string name="general_cohorts">Cohorts</string>
+    <string name="general_concepts">Concepts</string>
+    <string name="general_consent_date">Consent Data</string>
+    <string name="general_create_contact">Create Contact</string>
+    <string name="general_data_collection_tools">"Data Collection Tools "</string>
+    <string name="general_data_collection_tools_description">mUzima uses easy-to-develop web-based forms to collect data that can easily be transmitted and stored in OpenMRS.</string>
+    <string name="general_date_of_birth">Date of birth: %s</string>
+    <string name="general_days_character">d</string>
+    <string name="general_delete">Delete</string>
+    <string name="general_demographics_update">Demographics update</string>
+    <string name="general_description_unavailable">No description available</string>
+    <string name="general_display_all">Display All</string>
+    <string name="general_done">DONE</string>
+    <string name="general_download">Download</string>
+    <string name="general_downloaded">Downloaded</string>
+    <string name="general_draft">Draft</string>
+    <string name="general_enter_value_to_save">Enter value to save</string>
+    <string name="general_error_resolutions">"Error Resolutions"</string>
+    <string name="general_error_resolutions_description">mUzima prevents duplicate form data entry on mobile device and resolves errors in OpenMRS during data processing.</string>
+    <string name="general_failure">Failure</string>
+    <string name="general_feedback">Feedback</string>
+    <string name="general_filling_forms">Fill Forms</string>
+    <string name="general_filter_by">Filtered by</string>
+    <string name="general_filtered_list">Filtered List</string>
+    <string name="general_finish">Finish</string>
+    <string name="general_form">Form</string>
+    <string name="general_form_management">"Form Management"</string>
+    <string name="general_form_management_description">mUzima enables easy download and update of new forms onto the app without the need for reinstalling or restarting the app.</string>
+    <string name="general_forms">Forms</string>
+    <string name="general_geomapping">"Geomapping"</string>
+    <string name="general_geomapping_description">Brings in the ability to easily capture and record patient GPS coordinates, then give CHVs direction on subsequent visits.</string>
+    <string name="general_get_directions">Get directions</string>
+    <string name="general_has_sexual_partner">Has sexual partner</string>
+    <string name="general_help">Help</string>
+    <string name="general_hide">Hide</string>
+    <string name="general_historical_data">Historical Data</string>
+    <string name="general_historical_data_view">"Historical Data View"</string>
+    <string name="general_historical_data_view_description">mUzima has easy and efficient user-friendly mechanisms for retrieving and viewing historical data on patients or clients.</string>
+    <string name="general_hiv_test">HIV Test Date:</string>
+    <string name="general_home">Home</string>
+    <string name="general_in_ccr">In CCR?</string>
+    <string name="general_in_hiv_care">HIV care?</string>
+    <string name="general_individual_summary">Individual Summary</string>
+    <string name="general_is_a">%s is a:</string>
+    <string name="general_label_sort_by_name">Sort by name</string>
+    <string name="general_label_sort_status">Sort by status</string>
+    <string name="general_large">Large</string>
+    <string name="general_last_consent_date">Last Consent:</string>
+    <string name="general_last_encounter_details">Last Encounter Details</string>
+    <string name="general_launching_map_message">Launching map, please wait</string>
+    <string name="general_leaderboard">Leaderboard</string>
+    <string name="general_load">Load</string>
+    <string name="general_loading_relationships">Relationships are still loading</string>
+    <string name="general_locations">Locations</string>
+    <string name="general_login">Login</string>
+    <string name="general_logout">Logout</string>
+    <string name="general_low_available_space">Available space not enough</string>
+    <string name="general_media">Media</string>
+    <string name="general_medium">Medium</string>
+    <string name="general_months_character">m</string>
+    <string name="general_multiple_cases_description">mUzima is easily customizable to support any clinical use cases, both within and outside of clinical facilities.</string>
+    <string name="general_multiple_languages">"Multiple Languages"</string>
+    <string name="general_multiple_languages_description">mUzima provides localisation support out of the box for use in various languages to allow further flexibility of use.</string>
+    <string name="general_multiple_themes">"Multiple Themes"</string>
+    <string name="general_multiple_themes_description">mUzima is shipped on two themes: dark theme (White on Black) and Light theme (Black on white).</string>
+    <string name="general_multiple_use_cases">Multiple Use Cases</string>
+    <string name="general_new_version">New Version</string>
+    <string name="general_next">Next</string>
+    <string name="general_no">No</string>
+    <string name="general_not_available_text">Not Available</string>
+    <string name="general_observations">Observations</string>
+    <string name="general_ok">OK</string>
+    <string name="general_online_mode">Online Mode</string>
+    <string name="general_opening_card_reader">Opening Card Reader</string>
+    <string name="general_openmrs_compatibility">OpenMRS Compatibility</string>
+    <string name="general_openmrs_compatibility_description">mUzima was designed to be the mHealth extension of OpenMRS. OpenMRS is deployed nationally in several countries.</string>
+    <string name="general_or_search_by">Or search by:</string>
+    <string name="general_other">Other</string>
+    <string name="general_password">Password</string>
+    <string name="general_patient_registration">Client Registration</string>
+    <string name="general_performance_comparison">Performance Comparison</string>
+    <string name="general_person_create">Create Person</string>
+    <string name="general_phone_number">Phone Number:</string>
+    <string name="general_policy_title">Usage Policies</string>
+    <string name="general_preferred_testing_location">Preferred Location:</string>
+    <string name="general_progress_message">This might take a while</string>
+    <string name="general_providers">Providers</string>
+    <string name="general_reading">Reading</string>
+    <string name="general_recently_viewed">Recently Viewed</string>
+    <string name="general_registration_form_missing_message">Missing registration form. Please contact administrator</string>
+    <string name="general_relationship">Relationship</string>
+    <string name="general_relationship_management">"Relationship Management"</string>
+    <string name="general_relationship_management_description">In the healthcare space, a relationship is used to pair/associate two people whose care may be inter-linked.</string>
+    <string name="general_relationships">Relationships</string>
+    <string name="general_reports">Reports</string>
+    <string name="general_reset">Reset</string>
+    <string name="general_result">Result:</string>
+    <string name="general_retry">RETRY</string>
+    <string name="general_save">Save</string>
+    <string name="general_saving_forms">Saving Forms</string>
+    <string name="general_search_cohorts">Search Cohorts</string>
+    <string name="general_search_forms">Search Forms</string>
+    <string name="general_search_patient">Search Patient</string>
+    <string name="general_searching">Searching…</string>
+    <string name="general_security">Security</string>
+    <string name="general_security_description">mUzima provides security features including password login, encryption, secure data transmission, timed user logouts.</string>
+    <string name="general_selected">Selected</string>
+    <string name="general_server">Server</string>
+    <string name="general_settings">Settings</string>
+    <string name="general_skip">Skip</string>
+    <string name="general_small">Small</string>
+    <string name="general_sort_by_name">By name</string>
+    <string name="general_sort_by_status">By status</string>
+    <string name="general_sync_service_already_running">mUzima sync service is already running…</string>
+    <string name="general_tags">Tags</string>
+    <string name="general_testing_date">Test Date:</string>
+    <string name="general_testing_sector">Testing Sector: </string>
+    <string name="general_their_statistics">Their Statistics</string>
+    <string name="general_upload">Upload</string>
+    <string name="general_use_selected_location">Use selected location</string>
+    <string name="general_username">Username</string>
+    <string name="general_works_offline">"Works Offline"</string>
+    <string name="general_works_offline_description">mUzima works perfectly both in online and offline modes. This allows for data collection and reviews even when the device is offline.</string>
+    <string name="general_years">%s Years</string>
+    <string name="general_years_character">y</string>
+    <string name="general_yes">Yes</string>
+    <string name="general_your_statistics">Your Statistics</string>
+    <string name="get_more">More from Server</string>
+    <string name="header_muzima_category">mUzima Settings</string>
+    <string name="header_openmrs_category">OpenMRS Settings</string>
+    <string name="header_provider_location_category">Provider/Location Settings</string>
+    <string name="hello_general">Hello</string>
+    <string name="help_center">Help Center</string>
+    <string name="help_general">Help</string>
+    <string name="hint_audio_caption">Please enter a caption for the audio</string>
+    <string name="hint_audio_record">Record or choose audio</string>
+    <string name="hint_authentication_progress">Authenticating…</string>
+    <string name="hint_check_digit_validation_failure">Please enter digits that matches CheckDigit algorithm</string>
+    <string name="hint_client_local_search">Your search includes client id, given name, middle name and family
+        name and searched only in the device
+    </string>
+    <string name="hint_client_location_update">Do you want to update home location for this client?</string>
+    <string name="hint_client_remote_search">Your search includes client id, given name, middle name and family
+        name and searched on the server</string>
+    <string name="hint_client_search">Search clients</string>
+    <string name="hint_cohort_sync">Please select cohorts from all cohorts list and click sync</string>
+    <string name="hint_complete_form_unavailable">Unsynced forms are available only if you have filled a form completely
+        but have not synced it with the server
+    </string>
+    <string name="hint_configuration_search">Search a program</string>
+    <string name="hint_consultation_consultant_validation_failure">Please provide a consultant from the list of possible consultants</string>
+    <string name="hint_current_or_past_date_validation_failure">Please enter a date prior or equal to today</string>
+    <string name="hint_default_encounter_location">This selected encounter location will be the default encounter
+        location for all forms
+    </string>
+    <string name="hint_default_encounter_provider">Logged-in user will be used as the default encounter provider</string>
+    <string name="hint_drawer_close">Tags drawer close</string>
+    <string name="hint_drawer_open">Tags drawer open</string>
+    <string name="hint_duplicate_form_data_warning">Warn the user when duplicate form data for same client with same
+        encounter date is being saved
+    </string>
+    <string name="hint_enable_GPS">Enable GPS Data collection feature</string>
+    <string name="hint_enable_shr">Enable smart card feature</string>
+    <string name="hint_encounter_location_validation_failure">Please provide a location from the list of possible locations</string>
+    <string name="hint_encounter_provider_validation_failure">Please provide a provider from the list of possible providers</string>
+    <string name="hint_feedback_prompt">Please enter your message</string>
+    <string name="hint_form_auto_save_interval">The value in which your forms will be automatically saved</string>
+    <string name="hint_form_download">Please select forms from all forms list and click download</string>
+    <string name="hint_form_validation_failure">There is one or more validation check failed on this form. Please review
+        and resubmit the form
+    </string>
+    <string name="hint_future_date_validation_failure">Please enter a date in the future</string>
+    <string name="hint_guided_setup">Let’s select the program within which you will be working</string>
+    <string name="hint_help_prompt">Please enter your message</string>
+    <string name="hint_image_caption_prompt">Please enter a caption for the image</string>
+    <string name="hint_incomplete_form_unavailable">Incomplete forms are available only if you have saved a partially
+        filled form
+    </string>
+    <string name="hint_install_psmart">Would you like to install P-Smart app?</string>
+    <string name="hint_light_mode">Enable Light Theme</string>
+    <string name="hint_loading_progress">Loading…</string>
+    <string name="hint_local_connection_unavailable">Please connect your device and try again</string>
+    <string name="hint_location_addresses_not_set">Location address has not been set for all available clients</string>
+    <string name="hint_manage_concept">Get more concepts from the server or remove concepts from this device.
+        Concepts are used to configure what observations to download.
+    </string>
+    <string name="hint_manage_location">Get more locations from the server or remove locations from this device</string>
+    <string name="hint_manage_provider">Get more providers from the server or remove providers from this device</string>
+    <string name="hint_mandatory_question_validation_failure">This question must be answered</string>
+    <string name="hint_network_connection_failure_map_loading">The device is not connected to the internet. The map is not available when offline.</string>
+    <string name="hint_option_none_exclusive_selection_validation_failure">If \'None\' is selected, no other options can
+        be selected
+    </string>
+    <string name="hint_password_change">Did you change your password recently?</string>
+    <string name="hint_password_prompt">Please Enter Password</string>
+    <string name="hint_patient_report_list_download">Please press load to fetch available reports list from server</string>
+    <string name="hint_patient_reports_sync">Please select reports from the server list and click sync</string>
+    <string name="hint_person_action_prompt">What would you like to do?</string>
+    <string name="hint_person_search">Search person by name or identifier</string>
+    <string name="hint_phone_number_validation_failure">Invalid Phone Number. Please check and re-enter</string>
+    <string name="hint_provider_not_set">You do not have provider rights or your provider data is not downloaded, please
+        use add provider option.
+    </string>
+    <string name="hint_real_time_sync">Enable automatic synchronization of data</string>
+    <string name="hint_real_time_sync_always_on">Automatic sync is always ON in Online Mode.</string>
+    <string name="hint_repeating_section_minimum_repeats_validation_failure">Minimum repeats not satisfied. Needs at least</string>
+    <string name="hint_reports_unavailable">Please select reports from all forms list and click download</string>
+    <string name="hint_require_medical_record_number">Require client\'s medical record number during registration</string>
+    <string name="hint_server_connection_unavailable">Please contact your server administrator to check server connectivity</string>
+    <string name="hint_server_password_prompt">Enter the OpenMRS password</string>
+    <string name="hint_server_url">Server URL</string>
+    <string name="hint_server_url_prompt">Please enter server URL</string>
+    <string name="hint_session_timeout">If in-active for this time, mUzima will automatically logout</string>
+    <string name="hint_set_client_location">This client\'s home location has not been set. Do you want to set it now?</string>
+    <string name="hint_setting_refresh">Do you want to re-download this setting from server?</string>
+    <string name="hint_their_performance" formatted="false">Performance summary for %s between %s and %s</string>
+    <string name="hint_username_prompt">Please enter username</string>
+    <string name="hint_video_caption_prompt">Please enter a caption for the video</string>
+    <string name="hint_video_record">Record or choose video</string>
+    <string name="hint_write_SHR_to_card">Do you want to write Shared Health Record to card ?</string>
+    <string name="hint_your_performance" formatted="false">Your performance between %s and %s</string>
+    <string name="individual_obs">Individual Obs</string>
+    <string name="individual_obs_description">Individual Obs</string>
+    <string name="info_accept_all">Accept all</string>
+    <string name="info_agree_to_muzima_license_and_disclaimer">Agree to mUzima License and Disclaimer</string>
+    <string name="info_agree_to_muzima_privacy_policy_statement">Agree to mUzima Privacy Policy Statement</string>
+    <string name="info_agree_to_muzima_terms_and_conditions">Agree to mUzima Terms and Conditions</string>
+    <string name="info_authentication_in_progress">Authentication in progress…</string>
+    <string name="info_background_data_sync_started">Syncing data in background</string>
+    <string name="info_client_local_search_not_found">No clients matched your search locally. Enter at least 3
+        characters for remote search.
+    </string>
+    <string name="info_client_local_search_not_found_secondary">We could not find anything related to your search. \n\nTry searching server</string>
+    <string name="info_client_remote_search_not_found">No clients matched your search on the server</string>
+    <string name="info_cohort_download">Downloading Cohorts</string>
+    <string name="info_cohort_downloaded">Downloaded 1 cohort</string>
+    <string name="info_cohort_new_patient_download" formatted="false">Downloaded %d new clients for %d cohorts.</string>
+    <string name="info_cohort_not_downloaded">No cohorts downloaded</string>
+    <string name="info_cohort_patient_download">Downloaded 1 client for 1 cohort</string>
+    <string name="info_cohort_patient_not_download">No clients downloaded</string>
+    <string name="info_cohort_patients_download" formatted="false">Downloaded %d clients for 1 cohort</string>
+    <string name="info_cohorts_downloaded" formatted="false">Downloaded %d cohorts</string>
+    <string name="info_cohorts_patient_download" formatted="false">Downloaded 1 client for %d cohorts</string>
+    <string name="info_cohorts_patients_download" formatted="false">Downloaded %d clients for %d cohorts</string>
+    <string name="info_complete_form">Unsynced Forms</string>
+    <string name="info_complete_form_unavailable">No completed and non synced forms</string>
+    <string name="info_concept_delete_success">%d concepts deleted successfully!!</string>
+    <string name="info_concept_download">Downloading Concepts</string>
+    <string name="info_concept_downloaded">Downloaded 1 concept</string>
+    <string name="info_concept_not_downloaded">Did not download any concepts</string>
+    <string name="info_concept_unavailable">No Concepts added yet.</string>
+    <string name="info_concepts_downloaded" formatted="false">Downloaded %d concepts</string>
+    <string name="info_concepts_downloaded_deleted" formatted="false">Downloaded %d concepts, Deleted %d concepts</string>
+    <string name="info_confidentiality_text">By accessing this system, you are about to view highly confidential user information. It is your responsibility to protect them properly and use them only for authorized purposes. User privacy is essential to our mission.</string>
+    <string name="info_convert_person_to_patient">Convert person to patient</string>
+    <string name="info_data_sync_cancelled">mUzima data sync was cancelled.</string>
+    <string name="info_derived_concept_download">Downloading Derived Concepts</string>
+    <string name="info_derived_concept_downloaded">Downloaded 1 derived concept</string>
+    <string name="info_derived_concept_not_downloaded">Did not download any derived concepts</string>
+    <string name="info_derived_concepts_downloaded" formatted="false">Downloaded %d derived concepts</string>
+    <string name="info_derived_concepts_downloaded_deleted" formatted="false">Downloaded %d derived concepts, Deleted %d derived concepts</string>
+    <string name="info_derived_observation_download">Downloading Derived Observations</string>
+    <string name="info_derived_observation_patient_downloaded">Downloaded 1 derived observation for 1 client</string>
+    <string name="info_derived_observation_patient_not_downloaded">Did not download any derived observations</string>
+    <string name="info_derived_observation_patients_downloaded" formatted="false">Downloaded %d derived observations for 1 client</string>
+    <string name="info_derived_observations_download_progress" formatted="false">Downloaded derived observations for client %d of %d.</string>
+    <string name="info_summaries_download_progress">Sumarios de utentes baixados %d de %d.</string>
+    <string name="info_derived_observations_patient_downloaded" formatted="false">Downloaded 1 derived observation for %d clients</string>
+    <string name="info_derived_observations_patients_downloaded" formatted="false">Downloaded %d derived observations for %d clients</string>
+    <string name="info_disclaimer">
+        mUzima is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0). A copy of the MPL 2.0 license can be found at http://mozilla.org/MPL/2.0/.
+\nmUzima is also distributed under the terms of the following Additional Disclaimer of Warranty and Limitation of Liability.
+\nAdditional Disclaimer of Warranty and Limitation of Liability
+\nIn the United States, or any other jurisdictions where they may apply, the following additional disclaimer of warranty and limitation of liability are hereby incorporated into the terms and conditions of MPL 2.0:
+\n1. No warranties of any kind whatsoever are made as to the results that You will obtain from relying upon the covered code (or any information or content obtained by way of the covered code), including but not limited to compliance with privacy laws or regulations or clinical care industry standards and protocols. Use of the covered code is not a substitute for a health care provider’s standard practice or professional judgment. Any decision with regard to the appropriateness of treatment, or the validity or reliability of information or content made available by the covered code, is the sole responsibility of the health care provider. Consequently, it is incumbent upon each health care provider to verify all medical history and treatment plans with each patient.
+\n\n2. Under no circumstances and under no legal theory, whether tort (including negligence), contract, or otherwise, shall any Contributor, or anyone who distributes Covered Software as permitted by the license, be liable to You for any indirect, special, incidental, consequential damages of any character including, without limitation, damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other damages or losses, of any nature whatsoever (direct or otherwise) on account of or associated with the use or inability to use the covered content (including, without limitation, the use of information or content made available by the covered code, all documentation associated therewith, and the failure of the covered code to comply with privacy laws and regulations or clinical care industry standards and protocols), even if such party shall have been informed of the possibility of such damages.
+\n\n3. mUzima is copyrighted to The Trustees of Indiana University, Moi University, and Vanderbilt University Medical Center.
+\n\n4. If the user of this application is an entity intending to commercialize or make a profit out of any application that uses this code in a for-profit venture, the user is required to contact the copyright holder through mUzima.mobile@gmail.com
+
+    </string>
+    <string name="info_download_complete">Download complete with status %d</string>
+    <string name="info_downloaded_image">Downloaded image</string>
+    <string name="info_downloaded_reports_unavailable">No reports have been downloaded</string>
+    <string name="info_draft_form_save_success">Draft form was saved successfully.</string>
+    <string name="info_for_health_providers">for health providers</string>
+    <string name="info_form_data_delete" formatted="false">Deleted %d forms</string>
+    <string name="info_form_data_save_success">Completed form data was saved successfully.</string>
+    <string name="info_form_data_upload_fail">Failed to Sync Form data to the current server. Do you still want to continue?</string>
+    <string name="info_form_data_upload_sucess">Upload form data success</string>
+    <string name="info_form_delete_integrity_failure">Integrity failure: Cannot delete registration form data that has
+        associated encounter form data
+    </string>
+    <string name="info_form_delete_success">Forms deleted successfully</string>
+    <string name="info_form_download">Downloading Forms</string>
+    <string name="info_form_download_delete" formatted="false">Downloaded %d forms and retired %d forms</string>
+    <string name="info_form_downloaded">Downloaded 1 form</string>
+    <string name="info_form_fetch_in_progress">Already fetching forms, ignored the request</string>
+    <string name="info_form_metadata_download">Downloading forms metadata</string>
+    <string name="info_form_not_downloaded">No forms downloaded</string>
+    <string name="info_form_template_concept_download" formatted="false">Downloaded %d form templates and %d concepts</string>
+    <string name="info_form_template_download">Downloading Form Templates</string>
+    <string name="info_form_template_downloaded">Downloaded 1 form template</string>
+    <string name="info_form_template_not_downloaded">No form template downloaded</string>
+    <string name="info_form_template_with_count_download">Downloading form templates for %d forms</string>
+    <string name="info_form_templates_downloaded" formatted="false">Downloaded %d form templates</string>
+    <string name="info_form_upload">Uploading Forms</string>
+    <string name="info_form_upload_in_progress">Already uploading forms, ignored the request</string>
+    <string name="info_form_upload_success">Forms uploaded successfully</string>
+    <string name="info_forms_downloaded">Downloaded %d forms</string>
+    <string name="info_forms_unavailable">No forms available</string>
+    <string name="info_htc_contact_form">Index Case Contact Testing Form</string>
+    <string name="info_incomplete_form">Incomplete Forms</string>
+    <string name="info_incomplete_form_unavailable">No incomplete forms</string>
+    <string name="info_initial_setup_progress">Initial setup running. Please wait…</string>
+    <string name="info_license_and_disclaimer">License and Disclaimer</string>
+    <string name="info_location_delete_success">%d locations deleted successfully</string>
+    <string name="info_location_download">Downloading Locations</string>
+    <string name="info_location_downloaded">Downloaded 1 location</string>
+    <string name="info_location_not_downloaded">Did not download any locations</string>
+    <string name="info_location_unavailable">No locations have been added yet</string>
+    <string name="info_locations_downloaded" formatted="false">Downloaded %d locations</string>
+    <string name="info_locations_downloaded_deleted" formatted="false">Downloaded %d locations, Deleted %d locations</string>
+    <string name="info_media_categories_not_downloaded">Did not download any media category</string>
+    <string name="info_media_category_download_in_progress">Downloading Media Categories</string>
+    <string name="info_media_category_downloaded" formatted="false">Downloaded %d Media Categories</string>
+    <string name="info_media_download_in_progress">Downloading Media</string>
+    <string name="info_media_downloaded" formatted="false">Downloaded %d Media</string>
+    <string name="info_media_not_downloaded">Did not download any media</string>
+    <string name="info_media_unavailable">No media available</string>
+    <string name="info_muzima_sync_service_finish">mUzima sync service finished</string>
+    <string name="info_muzima_sync_service_in_progress">mUzima sync service running</string>
+    <string name="info_new_cohort_download">Downloaded %d new cohorts</string>
+    <string name="info_new_cohort_download_delete" formatted="false">Downloaded %d new cohorts and retired %d cohorts</string>
+    <string name="info_new_encounter_download">Downloaded %d new encounters</string>
+    <string name="info_new_encounter_download_delete" formatted="false">Downloaded %d new encounters and retired %d encounters</string>
+    <string name="info_new_notification">New Notification</string>
+    <string name="info_new_observation_download">Downloaded %d new observations</string>
+    <string name="info_new_observation_download_delete" formatted="false">Downloaded %d new observations and retired %d observations</string>
+    <string name="info_new_patient_download">Downloaded %d new clients</string>
+    <string name="info_no_client_available">No clients available locally on this device.</string>
+    <string name="info_no_client_available_locally">No clients available locally. Enter at least 3 characters for remote search or register new clients.</string>
+    <string name="info_no_cohort_download">No cohorts have been synced</string>
+    <string name="info_no_forms_data_tip">No forms configured for data entry. Contact your administrator to add forms</string>
+    <string name="info_no_media_data_tip">No media configured. Contact your administrator to add media</string>
+    <string name="info_no_media_not_available">The media file is not available, it might have been deleted from the device</string>
+    <string name="info_no_observation_and_concept_data_tip">No concepts configured. Contact your administrator to add concepts.</string>
+    <string name="info_no_observation_for_concept_data_tip">No historical data exists for the configured concepts</string>
+    <string name="info_obs_concept_downloaded" formatted="false">Downloaded %d new observation for the %d new concepts for %d clients</string>
+    <string name="info_observation_download">Downloading Observations</string>
+    <string name="info_observation_load">Observations are loading</string>
+    <string name="info_observation_patient_downloaded">Downloaded 1 observation for 1 client</string>
+    <string name="info_observation_patient_not_downloaded">Did not download any observations</string>
+    <string name="info_observation_patients_downloaded" formatted="false">Downloaded %d observations for 1 client</string>
+    <string name="info_observation_search">Search observations</string>
+    <string name="info_observation_unavailable">No observations available</string>
+    <string name="info_observations_download_progress" formatted="false">Downloaded observations for client %d of %d.</string>
+    <string name="info_observations_patient_downloaded" formatted="false">Downloaded 1 observation for %d clients</string>
+    <string name="info_observations_patients_downloaded" formatted="false">Downloaded %d observations for %d clients</string>
+    <string name="info_patient_data_download">Downloading clients data</string>
+    <string name="info_patient_download">Downloading Clients</string>
+    <string name="info_patient_reports_download_in_progress">Downloading Client Reports</string>
+    <string name="info_patient_reports_downloaded" formatted="false">Downloaded %d reports</string>
+    <string name="info_patient_reports_fetch_in_progress">Already fetching reports, ignored the request</string>
+    <string name="info_patient_reports_unavailable">No Client Reports Available</string>
+    <string name="info_person_creation_failure">Could not create person record</string>
+    <string name="info_privacy_policy_statement">Privacy Policy Statement</string>
+    <string name="info_program_unavailable">No program available</string>
+    <string name="info_program_unavailable_tip">No program configured. Contact your administrator to add a program</string>
+    <string name="info_provider_delete_success">%d Providers deleted successfully</string>
+    <string name="info_provider_download">Downloading Providers</string>
+    <string name="info_provider_downloaded">Downloaded 1 provider</string>
+    <string name="info_provider_downloaded_deleted" formatted="false">Downloaded %d providers, Deleted %d providers</string>
+    <string name="info_provider_not_downloaded">Did not download any providers</string>
+    <string name="info_provider_unavailable">No providers have been added yet</string>
+    <string name="info_providers_downloaded" formatted="false">Downloaded %d providers</string>
+    <string name="info_real_time_upload">mUzima is uploading your data</string>
+    <string name="info_real_time_upload_success">mUzima has uploaded your data successfully</string>
+    <string name="info_relationships_delete_success">%d Relationships deleted successfully</string>
+    <string name="info_relationships_download" formatted="false">Downloaded %d relationships for %d client(s).</string>
+    <string name="info_relationships_download_progress" formatted="false">Downloaded relationships for client %d of %d.</string>
+    <string name="info_relationships_not_downloaded_progress" formatted="false">Relationships for client %d of %d not downloaded.</string>
+    <string name="info_relationships_unavailable">No relationships available</string>
+    <string name="info_report_dataset_download_in_progress">Downloading Report Datasets</string>
+    <string name="info_report_dataset_downloaded" formatted="false">Downloaded %d Report Datasets</string>
+    <string name="info_report_datasets_not_downloaded">Did not download any Report Datasets</string>
+    <string name="info_scan_qrcode">Scan QR code to change server URL</string>
+    <string name="info_session_time_out">Your session had timed out. Please log in again to proceed.</string>
+    <string name="info_setting_download_success">Downloaded and updated setting successfully</string>
+    <string name="info_setting_downloaded">Downloaded 1 setting</string>
+    <string name="info_settings_download_progress">Downloading settings</string>
+    <string name="info_settings_download_success">Downloaded and updated settings successfully</string>
+    <string name="info_settings_downloaded" formatted="false">Downloaded %d settings</string>
+    <string name="info_settings_not_download">No settings downloaded</string>
+    <string name="info_settings_update">Updating settings</string>
+    <string name="info_setup_complete_fail">Setup completed with some failure</string>
+    <string name="info_setup_complete_success">Setup completed</string>
+    <string name="info_setup_config_load">Loading Setup Configs</string>
+    <string name="info_setup_configuration_template_download_in_progress">Updating Setup Configs</string>
+    <string name="info_setup_configuration_templates_downloaded" formatted="false">Downloaded %d setup configuration templates</string>
+    <string name="info_submitted_form_data_status" formatted="false">Status of recently submitted forms: %d Processed successfully,
+        %d Processed with error, %d Pending processing, %d Unknown status </string>
+    <string name="info_submitted_form_data_status_check">Checking status of recently submitted forms</string>
+    <string name="info_submitted_form_data_status_check_failure">Could not check status of recently submitted forms</string>
+    <string name="info_sync_completed">Sync Completed</string>
+    <string name="info_sync_progress">Sync Progress ...</string>
+    <string name="info_tag_unavailable">No tags available</string>
+    <string name="info_terms_and_conditions">Terms and Conditions</string>
+    <string name="info_terms_and_conditions_text">
+        mUzima for Health Providers app (the \"Application\") is built as an Open Source end-user app and is provided by Moi University and Vanderbilt University Medical Center (collectively, \"We,\" \"Us\" or \"Our\") at no cost and is intended for use as is. If you (\"You\",\"Your\") are using our application for an organization, you\’re agreeing to these Terms and Conditions on behalf of that organization. If you\’re using our application to provide services for someone else, you\’re agreeing to these Terms and conditions on their behalf. Your use of the application is also subject to the PRIVACY POLICY (\"Privacy Policy\") and any applicable open source or other third party terms referenced below (the \"Third Party Terms\").  If You do not agree to these Terms, the Privacy Policy and the Third Party Terms (collectively \"Agreement\"), You should not use the application thereof in any manner.
+
+  \n\nIF YOU ARE AN INDIVIDUAL REPRESENTING AN ENTITY, YOU ACKNOWLEDGE THAT YOU HAVE THE APPROPRIATE AUTHORITY TO ACCEPT THIS AGREEMENT ON BEHALF OF SUCH ENTITY.
+
+\n\nIF YOU OR THE ORGANIZATION YOU REPRESENT DON’T AGREE TO BE BOUND TO THIS TERMS AND CONDITIONS, PRIVACY POLICY AND THIRD PARTY TERMS, YOU SHOULD NOT USE THIS APPLICATION.
+
+\n\n1. Intellectual property
+\nThe application and its content, features and functionality are and will remain the exclusive property of Moi University and Vanderbilt University Medical Center. The application is protected by copyright, trademark, and other laws of and foreign countries. Our trademarks may not be used in connection with any product or service without our prior written consent. All such rights are reserved.
+
+\n\nYou should not use this application for commercial and profit making purposes without obtaining a written consent from us.
+
+\n\n2. Third Party Terms.
+\nYou acknowledge that the Platform may contain software or content elements that are available royalty-free or are otherwise available from the public domain or a third party, and are not owned or licensed by Us (\"Third Party Elements\"), and may be subject to Third Party Terms such as an end user license agreement or open source license. Except as may be provided in any applicable Third Party Terms, such Third Party Elements, if any, are included \"as is,\" without permission to use, reproduce, distribute or prepare derivative works from such Third Party Elements, and We make no representation or warranty that such acts will not infringe any rights of such owners or any third party.  To the extent of an inconsistency or conflict between this Agreement and any Third Party Terms, the Third Party Terms shall control for purposes of the applicable Third Party Element(s).
+
+\n\n3. Disclaimer; Limitation of Liability.
+\nThis application is distributed under the terms of the Mozilla Public License, v. 2.0 (MPL 2.0) (http://mozilla.org/MPL/2.0/). The following additional disclaimer of warranty and limitation of liability are hereby incorporated into the terms and conditions of MPL 2.0:
+\nNO WARRANTIES OF ANY KIND WHATSOEVER ARE MADE AS TO THE RESULTS THAT YOU WILL OBTAIN FROM RELYING UPON THE COVERED APPLICATION (OR ANY INFORMATION OR CONTENT OBTAINED BY WAY OF THE COVERED CODE), INCLUDING BUT NOT LIMITED TO COMPLIANCE WITH PRIVACY LAWS OR REGULATIONS OR CLINICAL CARE INDUSTRY STANDARDS AND PROTOCOLS. USE OF THE COVERED APPLICATION IS NOT A SUBSTITUTE FOR A HEALTH CARE PROVIDER’S STANDARD PRACTICE OR PROFESSIONAL JUDGMENT. ANY DECISION WITH REGARD TO THE APPROPRIATENESS OF TREATMENT, OR THE VALIDITY OR RELIABILITY OF INFORMATION OR CONTENT MADE AVAILABLE BY THE COVERED CODE, IS THE SOLE RESPONSIBILITY OF THE HEALTH CARE PROVIDER. CONSEQUENTLY, IT IS INCUMBENT UPON EACH HEALTH CARE PROVIDER TO VERIFY ALL MEDICAL HISTORY AND TREATMENT PLANS WITH EACH PATIENT.
+
+\n\nUNDER NO CIRCUMSTANCES AND UNDER NO LEGAL THEORY, WHETHER TORT (INCLUDING NEGLIGENCE), CONTRACT, OR OTHERWISE, SHALL ANY CONTRIBUTOR, OR ANYONE WHO DISTRIBUTES COVERED SOFTWARE AS PERMITTED BY THE LICENSE, BE LIABLE TO YOU FOR ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL DAMAGES OF ANY CHARACTER INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF GOODWILL, WORK STOPPAGE, COMPUTER FAILURE OR MALFUNCTION, OR ANY AND ALL OTHER DAMAGES OR LOSSES, OF ANY NATURE WHATSOEVER (DIRECT OR OTHERWISE) ON ACCOUNT OF OR ASSOCIATED WITH THE USE OR INABILITY TO USE THE COVERED CONTENT (INCLUDING, WITHOUT LIMITATION, THE USE OF INFORMATION OR CONTENT MADE AVAILABLE BY THE COVERED CODE, ALL DOCUMENTATION ASSOCIATED THEREWITH, AND THE FAILURE OF THE COVERED CODE TO COMPLY WITH PRIVACY LAWS AND REGULATIONS OR CLINICAL CARE INDUSTRY STANDARDS AND PROTOCOLS), EVEN IF SUCH PARTY SHALL HAVE BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+\n\n4. Revision of Terms.
+\nThese Terms constitute the entire agreement between You and Us with respect to the application (except as otherwise expressly provided herein) superseding all other prior agreements that might exist. We may revise the Terms at any time by posting the revised Terms through the application or otherwise notifying you. All revised Terms are automatically effective as soon as they are posted or provided. Your continued use of the application constitutes your agreement to be bound by the revised Terms.
+
+\n\n5. General Provisions.
+\nYou may not assign or transfer Your rights or obligations under these Terms without Our prior written consent. Any other assignment or transfer by You is void. You may not use Our name, logo, or trademark in any manner, including without limitation in any advertising, promotional material, press release, publication, public statement, or announcement, or through any form of other media, written or oral, without Our prior written consent. If any provision of this Agreement is held invalid or unenforceable, such provision shall, to that extent, be deemed omitted, and the balance of this Agreement will be enforceable in accordance with its own terms. These Terms are governed by the laws of the State of Tennessee, USA without regard to principles of conflicts of laws, and the state and federal courts sitting in Nashville, Tennessee, USA shall have proper and exclusive jurisdiction and venue over any disputes arising from or relating to these Terms or the Platform. The Uniform Computer Information Transactions Act, the United Nations Convention on the International Sale of Goods, or any implementation, replacement or similar legislation or standard, shall not apply.
+
+\n\n6. Severability
+\nIf a provision of these terms and conditions is determined by any court or other competent authority to be unlawful and/unenforceable, the other provisions will continue in effect
+
+\n\nIf any unlawful and/or unenforceable provision of these Terms and conditions would be lawful or enforceable by deleting part of it, that part will be deemed to be deleted, and the rest of the provision will continue in effect
+
+\n\n7. Governing Law.
+\nThese Terms are governed by the laws of the State of Tennessee, USA without regard to principles of conflicts of laws, and the state and federal courts sitting in Nashville, Tennessee, USA shall have proper and exclusive jurisdiction and venue over any disputes arising from or relating to this agreement.
+
+\n\n8. Contact Details
+\nIf you have any question or any concerns about the terms, please reach us on mUzimamobile@gmail.com
+</string>
+    <string name="info_update_person_demographics">Update person demographics</string>
+    <string name="info_url_validate">Step 1: Validating URL</string>
+    <string name="info_video_chose_activity_unavailable">Error: Application for choosing video not found</string>
+    <string name="info_video_play_activity_unavailable">Error: Application for playing video not found</string>
+    <string name="info_video_record_activity_unavailable">Error: Application for recording video not found</string>
+    <string name="interactive_help_choose">Choose an Option:</string>
+    <string name="interactive_help_header">Please tell us how we can help you</string>
+    <string name="interactive_help_hint">Type your message</string>
+    <string name="language_english">English</string>
+    <string name="language_french">French</string>
+    <string name="language_gujarati">Gujarati</string>
+    <string name="language_hindi">Hindi</string>
+    <string name="language_portuguese">Portuguese</string>
+    <string name="language_swahili">Swahili</string>
+    <string name="last_encounter_volunteer_name">Volunteer Name:</string>
+    <string name="menu_form_back_to_draft">Back To Draft</string>
+    <string name="message_auto_logout">You will be auto logged off in %d sec</string>
+    <string name="message_feedback_sent">Thank you for your message. \n Your feedback is important for us.</string>
+    <string name="message_help_sent">Thanks for reaching out. \nOur support team will investigate your request. \n
+        We will get back to you as soon as possible.</string>
+    <string name="message_missing_form_encounter_details_error">must be provided</string>
+    <string name="most_recent_arv_pickup">ARV pick-up:</string>
+    <string name="most_recent_arv_pickup_dispensation_mode">Dispensation Mode:</string>
+    <string name="most_recent_clinical_consultation_date">Clinical Consultation Date:</string>
+    <string name="most_recent_viral_load_result">Viral Load Result:</string>
+    <string name="most_recent_viral_load_result_date">Viral Load Result Date:</string>
+    <string name="next_clinical_consultation_date">Next Scheduled Clinical Consultation Date:</string>
+    <string name="next_scheduled_arv_pickup">Next scheduled ARV pick-up:</string>
+    <string name="no_default_encounter_location">No default encounter location</string>
+    <string name="no_description_general">No description</string>
+    <string name="no_email_client">No email client installed on this device. \nPlease install one and then leave your feedback.</string>
+    <string name="observation_details">Observation Details</string>
+    <string name="observation_value">Observation Value:</string>
+    <string name="online_mode_switch">Switch to online mode</string>
+    <string name="online_mode_switch_warning">You have been switched from the offline mode to online mode. While on online mode, all patient data will be deleted from your device when you log out or you are auto logged out.</string>
+    <string name="patient_SHR_search_title_text">Client SHR Search</string>
+    <string name="privacy_policy">
+mUzima is a mobile application that enables health professionals collect, manage and use healthcare data as an extension to the OpenMRS medical record system. The app is built as an open source end user application, which is provided at no cost, and is intended for use as is. If you\'re using the application for an organization, you\'re agreeing to this Privacy Policy on behalf of that organization. If you\'re using the application to provide services, software and content for someone else, you\'re agreeing to this Privacy Policy on their behalf.
+\nIF YOU OR THE ORGANIZATION YOU REPRESENT DOES NOT AGREE TO BE BOUND TO THIS PRIVACY POLICY, YOU SHOULD NOT USE THE MOBILE APPLICATION.
+
+\n\nThird party services
+\nThe application uses third-party services that may collect information used to identify you. The third party service providers used by the app are:
+\nGoogle Play Services: The mUzima mobile application is built to run on the Android Operating system and is primarily distributed via theGoogle playstore. For this reason, your use of the mUzima mobile application is bound by the Google privacy policy with the use of Google services on the Android platform, that is available here:  https://www.google.com/policies/privacy/
+\nFirebase Crashlytics and analytics: In case of an error in the app, such as the application crashing, we collect data and information (through third-party products) on your phone called Crashlytics data. This Crashlytics data may include information such as device name, operating system version, the configuration of the app when utilizing our application, as well as the time and date of your use of the application. Other data that could be collected depending on your settings  include location information. The use of the mUzima mobile application is therefore bound by the Firebase privacy policy available here: https://firebase.google.com/support/privacy.
+
+\n\nCookies
+\nCookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device\'s internal memory.
+
+\n\nmUzima app does not use these \"cookies\" explicitly. However, the app may use third party code and libraries that use \"cookies\" to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse the cookies, you may not be able to use some portions of this Service.
+
+\n\nLocation Data
+\nmUzima mobile application comes with optional features that may need access to the precise or approximate location of the device. The features are:
+\nRecording patient address:
+\nGPS addresses of patients may be stored as part of information stored in the secure OpenMRS medical record system. mUzima provides the ability to set the address of a patient record, so as to update the record in the OpenMRS medical record system.
+\nNavigating to the patient’s address:
+\nmUzima provides the Geomapping feature to enable the user/provider to get directions (via Google maps app on Android device) to the patient\'s GPS location as indicated by the medical record.
+
+\n\nThe GPS location information collected via the mobile application is purely for the features localized within the implementation and will in no way be shared with mUzima or any third party. The application may use the location information if you grant it the permissions to do so. You can enable or disable location services when you use our application at any time, through your device settings. Your implementation administrator can enable or disable the optional features that need location data via the application settings.
+\nA link to a video that demonstrates the mUzima’s GPS features can be found here:
+\nhttps://drive.google.com/file/d/1CiiP6xodoQ55FMJZwBFdnYEhTbP1_jM4/view?usp=sharing.
+
+\n\nSecurity
+\nWe value your trust in our application. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security.
+
+\nPlease be aware that certain Personal Information and other information provided by you in connection with your use of the application may be stored on your device (even if we do not collect that information). You are solely responsible for maintaining the security of your device from unauthorized access.
+
+\n\nChanges to This Privacy Policy
+\nWe may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.
+
+\n\nContact Us
+\nIf you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us through mUzima.mobile@gmail.com
+    </string>
+    <string name="provider_details">Provider Details</string>
+    <string name="provider_identifier">Provider Identifier:</string>
+    <string name="provider_name">Provider Name:</string>
+    <string name="provider_name_general">Provider Name</string>
+    <string name="provider_reports_general">Provider Reports</string>
+    <string name="registering_patient_message_title_text">Registering client in mUzima…</string>
+    <string name="relationship_create_success">Relationship created successfully</string>
+    <string name="relationship_delete_fail">Cannot delete the relationship as it is already saved on the server. Contact the Administrator</string>
+    <string name="relationship_to_self_error">Client cannot relate to him/herself</string>
+    <string name="select_a_registration_form_text">Select a registration form</string>
+    <string name="select_a_relationship_form_text">Select a form</string>
+    <string name="send_general_text">Send</string>
+    <string name="shr_registration">SHR Registration</string>
+    <string name="shr_registration_description">SHR Registration Data</string>
+    <string name="success_writing_smartcard">Smart card data was written successfully.</string>
+    <string name="title_about_dashboard_help_html">About Dashboard</string>
+    <string name="title_active_setup_config">Active Setup Config</string>
+    <string name="title_activity_audio">Add Audio</string>
+    <string name="title_activity_client_reports">Client Reports</string>
+    <string name="title_activity_client_summary">Client Summary</string>
+    <string name="title_activity_image">Add Image</string>
+    <string name="title_activity_video">Add Video</string>
+    <string name="title_advanced_setup_help_html">Initial setup for mUzima</string>
+    <string name="title_app_language">Language</string>
+    <string name="title_audio_caption">Audio Caption</string>
+    <string name="title_audio_choose">Choose Audio</string>
+    <string name="title_audio_record">Record Audio</string>
+    <string name="title_auto_logout">Auto Logout</string>
+    <string name="title_client_location">Client Location</string>
+    <string name="title_client_location_update">Update Client location</string>
+    <string name="title_client_registration_help_video">Client registration</string>
+    <string name="title_clients_locations">Clients Locations</string>
+    <string name="title_cohort_download_help_video">Cohorts download (on demand)</string>
+    <string name="title_concept_download_help_video">Concepts download (on demand)</string>
+    <string name="title_data_reset">Step 3: Resetting Data</string>
+    <string name="title_data_synchronize">Step 2: Synchronising Local Data</string>
+    <string name="title_default_encounter_location">Default Encounter Location</string>
+    <string name="title_default_encounter_provider">Default encounter provider</string>
+    <string name="title_duplicate_form_data_warning">Duplicate form data warning</string>
+    <string name="title_enable_gps">Enable GPS</string>
+    <string name="title_enable_shr">Enable SHR</string>
+    <string name="title_fill_patient_forms_help">Fill out forms for a client</string>
+    <string name="title_font_size">Font size</string>
+    <string name="title_form_auto_save_interval">Automatic form save interval (mins)</string>
+    <string name="title_form_data_complete">Unsynced Form Data</string>
+    <string name="title_form_data_incomplete">Incomplete Form Data</string>
+    <string name="title_form_download_help_video">Forms download (on demand)</string>
+    <string name="title_gps_location">GPS Location</string>
+    <string name="title_guided_setup">Guided Setup</string>
+    <string name="title_guided_setup_help_video">Guided initial setup</string>
+    <string name="title_guided_setup_progress">Setup Progress</string>
+    <string name="title_guided_setup_wizard">Guided Setup Wizard</string>
+    <string name="title_help_video_links">mUzima Video Links</string>
+    <string name="title_html_help">Help Center</string>
+    <string name="title_image_caption">Image Caption</string>
+    <string name="title_image_capture">Capture Image</string>
+    <string name="title_image_choose">Choose Image</string>
+    <string name="title_install_psmart">Install P-Smart app</string>
+    <string name="title_internet_connection_failure">Internet connection failure</string>
+    <string name="title_last_logged_in">Date Last Logged In</string>
+    <string name="title_light_mode">Enable Day Mode</string>
+    <string name="title_local_client_search_help_video">Client search (local)</string>
+    <string name="title_logged_in_user">Logged In User</string>
+    <string name="title_logo">MuzimaLogo</string>
+    <string name="title_logout_confirm">Confirmation!</string>
+    <string name="title_manage_concept">Manage concepts</string>
+    <string name="title_manage_location">Manage locations</string>
+    <string name="title_manage_provider">Manage providers</string>
+    <string name="title_media_preview">Preview Media</string>
+    <string name="title_missing_form_encounter_details_error">Missing Encounter Details</string>
+    <string name="title_muzima_disclaimer">mUzima Disclaimer</string>
+    <string name="title_pick_location">Pick Location</string>
+    <string name="title_privacy_policy">Privacy Policy</string>
+    <string name="title_provider_not_set">Unable to set as Provider</string>
+    <string name="title_provider_reports">Provider Reports</string>
+    <string name="title_qrcode">QR code</string>
+    <string name="title_real_time_sync">Automatic sync</string>
+    <string name="title_real_time_sync_setting_unchanged">Automatic sync preference not changed</string>
+    <string name="title_require_medical_record_number">Require medical record number</string>
+    <string name="title_search_server">Search server</string>
+    <string name="title_server_client_search_help_video">Client search (against server)</string>
+    <string name="title_session_timeout">Session timeout (mins)</string>
+    <string name="title_set_client_location">Set Client location</string>
+    <string name="title_setting_refresh">Refresh Setting</string>
+    <string name="title_settings_help_html">mUzima Settings</string>
+    <string name="title_setup_method">Setup Method</string>
+    <string name="title_video_caption">Video Caption</string>
+    <string name="title_video_choose">Choose Video</string>
+    <string name="title_video_record">Record Video</string>
+    <string name="to_text">To</string>
+    <string name="tpt_end_date">TPT end date:</string>
+    <string name="tpt_start_date">TPT start date:</string>
+    <string name="warning_auto_save_interval">Auto Save Interval: Could not set auto save interval. \nPlease enter a value between 1 and 120.</string>
+    <string name="warning_form_close">Closing Form: This will discard all your changes. Are you sure you would like to do this?</string>
+    <string name="warning_form_data_already_exists">This Form Data already exists for this client with same encounter date.</string>
+    <string name="warning_forms_complete_and_sync">%s contains some associated forms with it. Please complete and sync
+        those forms before downloading a newer version.
+    </string>
+    <string name="warning_incompatible_module">Your current mUzima application is not compatible with the server. Please contact your administrator.</string>
+    <string name="warning_individual_form_data_delete">You are about to delete individual observation. Are you sure?</string>
+    <string name="warning_invalid_url_provided">The URL you have provided is invalid</string>
+    <string name="warning_logout_confirm">Are you sure you want to log out and exit mUzima app?</string>
+    <string name="warning_logout_confirm_with_form_deletion">Are you sure you want to log out and exit mUzima app? All Complete and incomplete forms will be deleted</string>
+    <string name="warning_new_no_enough_space">You don\'t have enough space for media, you need %s more space for media download.</string>
+    <string name="warning_new_version_available">A new version of mUzima (v%s) is available.\n\nYou can continue using the mUzima while downloading the update. Once the download is complete you will be notified and asked for permission to install the new version. Please grant permission once requested.\n\nProceed to update?</string>
+    <string name="warning_registration_form_data_delete">You are about to delete registration data. This will also
+        delete client record on device. Are you sure?
+    </string>
+    <string name="warning_related_person_missing">Please choose a related person</string>
+    <string name="warning_relationship_exists" formatted="false">Client already has %s:%s relationship with %s</string>
+    <string name="warning_relationship_type_missing">Please choose a relationship type</string>
+    <string name="warning_session_timeout">Session Timeout: Could not set session timeout. Please enter a value between 1 and 500.</string>
+    <string name="warning_setting_download_failure">Could not download or update setting</string>
+    <string name="warning_switch_server">Switching Server: This will clear all mUzima data on your
+        device, including any incomplete forms. Are you sure you want to change this setting?
+    </string>
+    <string name="write_SHR_to_card_text">Write SHR to Card</string>
+    <string name="write_shr_to_card_general">Write SHR to card</string>
+    <string name="general_choose">Choose...</string>
+    <string name="warning_new_user_login">You are login in as a new user to the application, the application will reset for new setup. Do you want to proceed?</string>
+    <string name="last_allocation_volunteer">Alocado para</string>
+    <string name="general_error">Error!</string>
+    <string name="attempt_number_limit_reached">Number of visit attempts exceeded!</string>
+    <string name="visit_made_sucessfully">Visit already made sucessfully!</string>
+    <string name="todos_utentes">Todos os Utentes</string>
+    <string name="general_open_registration_form">Open registration form</string>
+    <string name="info_cannot_find_person_on_list">I cannot find the person on the list.</string>
+    <string name="info_similar_people_found_msg">Below is a list of people who seem similar to the one you are about to create.</string>
+    <string name="info_similar_people_found_tip">If the person you are in the process of creating already exists, select them from the list. Otherwise click the button below to continue creating a new person.</string>
+    <string name="title_found_similar_people">Found Similar People</string>
+    <string name="general_person_name">Person Name:</string>
+    <string name="general_gender">Gender:</string>
+    <string name="general_male">Male</string>
+    <string name="general_birthdate">Birthdate:</string>
+    <string name="general_proceed">Proceed</string>
+    <string name="general_or_age">Or Age:</string>
+    <string name="general_female">Female</string>
+    <string name="general_more">More</string>
+    <string name="general_less">Less</string>
+
+    <string name="htc_identification_data">Identificação do Utente</string>
+    <string name="htc_retesting">Retestagem do ATS</string>
+
+    <string name="htc_book_info">Informação do Livro</string>
+    <string name="book_number">Número do livro</string>
+    <string name="book_page_number">Página do livro</string>
+    <string name="book_page_line">Linha</string>
+    <string name="testing_sector">Sector de testagem</string>
+
+    <string name="ats_testing_data">Dados do ATS</string>
+    <string name="testing_date">Data do teste *</string>
+    <string name="select_testing_date">Seleccione a data do teste</string>
+    <string name="pop_keys_miners">Pop Chaves e Mineiros</string>
+    <string name="index_case_contacts">Contacto de Casos Índice</string>
+    <string name="self_test_confirmation">Confirmação de Autoteste</string>
+    <string name="hiv_positive_results">Resultado HIV</string>
+
+    <string name="historical_testing_data">Historial de Testagem</string>
+    <string name="first_time_testing">Testado pela 1ª vez</string>
+    <string name="positive_in_the_past">Positivo no Passado</string>
+
+    <string name="testing_date_format_error">Preencha correctamente a data de teste!</string>
+    <string name="general_success">Sucesso</string>
+    <string name="record_saved_sucessfull">Registo feito com sucesso!</string>
+
+    <string name="htc_person_mandatory_fields">Os campos marcados com * são obrigatórios</string>
+    <string name="htc_person_register">ATS - Registo de Pessoa</string>
+
+    <string name="person_exist_in_sesp_field">Pessoa existe no SESP?</string>
+
+    <string name="htc_person_name_mandatory">Nome é obrigatório, e não pode conter símbolos ou números</string>
+    <string name="htc_person_surname_mandatory">Apelido é obrigatório, e não pode conter símbolos ou números</string>
+    <string name="htc_person_phone_number_error">O telefone deve conter 9 dígitos numéricos, com o primeiro dígito 8</string>
+    <string name="info_htc_person_download">Baixando registos de pessoas testadas</string>
+    <string name="info_htc_persons_download">Baixando Pessoas Testadas</string>
+    <string name="info_htc_person_not_downloaded">Não baixou registos de pessoas testadas</string>
+    <string name="error_htc_persons_download">Não foi possível baixar pessoastestadas</string>
+    <string name="info_htc_person_downloaded">Baixou uma pessoa testada</string>
+    <string name="info_htc_persons_downloaded">Baixou %d pessoas testadas</string>
+    <string name="error_htc_person_download">Não consuguiu baixar pessoas testadas</string>
+    <string name="info_htc_data_upload">Sincronizando novos dados de ATS para o servidor</string>
+    <string name="info_htc_data_upload_success">Sincronização dos dados de ATS efectuada com sucesso.</string>
+    <string name="htc_person_age_error">Idade deve conter no máximo 3 dígitos e deve estar entre 0 e 100</string>
+    <string name="htc_data_register">Formulário do ATS</string>
+    <string name="htc">mUzima ATS</string>
+
+    <string name="general_birth_date">Data de Nascimento *</string>
+    <string name="general_age">Idade *</string>
+    <string name="record_updated_successful">Registo actualizado com sucesso!</string>
+    <string name="htc_save_error">Erro ao gravar ATS!</string>
+    <string name="htc_person_no_identifier">Sem Identificador</string>
+    <string name="htc_search_persons_or_patients">Pesquisa de pessoas/pacientes</string>
+    <string name="welcome_message">Bem vindo, </string>
+    <string name="fill_the_intended_name_to_search_on_sesp">Indique o nome ou identificador da pessoa que pretende pesquisar no SESP!</string>
+    <string name="person_search">Pesquisa de Pessoas/Utentes</string>
+    <string name="no_search_results">Nenhum resultado foi encontrado.</string>
+    <string name="htc_person_gender_mandatory">O sexo é obrigatório.</string>
+    <string name="htc_person_exist_in_sesp_error">Deve indicar a secção ´Pessoa existe no SESP?´</string>
+
+    <string-array name="personExistsInSESPOptions">
+        <item></item>
+        <item>Sim</item>
+        <item>Não</item>
+        <item>Não sei</item>
+    </string-array>
+
+    <string-array name="testingSectors">
+        <item></item>
+        <item>UATS</item>
+        <item>Consultas Externas</item>
+        <item>Triagem</item>
+        <item>Enfermaria</item>
+        <item>Banco de Socorros</item>
+        <item>Outro ATIP</item>
+        <item>SMI</item>
+        <item>TB</item>
+        <item>ATS-C</item>
+        <item>Outro</item>
+    </string-array>
+
+    <string-array name="popKeysMiners">
+        <item></item>
+        <item>MTS</item>
+        <item>HSH</item>
+        <item>PID</item>
+        <item>REC</item>
+        <item>TG</item>
+        <item>MIN</item>
+    </string-array>
+
+    <string-array name="indexCaseContacts">
+        <item></item>
+        <item>Par. Sex</item>
+        <item>Filho &lt;15</item>
+        <item>Mãe/Pai do CI (&lt;15)</item>
+    </string-array>
+</resources>

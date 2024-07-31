@@ -263,6 +263,8 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                                 pageCountForFilter = patientController.countPatients(filter.getCohortWithFilter().getCohort().getUuid());
                                 patientCount += pageCountForFilter;
 
+                                if (pageCountForFilter <= 0) patients = new ArrayList<>();
+
                                 int pages = new Double(Math.ceil((float) pageCountForFilter / pageSize)).intValue();
                                 for (int page = 1; page <= pages; page++) {
 

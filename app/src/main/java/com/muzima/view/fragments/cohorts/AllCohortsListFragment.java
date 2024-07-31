@@ -34,6 +34,7 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
 import com.muzima.view.patients.SyncPatientDataIntent;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 

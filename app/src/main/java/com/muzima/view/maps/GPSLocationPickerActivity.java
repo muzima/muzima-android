@@ -11,13 +11,10 @@
 package com.muzima.view.maps;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationListener;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,14 +40,11 @@ import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
-import com.muzima.view.patients.PatientLocationMapActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import static android.webkit.ConsoleMessage.MessageLevel.ERROR;
-import static com.muzima.service.MuzimaGPSLocationService.REQUEST_LOCATION;
-import static com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE;
 import static java.text.MessageFormat.format;
 
 public class GPSLocationPickerActivity extends BroadcastListenerActivity {
@@ -93,7 +87,7 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_LOCATION) {
+        if (requestCode == MuzimaGPSLocationService.REQUEST_LOCATION) {
             if (resultCode != Activity.RESULT_OK) {
                 Toast.makeText(this, getString(R.string.error_current_gps_not_obtained), Toast.LENGTH_LONG).show();
                 latitude = "0.5117";
@@ -110,7 +104,7 @@ public class GPSLocationPickerActivity extends BroadcastListenerActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //ToDo: Pass request code as parameter to gpslocationservice
-        if (requestCode == LOCATION_ACCESS_PERMISSION_REQUEST_CODE) {
+        if (requestCode == com.muzima.utils.Constants.MuzimaGPSLocationConstants.LOCATION_ACCESS_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 checkAndRequestGPSPermissions();
             } else {

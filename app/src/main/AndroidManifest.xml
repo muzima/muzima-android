@@ -15,7 +15,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.GET_TASKS" />
@@ -47,6 +49,23 @@
         android:requestLegacyExternalStorage="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup">
+        <activity
+            android:name="com.muzima.view.htc.HTCFormActivity"
+            android:theme="@style/AppBaseTheme.Light.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name="com.muzima.view.person.PersonRegisterActivity"
+            android:theme="@style/AppBaseTheme.Light.NoActionBar"
+            android:exported="false" />
+        <activity
+                android:name="com.muzima.view.person.SearchSESPPersonActivity"
+                android:theme="@style/AppBaseTheme.Light.NoActionBar"
+                android:exported="false" />
+        <activity
+            android:name="com.muzima.view.main.HTCMainActivity"
+            android:exported="false"
+            android:theme="@style/AppBaseTheme.Light.NoActionBar" />
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

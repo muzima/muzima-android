@@ -104,6 +104,37 @@ public class HTMLFormObservationCreator {
         return observationParserUtility.getNewConceptList();
     }
 
+    public void parseObservationsJSONResponse(String jsonResponse, String formDataUuid) {
+        try {
+            JSONObject responseJSON = new JSONObject(jsonResponse);
+            if(parseAsObsForPerson){
+                person = getPerson(responseJSON.getJSONObject("patient"));
+            } else {
+                person = getPatient(responseJSON.getJSONObject("patient"));
+            }
+            encounter = createEncounter(responseJSON.getJSONObject("encounter"), formDataUuid);
+
+            if (responseJSON.has("observation")) {
+                observations = extractObservationFromJSONObject(responseJSON.getJSONObject("observation"));
+            }
+
+            if (responseJSON.has("derivedObservations")) {
+                derivedObservations = extractDerivedObservationFromJSONObject(responseJSON.getJSONObject("derivedObservations"));
+            }
+
+        } catch (PatientController.PatientLoadException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching Patient", e);
+        } catch (PersonController.PersonLoadException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching Person", e);
+        } catch (ConceptController.ConceptFetchException e) {
+            Log.e(getClass().getSimpleName(), "Error while fetching Concept", e);
+        }catch (JSONException | ParseException e) {
+            Log.e(getClass().getSimpleName(), "Error while parsing response JSON", e);
+        } catch (ConceptController.ConceptSaveException e) {
+            Log.e(getClass().getSimpleName(), "Error while saving newly created concept", e);
+        }
+    }
+
     private void parseJSONResponse(String jsonResponse, String formDataUuid) {
         try {
             JSONObject responseJSON = new JSONObject(jsonResponse);

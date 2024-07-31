@@ -23,9 +23,7 @@ import com.muzima.controller.ObservationController;
 import com.muzima.model.FormWithData;
 import com.muzima.utils.StringUtils;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import static com.muzima.view.patients.PatientSummaryActivity.PATIENT_UUID;
+import com.muzima.view.patients.PatientSummaryActivity;
 
 public class IncompleteFormsListFragment extends FormsWithDataListFragment implements FormsAdapter.MuzimaClickListener{
 
@@ -38,7 +36,7 @@ public class IncompleteFormsListFragment extends FormsWithDataListFragment imple
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        String filterPatientUuid = getActivity().getIntent().getStringExtra(PATIENT_UUID);
+        String filterPatientUuid = getActivity().getIntent().getStringExtra(PatientSummaryActivity.PATIENT_UUID);
         listAdapter = new IncompleteFormsWithDataAdapter(getActivity(), R.layout.item_form_with_data_layout,filterPatientUuid,formController, observationController);
         ((IncompleteFormsWithDataAdapter)listAdapter).setMuzimaClickListener(this);
         noDataMsg = getActivity().getResources().getString(R.string.info_incomplete_form_unavailable);

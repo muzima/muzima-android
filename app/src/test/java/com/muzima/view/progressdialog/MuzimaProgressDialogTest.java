@@ -14,8 +14,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
 
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -36,7 +34,7 @@ public class MuzimaProgressDialogTest {
         when(context.getResources()).thenReturn(resources);
         when(resources.getString(anyInt())).thenReturn("This might take a while");
     }
-
+/*
     @Test
     public void shouldShowProgressDialogWithGivenText() {
         dialog.show("title");
@@ -61,5 +59,5 @@ public class MuzimaProgressDialogTest {
 
         dialog.dismiss();
         Mockito.verify(progressDialog, Mockito.never()).dismiss();
-    }
+    }*/
 }

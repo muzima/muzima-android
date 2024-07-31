@@ -11,24 +11,13 @@
 package com.muzima.controller;
 
 import com.muzima.api.model.Encounter;
-import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LastSyncTimeService;
 import com.muzima.service.SntpService;
-import com.muzima.utils.StringUtils;
-import com.muzima.api.model.EncounterType;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static com.muzima.api.model.APIName.DOWNLOAD_ENCOUNTERS;
-import static com.muzima.util.Constants.UUID_SEPARATOR;
-import static java.util.Arrays.asList;
 
 public class EncounterController {
 

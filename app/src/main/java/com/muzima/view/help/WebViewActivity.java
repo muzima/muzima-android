@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import com.muzima.R;
-import com.muzima.view.help.BaseHelpActivity;
 
 public class WebViewActivity extends BaseHelpActivity {
 

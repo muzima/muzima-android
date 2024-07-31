@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.muzima.utils.Constants;
+
 abstract class PreferenceService {
     final Context context;
 
@@ -56,7 +58,7 @@ abstract class PreferenceService {
     }
 
     void putStringSet(Set<String> values, SharedPreferences.Editor editor) {
-        editor.putString(com.muzima.utils.Constants.FORM_TAG_PREF_KEY, serialize(values));
+        editor.putString(Constants.FORM_TAG_PREF_KEY, serialize(values));
         editor.commit();
     }
 }

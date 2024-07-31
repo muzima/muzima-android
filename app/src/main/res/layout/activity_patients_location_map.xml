@@ -12,7 +12,7 @@
                 xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
                 android:id="@+id/patients_location_map"
                 android:layout_height="fill_parent"
-                tools:context=".view.patients.PatientsLocationMapActivity">
+                tools:context="com.muzima.view.patients.PatientsLocationMapActivity">
     <WebView
             android:id="@+id/webview"
             android:layout_alignParentTop="true"

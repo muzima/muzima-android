@@ -25,7 +25,6 @@ import com.muzima.adapters.reports.AvailableReportsAdapter;
 import com.muzima.model.AvailableForm;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
-import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
 
 import static android.view.View.INVISIBLE;

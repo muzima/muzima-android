@@ -140,7 +140,8 @@ public class RelationshipTypesAdapter extends ListAdapter<RelationshipTypeWrap> 
                         }
                     }
                 }
-            }catch(RelationshipController.RetrieveRelationshipTypeException | MuzimaSettingController.MuzimaSettingFetchException e){
+            }catch(RelationshipController.RetrieveRelationshipTypeException |
+                   MuzimaSettingController.MuzimaSettingFetchException e){
                 Log.e(this.getClass().getSimpleName(),"Could not get relationship types",e);
             }
 

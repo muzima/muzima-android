@@ -27,6 +27,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -91,14 +92,13 @@ import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.custom.ActivityWithBottomNavigation;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.patients.PatientsLocationMapActivity;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.muzima.utils.smartcard.SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE;
 
 public class MainDashboardActivity extends ActivityWithBottomNavigation implements CohortFilterAdapter.CohortFilterClickedListener {
     private static final int RC_BARCODE_CAPTURE = 9001;
@@ -141,11 +141,14 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         languageUtil.onCreate(MainDashboardActivity.this);
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_main, null);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(mainLayout);
         loadBottomNavigation();
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
         loadCohorts(false);
+
 
         tagPreferenceService = new TagPreferenceService(this);
         initDrawer();
@@ -501,7 +504,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     protected void onActivityResult(int requestCode, int resultCode, Intent dataIntent) {
         super.onActivityResult(requestCode, resultCode, dataIntent);
         switch (requestCode) {
-            case SMARTCARD_READ_REQUEST_CODE:
+            case SmartCardIntentIntegrator.SMARTCARD_READ_REQUEST_CODE:
                 processSmartCardReadResult(requestCode, resultCode, dataIntent);
                 break;
             case RC_BARCODE_CAPTURE:
