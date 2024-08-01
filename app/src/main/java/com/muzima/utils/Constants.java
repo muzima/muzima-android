@@ -136,6 +136,7 @@ public class Constants {
             public static final int INVALID_CREDENTIALS_ERROR = 15;
             public static final int INVALID_CHARACTER_IN_USERNAME = 16;
             public static final String INVALID_CHARACTER_FOR_USERNAME = ",;.-/@#$%&*+='\"|~`<>";
+            public static final int SYNC_COHORT_RUNNING_ON_SERVER_SIDE_ERROR = 17;
         }
 
         public static class MuzimaJobSchedulerConstants {
