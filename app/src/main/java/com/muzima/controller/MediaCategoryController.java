@@ -5,6 +5,7 @@ import static com.muzima.api.model.APIName.DOWNLOAD_MEDIA_CATEGORIES;
 
 import android.util.Log;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.LastSyncTime;
 import com.muzima.api.model.MediaCategory;
 import com.muzima.api.model.SetupConfigurationTemplate;
@@ -26,13 +27,15 @@ public class MediaCategoryController {
     private final LastSyncTimeService lastSyncTimeService;
     private final SntpService sntpService;
     private final SetupConfigurationService setupConfigurationService;
+    private final MuzimaApplication muzimaApplication;
     
     public MediaCategoryController(MediaCategoryService mediaCategoryService, LastSyncTimeService lastSyncTimeService,
-                                   SntpService sntpService, SetupConfigurationService setupConfigurationService) {
+                                   SntpService sntpService, SetupConfigurationService setupConfigurationService, MuzimaApplication muzimaApplication) {
         this.mediaCategoryService = mediaCategoryService;
         this.lastSyncTimeService = lastSyncTimeService;
         this.sntpService = sntpService;
         this.setupConfigurationService = setupConfigurationService;
+        this.muzimaApplication = muzimaApplication;
     }
 
     public List<MediaCategory> downloadMediaCategory(List<String> mediaCategoryUuids, boolean isDelta)
@@ -66,27 +69,40 @@ public class MediaCategoryController {
 
     public ArrayList<MediaCategory> getMediaCategoryAsPerConfigOrder() throws IOException {
         List<SetupConfigurationTemplate> setupConfigurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
-        ArrayList<MediaCategory> mediaCategories = new ArrayList<>();
-        for (SetupConfigurationTemplate setupConfigurationTemplate : setupConfigurationTemplates) {
-            org.json.JSONObject object = null;
-            try {
-                object = new org.json.JSONObject(setupConfigurationTemplate.getConfigJson());
-                org.json.JSONObject categories = object.getJSONObject("config");
-                org.json.JSONArray categoriesArray = categories.getJSONArray("mediaCategories");
-                for (int i = 0; i < categoriesArray.length(); i++) {
-                    org.json.JSONObject categoriesObject = categoriesArray.getJSONObject(i);
-                    MediaCategory mediaCategory = mediaCategoryService.getMediaCategoriesByUuid(categoriesObject.get("uuid").toString());
-                    if (mediaCategory != null) {
-                        mediaCategories.add(mediaCategory);
-                    } else {
-                        Log.d(getClass().getSimpleName(), "Could not find media category with uuid = " + categoriesObject.get("uuid").toString() +
-                                " specified in setup config with uuid = " + setupConfigurationTemplate.getUuid());
-                    }
-                }
-            } catch (JSONException e) {
-                Log.e(getClass().getSimpleName(), "Encountered JsonException while sorting media categories");
-            }
+
+        SetupConfigurationTemplate activeSetupConfig = null;
+        try{
+            activeSetupConfig = muzimaApplication.getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Cannot load active config",e);
         }
+
+        if(activeSetupConfig == null){
+            List<SetupConfigurationTemplate> configurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
+            activeSetupConfig = configurationTemplates.get(0);
+        }
+
+        ArrayList<MediaCategory> mediaCategories = new ArrayList<>();
+
+        org.json.JSONObject object = null;
+        try {
+            object = new org.json.JSONObject(activeSetupConfig.getConfigJson());
+            org.json.JSONObject categories = object.getJSONObject("config");
+            org.json.JSONArray categoriesArray = categories.getJSONArray("mediaCategories");
+            for (int i = 0; i < categoriesArray.length(); i++) {
+                org.json.JSONObject categoriesObject = categoriesArray.getJSONObject(i);
+                MediaCategory mediaCategory = mediaCategoryService.getMediaCategoriesByUuid(categoriesObject.get("uuid").toString());
+                if (mediaCategory != null) {
+                    mediaCategories.add(mediaCategory);
+                } else {
+                    Log.d(getClass().getSimpleName(), "Could not find media category with uuid = " + categoriesObject.get("uuid").toString() +
+                            " specified in setup config with uuid = " + activeSetupConfig.getUuid());
+                }
+            }
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Encountered JsonException while sorting media categories");
+        }
+
         return mediaCategories;
     }
 
