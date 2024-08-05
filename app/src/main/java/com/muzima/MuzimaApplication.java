@@ -671,7 +671,7 @@ public class MuzimaApplication extends MultiDexApplication {
     public MediaCategoryController getMediaCategoryController() {
         if (mediaCategoryController == null) {
             try {
-                mediaCategoryController = new MediaCategoryController(muzimaContext.getMediaCategoryService(), muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getSetupConfigurationService());
+                mediaCategoryController = new MediaCategoryController(muzimaContext.getMediaCategoryService(), muzimaContext.getLastSyncTimeService(), getSntpService(), muzimaContext.getSetupConfigurationService(), this);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

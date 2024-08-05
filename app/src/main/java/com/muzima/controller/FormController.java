@@ -1186,27 +1186,36 @@ public class FormController {
     }
 
     public ArrayList<String> getFormListAsPerConfigOrder() throws IOException {
-        List<SetupConfigurationTemplate> setupConfigurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
         ArrayList<String> formUuids = new ArrayList<>();
-        for (SetupConfigurationTemplate setupConfigurationTemplate : setupConfigurationTemplates) {
-            org.json.JSONObject object = null;
-            try {
-                object = new org.json.JSONObject(setupConfigurationTemplate.getConfigJson());
-                org.json.JSONObject forms = object.getJSONObject("config");
-                org.json.JSONArray formsArray = forms.getJSONArray("forms");
-                for (int i = 0; i < formsArray.length(); i++) {
-                    org.json.JSONObject formObject = formsArray.getJSONObject(i);
-                    Form form = formService.getFormByUuid(formObject.get("uuid").toString());
-                    if (form != null) {
-                        formUuids.add(formObject.get("uuid").toString());
-                    } else {
-                        Log.d(getClass().getSimpleName(), "Could not find form with uuid = " + formObject.get("uuid").toString() +
-                                " specified in setup config with uuid = " + setupConfigurationTemplate.getUuid());
-                    }
+        SetupConfigurationTemplate activeSetupConfig = null;
+        try{
+            activeSetupConfig = muzimaApplication.getSetupConfigurationController().getActiveSetupConfigurationTemplate();
+        } catch (SetupConfigurationController.SetupConfigurationFetchException e) {
+            Log.e(getClass().getSimpleName(), "Cannot load active config",e);
+        }
+
+        if(activeSetupConfig == null){
+            List<SetupConfigurationTemplate> configurationTemplates = setupConfigurationService.getSetupConfigurationTemplates();
+            activeSetupConfig = configurationTemplates.get(0);
+        }
+
+        org.json.JSONObject object = null;
+        try {
+            object = new org.json.JSONObject(activeSetupConfig.getConfigJson());
+            org.json.JSONObject forms = object.getJSONObject("config");
+            org.json.JSONArray formsArray = forms.getJSONArray("forms");
+            for (int i = 0; i < formsArray.length(); i++) {
+                org.json.JSONObject formObject = formsArray.getJSONObject(i);
+                Form form = formService.getFormByUuid(formObject.get("uuid").toString());
+                if (form != null) {
+                    formUuids.add(formObject.get("uuid").toString());
+                } else {
+                    Log.d(getClass().getSimpleName(), "Could not find form with uuid = " + formObject.get("uuid").toString() +
+                            " specified in setup config with uuid = " + activeSetupConfig.getUuid());
                 }
-            } catch (JSONException e) {
-                Log.e(getClass().getSimpleName(), "Encountered JsonException while sorting forms");
             }
+        } catch (JSONException e) {
+            Log.e(getClass().getSimpleName(), "Encountered JsonException while sorting forms");
         }
         return formUuids;
     }

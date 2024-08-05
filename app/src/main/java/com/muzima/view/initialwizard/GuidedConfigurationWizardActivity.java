@@ -1264,7 +1264,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             if (objects != null) {
                 for (Object object : objects) {
                     JSONObject cohort = (JSONObject) object;
-                    conceptsUuids.add((String) cohort.get("uuid"));
+                    if(!conceptsUuids.contains((String) cohort.get("uuid"))) {
+                        conceptsUuids.add((String) cohort.get("uuid"));
+                    }
                 }
             }
         }
@@ -1278,7 +1280,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             if (objects != null) {
                 for (Object object : objects) {
                     JSONObject cohort = (JSONObject) object;
-                    providerUuids.add((String) cohort.get("uuid"));
+                    if(!providerUuids.contains((String) cohort.get("uuid"))) {
+                        providerUuids.add((String) cohort.get("uuid"));
+                    }
                 }
             }
         }
@@ -1291,8 +1295,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             List<Object> objects = JsonUtils.readAsObjectList(template.getConfigJson(), "$['config']['locations']");
             if (objects != null) {
                 for (Object object : objects) {
-                    JSONObject cohort = (JSONObject) object;
-                    locationUuids.add((String) cohort.get("uuid"));
+                    JSONObject location = (JSONObject) object;
+                    if(!locationUuids.contains((String) location.get("uuid")))
+                        locationUuids.add((String) location.get("uuid"));
                 }
             }
         }
@@ -1306,7 +1311,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             if (objects != null) {
                 for (Object object : objects) {
                     JSONObject cohort = (JSONObject) object;
-                    formsuuids.add((String) cohort.get("uuid"));
+                    if(!formsuuids.contains((String) cohort.get("uuid"))) {
+                        formsuuids.add((String) cohort.get("uuid"));
+                    }
                 }
             }
         }
@@ -1320,7 +1327,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             if (objects != null) {
                 for (Object object : objects) {
                     JSONObject cohort = (JSONObject) object;
-                    cohortUuids.add((String) cohort.get("uuid"));
+                    if(!cohortUuids.contains((String) cohort.get("uuid"))) {
+                        cohortUuids.add((String) cohort.get("uuid"));
+                    }
                 }
             }
         }
@@ -1334,7 +1343,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             if (objects != null) {
                 for (Object object : objects) {
                     JSONObject derivedConcept = (JSONObject) object;
-                    derivedConceptsUuids.add((String) derivedConcept.get("uuid"));
+                    if(!derivedConceptsUuids.contains((String) derivedConcept.get("uuid"))) {
+                        derivedConceptsUuids.add((String) derivedConcept.get("uuid"));
+                    }
                 }
             }
         }
@@ -1488,7 +1499,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             if (objects != null) {
                 for (Object object : objects) {
                     JSONObject dataset = (JSONObject) object;
-                    datasetIds.add((Integer) dataset.get("id"));
+                    if(!datasetIds.contains((Integer) dataset.get("id"))) {
+                        datasetIds.add((Integer) dataset.get("id"));
+                    }
                 }
             }
         }
@@ -1502,7 +1515,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
             if (objects != null) {
                 for (Object object : objects) {
                     JSONObject mediaCategory = (JSONObject) object;
-                    mediaCategoryUuids.add((String) mediaCategory.get("uuid"));
+                    if(!mediaCategoryUuids.contains((String) mediaCategory.get("uuid"))) {
+                        mediaCategoryUuids.add((String) mediaCategory.get("uuid"));
+                    }
                 }
             }
         }
