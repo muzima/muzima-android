@@ -30,6 +30,7 @@ import com.muzima.api.service.MuzimaSettingService;
 
 import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.service.SntpService;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.MainDashboardActivity;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -39,6 +40,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +70,7 @@ import static com.muzima.util.Constants.ServerSettings.MULTIPLE_CONFIGS_ENABLED_
 import static com.muzima.util.Constants.ServerSettings.OBS_LISTING_UNDER_CLIENT_SUMMARY_SETTING;
 import static com.muzima.util.Constants.ServerSettings.ONLINE_ONLY_MODE_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_IDENTIFIER_AUTOGENERATTION_SETTING;
+import static com.muzima.util.Constants.ServerSettings.PATIENT_LIST_HIDE_WITH_TAGS_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_REGISTRATION_BUTTON_ACTION_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.PATIENT_REGISTRATION_ENABLED_SETTING;
 import static com.muzima.util.Constants.ServerSettings.RELATIONSHIP_FEATURE_ENABLED;
@@ -892,7 +895,20 @@ public class MuzimaSettingController {
         return false;
     }
 
-
+    public List<String> getTagsForPatientsToHide() throws MuzimaSettingFetchException {
+        List<String> tags = new ArrayList<>();
+        try {
+            MuzimaSetting muzimaSetting = getSettingByProperty(PATIENT_LIST_HIDE_WITH_TAGS_SETTING);
+            if (muzimaSetting != null) {
+                if (!StringUtils.isEmpty(muzimaSetting.getValueString()))
+                    tags = Arrays.asList(muzimaSetting.getValueString().split("\\s*,\\s*"));
+            } else
+                Log.d(getClass().getSimpleName(), "Setting is missing on the server");
+        } catch (MuzimaSettingFetchException e) {
+            Log.e(getClass().getSimpleName(), "Setting is missing on the server");
+        }
+        return tags;
+    }
 
     public static class MuzimaSettingFetchException extends Throwable {
         MuzimaSettingFetchException(Throwable throwable) {
