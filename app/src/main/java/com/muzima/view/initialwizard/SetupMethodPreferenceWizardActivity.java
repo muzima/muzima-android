@@ -90,10 +90,10 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                                     configUuidList.add(setupConfigurationList.get(0).getUuid());
                                     intent.putStringArrayListExtra(GuidedConfigurationWizardActivity.SETUP_CONFIG_UUID_INTENT_KEY, configUuidList);
                                     startActivity(intent);
-                                }else {
+                                } else {
                                     ArrayList<String> assignedConfigs = new ArrayList<>();
                                     MuzimaApplication muzimaApplication = (MuzimaApplication) getApplicationContext();
-                                    if (multipleConfigsSupportSetting.getValueBoolean()) {
+                                    if (multipleConfigsSupportSetting != null && multipleConfigsSupportSetting.getValueBoolean()) {
                                         for (SetupConfiguration config : configurationList) {
                                             if (StringUtils.contains(config.getAssignedUserIds(), muzimaApplication.getAuthenticatedUser().getSystemId())) {
                                                 assignedConfigs.add(config.getUuid());
@@ -107,7 +107,7 @@ public class SetupMethodPreferenceWizardActivity extends BroadcastListenerActivi
                                     } else {
                                         setupConfigurationAdapter.notifyDataSetChanged();
                                         setupConfigurationAdapter.setItemsCopy(configurationList);
-                                        setupConfigurationAdapter.setEnableMultiSelect(multipleConfigsSupportSetting.getValueBoolean());
+                                        setupConfigurationAdapter.setEnableMultiSelect(multipleConfigsSupportSetting != null ? multipleConfigsSupportSetting.getValueBoolean() : false);
                                         dismissProgressDialog();
                                     }
                                 }
