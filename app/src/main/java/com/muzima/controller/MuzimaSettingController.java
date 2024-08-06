@@ -755,11 +755,18 @@ public class MuzimaSettingController {
     public boolean isSameDerivedConceptUsedToFilterMoreThanOneCohort(String derivedConceptUuid) {
         try {
             MuzimaSetting muzimaSetting = getSettingByProperty(COHORT_FILTER_DERIVED_CONCEPT_MAP);
+            List<Cohort> cohorts = new ArrayList<>();
+            if(isMultipleConfigsSupported()){
+                cohorts = cohortController.getAllCohorts();
+            }else{
+                cohorts = cohortController.getCohorts();
+            }
+
             if (muzimaSetting != null) {
                 String settingValue = muzimaSetting.getValueString();
                 if(settingValue != null) {
                     List<String> conceptUuids = new ArrayList<>();
-                    for (Cohort cohort : cohortController.getCohorts()) {
+                    for (Cohort cohort : cohorts) {
                         if (cohortController.isDownloaded(cohort)) {
                             JSONObject jsonObject = new JSONObject(settingValue);
                             Object derivedConceptObject = null;
@@ -863,6 +870,7 @@ public class MuzimaSettingController {
         } catch (JSONException e) {
             Log.e(getClass().getSimpleName(), "Error while parsing json object");
         }
+
         return false;
     }
 
@@ -891,8 +899,6 @@ public class MuzimaSettingController {
         }
         return false;
     }
-
-
 
     public static class MuzimaSettingFetchException extends Throwable {
         MuzimaSettingFetchException(Throwable throwable) {
