@@ -487,6 +487,8 @@ public class Constants {
     public static class FGH{
         public static class Concepts {
             public static final int HEALTHWORKER_ASSIGNMENT_CONCEPT_ID = 1912;
+            public static final int NO_INTERVENTION_NEEDED_QUESTION_CONCEPT_ID = 23848;
+            public static final int NO_INTERVENTION_NEEDED_ANSWER_CONCEPT_ID = 23847;
         }
 
         public static class DerivedConcepts {
@@ -501,6 +503,7 @@ public class Constants {
             public static final String NOT_ALL_CONTACTS_VISITED_TAG_UUID = "c40726c4-f702-11ee-8f83-197e9acf860e";
             public static final String SIM_TAG_UUID = "32809438-e45b-11e9-b737-c8d3ffd477a6f";
             public static final String NAO_TAG_UUID = "d7ae6ff6-0531-11ea-a2b4-c8d3ffd477a6";
+            public static final String NO_INTERVENTION_NEEDED_UUID = "f1b7a01c-b3fd-11eb-8374-d0577bb73cd4";
         }
 
         public static class FormTemplateUuids {

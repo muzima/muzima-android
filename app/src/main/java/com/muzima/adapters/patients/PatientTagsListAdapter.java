@@ -15,6 +15,7 @@ import static com.muzima.utils.Constants.FGH.TagsUuids.ALREADY_ASSIGNED_TAG_UUID
 import static com.muzima.utils.Constants.FGH.TagsUuids.AWAITING_ASSIGNMENT_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.HAS_SEXUAL_PARTNER_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.NOT_ALL_CONTACTS_VISITED_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.NO_INTERVENTION_NEEDED_UUID;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -118,6 +119,8 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
             holder.description.setText(getContext().getString(R.string.general_all_contacts_visited));
         }else if(NOT_ALL_CONTACTS_VISITED_TAG_UUID.equals(patientTag.getUuid())){
             holder.description.setText(getContext().getString(R.string.general_not_all_contacts_visited));
+        }else if(NO_INTERVENTION_NEEDED_UUID.equals(patientTag.getUuid())){
+            holder.description.setText(getContext().getString(R.string.general_no_intervention_needed));
         }else if(patientTag.getDescription() != null){
             holder.description.setText(patientTag.getDescription());
         }
@@ -202,6 +205,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
 
             PatientTag AATag = null;
             PatientTag ALTag = null;
+            PatientTag NATag = null;
             PatientTag PTag = null;
             PatientTag VTag = null;
             PatientTag NVTag = null;
@@ -217,6 +221,8 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
                     VTag = tag;
                 else if(tag.getUuid().equals(NOT_ALL_CONTACTS_VISITED_TAG_UUID))
                     NVTag = tag;
+                else if(tag.getUuid().equals(NO_INTERVENTION_NEEDED_UUID))
+                    NATag = tag;
                 else
                     otherTags.add(tag);
             }
@@ -227,6 +233,8 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
                 add(AATag);
             if(ALTag!=null)
                 add(ALTag);
+            if(NATag!=null)
+                add(NATag);
             if(PTag!=null)
                 add(PTag);
             if(VTag!=null)
