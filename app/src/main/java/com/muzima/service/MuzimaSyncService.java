@@ -112,10 +112,13 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SAVE_ERROR;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
+import static com.muzima.utils.Constants.FGH.Concepts.NO_INTERVENTION_NEEDED_ANSWER_CONCEPT_ID;
+import static com.muzima.utils.Constants.FGH.Concepts.NO_INTERVENTION_NEEDED_QUESTION_CONCEPT_ID;
 import static com.muzima.utils.Constants.FGH.DerivedConcepts.CONTACTS_TESTED_DERIVED_CONCEPT_ID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.ALL_CONTACTS_VISITED_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.NAO_TAG_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.NOT_ALL_CONTACTS_VISITED_TAG_UUID;
+import static com.muzima.utils.Constants.FGH.TagsUuids.NO_INTERVENTION_NEEDED_UUID;
 import static com.muzima.utils.Constants.FGH.TagsUuids.SIM_TAG_UUID;
 import static com.muzima.utils.Constants.LOCAL_PATIENT;
 import static java.util.Collections.singleton;
@@ -1402,9 +1405,11 @@ public class MuzimaSyncService {
 
                     PatientTag addressTag = null;
                     PatientTag assignmentTag = null;
+                    PatientTag noInterventionTag = null;
                     boolean hasSexualPartnerTag = false;
                     boolean hasAssignmentTag = false;
                     boolean hasAwaitingAssignmentTag = false;
+                    boolean hasNoInterventionNeededTag = false;
                     boolean hasAllContactsVisitedTag = false;
                     boolean hasHomeVisitTags = false;
                     boolean hasNotAllContactsVisitedTag = false;
@@ -1424,6 +1429,9 @@ public class MuzimaSyncService {
                             homeVisitTagCount++;
                         }else if(StringUtils.equals(tag.getUuid(), NOT_ALL_CONTACTS_VISITED_TAG_UUID)){
                             hasNotAllContactsVisitedTag = true;
+                        }else if(StringUtils.equals(tag.getUuid(), NO_INTERVENTION_NEEDED_UUID)){
+                            Log.e(getClass().getSimpleName(),"+++++++++++++ 1");
+                            hasNoInterventionNeededTag = true;
                         }
                     }
 
@@ -1569,7 +1577,56 @@ public class MuzimaSyncService {
                             }
                         }
 
-                        if (!hasAssignmentTag && !hasAwaitingAssignmentTag && assignmentTag == null) {
+                        if(!hasNoInterventionNeededTag){
+                            Log.e(getClass().getSimpleName(),"+++++++++++++ 2");
+                            List<Observation> obsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, NO_INTERVENTION_NEEDED_QUESTION_CONCEPT_ID);
+                            if (obsList.size() > 0) {
+                                Log.e(getClass().getSimpleName(),"+++++++++++++ 3");
+                                for (Observation obs : obsList) {
+                                    Log.e(getClass().getSimpleName(),"+++++++++++++ 4");
+                                    if(cohortMembers.size()>0) {
+                                        Log.e(getClass().getSimpleName(),"+++++++++++++ 5");
+                                        CohortMember cohortMember = cohortMembers.get(0);
+                                        Date membershipDate = cohortMember.getMembershipDate();
+                                        if (obs.getObservationDatetime().after(membershipDate)) {
+                                            Log.e(getClass().getSimpleName(),"+++++++++++++ 6 "+obs.getValueCoded().getId());
+                                            if (obs.getValueCoded().getId() == NO_INTERVENTION_NEEDED_ANSWER_CONCEPT_ID) {
+
+                                                noInterventionTag = new PatientTag();
+                                                noInterventionTag.setName("NA");
+                                                noInterventionTag.setDescription(muzimaApplication.getString(R.string.general_no_intervention_needed));
+                                                noInterventionTag.setUuid(NO_INTERVENTION_NEEDED_UUID);
+                                                tags.add(noInterventionTag);
+                                                patientController.savePatientTags(noInterventionTag);
+
+                                                //remove AA tag if available
+                                                PatientTag AATag = null;
+                                                for (PatientTag patientTag : tags) {
+                                                    if (patientTag.getName().equals("AA")) {
+                                                        AATag = patientTag;
+                                                    }
+                                                }
+
+                                                if (AATag != null) {
+                                                    tags.remove(AATag);
+                                                }
+
+                                                hasNoInterventionNeededTag = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (noInterventionTag != null) {
+                                        Log.e(getClass().getSimpleName(),"+++++++++++++ 7");
+                                        hasNoInterventionNeededTag = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (!hasAssignmentTag && !hasAwaitingAssignmentTag && assignmentTag == null && !hasNoInterventionNeededTag) {
+                            Log.e(getClass().getSimpleName(),"+++++++++++++ 8");
                             assignmentTag = new PatientTag();
                             assignmentTag.setName("AA");
                             assignmentTag.setDescription(muzimaApplication.getString(R.string.general_awaiting_assignment));
