@@ -342,6 +342,19 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
             }
             List<String> tags = patientController.getSelectedTagUuids();
             filteredPatients = patientController.filterPatientByTags(patients,tags);
+
+            try {
+                List<String> tagsToHidePatients = muzimaSettingController.getTagsForPatientsToHide();
+                List<String> nonSelectedTagsToHidePatients = new ArrayList<>();
+                List<String> tagsToRetain = patientController.getSelectedTagUuids();
+                for(String tagToHide: tagsToHidePatients){
+                    if(!tagsToRetain.contains(tagToHide))
+                        nonSelectedTagsToHidePatients.add(tagToHide);
+                }
+                filteredPatients = patientController.removePatientsWithTags(filteredPatients, nonSelectedTagsToHidePatients);
+            } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
+                Log.e(getClass().getSimpleName(), "Error tags list for patient sto hide setting", e);
+            }
             return filteredPatients;
         }
 

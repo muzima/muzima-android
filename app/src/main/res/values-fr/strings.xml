@@ -795,4 +795,5 @@
     <string name="general_not_all_contacts_visited">Tous les contacts n\'ont pas été visités</string>
     <string name="error_patient_fetch">Quelque chose s\'est mal passé lors de la récupération des patients</string>
     <string name="error_setup_fetch">Quelque chose s\'est mal passé lors de la récupération des configurations d\'installation</string>
+    <string name="general_no_intervention_needed">aucune intervention nécessaire</string>
 </resources>

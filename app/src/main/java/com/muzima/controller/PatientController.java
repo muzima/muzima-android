@@ -373,6 +373,7 @@ public class PatientController {
         if (tagsUuid == null || tagsUuid.isEmpty()) {
             return patients;
         }
+
         boolean isPartnerTagNeeded = tagsUuid.contains(HAS_SEXUAL_PARTNER_TAG_UUID);
         if(isPartnerTagNeeded && tagsUuid.size() > 1) {
             tagsUuid.remove(HAS_SEXUAL_PARTNER_TAG_UUID);
@@ -430,6 +431,24 @@ public class PatientController {
             }
         }
         return filteredPatients;
+    }
+
+    public List<Patient> removePatientsWithTags(List<Patient> patients, List<String> tagsUuid){
+        if (tagsUuid == null || tagsUuid.isEmpty()) {
+            return patients;
+        }
+        List<Patient> patientsToRemove = new ArrayList<>();
+        for (Patient patient : patients) {
+            PatientTag[] patientTags = patient.getTags();
+            for (PatientTag patientTag : patientTags) {
+                if (tagsUuid.contains(patientTag.getUuid())) {
+                    patientsToRemove.add(patient);
+                    break;
+                }
+            }
+        }
+        patients.removeAll(patientsToRemove);
+        return patients;
     }
 
     public void deletePatientByCohortMembership(List<CohortMember> cohortMembers){

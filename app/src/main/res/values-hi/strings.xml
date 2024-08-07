@@ -786,4 +786,5 @@
     <string name="general_not_all_contacts_visited">सभी संपर्क नहीं देखे गए</string>
     <string name="error_patient_fetch">मरीज़ों को लाते समय कुछ ग़लत हो गया</string>
     <string name="error_setup_fetch">सेटअप कॉन्फ़िगरेशन लाते समय कुछ गलत हो गया</string>
+    <string name="general_no_intervention_needed">किसी हस्तक्षेप की आवश्यकता नहीं</string>
 </resources>

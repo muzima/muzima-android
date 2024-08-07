@@ -787,4 +787,5 @@
     <string name="general_not_all_contacts_visited">બધા સંપર્કોની મુલાકાત લીધી નથી</string>
     <string name="error_patient_fetch">દર્દીઓને લાવવામાં કંઈક ખોટું થયું</string>
     <string name="error_setup_fetch">સેટઅપ રૂપરેખાઓ આનયન કરતી વખતે કંઈક ખોટું થયું</string>
+    <string name="general_no_intervention_needed">કોઈ હસ્તક્ષેપની જરૂર નથી</string>
 </resources>

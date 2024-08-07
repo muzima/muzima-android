@@ -1430,7 +1430,6 @@ public class MuzimaSyncService {
                         }else if(StringUtils.equals(tag.getUuid(), NOT_ALL_CONTACTS_VISITED_TAG_UUID)){
                             hasNotAllContactsVisitedTag = true;
                         }else if(StringUtils.equals(tag.getUuid(), NO_INTERVENTION_NEEDED_UUID)){
-                            Log.e(getClass().getSimpleName(),"+++++++++++++ 1");
                             hasNoInterventionNeededTag = true;
                         }
                     }
@@ -1578,18 +1577,13 @@ public class MuzimaSyncService {
                         }
 
                         if(!hasNoInterventionNeededTag){
-                            Log.e(getClass().getSimpleName(),"+++++++++++++ 2");
                             List<Observation> obsList = observationController.getObservationsByPatientuuidAndConceptId(patientUuid, NO_INTERVENTION_NEEDED_QUESTION_CONCEPT_ID);
                             if (obsList.size() > 0) {
-                                Log.e(getClass().getSimpleName(),"+++++++++++++ 3");
                                 for (Observation obs : obsList) {
-                                    Log.e(getClass().getSimpleName(),"+++++++++++++ 4");
                                     if(cohortMembers.size()>0) {
-                                        Log.e(getClass().getSimpleName(),"+++++++++++++ 5");
                                         CohortMember cohortMember = cohortMembers.get(0);
                                         Date membershipDate = cohortMember.getMembershipDate();
                                         if (obs.getObservationDatetime().after(membershipDate)) {
-                                            Log.e(getClass().getSimpleName(),"+++++++++++++ 6 "+obs.getValueCoded().getId());
                                             if (obs.getValueCoded().getId() == NO_INTERVENTION_NEEDED_ANSWER_CONCEPT_ID) {
 
                                                 noInterventionTag = new PatientTag();
@@ -1617,7 +1611,6 @@ public class MuzimaSyncService {
                                         }
                                     }
                                     if (noInterventionTag != null) {
-                                        Log.e(getClass().getSimpleName(),"+++++++++++++ 7");
                                         hasNoInterventionNeededTag = true;
                                         break;
                                     }
@@ -1626,7 +1619,6 @@ public class MuzimaSyncService {
                         }
 
                         if (!hasAssignmentTag && !hasAwaitingAssignmentTag && assignmentTag == null && !hasNoInterventionNeededTag) {
-                            Log.e(getClass().getSimpleName(),"+++++++++++++ 8");
                             assignmentTag = new PatientTag();
                             assignmentTag.setName("AA");
                             assignmentTag.setDescription(muzimaApplication.getString(R.string.general_awaiting_assignment));
