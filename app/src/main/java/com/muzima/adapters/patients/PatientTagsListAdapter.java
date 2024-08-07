@@ -56,7 +56,7 @@ public class PatientTagsListAdapter extends ListAdapter<PatientTag> implements A
         super(context, textViewResourceId);
         this.patientController = patientController;
         this.muzimaSettingController = muzimaSettingController;
-        patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context, patientController, null,null, null, muzimaSettingController);
+        patientsLocalSearchAdapter = new PatientsLocalSearchAdapter(context, patientController, null,null, null, muzimaSettingController, null);
     }
 
     public void onTagsChanged() {

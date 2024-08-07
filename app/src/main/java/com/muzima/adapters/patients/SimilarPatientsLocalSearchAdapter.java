@@ -25,7 +25,7 @@ public class SimilarPatientsLocalSearchAdapter extends PatientsLocalSearchAdapte
 
 
     public SimilarPatientsLocalSearchAdapter(Context context, PatientController patientController, Patient comparisonPatient) {
-        super(context,patientController,null,null,null,null);
+        super(context,patientController,null,null,null,null, null);
         this.comparisonPatient = comparisonPatient;
         setShowAdditionalDetails(true);
     }
