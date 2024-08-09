@@ -790,4 +790,15 @@
     <string name="error_patient_fetch">Hitilafu fulani imetokea wakati wa kuleta wagonjwa</string>
     <string name="error_setup_fetch">Hitilafu fulani imetokea wakati wa kuleta usanidi</string>
     <string name="general_no_intervention_needed">hakuna ziara inahitajika</string>
+    <string name="error_cohort_delete">Hitilafu ilitokea wakati wa kufuta kundi</string>
+    <string name="error_patient_delete">Hitilafu ilitokea wakati wa kufuta mgonjwa</string>
+    <string name="error_location_delete">Hitilafu ilitokea wakati wa kufuta eneo</string>
+    <string name="error_provider_delete">Hitilafu ilitokea wakati wa kufuta mtoa huduma</string>
+    <string name="error_cohort_save">Hitilafu ilitokea wakati wa kuhifadhi kundi</string>
+    <string name="error_concept_save">Hitilafu ilitokea wakati wa kuhifadhi dhana</string>
+    <string name="error_patient_report_save">Hitilafu ilitokea wakati wa kuhifadhi ripoti za wagonjwa</string>
+    <string name="error_setup_config_save">Hitilafu ilitokea wakati wa kuhifadhi usanidi wa programu</string>
+    <string name="error_settings_save">Hitilafu ilitokea wakati wa kuhifadhi mipangilio</string>
+    <string name="error_dataset_save">Hitilafu ilitokea wakati wa kuhifadhi mkusanyiko wa data wa ripoti</string>
+    <string name="error_media_category_save">Hitilafu ilitokea wakati wa kuhifadhi kategoria ya midia</string>
 </resources>

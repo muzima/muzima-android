@@ -788,4 +788,15 @@
     <string name="error_patient_fetch">દર્દીઓને લાવવામાં કંઈક ખોટું થયું</string>
     <string name="error_setup_fetch">સેટઅપ રૂપરેખાઓ આનયન કરતી વખતે કંઈક ખોટું થયું</string>
     <string name="general_no_intervention_needed">કોઈ હસ્તક્ષેપની જરૂર નથી</string>
+    <string name="error_cohort_delete">સમૂહને કાઢી નાખતી વખતે એક ભૂલ આવી</string>
+    <string name="error_patient_delete">દર્દીને કાઢી નાખતી વખતે ભૂલ આવી</string>
+    <string name="error_location_delete">સ્થાન કાઢી નાખતી વખતે એક ભૂલ આવી</string>
+    <string name="error_provider_delete">પ્રદાતાને કાઢી નાખતી વખતે એક ભૂલ આવી</string>
+    <string name="error_cohort_save">સમૂહને સાચવતી વખતે એક ભૂલ આવી</string>
+    <string name="error_concept_save">ખ્યાલ સાચવતી વખતે ભૂલ આવી</string>
+    <string name="error_patient_report_save">દર્દીના રિપોર્ટ સાચવતી વખતે ભૂલ આવી</string>
+    <string name="error_setup_config_save">પ્રોગ્રામ સેટઅપ સાચવતી વખતે ભૂલ આવી</string>
+    <string name="error_settings_save">સેટિંગ્સ સાચવતી વખતે એક ભૂલ આવી</string>
+    <string name="error_dataset_save">રિપોર્ટ ડેટાસેટ સાચવતી વખતે એક ભૂલ આવી</string>
+    <string name="error_media_category_save">મીડિયા કેટેગરી સાચવતી વખતે એક ભૂલ આવી</string>
 </resources>
