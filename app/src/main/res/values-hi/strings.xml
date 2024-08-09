@@ -787,4 +787,15 @@
     <string name="error_patient_fetch">मरीज़ों को लाते समय कुछ ग़लत हो गया</string>
     <string name="error_setup_fetch">सेटअप कॉन्फ़िगरेशन लाते समय कुछ गलत हो गया</string>
     <string name="general_no_intervention_needed">किसी हस्तक्षेप की आवश्यकता नहीं</string>
+    <string name="error_cohort_delete">समूह को हटाते समय एक त्रुटि उत्पन्न हुई</string>
+    <string name="error_patient_delete">मरीज़ को हटाते समय एक त्रुटि उत्पन्न हुई</string>
+    <string name="error_location_delete">स्थान हटाते समय एक त्रुटि उत्पन्न हुई</string>
+    <string name="error_provider_delete">प्रदाता को हटाते समय एक त्रुटि उत्पन्न हुई</string>
+    <string name="error_cohort_save">समूह को सहेजते समय एक त्रुटि उत्पन्न हुई</string>
+    <string name="error_concept_save">संकल्पना सहेजते समय एक त्रुटि उत्पन्न हुई</string>
+    <string name="error_patient_report_save">मरीज़ की रिपोर्ट सहेजते समय एक त्रुटि उत्पन्न हुई</string>
+    <string name="error_setup_config_save">प्रोग्राम सेटअप सहेजते समय एक त्रुटि उत्पन्न हुई</string>
+    <string name="error_settings_save">सेटिंग्स सहेजते समय एक त्रुटि उत्पन्न हुई</string>
+    <string name="error_dataset_save">रिपोर्ट डेटासेट सहेजते समय एक त्रुटि उत्पन्न हुई</string>
+    <string name="error_media_category_save">मीडिया श्रेणी सहेजते समय एक त्रुटि उत्पन्न हुई</string>
 </resources>

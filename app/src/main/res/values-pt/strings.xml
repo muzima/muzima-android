@@ -60,7 +60,7 @@
     <string name="error_derived_observation_download">Não foi possível baixar observações derivadas para clientes</string>
     <string name="error_encounter_observation_download">Não poderá baixar observações para os utentes</string>
     <string name="error_exception_data_load">Uma excepção de carregamento foi lançada ao carregar os dados</string>
-    <string name="error_exception_data_upload">Uma excepção foi lançada ao carregar os dados</string>
+    <string name="error_exception_data_upload">O servidor não pôde processar os dados do formulário carregados</string>
     <string name="error_form_data_delete">Não poderá apagar alguns dados do formulário</string>
     <string name="error_form_data_processing">Ocorreu um erro ao processar os dados do formulário</string>
     <string name="error_form_download">Não poderá baixar formulários</string>
@@ -795,4 +795,15 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="error_patient_fetch">Algo deu errado ao buscar pacientes</string>
     <string name="error_setup_fetch">Algo deu errado ao buscar as configurações de instalação</string>
     <string name="general_no_intervention_needed">"Nao há necessidade de visita "</string>
+    <string name="error_cohort_delete">Ocorreu um erro ao excluir a coorte</string>
+    <string name="error_patient_delete">Ocorreu um erro ao excluir o paciente</string>
+    <string name="error_location_delete">Ocorreu um erro ao excluir o local</string>
+    <string name="error_provider_delete">Ocorreu um erro ao excluir o provedor</string>
+    <string name="error_cohort_save">Ocorreu um erro ao salvar a coorte</string>
+    <string name="error_concept_save">Ocorreu um erro ao salvar o conceito</string>
+    <string name="error_patient_report_save">Ocorreu um erro ao salvar relatórios de pacientes</string>
+    <string name="error_setup_config_save">Ocorreu um erro ao salvar a configuração do programa</string>
+    <string name="error_settings_save">Ocorreu um erro ao salvar as configurações</string>
+    <string name="error_dataset_save">Ocorreu um erro ao salvar o conjunto de dados do relatório</string>
+    <string name="error_media_category_save">Ocorreu um erro ao salvar a categoria de mídia</string>
 </resources>

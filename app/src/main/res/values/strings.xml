@@ -63,7 +63,7 @@
     <string name="error_derived_observation_download">Could not download derived observations for clients</string>
     <string name="error_encounter_observation_download">Could not download observations for clients</string>
     <string name="error_exception_data_load">Load exception has been thrown while loading data</string>
-    <string name="error_exception_data_upload">Server could not process uploaded data</string>
+    <string name="error_exception_data_upload">Server could not process uploaded form data</string>
     <string name="error_form_data_delete">Could not delete some form data</string>
     <string name="error_form_data_processing">An error occurred while processing form data</string>
     <string name="error_form_download">Could not download forms</string>
@@ -85,7 +85,7 @@
     <string name="error_media_download">Could not download media</string>
     <string name="error_observation_download">Could not download observations</string>
     <string name="error_observation_form_save">An error occurred while saving observations in the form</string>
-    <string name="error_parse_exception_data_fetch">Parse exception has been thrown while fetching data</string>
+    <string name="error_parse_exception_data_fetch">Parse exception has been thrown while fetching  authentication data</string>
     <string name="error_patient_address_not_updated">The GPS address could not be obtained</string>
     <string name="error_patient_data_form_exist">There is existing form data.
         Finish Incomplete data and sync it to the Server first before syncing form templates.
@@ -801,4 +801,15 @@ mUzima is a mobile application that enables health professionals collect, manage
     <string name="error_patient_fetch">Something went wrong while fetching patients</string>
     <string name="error_setup_fetch">Something went wrong while fetching setup configs</string>
     <string name="general_no_intervention_needed">No intervention needed</string>
+    <string name="error_cohort_delete">An error occurred while deleting cohort</string>
+    <string name="error_patient_delete">An error occurred when deleting patient</string>
+    <string name="error_location_delete">An error occurred when deleting location</string>
+    <string name="error_provider_delete">An error occurred when deleting provider</string>
+    <string name="error_cohort_save">An error occurred when saving cohort</string>
+    <string name="error_concept_save">An error occurred when saving concept</string>
+    <string name="error_patient_report_save">An error occurred when saving patient reports</string>
+    <string name="error_setup_config_save">An error occurred when saving program setup</string>
+    <string name="error_settings_save">An error occurred when saving settings</string>
+    <string name="error_dataset_save">An error occurred when saving report dataset</string>
+    <string name="error_media_category_save">An error occurred when saving media category</string>
 </resources>

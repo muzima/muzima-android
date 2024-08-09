@@ -796,4 +796,15 @@
     <string name="error_patient_fetch">Quelque chose s\'est mal passé lors de la récupération des patients</string>
     <string name="error_setup_fetch">Quelque chose s\'est mal passé lors de la récupération des configurations d\'installation</string>
     <string name="general_no_intervention_needed">aucune intervention nécessaire</string>
+    <string name="error_cohort_delete">Une erreur s\'est produite lors de la suppression de la cohorte</string>
+    <string name="error_patient_delete">Une erreur s\'est produite lors de la suppression du patient</string>
+    <string name="error_location_delete">Une erreur s\'est produite lors de la suppression de l\'emplacement</string>
+    <string name="error_provider_delete">Une erreur s\'est produite lors de la suppression du fournisseur</string>
+    <string name="error_cohort_save">Une erreur s\'est produite lors de l\'enregistrement de la cohorte</string>
+    <string name="error_concept_save">Une erreur s\'est produite lors de l\'enregistrement du concept</string>
+    <string name="error_patient_report_save">Une erreur s\'est produite lors de l\'enregistrement des rapports des patients</string>
+    <string name="error_setup_config_save">Une erreur s\'est produite lors de l\'enregistrement de la configuration du programme</string>
+    <string name="error_settings_save">Une erreur s\'est produite lors de l\'enregistrement des paramètres</string>
+    <string name="error_dataset_save">Une erreur s\'est produite lors de l\'enregistrement de l\'ensemble de données du rapport</string>
+    <string name="error_media_category_save">Une erreur s\'est produite lors de l\'enregistrement de la catégorie multimédia</string>
 </resources>

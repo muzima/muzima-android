@@ -655,7 +655,7 @@ public class MuzimaSyncService {
             result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
         } catch (PatientController.PatientSaveException e) {
             Log.e(getClass().getSimpleName(), "Error while saving patients.", e);
-            result[0] = SyncStatusConstants.DOWNLOAD_ERROR;
+            result[0] = SAVE_ERROR;
         }
         return result;
     }
@@ -1822,7 +1822,7 @@ public class MuzimaSyncService {
             Log.e(TAG, "Encountered Load Exception while downloading media categories", e);
 
         } catch (MediaCategoryController.MediaCategorySaveException e) {
-            result[0] = DOWNLOAD_ERROR;
+            result[0] = SAVE_ERROR;
             Log.e(TAG, "Encountered Load Exception while saving media categories", e);
         }
         return result;

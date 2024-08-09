@@ -130,12 +130,49 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
         }
 
         String msg = intent.getStringExtra(DataSyncServiceConstants.SYNC_RESULT_MESSAGE);
-
+        int syncTypes = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
         switch (syncStatus) {
             case SyncStatusConstants.DOWNLOAD_ERROR:
-                msg = getString(R.string.error_data_download);
                 syncErrorOccured = true;
+                msg = getString(R.string.error_data_download);
+                switch (syncTypes) {
+                    case DataSyncServiceConstants.SYNC_FORMS:
+                    case DataSyncServiceConstants.SYNC_TEMPLATES:
+                        msg = getString(R.string.error_form_download);
+                        break;
+                    case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
+                        msg = getString(R.string.error_cohort_download);
+                        break;
+                    case DataSyncServiceConstants.DOWNLOAD_SELECTED_PATIENTS_FULL_DATA:
+                    case DataSyncServiceConstants.SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA:
+                        msg = getString(R.string.error_patient_download);
+                        break;
+                    case DataSyncServiceConstants.CLEAN_UP_PROCESSED_TEMPORARY_FORM_DATA:
+                        msg = getString(R.string.info_submitted_form_data_status_check_failure);
+                        break;
+                    case DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS:
+                    case DataSyncServiceConstants.SYNC_PATIENT_REPORTS:
+                        msg = getString(R.string.error_patient_report_fetch);
+                        break;
+                    case DataSyncServiceConstants.SYNC_SETUP_CONFIGURATION_TEMPLATES:
+                        msg = getString(R.string.error_setup_configuration_template_download);
+                        break;
+                    case DataSyncServiceConstants.SYNC_SETTINGS:
+                        msg = getString(R.string.error_settings_download);
+                        break;
+                    case DataSyncServiceConstants.SYNC_MEDIA_CATEGORIES:
+                        msg = getString(R.string.error_media_category_download);
+                        break;
+                    case DataSyncServiceConstants.SYNC_LOCATIONS_BASED_ON_CHANGES_IN_CONFIG:
+                        msg = getString(R.string.error_location_download);
+                        break;
+                    case DataSyncServiceConstants.SYNC_PROVIDERS_BASED_ON_CHANGES_IN_CONFIG:
+                        msg = getString(R.string.error_provider_download);
+                        break;
+                }
                 break;
+
             case SyncStatusConstants.AUTHENTICATION_ERROR:
                 msg = getString(R.string.error_authentication_occur);
                 syncErrorOccured = true;
@@ -143,10 +180,61 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
             case SyncStatusConstants.DELETE_ERROR:
                 msg = getString(R.string.error_local_repo_data_delete);
                 syncErrorOccured = true;
+                switch (syncTypes) {
+                    case DataSyncServiceConstants.SYNC_FORMS:
+                    case DataSyncServiceConstants.CLEAN_UP_PROCESSED_TEMPORARY_FORM_DATA:
+                        msg = getString(R.string.error_form_data_delete);
+                        break;
+                    case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
+                        msg = getString(R.string.error_cohort_delete);
+                        break;
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_DATA_ONLY:
+                        msg = getString(R.string.error_patient_delete);
+                        break;
+                    case DataSyncServiceConstants.SYNC_LOCATIONS_BASED_ON_CHANGES_IN_CONFIG:
+                        msg = getString(R.string.error_location_delete);
+                        break;
+                    case DataSyncServiceConstants.SYNC_PROVIDERS_BASED_ON_CHANGES_IN_CONFIG:
+                        msg = getString(R.string.error_provider_delete);
+                        break;
+                }
                 break;
             case SyncStatusConstants.SAVE_ERROR:
                 msg = getString(R.string.error_data_save);
                 syncErrorOccured = true;
+                switch (syncTypes) {
+                    case DataSyncServiceConstants.SYNC_FORMS:
+                    case DataSyncServiceConstants.SYNC_TEMPLATES:
+                        msg = getString(R.string.error_form_save);
+                        break;
+                    case DataSyncServiceConstants.SYNC_COHORTS_METADATA:
+                    case DataSyncServiceConstants.SYNC_COHORTS_AND_ALL_PATIENTS_FULL_DATA:
+                        msg = getString(R.string.error_cohort_save);
+                        break;
+                    case DataSyncServiceConstants.SYNC_SELECTED_COHORTS_PATIENTS_FULL_DATA:
+                        msg = getString(R.string.error_concept_save);
+                        break;
+                    case DataSyncServiceConstants.SYNC_PATIENT_REPORTS_HEADERS:
+                    case DataSyncServiceConstants.SYNC_PATIENT_REPORTS:
+                        msg = getString(R.string.error_patient_report_save);
+                        break;
+                    case DataSyncServiceConstants.SYNC_SETUP_CONFIGURATION_TEMPLATES:
+                        msg = getString(R.string.error_setup_config_save);
+                        break;
+                    case DataSyncServiceConstants.SYNC_SETTINGS:
+                        msg = getString(R.string.error_settings_save);
+                        break;
+                    case DataSyncServiceConstants.SYNC_DATASETS:
+                        msg = getString(R.string.error_dataset_save);
+                        break;
+                    case DataSyncServiceConstants.SYNC_MEDIA_CATEGORIES:
+                        msg = getString(R.string.error_media_category_save);
+                        break;
+                    case DataSyncServiceConstants.SYNC_PROVIDERS_BASED_ON_CHANGES_IN_CONFIG:
+                        msg = getString(R.string.error_provider_download);
+                        break;
+                }
                 break;
             case SyncStatusConstants.LOCAL_CONNECTION_ERROR:
                 msg = getString(R.string.error_local_connection_unavailable);
@@ -161,7 +249,6 @@ public abstract class BroadcastListenerActivity extends BaseAuthenticatedActivit
                 syncErrorOccured = true;
                 break;
             case SyncStatusConstants.LOAD_ERROR:
-                int syncTypes = intent.getIntExtra(DataSyncServiceConstants.SYNC_TYPE, -1);
                 syncErrorOccured = true;
                 msg = getString(R.string.error_exception_data_load);
                 switch (syncTypes) {
