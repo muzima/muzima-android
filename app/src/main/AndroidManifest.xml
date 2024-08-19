@@ -64,7 +64,8 @@
         </provider>
         <activity
             android:name=".view.landing.SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -350,7 +351,8 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/general_about_muzima" />
 
-        <receiver android:name=".utils.ConnectivityChangeReceiver">
+        <receiver android:name=".utils.ConnectivityChangeReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>

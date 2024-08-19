@@ -63,7 +63,9 @@ import com.muzima.controller.RelationshipController;
 import com.muzima.controller.ReportDatasetController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
+import com.muzima.db.MuzimaDatabase;
 import com.muzima.domain.Credentials;
+import com.muzima.model.PassphraseStorage;
 import com.muzima.service.FormDuplicateCheckPreferenceService;
 import com.muzima.service.LocalePreferenceService;
 import com.muzima.service.MuzimaGPSLocationService;
@@ -135,6 +137,8 @@ public class MuzimaApplication extends MultiDexApplication {
     private MediaCategoryController mediaCategoryController;
     private ExecutorService executorService;
     private FormDuplicateCheckPreferenceService formDuplicateCheckPreferenceService;
+    private PassphraseStorage passphraseStorage;
+    private MuzimaDatabase database;
 
     public void clearApplicationData() {
         try {
@@ -175,6 +179,7 @@ public class MuzimaApplication extends MultiDexApplication {
 
         super.onCreate();
         checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted();
+
         try {
             ContextFactory.setProperty(Constants.LUCENE_DIRECTORY_PATH, APP_DIR);
             muzimaContext = ContextFactory.createContext();
@@ -191,6 +196,19 @@ public class MuzimaApplication extends MultiDexApplication {
                 .build());
     }
 
+    MuzimaDatabase getDatabase() throws Exception{
+        if (database == null) {
+            database = MuzimaDatabase.getDatabase(this, getPassphraseStorage().getPassphrase());
+        }
+        return database;
+    }
+
+    private PassphraseStorage getPassphraseStorage(){
+        if(passphraseStorage == null){
+            passphraseStorage = new PassphraseStorage(getApplicationContext());
+        }
+        return passphraseStorage;
+    }
 
     public void checkAndSetLocaleToDeviceLocaleIFDisclaimerNotAccepted() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
