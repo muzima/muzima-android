@@ -512,7 +512,7 @@ public class DataSyncService extends IntentService {
     }
 
     private boolean authenticationSuccessful(String[] credentials, Intent broadcastIntent) {
-        int authenticationStatus = muzimaSyncService.authenticate(credentials);
+        int authenticationStatus = muzimaSyncService.authenticate(getApplicationContext(),credentials);
         if (authenticationStatus != SyncStatusConstants.AUTHENTICATION_SUCCESS) {
             broadcastIntent.putExtra(DataSyncServiceConstants.SYNC_STATUS, authenticationStatus);
             return false;

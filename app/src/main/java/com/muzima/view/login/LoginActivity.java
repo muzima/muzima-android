@@ -490,7 +490,9 @@ public class LoginActivity extends BaseActivity {
             Credentials credentials = params[0];
             isNewUser = ((MuzimaApplication) getApplication()).isNewUser(credentials.getUserName());
             MuzimaSyncService muzimaSyncService = ((MuzimaApplication) getApplication()).getMuzimaSyncService();
-            int authenticationStatus = muzimaSyncService.authenticate(credentials.getCredentialsArray(), isOnlineModeEnabled || isUpdatePasswordChecked);
+            int authenticationStatus = muzimaSyncService.authenticate(getApplicationContext(), credentials.getCredentialsArray(), isOnlineModeEnabled || isUpdatePasswordChecked);
+
+
             return new Result(credentials, authenticationStatus);
         }
 

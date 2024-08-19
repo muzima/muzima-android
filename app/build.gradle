@@ -147,6 +147,8 @@ dependencies {
     implementation ("net.zetetic:android-database-sqlcipher:4.5.3")
     implementation "androidx.room:room-runtime:2.6.1"
     annotationProcessor "androidx.room:room-compiler:2.6.1"
+    implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 }
 task wrapper(type: Wrapper) {
     gradleVersion = '4.1'

@@ -196,7 +196,7 @@ public class MuzimaApplication extends MultiDexApplication {
                 .build());
     }
 
-    MuzimaDatabase getDatabase() throws Exception{
+    public MuzimaDatabase getDatabase() throws Exception{
         if (database == null) {
             database = MuzimaDatabase.getDatabase(this, getPassphraseStorage().getPassphrase());
         }

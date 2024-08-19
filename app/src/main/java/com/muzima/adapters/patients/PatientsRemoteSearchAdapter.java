@@ -85,7 +85,7 @@ public class PatientsRemoteSearchAdapter extends PatientAdapterHelper {
             try {
                 SERVER_CONNECTIVITY_STATUS serverStatus = NetworkUtils.getServerStatus(applicationContext, credentials.getServerUrl());
                 if(serverStatus == SERVER_CONNECTIVITY_STATUS.SERVER_ONLINE) {
-                    int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(credentials.getCredentialsArray());
+                    int authenticateResult = applicationContext.getMuzimaSyncService().authenticate(getContext().getApplicationContext(), credentials.getCredentialsArray());
                     if (authenticateResult == SyncStatusConstants.AUTHENTICATION_SUCCESS) {
                         return patientController.searchPatientOnServer(strings[0]);
                     } else {

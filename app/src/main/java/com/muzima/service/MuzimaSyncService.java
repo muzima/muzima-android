@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
+import com.muzima.api.APIUtils;
 import com.muzima.api.context.Context;
 import com.muzima.api.exception.AuthenticationException;
 import com.muzima.api.model.AppUsageLogs;
@@ -53,6 +54,7 @@ import com.muzima.api.model.RelationshipType;
 import com.muzima.api.model.ReportDataset;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
+import com.muzima.callbacks.AuntenticationCallBack;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.CohortController;
 import com.muzima.controller.ConceptController;
@@ -100,6 +102,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -177,52 +180,35 @@ public class MuzimaSyncService {
         pseudoDeviceId = generatePseudoDeviceId();
     }
 
-    public int authenticate(String[] credentials) {
-        return authenticate(credentials, false);
+    public int authenticate(android.content.Context context, String[] credentials) {
+        return authenticate(context, credentials, false);
     }
 
-    public int authenticate(String[] credentials, boolean isUpdatePasswordRequired) {
+    public int authenticate(android.content.Context context, String[] credentials, boolean isUpdatePasswordRequired) {
         String username = credentials[0].trim();
         String password = credentials[1];
         String server = credentials[2];
 
-        Context muzimaContext = muzimaApplication.getMuzimaContext();
-        try {
-//            if(hasInvalidSpecialCharacter(username)){
-//                return SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME;
-//            }
+        Log.e(getClass().getSimpleName(), "Username ===========");
+        final int[] result = {0};
 
-            muzimaContext.openSession();
-            if (!muzimaContext.isAuthenticated()) {
-                if (isUpdatePasswordRequired && !NetworkUtils.isConnectedToNetwork(muzimaApplication)) {
-                    return SyncStatusConstants.LOCAL_CONNECTION_ERROR;
-                } else {
-                    muzimaContext.authenticate(username, password, server, isUpdatePasswordRequired);
-                }
+        APIUtils.authenticate(context, username, password, server, isUpdatePasswordRequired, new AuntenticationCallBack() {
+            @Override
+            public int onError(int errorCode) {
+                Log.e(getClass().getSimpleName(), "Username ========1");
+                result[0] = errorCode;
+                return errorCode;
             }
-        } catch (ConnectException e) {
-            Log.e(getClass().getSimpleName(), "ConnectException Exception thrown while authentication.", e);
-            return SyncStatusConstants.SERVER_CONNECTION_ERROR;
-        } catch (ParseException e) {
-            Log.e(getClass().getSimpleName(), "ParseException Exception thrown while authentication.", e);
-            return SyncStatusConstants.PARSING_ERROR;
-        } catch (MalformedURLException e) {
-            Log.e(getClass().getSimpleName(), "IOException Exception thrown while authentication.", e);
-            return SyncStatusConstants.MALFORMED_URL_ERROR;
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "IOException Exception thrown while authentication.", e);
-            return SyncStatusConstants.AUTHENTICATION_ERROR;
-        } catch (AuthenticationException e) {
-            Log.e(getClass().getSimpleName(), "Exception thrown while authentication.", e);
-            return SyncStatusConstants.INVALID_CREDENTIALS_ERROR;
-        } catch (IllegalArgumentException e) {
-            Log.e(getClass().getSimpleName(), "IllegalArgumentException Exception thrown while authenticating.", e);
-            return SyncStatusConstants.UNKNOWN_ERROR;
-        } finally {
-            if (muzimaContext != null)
-                muzimaContext.closeSession();
-        }
-        return SyncStatusConstants.AUTHENTICATION_SUCCESS;
+
+            @Override
+            public int onAuthenticated(boolean success) {
+                Log.e(getClass().getSimpleName(), "Username =================2");
+                result[0] = SyncStatusConstants.AUTHENTICATION_SUCCESS;
+                return SyncStatusConstants.AUTHENTICATION_SUCCESS;
+            }
+        });
+        Log.e(getClass().getSimpleName(), "Username ===========3");
+        return result[0];
     }
 
     public int[] downloadForms() {

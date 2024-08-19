@@ -65,7 +65,7 @@
         <activity
             android:name=".view.landing.SplashActivity"
             android:theme="@style/SplashTheme"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

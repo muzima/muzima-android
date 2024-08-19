@@ -10,12 +10,21 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
+import com.muzima.db.daos.CredentialDao;
+import com.muzima.db.daos.UserDao;
+import com.muzima.db.entities.Credential;
+import com.muzima.db.entities.Person;
+import com.muzima.db.entities.PersonName;
+import com.muzima.db.entities.User;
+
 import net.sqlcipher.database.SupportFactory;
 
-@Database(entities = {}, version = 1, exportSchema = false)
-public class MuzimaDatabase  extends RoomDatabase {
+@Database(entities = {Credential.class, User.class, Person.class, PersonName.class,}, version = 1, exportSchema = false)
+public abstract class MuzimaDatabase  extends RoomDatabase {
 
     private static volatile MuzimaDatabase INSTANCE;
+    public abstract CredentialDao credentialDao();
+    public abstract UserDao userDao();
 
     public static MuzimaDatabase getDatabase(final Context context, byte[] passphrase) {
         if (INSTANCE == null) {
