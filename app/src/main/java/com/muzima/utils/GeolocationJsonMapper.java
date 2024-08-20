@@ -15,8 +15,8 @@ import com.muzima.api.model.FormData;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PersonAddress;
-import com.muzima.api.model.User;
 import com.muzima.controller.FormController;
+import com.muzima.db.entities.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;

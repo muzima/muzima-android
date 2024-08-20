@@ -19,8 +19,8 @@ import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PersonAttribute;
 import com.muzima.api.model.PersonName;
 import com.muzima.api.model.Relationship;
-import com.muzima.api.model.User;
 import com.muzima.controller.PatientController;
+import com.muzima.db.entities.User;
 import com.muzima.search.api.util.StringUtil;
 
 import org.json.JSONArray;

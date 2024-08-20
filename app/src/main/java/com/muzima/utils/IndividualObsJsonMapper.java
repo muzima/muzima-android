@@ -17,7 +17,6 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Observation;
 import com.muzima.api.model.Patient;
-import com.muzima.api.model.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +25,7 @@ import java.util.UUID;
 
 import com.muzima.controller.FormController;
 import com.muzima.MuzimaApplication;
+import com.muzima.db.entities.User;
 import com.muzima.view.forms.HTMLPatientJSONMapper;
 
 import static com.muzima.utils.Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS;

@@ -5,7 +5,6 @@ import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusCons
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.UNKNOWN_ERROR;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -13,6 +12,7 @@ import com.muzima.MuzimaApplication;
 import com.muzima.api.retrofit.RetrofitServiceInstance;
 import com.muzima.callbacks.AuntenticationCallBack;
 import com.muzima.db.MuzimaDatabase;
+import com.muzima.db.daos.UserDao;
 import com.muzima.db.entities.Credential;
 import com.muzima.db.entities.User;
 import com.muzima.model.OpenMRSSession;
@@ -31,14 +31,18 @@ import retrofit2.Response;
 
 public class APIUtils {
     private static MuzimaDatabase muzimaDatabase;
+    private static User authenticatedUser;
 
-    public static void authenticate(Context context, String username, String password, String serverUrl, boolean isUpdatePasswordRequired, @NonNull AuntenticationCallBack callback) {
+    public static MuzimaDatabase getMuzimaDatabase(Context context){
         try {
             muzimaDatabase = ((MuzimaApplication) context).getDatabase();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return muzimaDatabase;
+    }
+    public static void authenticate(Context context, String username, String password, String serverUrl, boolean isUpdatePasswordRequired, @NonNull AuntenticationCallBack callback) {
+       getMuzimaDatabase(context);
         if (isUpdatePasswordRequired) {
             authenticateOnlineAndUpdateCredentialsWithNewPassword(context, username, password, serverUrl, callback);
         } else {
@@ -57,6 +61,7 @@ public class APIUtils {
 
     public static void authenticateOffline(String username, String password, @NonNull AuntenticationCallBack callback) {
         Credential credential = muzimaDatabase.credentialDao().getCredentialByUsername(username);
+
         if (credential != null) {
             String salt = credential.getSalt();
             String hashedPassword = null;
@@ -64,6 +69,9 @@ public class APIUtils {
                 hashedPassword = DigestUtil.getSHA1Checksum(salt + ":" + password);
                 if (!StringUtil.equals(hashedPassword, credential.getPassword())) {
                     callback.onError(INVALID_CREDENTIALS_ERROR);
+                }else{
+                    authenticatedUser = muzimaDatabase.userDao().getUserByUsername(username);
+                    callback.onAuthenticated(true);
                 }
             } catch (IOException e) {
                 callback.onError(UNKNOWN_ERROR);
@@ -102,12 +110,13 @@ public class APIUtils {
                                 credential.setSalt(salt);
                                 credential.setUsername(username);
                                 credential.setPassword(hashedPassword);
-//                                muzimaDatabase.credentialDao().insert(credential);
                                 new InsertCredentialTask(context, credential).execute();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
+
+                        new GetUserTask(context, username).execute();
                         callback.onAuthenticated(response.isSuccessful());
                     } else {
                         callback.onError(INVALID_CREDENTIALS_ERROR);
@@ -139,9 +148,6 @@ public class APIUtils {
                     if (openMRSSession.isAuthenticated()) {
                         User user = openMRSSession.getUser();
                         if (user != null) {
-                            //save details
-
-                            //update credentials
                             Credential credential = null;
                             try {
                                 credential = muzimaDatabase.credentialDao().getCredentialByUsername(username);
@@ -150,15 +156,15 @@ public class APIUtils {
                             }
 
                             String salt = credential.getSalt();
-                            String hashedPassword = null;
                             try {
-                                hashedPassword = DigestUtil.getSHA1Checksum(salt + ":" + password);
+                                String hashedPassword = DigestUtil.getSHA1Checksum(salt + ":" + password);
                                 credential.setPassword(hashedPassword);
                                 muzimaDatabase.credentialDao().update(credential);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
+                        new GetUserTask(context, username).execute();
                         callback.onAuthenticated(response.isSuccessful());
                     } else {
                         callback.onError(INVALID_CREDENTIALS_ERROR);
@@ -174,6 +180,15 @@ public class APIUtils {
             }
         });
     }
+
+    public static User getAuthenticatedUser() {
+        return authenticatedUser;
+    }
+
+    public static boolean isAuthenticated() {
+        return authenticatedUser != null;
+    }
+
 
     private static class InsertUserTask extends MuzimaAsyncTask<Void, Void, Boolean> {
 
@@ -241,5 +256,45 @@ public class APIUtils {
         protected void onBackgroundError(Exception e) {
 
         }
+    }
+
+    private static class GetUserTask extends MuzimaAsyncTask<Void, Void, User> {
+
+        private WeakReference<Context> activityReference;
+        private String username;
+
+        GetUserTask(Context context, String username){
+            activityReference = new WeakReference<>(context);
+            this.username = username;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        // doInBackground methods runs on a worker thread
+        @Override
+        protected User doInBackground(Void... objs) {
+            authenticatedUser = muzimaDatabase.userDao().getUserByUsername(username);
+            return null;
+        }
+
+        // onPostExecute runs on main thread
+        @Override
+        protected void onPostExecute(User user) {
+
+        }
+
+        @Override
+        protected void onBackgroundError(Exception e) {
+
+        }
+    }
+
+    public static User getUserByUsername(String username, Context context){
+        getMuzimaDatabase(context);
+        UserDao userDao = muzimaDatabase.userDao();
+        return userDao.getUserByUsername(username);
     }
 }

@@ -50,13 +50,13 @@ import com.muzima.api.model.Location;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.SetupConfigurationTemplate;
-import com.muzima.api.model.User;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.FCMTokenController;
 import com.muzima.controller.FormController;
 import com.muzima.controller.LocationController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.db.entities.User;
 import com.muzima.service.ConfidentialityNoticeDisplayPreferenceService;
 import com.muzima.service.FormDuplicateCheckPreferenceService;
 import com.muzima.service.MuzimaSyncService;
@@ -120,7 +120,7 @@ public class MuzimaJobScheduler extends JobService {
         username = muzimaApplication.getAuthenticatedUserId();
         authenticatedUser = muzimaApplication.getAuthenticatedUser();
         if (authenticatedUser != null){
-            person = authenticatedUser.getPerson();
+            //person = authenticatedUser.getPerson();
 
             if (person != null){
                 authenticatedUserUuid = person.getUuid();

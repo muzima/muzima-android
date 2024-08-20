@@ -11,8 +11,8 @@ import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
-import com.muzima.api.model.User;
 import com.muzima.controller.SetupConfigurationController;
+import com.muzima.db.entities.User;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
 import com.muzima.utils.ThemeUtils;
@@ -83,8 +83,8 @@ public class AboutMuzimaActivity extends BaseActivity {
 
     private void loadUserInfo(){
         User authenticatedUser = ((MuzimaApplication)getApplicationContext()).getAuthenticatedUser();
-        if(authenticatedUser != null && authenticatedUser.getPerson() != null) {
-            loggedInUserTextView.setText(authenticatedUser.getPerson().getDisplayName());
+        if(authenticatedUser != null) {
+            loggedInUserTextView.setText(authenticatedUser.getUsername());
 
             if(authenticatedUser.getDateLastLoggedIn() != null) {
                 lastLoggedInTextView.setText(DateUtils.getFormattedStandardDisplayDateTime(authenticatedUser.getDateLastLoggedIn()));

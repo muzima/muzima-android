@@ -181,6 +181,7 @@ public class MuzimaSyncService {
     }
 
     public int authenticate(android.content.Context context, String[] credentials) {
+        authenticate(context, credentials, false);
         return authenticate(context, credentials, false);
     }
 
@@ -188,6 +189,45 @@ public class MuzimaSyncService {
         String username = credentials[0].trim();
         String password = credentials[1];
         String server = credentials[2];
+        //TODO:remove aunteticate on API
+        Context muzimaContext = muzimaApplication.getMuzimaContext();
+        try {
+//            if(hasInvalidSpecialCharacter(username)){
+//                return SyncStatusConstants.INVALID_CHARACTER_IN_USERNAME;
+//            }
+
+            muzimaContext.openSession();
+            if (!muzimaContext.isAuthenticated()) {
+                if (isUpdatePasswordRequired && !NetworkUtils.isConnectedToNetwork(muzimaApplication)) {
+                    return SyncStatusConstants.LOCAL_CONNECTION_ERROR;
+                } else {
+                    muzimaContext.authenticate(username, password, server, isUpdatePasswordRequired);
+                }
+            }
+        } catch (ConnectException e) {
+            Log.e(getClass().getSimpleName(), "ConnectException Exception thrown while authentication.", e);
+            return SyncStatusConstants.SERVER_CONNECTION_ERROR;
+        } catch (ParseException e) {
+            Log.e(getClass().getSimpleName(), "ParseException Exception thrown while authentication.", e);
+            return SyncStatusConstants.PARSING_ERROR;
+        } catch (MalformedURLException e) {
+            Log.e(getClass().getSimpleName(), "IOException Exception thrown while authentication.", e);
+            return SyncStatusConstants.MALFORMED_URL_ERROR;
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "IOException Exception thrown while authentication.", e);
+            return SyncStatusConstants.AUTHENTICATION_ERROR;
+        } catch (AuthenticationException e) {
+            Log.e(getClass().getSimpleName(), "Exception thrown while authentication.", e);
+            return SyncStatusConstants.INVALID_CREDENTIALS_ERROR;
+        } catch (IllegalArgumentException e) {
+            Log.e(getClass().getSimpleName(), "IllegalArgumentException Exception thrown while authenticating.", e);
+            return SyncStatusConstants.UNKNOWN_ERROR;
+        } finally {
+            if (muzimaContext != null)
+                muzimaContext.closeSession();
+        }
+
+
 
         Log.e(getClass().getSimpleName(), "Username ===========");
         final int[] result = {0};
@@ -207,7 +247,7 @@ public class MuzimaSyncService {
                 return SyncStatusConstants.AUTHENTICATION_SUCCESS;
             }
         });
-        Log.e(getClass().getSimpleName(), "Username ===========3");
+        Log.e(getClass().getSimpleName(), "Username ===========3 "+result[0]);
         return result[0];
     }
 

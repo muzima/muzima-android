@@ -17,10 +17,12 @@ import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.muzima.api.APIUtils;
 import com.muzima.api.context.Context;
 import com.muzima.api.context.ContextFactory;
 import com.muzima.api.model.Cohort;
@@ -30,7 +32,6 @@ import com.muzima.api.model.Encounter;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.Provider;
-import com.muzima.api.model.User;
 import com.muzima.api.service.ConceptService;
 import com.muzima.api.service.EncounterService;
 import com.muzima.api.service.LocationService;
@@ -40,6 +41,7 @@ import com.muzima.api.service.ObservationService;
 import com.muzima.api.service.PersonService;
 import com.muzima.api.service.PersonTagService;
 import com.muzima.api.service.ProviderService;
+import com.muzima.callbacks.AuntenticationCallBack;
 import com.muzima.controller.AppUsageLogsController;
 import com.muzima.controller.AppReleaseController;
 import com.muzima.controller.CohortController;
@@ -64,6 +66,7 @@ import com.muzima.controller.ReportDatasetController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.controller.SmartCardController;
 import com.muzima.db.MuzimaDatabase;
+import com.muzima.db.entities.User;
 import com.muzima.domain.Credentials;
 import com.muzima.model.PassphraseStorage;
 import com.muzima.service.FormDuplicateCheckPreferenceService;
@@ -227,9 +230,8 @@ public class MuzimaApplication extends MultiDexApplication {
     public User getAuthenticatedUser() {
         try {
             if (authenticatedUser == null) {
-                muzimaContext.openSession();
-                if (muzimaContext.isAuthenticated())
-                    authenticatedUser = muzimaContext.getAuthenticatedUser();
+                if (APIUtils.isAuthenticated())
+                    authenticatedUser = APIUtils.getAuthenticatedUser();
                 else {
                     Credentials cred = new Credentials(getApplicationContext());
                     String[] credentials = cred.getCredentialsArray();
@@ -238,15 +240,25 @@ public class MuzimaApplication extends MultiDexApplication {
                     String server = credentials[2];
 
                     if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password) && !StringUtils.isEmpty(server)) {
-                        muzimaContext.authenticate(username, password, server, false);
+                        APIUtils.authenticate(getApplicationContext(), username, password, server, false, new AuntenticationCallBack() {
+
+                                    @Override
+                                    public int onAuthenticated(boolean success) {
+                                        return 0;
+                                    }
+
+                                    @Override
+                                    public int onError(int result) {
+                                        return 0;
+                                    }
+
+                                });
                     }
 
-                    authenticatedUser = muzimaContext.getAuthenticatedUser();
+                    authenticatedUser = APIUtils.getAuthenticatedUser();
                 }
-                muzimaContext.closeSession();
             }
         } catch (Exception e) {
-            muzimaContext.closeSession();
             throw new RuntimeException(e);
         }
         return authenticatedUser;
@@ -546,8 +558,8 @@ public class MuzimaApplication extends MultiDexApplication {
 
             User authenticated = getAuthenticatedUser();
 
-            if(authenticated != null &&  authenticated.getPerson() != null)
-                nonPatientPersons.add(authenticated.getPerson());
+//            if(authenticated != null &&  authenticated.getPerson() != null)
+//                nonPatientPersons.add(authenticated.getPerson());
 
             List<Person> availablePersons = getPersonController().getAllPersons();
             for(Person person : availablePersons){
@@ -747,33 +759,27 @@ public class MuzimaApplication extends MultiDexApplication {
     }
 
     public boolean isNewUser(String username){
-        try {
-            User user = muzimaContext.getUserService().getUserByUsername(username);
+        User user = APIUtils.getUserByUsername(username, getApplicationContext());
 
-            if(user == null){
-                return true;
-            }
-        }  catch (IOException e) {
-            Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
-        } catch (ParseException e) {
-            Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
+        if(user == null){
+            return true;
         }
         return false;
     }
 
     public void deleteUserByUserName(String username){
-        try {
-            User user = muzimaContext.getUserService().getUserByUsername(username);
-            Credential credential = muzimaContext.getUserService().getCredentialByUsername(username);
-            if(user != null) {
-                muzimaContext.getUserService().deleteUser(user);
-                muzimaContext.getUserService().deleteCredential(credential);
-            }
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
-        } catch (ParseException e) {
-            Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
-        }
+//        try {
+//            User user = APIUtils.getUserByUsername(username);
+//            //Credential credential = muzimaContext.getUserService().getCredentialByUsername(username);
+//            if(user != null) {
+//             //   muzimaContext.getUserService().deleteUser(user);
+//              //  muzimaContext.getUserService().deleteCredential(credential);
+//            }
+//        } catch (IOException e) {
+//            Log.e(getClass().getSimpleName(),"Encountered IO Exception ",e);
+//        } catch (ParseException e) {
+//            Log.e(getClass().getSimpleName(),"Encountered Parse Exception ",e);
+//        }
     }
 
 }

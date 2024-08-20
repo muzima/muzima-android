@@ -67,7 +67,7 @@ public class CohortController {
     public Provider getLoggedInProvider() {
         Provider loggedInProvider = new Provider();
         try {
-            User authenticatedUser = muzimaApplication.getAuthenticatedUser();
+            User authenticatedUser = null; // muzimaApplication.getAuthenticatedUser();
             if (authenticatedUser != null) {
                 loggedInProvider = muzimaApplication.getProviderController().getLoggedInProvider(
                         muzimaApplication.getAuthenticatedUser().getSystemId());

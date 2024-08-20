@@ -32,7 +32,7 @@ import com.muzima.R;
 import com.muzima.adapters.setupconfiguration.SetupConfigurationRecyclerViewAdapter;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.SetupConfiguration;
-import com.muzima.api.model.User;
+import com.muzima.db.entities.User;
 import com.muzima.tasks.DownloadSetupConfigurationsTask;
 import com.muzima.utils.KeyboardWatcher;
 import com.muzima.utils.ThemeUtils;

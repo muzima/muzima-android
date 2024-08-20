@@ -14,7 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
-import com.muzima.api.model.User;
+import com.muzima.db.entities.User;
 import com.muzima.scheduler.RealTimeFormUploader;
 
 public class ConnectivityChangeReceiver extends BroadcastReceiver {

@@ -503,9 +503,9 @@ public class LoginActivity extends BaseActivity {
                 if(isNewUser && !isFirstLaunchValue && ((MuzimaApplication) getApplication()).getMuzimaSettingController().isClearAppDataIfNewUserEnabled()){
                     showAlertDialog(result.credentials);
                 } else {
-                    if (isOnlineModeEnabled) {
-                        muzimaApplication.deleteAllPatientsData();
-                    }
+//                    if (isOnlineModeEnabled) {
+//                        muzimaApplication.deleteAllPatientsData();
+//                    }
 
                     Date successfulLoginTime = new Date();
 
@@ -818,9 +818,9 @@ public class LoginActivity extends BaseActivity {
                     MinimumSupportedAppVersion downloadedMinimumSupportedAppVersion = minimumSupportedAppVersionController.downloadMinimumSupportedAppVersion();
                     if(downloadedMinimumSupportedAppVersion != null) {
                         if (localMinimumSupportedAppVersion.getVersion() != null) {
-                            minimumSupportedAppVersionController.updateMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
+                            //minimumSupportedAppVersionController.updateMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
                         } else {
-                            minimumSupportedAppVersionController.saveMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
+                           // minimumSupportedAppVersionController.saveMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
                         }
                     }
                 }
@@ -828,37 +828,39 @@ public class LoginActivity extends BaseActivity {
                 Log.e(getClass().getSimpleName(),"Encountered an exception while downloading supported app version ",e);
             } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
                 Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
-            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionSaveException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while saving supported app version ",e);
             }
+//            catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionSaveException e) {
+//                Log.e(getClass().getSimpleName(),"Encountered an exception while saving supported app version ",e);
+//            }
             return serverUrl;
         }
 
         @Override
         protected void onPostExecute(String serverUrl) {
-            MinimumSupportedAppVersion currentMinimumSupportedAppVersion;
-            MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
-            try {
-                currentMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
-                if(currentMinimumSupportedAppVersion == null || currentMinimumSupportedAppVersion.getVersion() == null){
-                    showAlertDialog();
-                }else {
-                    int version = currentMinimumSupportedAppVersion.getVersion();
-                    int appVersionCode = BuildConfig.VERSION_CODE;
-                    try{
-                        if (appVersionCode < version || version==0) {
-                            showAlertDialog();
-                        } else {
-                            checkIfNewAppReleaseAvailable(serverUrl);
-                        }
-                    }catch (NumberFormatException e){
-                        Log.e(getClass().getSimpleName(),"Encountered an exception while parsing string to integer ",e);
-                        showAlertDialog();
-                    }
-                }
-            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
-                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
-            }
+//            MinimumSupportedAppVersion currentMinimumSupportedAppVersion;
+//            MinimumSupportedAppVersionController minimumSupportedAppVersionController = ((MuzimaApplication) getApplication()).getMinimumSupportedVersionController();
+//            try {
+//                currentMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
+//                if(currentMinimumSupportedAppVersion == null || currentMinimumSupportedAppVersion.getVersion() == null){
+//                    showAlertDialog();
+//                }else {
+//                    int version = currentMinimumSupportedAppVersion.getVersion();
+//                    int appVersionCode = BuildConfig.VERSION_CODE;
+//                    try{
+//                        if (appVersionCode < version || version==0) {
+//                            showAlertDialog();
+//                        } else {
+//                            checkIfNewAppReleaseAvailable(serverUrl);
+//                        }
+//                    }catch (NumberFormatException e){
+//                        Log.e(getClass().getSimpleName(),"Encountered an exception while parsing string to integer ",e);
+//                        showAlertDialog();
+//                    }
+//                }
+//            } catch (MinimumSupportedAppVersionController.MinimumSupportedAppVersionFetchException e) {
+//                Log.e(getClass().getSimpleName(),"Encountered an exception while fetching/retrieving supported app version ",e);
+//            }
+            checkIfNewAppReleaseAvailable(serverUrl);
         }
 
         @Override
