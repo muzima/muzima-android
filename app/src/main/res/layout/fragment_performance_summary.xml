@@ -9,26 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_gravity="left"
-                android:background="@drawable/ic_menu" />
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ic_emoji_events"/>
-        </RelativeLayout>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,13 +43,14 @@
                         android:textSize="23sp"
                         android:textColor="@color/primary_black"
                         android:text="S"/>
+
                     <ImageView
                         android:id="@+id/main_avatar_image_view"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:layout_centerInParent="true"
                         android:elevation="0dp"
-                        android:src="@drawable/circle"
-                        android:layout_centerInParent="true"/>
+                        android:src="@drawable/circle" />
 
                 </RelativeLayout>
 

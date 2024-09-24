@@ -803,4 +803,8 @@
     <string name="error_media_category_save">Hitilafu ilitokea wakati wa kuhifadhi kategoria ya midia</string>
     <string name="general_program_selection">Uteuzi wa Mpango</string>
     <string name="general_switch_program">Badilisha Mpango</string>
+    <string name="info_no_provider_reports_found">Hakuna ripoti za mtoa huduma zinazopatikana</string>
+    <string name="hint_no_provider_reports_available">Hakuna ripoti za mtoa huduma zinazolingana na vigezo vyako vya utafutaji</string>
+    <string name="hint_search_provider_by_name">Tafuta kwa Mtoa huduma kwa jina</string>
+
 </resources>

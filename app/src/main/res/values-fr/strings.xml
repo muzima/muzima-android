@@ -808,4 +808,8 @@
     <string name="error_dataset_save">Une erreur s\'est produite lors de l\'enregistrement de l\'ensemble de données du rapport</string>
     <string name="error_media_category_save">Une erreur s\'est produite lors de l\'enregistrement de la catégorie multimédia</string>
     <string name="general_program_selection">Sélection de programme</string>
-    <string name="general_switch_program">Changer de programme</string></resources>
+    <string name="general_switch_program">Changer de programme</string>
+    <string name="info_no_provider_reports_found">Aucun rapport de fournisseur disponible</string>
+    <string name="hint_no_provider_reports_available">Aucun rapport de fournisseur ne correspond à vos critères de recherche</string>
+    <string name="hint_search_provider_by_name">Rechercher un fournisseur par nom</string>
+</resources>
