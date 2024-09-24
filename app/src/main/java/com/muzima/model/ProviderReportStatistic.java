@@ -24,6 +24,7 @@ public class ProviderReportStatistic implements Comparable{
     private int leaderboardColor;
     private String  startDate;
     private String  endDate;
+    private boolean isVisible = true;
 
     public int getAchievement() {
         return achievement;
@@ -127,6 +128,14 @@ public class ProviderReportStatistic implements Comparable{
 
     public String getEndDate() {
         return endDate;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
     }
 
     @Override

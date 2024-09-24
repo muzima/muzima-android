@@ -808,4 +808,7 @@ O aplicativo mUzima for Health Providers (o \"Aplicativo\") é desenvolvido como
     <string name="error_media_category_save">Ocorreu um erro ao salvar a categoria de mídia</string>
     <string name="general_program_selection">Selecção de perfil</string>
     <string name="general_switch_program">Trocar perfil</string>
+    <string name="info_no_provider_reports_found">Nenhum relatório de fornecedor disponível</string>
+    <string name="hint_no_provider_reports_available">Nenhum relatório de fornecedor corresponde aos seus critérios de pesquisa</string>
+    <string name="hint_search_provider_by_name">Pesquisar fornecedor por nome</string>
 </resources>

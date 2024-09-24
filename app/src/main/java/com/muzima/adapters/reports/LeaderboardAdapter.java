@@ -27,11 +27,14 @@ import com.muzima.R;
 import com.muzima.model.ProviderReportStatistic;
 import com.muzima.utils.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>{
     private List<ProviderReportStatistic> reportStatistics;
+    private List<ProviderReportStatistic> visibleReportStatistics;
     private LeaderboardItemClickListener leaderboardItemClickListener;
     private Context context;
     private String loggedInUserSystemId;
@@ -39,6 +42,8 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
    public LeaderboardAdapter(List<ProviderReportStatistic> reportStatistics,
                              LeaderboardItemClickListener leaderboardItemClickListener, Context context){
         this.reportStatistics = reportStatistics;
+        visibleReportStatistics = new ArrayList<>();
+        visibleReportStatistics.addAll(reportStatistics);
         this.leaderboardItemClickListener = leaderboardItemClickListener;
         this.context = context;
         loggedInUserSystemId = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getSystemId();
@@ -52,35 +57,49 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       ProviderReportStatistic statistic = reportStatistics.get(position);
-        holder.rankTextView.setText(String.format(Locale.getDefault(), "%d", position+1));
+       ProviderReportStatistic statistic = visibleReportStatistics.get(position);
+       holder.container.setVisibility(View.VISIBLE);
+       holder.rankTextView.setText(String.format(Locale.getDefault(), "%d", position + 1));
 
-        if(!StringUtils.isEmpty(statistic.getProviderName())) {
-            String providerName = statistic.getProviderName().trim();
-            holder.usernameTextView.setText(providerName);
-            holder.avatarTextView.setText(""+providerName.charAt(0));
-        }
+       if (!StringUtils.isEmpty(statistic.getProviderName())) {
+           String providerName = statistic.getProviderName().trim();
+           holder.usernameTextView.setText(providerName);
+           holder.avatarTextView.setText("" + providerName.charAt(0));
+       }
 
-        holder.avatarImageView.setImageTintList(ColorStateList.valueOf(statistic.getLeaderboardColor()));
+       holder.avatarImageView.setImageTintList(ColorStateList.valueOf(statistic.getLeaderboardColor()));
 
-        holder.pointsTextView.setText(String.format(Locale.getDefault(),"%d ",statistic.getScore()));
-        holder.container.setOnClickListener(view -> leaderboardItemClickListener.onLeaderboardItemClick(view, holder.getAdapterPosition()));
+       holder.pointsTextView.setText(String.format(Locale.getDefault(), "%d ", statistic.getScore()));
+       holder.container.setOnClickListener(view -> leaderboardItemClickListener.onLeaderboardItemClick(view, holder.getAdapterPosition()));
 
-        if(StringUtils.equals(loggedInUserSystemId,statistic.getProviderId())){
-            holder.container.setBackgroundColor(Color.parseColor("#F6F0FA"));
-        }
+       if (StringUtils.equals(loggedInUserSystemId, statistic.getProviderId())) {
+           holder.container.setBackgroundColor(Color.parseColor("#F6F0FA"));
+       }
     }
 
     public ProviderReportStatistic getReportStatistic(int position){
         if(position < 0 || position >= getItemCount()){
             return null;
         }
-       return reportStatistics.get(position);
+       return visibleReportStatistics.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return reportStatistics.size();
+        return visibleReportStatistics.size();
+    }
+
+    public void filterByText(CharSequence charSequence){
+       String searchText = charSequence.toString().toLowerCase(Locale.ROOT);
+       reportStatistics.stream().forEach(s ->{
+           if(s.getProviderName().toLowerCase(Locale.ROOT).contains(searchText)){
+               s.setVisible(true);
+           } else
+               s.setVisible(false);
+       });
+       visibleReportStatistics.clear();
+       visibleReportStatistics.addAll(reportStatistics.stream().filter(statistic -> statistic.isVisible()).collect(Collectors.toList()));
+       notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -799,4 +799,8 @@
     <string name="error_dataset_save">रिपोर्ट डेटासेट सहेजते समय एक त्रुटि उत्पन्न हुई</string>
     <string name="error_media_category_save">मीडिया श्रेणी सहेजते समय एक त्रुटि उत्पन्न हुई</string>
     <string name="general_program_selection">प्रोग्राम चयन</string>
-    <string name="general_switch_program">प्रोग्राम स्विच करें</string></resources>
+    <string name="general_switch_program">प्रोग्राम स्विच करें</string>
+    <string name="info_no_provider_reports_found">कोई प्रदाता रिपोर्ट उपलब्ध नहीं है</string>
+    <string name="hint_no_provider_reports_available">कोई प्रदाता रिपोर्ट आपके खोज मानदंड से मेल नहीं खाती</string>
+    <string name="hint_search_provider_by_name">प्रदाता को नाम से खोजें</string>
+</resources>
