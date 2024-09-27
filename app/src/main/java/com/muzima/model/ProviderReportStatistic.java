@@ -10,12 +10,15 @@
 
 package com.muzima.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ProviderReportStatistic implements Comparable{
     private int achievement;
     private String achievementId;
     private float achievementGroupAverage;
     private int expectedAchievement;
-    private int score;
+    private Map<String,Integer> scoreMap;
     private String providerId;
     private String providerName;
     private String statisticTitle;
@@ -24,6 +27,7 @@ public class ProviderReportStatistic implements Comparable{
     private int leaderboardColor;
     private String  startDate;
     private String  endDate;
+    private String abbreviation;
     private boolean isVisible = true;
 
     public int getAchievement() {
@@ -58,12 +62,18 @@ public class ProviderReportStatistic implements Comparable{
         this.expectedAchievement = expectedAchievement;
     }
 
-    public int getScore() {
-        return score;
+    public Map<String, Integer> getScoreMap() {
+        if(scoreMap == null)
+            scoreMap = new HashMap<>();
+        return scoreMap;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setScoreMap(Map<String, Integer> scoreMap) {
+        this.scoreMap = scoreMap;
+    }
+
+    public void addScore(String key, Integer value){
+        getScoreMap().put(key, value);
     }
 
     public String getProviderId() {
@@ -138,8 +148,16 @@ public class ProviderReportStatistic implements Comparable{
         return isVisible;
     }
 
+    public String getAbbreviation() {
+        return abbreviation;
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
+    }
+
     @Override
     public int compareTo(Object o) {
-        return ((Integer)getScore()).compareTo((((ProviderReportStatistic)o).getScore()));
+        return (getProviderName()).compareTo((((ProviderReportStatistic)o).getProviderName()));
     }
 }

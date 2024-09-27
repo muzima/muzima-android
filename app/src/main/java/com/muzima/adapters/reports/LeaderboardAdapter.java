@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import com.muzima.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>{
@@ -69,7 +71,11 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
        holder.avatarImageView.setImageTintList(ColorStateList.valueOf(statistic.getLeaderboardColor()));
 
-       holder.pointsTextView.setText(String.format(Locale.getDefault(), "%d ", statistic.getScore()));
+       for (String key : statistic.getScoreMap().keySet()) {
+           TextView scoreView = new TextView(context);
+           scoreView.setText(String.format(Locale.getDefault(), "%d ",statistic.getScoreMap().get(key)));
+           holder.pointsTextViewLayout.addView(scoreView);
+       }
        holder.container.setOnClickListener(view -> leaderboardItemClickListener.onLeaderboardItemClick(view, holder.getAdapterPosition()));
 
        if (StringUtils.equals(loggedInUserSystemId, statistic.getProviderId())) {
@@ -107,7 +113,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         private final ImageView avatarImageView;
         private final TextView usernameTextView;
         private final TextView rankTextView;
-        private final TextView pointsTextView;
+        private final LinearLayout pointsTextViewLayout;
         private final View container;
 
         public ViewHolder(@NonNull View itemView) {
@@ -117,7 +123,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
             avatarTextView = itemView.findViewById(R.id.avatar_text_view);
             usernameTextView = itemView.findViewById(R.id.name_text_view);
             rankTextView = itemView.findViewById(R.id.item_leaderboard_main_position_text_view);
-            pointsTextView = itemView.findViewById(R.id.points_text_view);
+            pointsTextViewLayout = itemView.findViewById(R.id.points_text_view_layout);
             container = itemView.findViewById(R.id.leaderboard_item_container);
         }
     }

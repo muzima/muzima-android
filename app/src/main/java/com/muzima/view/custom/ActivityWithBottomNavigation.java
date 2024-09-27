@@ -85,7 +85,7 @@ public abstract class ActivityWithBottomNavigation extends BroadcastListenerActi
         }
 
 
-        boolean isReportDatasetAndTemplateAvailable = false;
+        boolean isReportDatasetAndTemplateAvailable = true;
         ReportDatasetController reportDatasetController = ((MuzimaApplication) getApplication()).getReportDatasetController();
         FormController formController = ((MuzimaApplication) getApplication()).getFormController();
         try {

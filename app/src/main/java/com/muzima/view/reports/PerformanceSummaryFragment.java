@@ -94,13 +94,10 @@ public class PerformanceSummaryFragment extends Fragment {
         performanceComparisonView.setAdapter(performanceComparisonAdapter);
         performanceComparisonAdapter.notifyDataSetChanged();
 
-        MuzimaRecyclerView leaderboardView = view.findViewById(R.id.leaderboard);
+        RecyclerView leaderboardView = view.findViewById(R.id.leaderboard);
         leaderboardView.setLayoutManager(new LinearLayoutManager(requireActivity().getApplicationContext()));
         leaderboardView.setAdapter(leaderboardAdapter);
         leaderboardAdapter.notifyDataSetChanged();
-        leaderboardView.setNoDataLayout(view.findViewById(R.id.no_data_layout),
-                getString(R.string.info_no_provider_reports_found),
-                getString(R.string.hint_no_provider_reports_available));
 
         View leaderboardTitleBar = view.findViewById(R.id.leaderboard_section_title_bar);
         leaderboardTitleBar.setOnClickListener(view1 -> leaderBoardTitleClickListener.onLeaderboardSectionTitleClicked());

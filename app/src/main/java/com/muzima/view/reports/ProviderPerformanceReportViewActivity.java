@@ -59,7 +59,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
     private FormTemplate reportTemplate;
     private List<ProviderReportStatistic> allProviderReportStatistics = new ArrayList<>();
     private List<ProviderReportStatistic> individualProviderStatistics = new ArrayList<>();
-    private String leaderboardStatisticKey;
+    private List<String> leaderboardStatisticKey;
     private LeaderboardAdapter leaderboardAdapter;
     private SummaryStatisticAdapter summaryStatisticAdapter;
     private PerformanceComparisonAdapter performanceComparisonAdapter;
@@ -105,12 +105,13 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
 
     private void extractProviderReportStatistics(){
         Map<String, JSONArray> datasetMap = new HashMap<>();
+        leaderboardStatisticKey = new ArrayList<>();
         String reportDefinition = reportTemplate.getHtml();
         JSONArray reportTemplateDefinitions = (JSONArray) JsonUtils.readAsObject(reportDefinition,"reportTemplate");
         int templatesCount = reportTemplateDefinitions.size();
-        for (int i=0; i<templatesCount; i++){
+        for (int templateIndex=0; templateIndex<templatesCount; templateIndex++){
             try {
-                final JSONObject template = (JSONObject)reportTemplateDefinitions.get(i);
+                final JSONObject template = (JSONObject)reportTemplateDefinitions.get(templateIndex);
                 String achievementKey = (String)template.get("achievementKey");
                 String expectedAchievementKey = (String) template.get("expectedAchievementKey");
                 JSONArray datasetJsonArray = null;
@@ -149,10 +150,11 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                     reportStatistic.setAchievementGroupAverage(getAchievementAverage(datasetJsonArray, achievementKey, expectedAchievementKey));
 
                     int leaderboardScore = reportStatistic.getExpectedAchievement() == 0 ? 0 : reportStatistic.getAchievement()*100/reportStatistic.getExpectedAchievement();
-                    reportStatistic.setScore(leaderboardScore);
+                    reportStatistic.getScoreMap().put(template.get("abbreviation").toString(), leaderboardScore);
 
                     reportStatistic.setStatisticTitle(template.get("title").toString());
                     reportStatistic.setStatisticHint(template.get("hint").toString());
+//                    reportStatistic.setAbbreviation(template.get("abbreviation").toString());
                     reportStatistic.setSummaryColorCode(template.get("colorCode").toString());
                     reportStatistic.setProviderName(providerDataset.get("providerName").toString());
                     reportStatistic.setProviderId(providerDataset.get("providerSystemId").toString());
@@ -166,9 +168,9 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                     allProviderReportStatistics.add(reportStatistic);
                 }
 
-                if(template.containsKey("leaderboardStatisticKey")){
-                    leaderboardStatisticKey = template.get("leaderboardStatisticKey").toString();
-                }
+//                if(template.containsKey("leaderboardStatisticKey")){
+//                    leaderboardStatisticKey.add(template.get("leaderboardStatisticKey").toString());
+//                }
             } catch (Exception e) {
                 Log.e(getClass().getSimpleName(), "Could not parse details of summary statistic",e);
             } catch (ReportDatasetController.ReportDatasetFetchException e) {
@@ -239,10 +241,20 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
 
     private LeaderboardAdapter getLeaderboardAdapter(){
         if (leaderboardAdapter == null) {
-            List<ProviderReportStatistic> leaderboardStatistics = allProviderReportStatistics.stream()
-                    .filter(statistic -> statistic.getAchievementId().equals(leaderboardStatisticKey)).collect(Collectors.toList());
-            Collections.sort(leaderboardStatistics, Collections.reverseOrder());
-            leaderboardAdapter = new LeaderboardAdapter(leaderboardStatistics, this, getApplicationContext());
+//            List<ProviderReportStatistic> leaderboardStatistics = allProviderReportStatistics.stream()
+//                    .filter(statistic -
+            Collections.sort(allProviderReportStatistics, Collections.reverseOrder());
+            ProviderReportStatistic previous = null;
+            List<ProviderReportStatistic> collapsed = new ArrayList<>();
+            for (ProviderReportStatistic s:allProviderReportStatistics){
+                if (previous == null || !StringUtils.equals(s.getProviderId(), previous.getProviderId())) {
+                    collapsed.add(s);
+                    previous = s;
+                } else if(StringUtils.equals(s.getProviderId(), previous.getProviderId())){
+                    previous.getScoreMap().putAll(s.getScoreMap());
+                }
+            }
+            leaderboardAdapter = new LeaderboardAdapter(collapsed, this, getApplicationContext());
         }
         return leaderboardAdapter;
     }
