@@ -59,7 +59,8 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
     private FormTemplate reportTemplate;
     private List<ProviderReportStatistic> allProviderReportStatistics = new ArrayList<>();
     private List<ProviderReportStatistic> individualProviderStatistics = new ArrayList<>();
-    private List<String> leaderboardStatisticKey;
+    private String activeStatisticHeader = null;
+    private List<String> uniqueStatisticHeaders = new ArrayList<>();
     private LeaderboardAdapter leaderboardAdapter;
     private SummaryStatisticAdapter summaryStatisticAdapter;
     private PerformanceComparisonAdapter performanceComparisonAdapter;
@@ -85,6 +86,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
             Log.e(getClass().getSimpleName(),"Could not obtain report template");
         }
 
+        uniqueStatisticHeaders = new ArrayList<>();
         extractProviderReportStatistics(); // Consider doing this after syncing from server and storing in db
         initializeIndividualPerformanceView();
         initializeLeaderboardView();
@@ -105,7 +107,6 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
 
     private void extractProviderReportStatistics(){
         Map<String, JSONArray> datasetMap = new HashMap<>();
-        leaderboardStatisticKey = new ArrayList<>();
         String reportDefinition = reportTemplate.getHtml();
         JSONArray reportTemplateDefinitions = (JSONArray) JsonUtils.readAsObject(reportDefinition,"reportTemplate");
         int templatesCount = reportTemplateDefinitions.size();
@@ -154,7 +155,6 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
 
                     reportStatistic.setStatisticTitle(template.get("title").toString());
                     reportStatistic.setStatisticHint(template.get("hint").toString());
-//                    reportStatistic.setAbbreviation(template.get("abbreviation").toString());
                     reportStatistic.setSummaryColorCode(template.get("colorCode").toString());
                     reportStatistic.setProviderName(providerDataset.get("providerName").toString());
                     reportStatistic.setProviderId(providerDataset.get("providerSystemId").toString());
@@ -166,11 +166,13 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                     reportStatistic.setLeaderboardColor(color);
 
                     allProviderReportStatistics.add(reportStatistic);
+
+                    activeStatisticHeader = template.get("abbreviation").toString();
+                    if(!uniqueStatisticHeaders.contains(template.get("abbreviation").toString())) {
+                        uniqueStatisticHeaders.add(template.get("abbreviation").toString());
+                    }
                 }
 
-//                if(template.containsKey("leaderboardStatisticKey")){
-//                    leaderboardStatisticKey.add(template.get("leaderboardStatisticKey").toString());
-//                }
             } catch (Exception e) {
                 Log.e(getClass().getSimpleName(), "Could not parse details of summary statistic",e);
             } catch (ReportDatasetController.ReportDatasetFetchException e) {
@@ -241,8 +243,6 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
 
     private LeaderboardAdapter getLeaderboardAdapter(){
         if (leaderboardAdapter == null) {
-//            List<ProviderReportStatistic> leaderboardStatistics = allProviderReportStatistics.stream()
-//                    .filter(statistic -
             Collections.sort(allProviderReportStatistics, Collections.reverseOrder());
             ProviderReportStatistic previous = null;
             List<ProviderReportStatistic> collapsed = new ArrayList<>();
@@ -254,7 +254,9 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                     previous.getScoreMap().putAll(s.getScoreMap());
                 }
             }
-            leaderboardAdapter = new LeaderboardAdapter(collapsed, this, getApplicationContext());
+            Collections.reverse(uniqueStatisticHeaders);
+            leaderboardAdapter = new LeaderboardAdapter(collapsed, this, getApplicationContext(),
+                    uniqueStatisticHeaders, activeStatisticHeader);
         }
         return leaderboardAdapter;
     }

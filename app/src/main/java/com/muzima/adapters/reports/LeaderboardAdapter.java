@@ -29,6 +29,8 @@ import com.muzima.model.ProviderReportStatistic;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -40,15 +42,20 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     private LeaderboardItemClickListener leaderboardItemClickListener;
     private Context context;
     private String loggedInUserSystemId;
+    private String activeStatisticHeader;
+    private List<String> statisticHeaderList;
 
    public LeaderboardAdapter(List<ProviderReportStatistic> reportStatistics,
-                             LeaderboardItemClickListener leaderboardItemClickListener, Context context){
+                             LeaderboardItemClickListener leaderboardItemClickListener, Context context,
+                             List<String> statisticHeaderList, String activeStatisticHeader){
         this.reportStatistics = reportStatistics;
         visibleReportStatistics = new ArrayList<>();
         visibleReportStatistics.addAll(reportStatistics);
         this.leaderboardItemClickListener = leaderboardItemClickListener;
         this.context = context;
         loggedInUserSystemId = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getSystemId();
+        this.activeStatisticHeader = activeStatisticHeader;
+        this.statisticHeaderList = statisticHeaderList;
     }
     @NonNull
     @Override
@@ -60,6 +67,8 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
        ProviderReportStatistic statistic = visibleReportStatistics.get(position);
+        holder.pointsTextViewLayout.removeAllViews();
+
        holder.container.setVisibility(View.VISIBLE);
        holder.rankTextView.setText(String.format(Locale.getDefault(), "%d", position + 1));
 
@@ -72,9 +81,17 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
        holder.avatarImageView.setImageTintList(ColorStateList.valueOf(statistic.getLeaderboardColor()));
 
        for (String key : statistic.getScoreMap().keySet()) {
-           TextView scoreView = new TextView(context);
-           scoreView.setText(String.format(Locale.getDefault(), "%d ",statistic.getScoreMap().get(key)));
+           View scoreView = LayoutInflater.from(context).inflate(R.layout.item_leaderboard_score,null);
+
+           TextView tv = scoreView.findViewById(R.id.score_text_view);
+           tv.setText(String.format(Locale.getDefault(), "%d ",statistic.getScoreMap().get(key)));
+           if(StringUtils.equals(key, activeStatisticHeader)){
+               tv.setTextColor(context.getResources().getColor(R.color.primary_blue));
+           }
            holder.pointsTextViewLayout.addView(scoreView);
+           TextView divider = new TextView(context);
+           divider.setText("  ");
+           holder.pointsTextViewLayout.addView(divider);
        }
        holder.container.setOnClickListener(view -> leaderboardItemClickListener.onLeaderboardItemClick(view, holder.getAdapterPosition()));
 
@@ -108,6 +125,10 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
        notifyDataSetChanged();
     }
 
+    public void sortVisibleList(){
+
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView avatarTextView;
         private final ImageView avatarImageView;
@@ -130,5 +151,29 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     public interface LeaderboardItemClickListener{
         void onLeaderboardItemClick(View view, int position);
+    }
+
+    public void setActiveStatisticHeader(String statisticAbbreviation){
+       this.activeStatisticHeader = statisticAbbreviation;
+    }
+
+    public String getActiveStatisticHeader() {
+        return activeStatisticHeader;
+    }
+
+    public List<String> getStatisticHeaderList() {
+        return statisticHeaderList;
+    }
+
+    public boolean sortListBySelectedStatistic(String selectedAbb){
+       visibleReportStatistics = visibleReportStatistics.stream()
+               .sorted(Comparator.comparing(s1->s1.getScoreMap().get(selectedAbb)))
+               .collect(Collectors.toList());
+       boolean isAscendingOrder = StringUtils.equals(activeStatisticHeader, selectedAbb);
+       if(!isAscendingOrder)
+           Collections.reverse(visibleReportStatistics);
+       setActiveStatisticHeader(selectedAbb);
+       notifyDataSetChanged();
+       return isAscendingOrder;
     }
 }

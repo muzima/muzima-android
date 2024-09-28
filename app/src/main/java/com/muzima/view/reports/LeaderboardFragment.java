@@ -10,6 +10,7 @@
 
 package com.muzima.view.reports;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,19 +18,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.R;
 import com.muzima.adapters.reports.LeaderboardAdapter;
+import com.muzima.utils.StringUtils;
 import com.muzima.view.custom.MuzimaRecyclerView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class LeaderboardFragment extends Fragment {
     private LeaderboardAdapter leaderboardAdapter;
+    private Map<String, View> statisticHeaderViews = new HashMap<>();
     public LeaderboardFragment() {}
     public static LeaderboardFragment newInstance(LeaderboardAdapter leaderboardAdapter) {
         LeaderboardFragment fragment = new LeaderboardFragment();
@@ -69,5 +78,53 @@ public class LeaderboardFragment extends Fragment {
 
             }
         });
+
+        String activeHeader = leaderboardAdapter.getActiveStatisticHeader();
+        List<String> statisticAbbreviations = leaderboardAdapter.getStatisticHeaderList();
+
+        for(String abbreviation : statisticAbbreviations) {
+            LinearLayout pointsHeaders = view.findViewById(R.id.points_headers_layout);
+            View headerPv = getLayoutInflater().inflate(R.layout.item_leaderboard_points_header, null);
+            TextView tv = headerPv.findViewById(R.id.header_text_view);
+            tv.setText(abbreviation);
+
+            TextView divider = new TextView(getContext());
+            divider.setText("  ");
+            pointsHeaders.addView(divider);
+            pointsHeaders.addView(headerPv);
+            statisticHeaderViews.put(abbreviation, headerPv);
+
+            headerPv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean isAscending = leaderboardAdapter.sortListBySelectedStatistic(abbreviation);
+                    updateSelectedHeaderView(abbreviation, isAscending);
+                }
+            });
+        }
+        updateSelectedHeaderView(activeHeader, false);
+    }
+
+    private void updateSelectedHeaderView(String abbreviation, boolean isAscending){
+        for(String key : statisticHeaderViews.keySet()){
+            View headerPv = statisticHeaderViews.get(key);
+            TextView tv = headerPv.findViewById(R.id.header_text_view);
+            if(!StringUtils.equals(key, abbreviation)) {
+                tv.setTextColor(Color.BLACK);
+                headerPv.setBackgroundResource(R.drawable.round_corners_transparent);
+                headerPv.findViewById(R.id.arrow_up).setVisibility(View.GONE);
+                headerPv.findViewById(R.id.arrow_down).setVisibility(View.GONE);
+            } else {
+                tv.setTextColor(Color.WHITE);
+                headerPv.setBackgroundResource(R.drawable.round_corners_primary_blue);
+                if(isAscending) {
+                    headerPv.findViewById(R.id.arrow_up).setVisibility(View.GONE);
+                    headerPv.findViewById(R.id.arrow_down).setVisibility(View.VISIBLE);
+                } else {
+                    headerPv.findViewById(R.id.arrow_up).setVisibility(View.VISIBLE);
+                    headerPv.findViewById(R.id.arrow_down).setVisibility(View.GONE);
+                }
+            }
+        }
     }
 }
