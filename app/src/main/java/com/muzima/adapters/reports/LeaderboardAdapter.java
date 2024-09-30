@@ -43,11 +43,14 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     private Context context;
     private String loggedInUserSystemId;
     private String activeStatisticHeader;
+    private boolean wasPreviouslyAscending;
     private List<String> statisticHeaderList;
+    private String statisticHeaderHelpInfo;
 
    public LeaderboardAdapter(List<ProviderReportStatistic> reportStatistics,
                              LeaderboardItemClickListener leaderboardItemClickListener, Context context,
-                             List<String> statisticHeaderList, String activeStatisticHeader){
+                             List<String> statisticHeaderList, String activeStatisticHeader,
+                             String statisticHeaderHelpInfo){
         this.reportStatistics = reportStatistics;
         visibleReportStatistics = new ArrayList<>();
         visibleReportStatistics.addAll(reportStatistics);
@@ -56,6 +59,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         loggedInUserSystemId = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getSystemId();
         this.activeStatisticHeader = activeStatisticHeader;
         this.statisticHeaderList = statisticHeaderList;
+        this.statisticHeaderHelpInfo = statisticHeaderHelpInfo;
     }
     @NonNull
     @Override
@@ -97,6 +101,8 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
        if (StringUtils.equals(loggedInUserSystemId, statistic.getProviderId())) {
            holder.container.setBackgroundColor(Color.parseColor("#F6F0FA"));
+       } else {
+           holder.container.setBackgroundColor(Color.parseColor("#FFFFFF"));
        }
     }
 
@@ -154,7 +160,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     }
 
     public void setActiveStatisticHeader(String statisticAbbreviation){
-       this.activeStatisticHeader = statisticAbbreviation;
+       activeStatisticHeader = statisticAbbreviation;
     }
 
     public String getActiveStatisticHeader() {
@@ -169,11 +175,17 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
        visibleReportStatistics = visibleReportStatistics.stream()
                .sorted(Comparator.comparing(s1->s1.getScoreMap().get(selectedAbb)))
                .collect(Collectors.toList());
-       boolean isAscendingOrder = StringUtils.equals(activeStatisticHeader, selectedAbb);
-       if(!isAscendingOrder)
+       boolean isAscending = StringUtils.equals(activeStatisticHeader, selectedAbb) ?
+               !wasPreviouslyAscending : true;
+       if(!isAscending)
            Collections.reverse(visibleReportStatistics);
        setActiveStatisticHeader(selectedAbb);
        notifyDataSetChanged();
-       return isAscendingOrder;
+       wasPreviouslyAscending = isAscending;
+       return isAscending;
+    }
+
+    public String getStatisticHeaderHelpInfo() {
+        return statisticHeaderHelpInfo;
     }
 }

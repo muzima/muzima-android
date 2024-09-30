@@ -10,6 +10,8 @@
 
 package com.muzima.view.reports;
 
+import static com.muzima.utils.StringUtils.EMPTY;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,6 +62,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
     private List<ProviderReportStatistic> allProviderReportStatistics = new ArrayList<>();
     private List<ProviderReportStatistic> individualProviderStatistics = new ArrayList<>();
     private String activeStatisticHeader = null;
+    private String statisticHeaderHelpInfo = EMPTY;
     private List<String> uniqueStatisticHeaders = new ArrayList<>();
     private LeaderboardAdapter leaderboardAdapter;
     private SummaryStatisticAdapter summaryStatisticAdapter;
@@ -170,6 +173,12 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                     activeStatisticHeader = template.get("abbreviation").toString();
                     if(!uniqueStatisticHeaders.contains(template.get("abbreviation").toString())) {
                         uniqueStatisticHeaders.add(template.get("abbreviation").toString());
+                        if(StringUtils.isEmpty(statisticHeaderHelpInfo))
+                            statisticHeaderHelpInfo = template.get("abbreviation").toString()
+                                    + " = " + template.get("title").toString();
+                        else
+                            statisticHeaderHelpInfo += ",  " +  template.get("abbreviation").toString()
+                                    + " = " + template.get("title").toString();
                     }
                 }
 
@@ -256,7 +265,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
             }
             Collections.reverse(uniqueStatisticHeaders);
             leaderboardAdapter = new LeaderboardAdapter(collapsed, this, getApplicationContext(),
-                    uniqueStatisticHeaders, activeStatisticHeader);
+                    uniqueStatisticHeaders, activeStatisticHeader, statisticHeaderHelpInfo);
         }
         return leaderboardAdapter;
     }

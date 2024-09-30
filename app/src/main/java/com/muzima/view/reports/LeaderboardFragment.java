@@ -103,6 +103,28 @@ public class LeaderboardFragment extends Fragment {
             });
         }
         updateSelectedHeaderView(activeHeader, false);
+        TextView headerHelpInfo = view.findViewById(R.id.statistic_header_details_txt);
+        headerHelpInfo.setSelected(true);
+        headerHelpInfo.setText(leaderboardAdapter.getStatisticHeaderHelpInfo()
+                + ",  " + leaderboardAdapter.getStatisticHeaderHelpInfo() );
+
+        View detailsHelpIcon = view.findViewById(R.id.statistic_header_info);
+        View detailsSection = view.findViewById(R.id.statistic_header_details);
+        detailsHelpIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                detailsHelpIcon.setVisibility(View.INVISIBLE);
+                detailsSection.setVisibility(View.VISIBLE);
+            }
+        });
+        View detailsHider = view.findViewById(R.id.details_hider);
+        detailsHider.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                detailsSection.setVisibility(View.GONE);
+                detailsHelpIcon.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     private void updateSelectedHeaderView(String abbreviation, boolean isAscending){
