@@ -18,11 +18,9 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -64,6 +62,7 @@ import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.FormUtils;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.TagsUtil;
 import com.muzima.utils.ThemeUtils;
@@ -266,8 +265,7 @@ public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavi
         Dialog dialog = new BottomSheetDialog(this);
         dialog.setContentView(view);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        String applicationLanguage = preferences.getString(this.getResources().getString(R.string.preference_app_language), this.getResources().getString(R.string.language_english));
+        String applicationLanguage = MuzimaPreferences.getStringPreference(getApplicationContext(), this.getResources().getString(R.string.preference_app_language), this.getResources().getString(R.string.language_english));
 
 
         bottomSheetConceptTitleTextView = view.findViewById(R.id.cohort_name_text_view);
@@ -279,13 +277,13 @@ public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavi
         singleObsFormsRecyclerViews.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         singleObsFormsRecyclerViews.setAdapter(clientDynamicObsFormsAdapter);
 
-        SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getName(), "", singleObsFormsList.size() + 1);
+        SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getConceptTypeName(), "", singleObsFormsList.size() + 1);
         if(singleObsFormsList.size() > 0){
-            if(singleObsFormsList.get(0).getConcept().getId() == selectedBottomSheetConcept.getId()){
+            if(singleObsFormsList.get(0).getConcept().getConceptid() == selectedBottomSheetConcept.getConceptid()){
                 singleObsFormsList.add(form);
             }
         }else {
-            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", getConceptNameFromConceptNamesByLocale(selectedBottomSheetConcept.getConceptNames(),applicationLanguage), selectedBottomSheetConcept.getConceptType().getName()));
+            bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", getConceptNameFromConceptNamesByLocale(selectedBottomSheetConcept.getConceptNames(),applicationLanguage), selectedBottomSheetConcept.getConceptType().getConceptTypeName()));
             singleObsFormsList.add(form);
         }
         clientDynamicObsFormsAdapter.notifyDataSetChanged();
@@ -304,13 +302,13 @@ public class DataCollectionActivity extends ActivityWithPatientSummaryBottomNavi
         addReadingActionView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getName(), "", singleObsFormsList.size() + 1);
+                SingleObsForm form = new SingleObsForm(selectedBottomSheetConcept, new Date(), selectedBottomSheetConcept.getConceptType().getConceptTypeName(), "", singleObsFormsList.size() + 1);
                 if(singleObsFormsList.size() > 0){
-                    if(singleObsFormsList.get(0).getConcept().getId() == selectedBottomSheetConcept.getId()){
+                    if(singleObsFormsList.get(0).getConcept().getConceptid() == selectedBottomSheetConcept.getConceptid()){
                         singleObsFormsList.add(form);
                     }
                 }else {
-                    bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getName()));
+                    bottomSheetConceptTitleTextView.setText(String.format(Locale.getDefault(), "%s (%s)", selectedBottomSheetConcept.getName(), selectedBottomSheetConcept.getConceptType().getConceptTypeName()));
                     singleObsFormsList.add(form);
                 }
                 clientDynamicObsFormsAdapter.notifyDataSetChanged();

@@ -10,21 +10,28 @@
 
 package com.muzima.adapters.observations;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.muzima.R;
 import com.muzima.api.model.Concept;
+import com.muzima.api.model.ConceptName;
 import com.muzima.api.model.DerivedObservation;
 import com.muzima.api.model.Encounter;
 import com.muzima.api.model.Observation;
 import com.muzima.controller.DerivedObservationController;
 import com.muzima.controller.ObservationController;
+import com.muzima.utils.ConceptUtils;
+import com.muzima.utils.MuzimaPreferences;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * AsyncTask Class that orchestrate a background non ui thread that loads
@@ -41,12 +48,16 @@ class ObservationsByDateBackgroundTask extends AsyncTask<Void, List<String>, Lis
     private final DerivedObservationController derivedObservationController;
     private final String patientUuid;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    Map<String, List<Observation>> datesObservations = new LinkedHashMap<>();
+    private String applicationLanguage;
 
-    public ObservationsByDateBackgroundTask(ObservationByDateAdapter observationByDateAdapter, ObservationController observationController, String patientUuid, DerivedObservationController derivedObservationController) {
+
+    public ObservationsByDateBackgroundTask(ObservationByDateAdapter observationByDateAdapter, ObservationController observationController, String patientUuid, DerivedObservationController derivedObservationController, Context context) {
         this.observationByDateAdapter = observationByDateAdapter;
         this.observationController = observationController;
         this.derivedObservationController = derivedObservationController;
         this.patientUuid = patientUuid;
+        this.applicationLanguage = MuzimaPreferences.getStringPreference(context, context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
     }
 
     @Override
@@ -61,25 +72,56 @@ class ObservationsByDateBackgroundTask extends AsyncTask<Void, List<String>, Lis
         List<String> dates = new ArrayList();
         try {
             List<Observation> observations = observationController.getObservationsByPatient(patientUuid);
-
             List<DerivedObservation> derivedObservations = derivedObservationController.getDerivedObservationByPatientUuid(patientUuid);
             for (DerivedObservation derivedObservation : derivedObservations) {
                 Observation observation = new Observation();
-                observation.setUuid(derivedObservation.getUuid());
+
+                List<ConceptName> conceptNames = new ArrayList<>();
+                ConceptName conceptName = new ConceptName();
+                conceptName.setName(ConceptUtils.getDerivedConceptNameFromConceptNamesByLocale(derivedObservation.getDerivedConcept().getDerivedConceptName(), applicationLanguage));
+                conceptName.setLocale(applicationLanguage);
+                conceptNames.add(conceptName);
+
+                Concept concept = new Concept();
+                concept.setConceptUuid(derivedObservation.getDerivedConcept().getDerivedConceptUuid());
+                concept.setConceptNames(new ArrayList<>(conceptNames));
+                concept.setConceptType(derivedObservation.getDerivedConcept().getConceptType());
+
+                observation.setObsUuid(derivedObservation.getDerivedObservationUuid());
+                observation.setPerson(derivedObservation.getPerson());
+                observation.setConcept(concept);
+                observation.setValueCoded(derivedObservation.getValueCoded());
+                observation.setValueDatetime(derivedObservation.getValueDatetime());
+                observation.setValueNumeric(derivedObservation.getValueNumeric());
+                observation.setValueText(derivedObservation.getValueText());
+                observation.setValueBoolean(derivedObservation.isValueBoolean());
                 observation.setObservationDatetime(derivedObservation.getDateCreated());
+
                 observations.add(observation);
             }
 
             Collections.sort(observations, obsDateTimeComparator);
+            List<Observation> observationList = new ArrayList<>();
             for (Observation observation : observations) {
                 if (!isCancelled() && observation.getObservationDatetime() != null) {
                     String formattedDate = dateFormat.format(observation.getObservationDatetime());
                     if(dates == null){
+                        observationList.add(observation);
                         dates.add(formattedDate);
                     } else if(!dates.contains(formattedDate)){
+                        if(dates.size()>0) {
+                            datesObservations.put(dates.get(dates.size() - 1), observationList);
+                            observationList = new ArrayList<>();
+                        }
+                        observationList.add(observation);
                         dates.add(formattedDate);
+                    }else{
+                        observationList.add(observation);
                     }
                 }
+            }
+            if(observationList.size()>0 && dates.size()>0){
+                datesObservations.put(dates.get(dates.size() - 1), observationList);
             }
         } catch (ObservationController.LoadObservationException e) {
             Log.w("Observations", String.format("Exception while loading observations for %s."), e);
@@ -103,7 +145,7 @@ class ObservationsByDateBackgroundTask extends AsyncTask<Void, List<String>, Lis
     protected void onPostExecute(List<String> dates) {
         if (dates != null) {
             observationByDateAdapter.clear();
-            observationByDateAdapter.add(dates);
+            observationByDateAdapter.add(dates,datesObservations);
             observationByDateAdapter.notifyDataSetChanged();
         }
 

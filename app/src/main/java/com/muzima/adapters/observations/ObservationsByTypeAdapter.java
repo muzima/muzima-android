@@ -13,9 +13,7 @@ package com.muzima.adapters.observations;
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,12 +33,13 @@ import com.muzima.controller.ProviderController;
 import com.muzima.model.events.ClientSummaryObservationSelectedEvent;
 import com.muzima.model.observation.ConceptWithObservations;
 import com.muzima.utils.BackgroundTaskHelper;
+import com.muzima.utils.MuzimaPreferences;
+
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTypeAdapter.ViewHolder> {
     protected Context context;
@@ -85,8 +84,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
     }
 
     private void bindViews(@NotNull ViewHolder holder, int position) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+        String applicationLanguage = MuzimaPreferences.getStringPreference(context, context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
 
         ConceptWithObservations conceptWithObservations = conceptWithObservationsList.get(position);
 
@@ -102,7 +100,7 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
             @Override
             public void onObservationClicked(int position) {
                 for(ConceptWithObservations concept : conceptWithObservationsList){
-                    if(concept.getConcept().getId() == position){
+                    if(concept.getConcept().getConceptid() == position){
                         EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(concept));
                     }
                 }
@@ -112,11 +110,10 @@ public class ObservationsByTypeAdapter extends RecyclerAdapter<ObservationsByTyp
     }
 
     String getConceptDisplay(Concept concept) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+        String applicationLanguage = MuzimaPreferences.getStringPreference(context, context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
 
         String text = getConceptNameFromConceptNamesByLocale(concept.getConceptNames(),applicationLanguage);
-        if (concept.getConceptType().getName().equals(Concept.NUMERIC_TYPE)) {
+        if (concept.getConceptType().getConceptTypeName().equals(Concept.NUMERIC_TYPE)) {
             text += " (" + concept.getUnit() + ")";
         }
         return text;

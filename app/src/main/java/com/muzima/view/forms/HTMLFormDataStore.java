@@ -12,8 +12,6 @@ package com.muzima.view.forms;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.widget.Toast;
@@ -59,6 +57,7 @@ import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.RelationshipJsonMapper;
 import com.muzima.utils.StringUtils;
@@ -504,7 +503,7 @@ class HTMLFormDataStore {
             if (person != null) {
                 PersonAttribute attribute = person.getAttribute(attributeTypeNameOrUuid);
                 if (attribute != null) {
-                    attributeJSONObject.put("attribute_type_uuid", attribute.getAttributeType().getUuid());
+                    attributeJSONObject.put("attribute_type_uuid", attribute.getAttributeType().getPersonAttributeTypeUuid());
                     attributeJSONObject.put("attribute_type_name", attribute.getAttributeType().getName());
                     attributeJSONObject.put("attribute_value", attribute.getAttribute());
                 }
@@ -555,7 +554,7 @@ class HTMLFormDataStore {
                 patientJsonObject.put("birth_date", DateUtils.getFormattedDate(patient.getBirthdate()));
                 patientJsonObject.put("birthdate_estimated", Boolean.toString(patient.getBirthdateEstimated()));
                 patientJsonObject.put("sex", patient.getGender());
-                patientJsonObject.put("attributes", patient.getAtributes());
+                patientJsonObject.put("attributes", patient.getAttributes());
                 patientJsonObject.put("addresses", patient.getAddresses());
             }
         } catch (PatientController.PatientDownloadException | JSONException |
@@ -583,7 +582,7 @@ class HTMLFormDataStore {
                 personJsonObject.put("given_name", person.getGivenName());
                 personJsonObject.put("birth_date", DateUtils.getFormattedDate(person.getBirthdate()));
                 personJsonObject.put("sex", person.getGender());
-                personJsonObject.put("attributes", person.getAtributes());
+                personJsonObject.put("attributes", person.getAttributes());
                 personJsonObject.put("addresses", person.getAddresses());
             }
         } catch (PersonController.PersonLoadException | PatientController.PatientLoadException | JSONException e) {
@@ -682,8 +681,7 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public String getDefaultEncounterProvider() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
-        boolean encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", false);
+        boolean encounterProviderPreference = MuzimaPreferences.getBooleanPreference(formWebViewActivity.getApplicationContext(), "encounterProviderPreference", false);
         List<Provider> providers = new ArrayList<>();
 
         if (encounterProviderPreference) {
@@ -698,8 +696,7 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public String getFontSizePreference() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
-        return preferences.getString(formWebViewActivity.getResources().getString(R.string.preference_font_size),
+        return MuzimaPreferences.getStringPreference(formWebViewActivity.getApplicationContext(), formWebViewActivity.getResources().getString(R.string.preference_font_size),
                 HTMLFormWebViewActivity.DEFAULT_FONT_SIZE).toLowerCase();
     }
 
@@ -784,8 +781,8 @@ class HTMLFormDataStore {
         try {
             encounters = encounterController.getEncountersByPatientUuid(patientuuid);
             for (Encounter encounter : encounters) {
-                if (!(encounterTypeArray.contains(encounter.getEncounterType().getName()))) {
-                    encounterTypeArray.add(encounter.getEncounterType().getName());
+                if (!(encounterTypeArray.contains(encounter.getEncounterType().getEncounterTypeName()))) {
+                    encounterTypeArray.add(encounter.getEncounterType().getEncounterTypeName());
                     encountertypes.add(encounter);
                 }
             }
@@ -826,8 +823,8 @@ class HTMLFormDataStore {
         try {
             encounters = encounterController.getEncountersByPatientUuid(patientUuid);
             for (Encounter enc : encounters) {
-                if (enc.getEncounterType().getName().equals(encounterType)) {
-                    observations.addAll(observationController.getObservationsByEncounterId(enc.getId()));
+                if (enc.getEncounterType().getEncounterTypeName().equals(encounterType)) {
+                    observations.addAll(observationController.getObservationsByEncounterId(enc.getEncounterId()));
                 }
             }
             Collections.sort(observations, observationDateTimeComparator);
@@ -879,13 +876,13 @@ class HTMLFormDataStore {
                 json.put("conceptName", "Concept Created On Phone");
             }
 
-            json.put("conceptId", obs.getConcept().getId());
+            json.put("conceptId", obs.getConcept().getConceptid());
             json.put("conceptUuid", obs.getConcept().getUuid());
 
             json.put("obsDate", convertedEncounterDate);
             if (obs.getValueCoded() != null) {
                 codedConcept.put("uuid", obs.getValueCoded().getUuid());
-                codedConcept.put("id", obs.getValueCoded().getId());
+                codedConcept.put("id", obs.getValueCoded().getConceptid());
                 codedConcept.put("name", getConceptNameFromConceptNamesByLocale(obs.getValueCoded().getConceptNames(), getApplicationLanguage()));
                 ;
                 json.put("valueCoded", codedConcept);
@@ -894,12 +891,16 @@ class HTMLFormDataStore {
             }
             json.put("valueNumeric", obs.getValueNumeric());
             json.put("valueText", obs.getValueText());
-            json.put("encounterId", obs.getEncounter().getId());
-            json.put("uuid", obs.getUuid());
+            json.put("encounterId", obs.getEncounter().getEncounterId());
+            json.put("uuid", obs.getObsUuid());
             json.put("valueComplex", obs.getValueComplex());
             json.put("valueDatetime", convertedvalueDateTime);
             json.put("obs_comment", obs.getComment());
-            json.put("obs_group_id", obs.getObsGroupId());
+            if(obs.getObsGroup() != null) {
+                json.put("obs_group_id", obs.getObsGroup().getObsGroupId());
+            }else{
+                json.put("obs_group_id", "");
+            }
             map.put("json" + i, json);
             arr.put(map.get("json" + i));
             i++;
@@ -914,8 +915,7 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public void checkForPossibleFormDuplicate(String formUuid, String encounterDateTime, String patientUuid, String encounterPayLoad) throws FormController.FormDataFetchException, JSONException {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
-        boolean isDuplicateFormDataWarningPreferenceSet = preferences.getBoolean(formWebViewActivity.getResources().getString(R.string.preference_duplicate_form_data_key), HTMLFormWebViewActivity.IS_ALLOWED_FORM_DATA_DUPLICATION);
+        boolean isDuplicateFormDataWarningPreferenceSet = MuzimaPreferences.getBooleanPreference(formWebViewActivity.getApplicationContext(), formWebViewActivity.getResources().getString(R.string.preference_duplicate_form_data_key), HTMLFormWebViewActivity.IS_ALLOWED_FORM_DATA_DUPLICATION);
         if (isDuplicateFormDataWarningPreferenceSet) {
             JSONObject mainObject = new JSONObject(encounterPayLoad);
             JSONObject encounterObject = mainObject.getJSONObject("encounter");
@@ -953,16 +953,16 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public boolean getDefaultEncounterLocationSetting() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
-        String defaultLocationName = preferences.getString("defaultEncounterLocation", getStringResource("no_default_encounter_location"));
+        String defaultLocationName = MuzimaPreferences.getStringPreference(formWebViewActivity.getApplicationContext(),
+                "defaultEncounterLocation", getStringResource("no_default_encounter_location"));
         String defaultValue = getStringResource("no_default_encounter_location");
         return !defaultLocationName.equals(defaultValue);
     }
 
     @JavascriptInterface
     public String getDefaultEncounterLocationPreference() throws LocationController.LocationLoadException {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
-        String defaultLocationName = preferences.getString("defaultEncounterLocation", getStringResource("no_default_encounter_location"));
+        String defaultLocationName = MuzimaPreferences.getStringPreference(formWebViewActivity.getApplicationContext(),
+                "defaultEncounterLocation", getStringResource("no_default_encounter_location"));
         String defaultValue = getStringResource("no_default_encounter_location");
         List<Location> defaultLocation = new ArrayList<>();
         List<Location> locations = new ArrayList<>();
@@ -1132,8 +1132,8 @@ class HTMLFormDataStore {
             cohortMembers = cohortController.getCohortMembershipByPatientUuid(patientUuid);
             for (CohortMember cohortMember : cohortMembers) {
                 JSONObject json = new JSONObject();
-                json.put("cohortUuid", cohortMember.getCohort().getUuid());
-                json.put("cohortName", cohortMember.getCohort().getName());
+                json.put("cohortUuid", cohortMember.getCohortUuid());
+                json.put("cohortName", cohortMember.getCohortName());
                 map.put("json" + i, json);
                 jsonArray.put(map.get("json" + i));
                 i++;
@@ -1211,8 +1211,7 @@ class HTMLFormDataStore {
 
     @JavascriptInterface
     public String getApplicationLanguage() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(formWebViewActivity.getApplicationContext());
-        String applicationLanguage = preferences.getString(formWebViewActivity.getResources().getString(R.string.preference_app_language), formWebViewActivity.getResources().getString(R.string.language_english));
+        String applicationLanguage = MuzimaPreferences.getStringPreference(formWebViewActivity.getApplicationContext(), formWebViewActivity.getResources().getString(R.string.preference_app_language), formWebViewActivity.getResources().getString(R.string.language_english));
         return applicationLanguage;
     }
 
@@ -1372,7 +1371,7 @@ class HTMLFormDataStore {
     private boolean isPreventiveObs(DerivedObservation derivedObservation) {
         List<String> derivedConceptsUuids = new ArrayList<String>();
         derivedConceptsUuids.add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
-        return  derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getUuid());
+        return  derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getDerivedConceptUuid());
     }
 
     private boolean isPatientFromList2(List<DerivedObservation> derivedObservations) {
@@ -1382,7 +1381,7 @@ class HTMLFormDataStore {
         derivedConceptsUuids.add("9e928864-b7d2-445d-9856-cb7c9a0632dd");
         derivedConceptsUuids.add("46e6c352-bddb-4191-8d1e-40380aa1a346");
         for (DerivedObservation derivedObservation : derivedObservations) {
-            if (derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getUuid())) {
+            if (derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getDerivedConceptUuid())) {
                 return true;
             }
         }
@@ -1399,7 +1398,7 @@ class HTMLFormDataStore {
         derivedConceptsUuids.add("46e6c352-bddb-4191-8d1e-40380aa1a346");
         derivedConceptsUuids.add("379e2aa5-b750-4b08-af13-cd0b9795eca7");
         for (DerivedObservation derivedObservation : derivedObservations) {
-            if (derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getUuid())) {
+            if (derivedConceptsUuids.contains(derivedObservation.getDerivedConcept().getDerivedConceptUuid())) {
                 derivedObservationList.add(derivedObservation);
             }
         }
@@ -1456,9 +1455,9 @@ class HTMLFormDataStore {
         List<DerivedConcept> derivedConcepts = derivedConceptController.getDerivedConcepts();
         for (DerivedObservation derivedObservation : derivedObservations) {
             String derivedConceptName = "";
-            String conceptUuid = derivedObservation.getDerivedConcept().getUuid();
+            String conceptUuid = derivedObservation.getDerivedConcept().getDerivedConceptUuid();
             for (DerivedConcept derivedConcept : derivedConcepts) {
-                if (derivedConcept.getUuid().equals(conceptUuid)) {
+                if (derivedConcept.getDerivedConceptUuid().equals(conceptUuid)) {
                     derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), getApplicationLanguage());
                 }
             }
@@ -1489,13 +1488,13 @@ class HTMLFormDataStore {
                 json.put("derivedConceptName", "NULL");
             }
 
-            json.put("derivedConceptId", derivedObservation.getDerivedConcept().getId());
-            json.put("derivedConceptUuid", derivedObservation.getDerivedConcept().getUuid());
+            json.put("derivedConceptId", derivedObservation.getDerivedConcept().getDerivedConceptId());
+            json.put("derivedConceptUuid", derivedObservation.getDerivedConcept().getDerivedConceptUuid());
 
             json.put("dateCreated", convertedCreationDate);
             if (derivedObservation.getValueCoded() != null) {
                 derivedCodedConcept.put("uuid", derivedObservation.getValueCoded().getUuid());
-                derivedCodedConcept.put("id", derivedObservation.getValueCoded().getId());
+                derivedCodedConcept.put("id", derivedObservation.getValueCoded().getConceptid());
                 derivedCodedConcept.put("name", getConceptNameFromConceptNamesByLocale(derivedObservation.getValueCoded().getConceptNames(), getApplicationLanguage()));
                 ;
                 json.put("valueCoded", derivedCodedConcept);
@@ -1506,7 +1505,7 @@ class HTMLFormDataStore {
             json.put("valueText", derivedObservation.getValueText());
             json.put("valueBoolean", derivedObservation.isValueBoolean());
             json.put("valueDatetime", convertedValueDateTime);
-            json.put("uuid", derivedObservation.getUuid());
+            json.put("uuid", derivedObservation.getDerivedObservationUuid());
             map.put("json" + i, json);
             arr.put(map.get("json" + i));
             i++;

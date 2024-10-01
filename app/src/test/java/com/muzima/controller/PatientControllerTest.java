@@ -206,7 +206,7 @@ public class PatientControllerTest {
         Patient patient = new Patient();
         patient.setUuid(uuid);
         if (patientIdentifier != null) {
-            patient.setIdentifiers(Collections.singletonList(patientIdentifier));
+            patient.setIdentifiers(new ArrayList(Collections.singletonList(patientIdentifier)));
         }
         return patient;
     }

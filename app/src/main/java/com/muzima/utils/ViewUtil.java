@@ -11,7 +11,6 @@
 package com.muzima.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.controller.FormController;

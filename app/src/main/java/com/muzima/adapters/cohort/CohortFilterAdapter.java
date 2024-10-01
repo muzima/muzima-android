@@ -50,7 +50,7 @@ public class CohortFilterAdapter extends RecyclerView.Adapter<CohortFilterAdapte
         if (cohort.getCohortWithFilter() == null || cohort.getCohortWithFilter().getCohort() == null) {
             holder.checkBox.setText(context.getResources().getString(R.string.general_all_clients));
         } else {
-            if(!cohort.getCohortWithFilter().getDerivedObservationFilter().isEmpty()) {
+            if(cohort.getCohortWithFilter().getDerivedObservationFilter()!=null && !cohort.getCohortWithFilter().getDerivedObservationFilter().isEmpty()) {
                 if(((MuzimaApplication) context.getApplicationContext()).getMuzimaSettingController().isSameDerivedConceptUsedToFilterMoreThanOneCohort(cohort.getCohortWithFilter().getDerivedConceptUuid()))
                     holder.checkBox.setText(cohort.getCohortWithFilter().getCohort().getName() + " - "+cohort.getCohortWithFilter().getDerivedObservationFilter());
                 else

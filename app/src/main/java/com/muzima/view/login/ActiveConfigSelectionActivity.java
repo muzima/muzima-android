@@ -30,11 +30,9 @@ import com.muzima.api.model.SetupConfiguration;
 import com.muzima.api.model.SetupConfigurationTemplate;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.service.ActiveConfigPreferenceService;
-import com.muzima.utils.KeyboardWatcher;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
-import com.muzima.view.initialwizard.GuidedConfigurationWizardActivity;
 import com.muzima.view.progressdialog.MuzimaProgressDialog;
 
 import java.util.ArrayList;

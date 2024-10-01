@@ -29,7 +29,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +50,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.muzima.BuildConfig;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.api.context.Context;
+import com.muzima.api.context.MuzimaContext;
 import com.muzima.api.model.AppRelease;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.model.MinimumSupportedAppVersion;
@@ -76,6 +75,7 @@ import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.util.Constants;
 import com.muzima.util.NetworkUtils;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncSettingsIntent;
 import com.muzima.utils.ThemeUtils;
@@ -435,7 +435,7 @@ public class LoginActivity extends BaseActivity {
         if (!new WizardFinishPreferenceService(this).isWizardFinished()) {
             try {
                 MuzimaApplication application = ((MuzimaApplication) getApplicationContext());
-                Context context = application.getMuzimaContext();
+                MuzimaContext context = application.getMuzimaContext();
 
                 //Cohort Wizard activity
                 application.getPatientController().deleteAllPatients();
@@ -516,7 +516,7 @@ public class LoginActivity extends BaseActivity {
 
                     String languageKey = getApplicationContext().getResources().getString(R.string.preference_app_language);
                     String defaultLanguage = getApplicationContext().getString(R.string.language_english);
-                    String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey, defaultLanguage);
+                    String preferredLocale = MuzimaPreferences.getStringPreference(getApplicationContext(), languageKey, defaultLanguage);
 
                     localePreferenceService.setPreferredLocale(preferredLocale);
 
@@ -815,7 +815,7 @@ public class LoginActivity extends BaseActivity {
                     MinimumSupportedAppVersion localMinimumSupportedAppVersion = minimumSupportedAppVersionController.getMinimumSupportedAppVersion();
                     MinimumSupportedAppVersion downloadedMinimumSupportedAppVersion = minimumSupportedAppVersionController.downloadMinimumSupportedAppVersion();
                     if(downloadedMinimumSupportedAppVersion != null) {
-                        if (localMinimumSupportedAppVersion.getVersion() != null) {
+                        if (localMinimumSupportedAppVersion.getVersion() != null && localMinimumSupportedAppVersion.getVersion()!=0) {
                             minimumSupportedAppVersionController.updateMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
                         } else {
                             minimumSupportedAppVersionController.saveMinimumSupportedAppVersion(downloadedMinimumSupportedAppVersion);
@@ -1187,7 +1187,7 @@ public class LoginActivity extends BaseActivity {
             muzimaApplication.clearApplicationData();
             new WizardFinishPreferenceService(getApplicationContext()).resetWizard();
             new CredentialsPreferenceService(getApplicationContext()).saveCredentials(new Credentials("", null, null));
-            com.muzima.api.context.Context muzimaContext = muzimaApplication.getMuzimaContext();
+            MuzimaContext muzimaContext = muzimaApplication.getMuzimaContext();
             new CredentialsPreferenceService(getApplicationContext()).deleteUserData(muzimaContext);
 
             Date successfulLoginTime = new Date();
@@ -1200,7 +1200,7 @@ public class LoginActivity extends BaseActivity {
 
             String languageKey = getApplicationContext().getResources().getString(R.string.preference_app_language);
             String defaultLanguage = getApplicationContext().getString(R.string.language_english);
-            String preferredLocale = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(languageKey, defaultLanguage);
+            String preferredLocale = MuzimaPreferences.getStringPreference(getApplicationContext(), languageKey, defaultLanguage);
 
             localePreferenceService.setPreferredLocale(preferredLocale);
 

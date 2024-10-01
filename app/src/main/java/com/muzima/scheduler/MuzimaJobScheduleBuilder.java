@@ -14,10 +14,8 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 
 import androidx.annotation.RequiresApi;
 

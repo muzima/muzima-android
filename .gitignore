@@ -17,5 +17,8 @@ classes/
 *.swp
 *.apk
 app/debug
+app/release/output-metadata.json
 /release/output-metadata.json
 *.aab
+app/release
+app/build

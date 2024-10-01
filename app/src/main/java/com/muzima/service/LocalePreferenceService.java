@@ -12,7 +12,7 @@ package com.muzima.service;
 
 import android.util.Log;
 import com.muzima.MuzimaApplication;
-import com.muzima.api.context.Context;
+import com.muzima.api.context.MuzimaContext;
 
 import java.io.IOException;
 
@@ -23,7 +23,7 @@ public class LocalePreferenceService {
         this.muzimaApplication = muzimaApplication;
     }
     public void setPreferredLocale(String preferredLocale){
-        Context muzimaContext = muzimaApplication.getMuzimaContext();
+        MuzimaContext muzimaContext = muzimaApplication.getMuzimaContext();
         try {
             muzimaContext.setPreferredLocale(preferredLocale);
         } catch(IOException e){

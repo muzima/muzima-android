@@ -166,10 +166,10 @@ public class ObservationControllerTest {
     @Test
     public void getConceptWithObservations_shouldReturnConceptsWithObservations() throws Exception, ObservationController.LoadObservationException {
         final Concept concept1 = new Concept() {{
-            setUuid("concept1");
+            setConceptUuid("concept1");
         }};
         final Concept concept2 = new Concept() {{
-            setUuid("concept2");
+            setConceptUuid("concept2");
         }};
         final List<Observation> observations = buildObservations(concept1, concept2);
         String patientUuid = "patientUuid";
@@ -194,10 +194,10 @@ public class ObservationControllerTest {
     @Test
     public void getConceptWithObservations_shouldReturnConceptsWithSortedObservations() throws Exception, ObservationController.LoadObservationException {
         final Concept concept1 = new Concept() {{
-            setUuid("concept1");
+            setConceptUuid("concept1");
         }};
         final Concept concept2 = new Concept() {{
-            setUuid("concept2");
+            setConceptUuid("concept2");
         }};
         final List<Observation> observations = buildObservations(concept1, concept2);
         String patientUuid = "patientUuid";
@@ -218,10 +218,10 @@ public class ObservationControllerTest {
     @Test
     public void saveObservations_shouldSaveObservationsForPatient() throws Exception, ObservationController.SaveObservationException {
         final Concept concept1 = new Concept() {{
-            setUuid("concept1");
+            setConceptUuid("concept1");
         }};
         final Concept concept2 = new Concept() {{
-            setUuid("concept2");
+            setConceptUuid("concept2");
         }};
         final List<Observation> observations = buildObservations(concept1, concept2);
 
@@ -237,22 +237,22 @@ public class ObservationControllerTest {
 
         ArrayList<Observation> observations = new ArrayList<>();
         final Observation ob1 = new Observation() {{
-            setUuid("ob1");
+            setObsUuid("ob1");
             setConcept(concept1);
             setObservationDatetime(date1);
         }};
         final Observation ob2 = new Observation() {{
-            setUuid("ob2");
+            setObsUuid("ob2");
             setConcept(concept2);
             setObservationDatetime(date2);
         }};
         final Observation ob3 = new Observation() {{
-            setUuid("ob3");
+            setObsUuid("ob3");
             setConcept(concept1);
             setObservationDatetime(date3);
         }};
         final Observation ob4 = new Observation() {{
-            setUuid("ob4");
+            setObsUuid("ob4");
             setConcept(concept1);
             setObservationDatetime(date2);
         }};

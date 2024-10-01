@@ -10,17 +10,12 @@
 
 package com.muzima.view.forms;
 
-import android.app.ActionBar;
-import android.os.Build;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,7 +30,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -52,6 +46,7 @@ import com.muzima.service.MuzimaGPSLocationService;
 import com.muzima.utils.Constants;
 import com.muzima.utils.GeolocationJsonMapper;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.audio.AudioResult;
@@ -158,9 +153,8 @@ public class HTMLFormWebViewActivity extends BroadcastListenerActivity {
 
         setTitle(R.string.general_form);
         progressDialog = new MuzimaProgressDialog(this);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        autoSaveIntervalPreference = preferences.getString("autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
-        encounterProviderPreference = preferences.getBoolean("encounterProviderPreference", IS_LOGGED_IN_USER_DEFAULT_PROVIDER);
+        autoSaveIntervalPreference = MuzimaPreferences.getStringPreference(getApplicationContext(), "autoSaveIntervalPreference", DEFAULT_AUTO_SAVE_INTERVAL_VALUE_IN_MINS);
+        encounterProviderPreference = MuzimaPreferences.getBooleanPreference(getApplicationContext(), "encounterProviderPreference", IS_LOGGED_IN_USER_DEFAULT_PROVIDER);
 
         showProgressBar(getString(R.string.hint_loading_progress));
         try {

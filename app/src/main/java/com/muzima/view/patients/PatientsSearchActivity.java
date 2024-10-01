@@ -14,10 +14,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import com.google.android.material.snackbar.Snackbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -28,7 +26,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -43,18 +40,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.adapters.patients.PatientAdapterHelper;
 import com.muzima.adapters.patients.PatientTagsListAdapter;
 import com.muzima.adapters.patients.PatientsLocalSearchAdapter;
-import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.SmartCardRecord;
-import com.muzima.api.service.SmartCardRecordService;
-import com.muzima.controller.CohortController;
 import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.PatientController;
 import com.muzima.controller.SmartCardController;
@@ -74,7 +67,6 @@ import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
 
 import com.muzima.view.barcode.BarcodeCaptureActivity;
-import com.muzima.view.forms.FormsWithDataActivity;
 
 import java.util.ArrayList;
 import java.util.HashSet;

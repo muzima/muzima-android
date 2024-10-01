@@ -73,7 +73,7 @@ class ObservationParserUtility {
                                         String userSystemId, String formDataUuid, Person person, boolean parseAsPersonObs) {
         Encounter encounter = new Encounter();
         encounter.setProvider(getDummyProvider(providerId));
-        encounter.setUuid(getEncounterUUID());
+        encounter.setEncounterUuid(getEncounterUUID());
         encounter.setLocation(getDummyLocation(locationId));
         encounter.setEncounterType(getDummyEncounterType(formUuid));
         encounter.setEncounterDatetime(encounterDateTime);
@@ -148,7 +148,7 @@ class ObservationParserUtility {
                     + concept.getName() + "'. Reason: No Observation value provided.");
         }
         Observation observation = new Observation();
-        observation.setUuid(getObservationUuid());
+        observation.setObsUuid(getObservationUuid());
         observation.setValueCoded(defaultValueCodedConcept());
 
         if (concept.isCoded()) {
@@ -192,15 +192,17 @@ class ObservationParserUtility {
         try{
             Form form = formController.getFormByUuid(formUuid);
             if(form != null){
-                encounterTypeName = form.getEncounterType().getName();
-                encountertypeUuid = form.getEncounterType().getUuid();
+                if(form.getEncounterType() != null) {
+                    encounterTypeName = form.getEncounterType().getEncounterTypeName();
+                    encountertypeUuid = form.getEncounterType().getEncounterTypeUuid();
+                }
             }
         } catch (FormController.FormFetchException | NullPointerException e) {
             Log.e(getClass().getSimpleName(),"Could not retrieve list of forms",e);
         }
         EncounterType encounterType = new EncounterType();
-        encounterType.setUuid(encountertypeUuid);
-        encounterType.setName(encounterTypeName);
+        encounterType.setEncounterTypeUuid(encountertypeUuid);
+        encounterType.setEncounterTypeName(encounterTypeName);
         return encounterType;
     }
 
@@ -241,7 +243,7 @@ class ObservationParserUtility {
             String identifier = prov.getIdentifier();
             if(identifier != null && identifier.equals(providerId)){
                 providerName = prov.getName();
-                providerUuid = prov.getUuid();
+                providerUuid = prov.getProviderUuid();
                 providerIdentifier = prov.getIdentifier();
             }
         }
@@ -275,21 +277,21 @@ class ObservationParserUtility {
         ConceptName dummyConceptName = new ConceptName();
         dummyConceptName.setName(conceptName);
         dummyConceptName.setPreferred(true);
-        concept.setConceptNames(Collections.singletonList(dummyConceptName));
+        concept.setConceptNames(new ArrayList<>(Collections.singletonList(dummyConceptName)));
         ConceptType conceptType = new ConceptType();
         if(isCoded) {
-            conceptType.setName("Coded");
+            conceptType.setConceptTypeName("Coded");
         } else {
-            conceptType.setName("ConceptTypeCreatedOnThePhone");
+            conceptType.setConceptTypeName("ConceptTypeCreatedOnThePhone");
         }
         concept.setConceptType(conceptType);
         if(conceptId > 0) {
-            concept.setId(conceptId);
+            concept.setConceptid(conceptId);
         }
         if(conceptUuid != null){
-            concept.setUuid(conceptUuid);
+            concept.setConceptUuid(conceptUuid);
         } else {
-            concept.setUuid(CONCEPT_CREATED_ON_PHONE + UUID.randomUUID());
+            concept.setConceptUuid(CONCEPT_CREATED_ON_PHONE + UUID.randomUUID());
         }
         return concept;
     }
@@ -359,7 +361,7 @@ class ObservationParserUtility {
                     + derivedConcept.getDerivedConceptName() + "'. Reason: No Observation value provided.");
         }
         DerivedObservation derivedObservation = new DerivedObservation();
-        derivedObservation.setUuid(getObservationUuid());
+        derivedObservation.setDerivedObservationUuid(getObservationUuid());
         derivedObservation.setValueCoded(defaultValueCodedConcept());
 
         if (derivedConcept.isCoded()) {

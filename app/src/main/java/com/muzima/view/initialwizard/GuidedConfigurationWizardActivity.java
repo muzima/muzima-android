@@ -21,7 +21,6 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -31,7 +30,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -76,6 +74,7 @@ import com.muzima.utils.Constants;
 import com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants;
 import com.muzima.utils.Constants.SetupLogConstants;
 import com.muzima.utils.MemoryUtil;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.BroadcastListenerActivity;
 import com.muzima.view.MainDashboardActivity;
@@ -621,13 +620,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                                 Location defaultEncounterLocation = locationController.getLocationById(Integer.valueOf(encounterLocationIdSetting.getValueString()));
                                 if (defaultEncounterLocation != null) {
                                     Context context = getApplicationContext();
-                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                                     Resources resources = context.getResources();
                                     String key = resources.getString(R.string.preference_default_encounter_location);
 
-                                    preferences.edit()
-                                            .putString(key, String.valueOf(defaultEncounterLocation.getId()))
-                                            .apply();
+                                    MuzimaPreferences.setStringPreference(context, key, String.valueOf(defaultEncounterLocation.getId()));
                                 }
                             }
                         }
@@ -700,13 +696,10 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
 
                     if(isDefaultLoggedInUserAsEncounterProvider) {
                         Context context = getApplicationContext();
-                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                         Resources resources = context.getResources();
                         String key = resources.getString(R.string.preference_encounter_provider_key);
 
-                        preferences.edit()
-                                .putBoolean(key,isDefaultLoggedInUserAsEncounterProvider)
-                                .apply();
+                        MuzimaPreferences.setBooleanPreference(context, key,true);
                     }
                     return results;
                 }
@@ -720,7 +713,7 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                 if (result == null) {
                     resultDescription = getString(R.string.info_provider_not_downloaded);
                     resultStatus = SetupLogConstants.ACTION_SUCCESS_STATUS_LOG;
-                } else if (result[0] == SyncStatusConstants.SUCCESS) {
+                } else if (result[0] == SUCCESS) {
                     if (result[1] == 1) {
                         resultDescription = getString(R.string.info_provider_downloaded);
                     } else {
@@ -1183,9 +1176,9 @@ public class GuidedConfigurationWizardActivity extends BroadcastListenerActivity
                     if (downloadedObs == 1 && patients == 1) {
                         resultDescription = getString(R.string.info_derived_observation_patient_downloaded);
                     } else if (downloadedObs == 1) {
-                        resultDescription = getString(R.string.info_derived_observation_patients_downloaded, patients);
-                    } else if (patients == 1) {
                         resultDescription = getString(R.string.info_derived_observations_patient_downloaded, patients);
+                    } else if (patients == 1) {
+                        resultDescription = getString(R.string.info_derived_observation_patients_downloaded, downloadedObs);
                     } else if (downloadedObs == 0) {
                         resultDescription = getString(R.string.info_derived_observation_patient_not_downloaded);
                     } else {

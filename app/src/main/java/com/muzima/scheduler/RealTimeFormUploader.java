@@ -10,10 +10,8 @@
 
 package com.muzima.scheduler;
 
-import android.preference.PreferenceManager;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
-import com.muzima.R;
 import com.muzima.controller.FormController;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.view.forms.RealTimeUploadFormIntent;

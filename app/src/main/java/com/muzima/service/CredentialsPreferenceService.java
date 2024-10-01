@@ -11,40 +11,41 @@
 package com.muzima.service;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.muzima.R;
+import com.muzima.api.context.MuzimaContext;
 import com.muzima.api.service.UserService;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.MuzimaPreferences;
 
 import java.io.IOException;
 
 public class CredentialsPreferenceService extends PreferenceService {
 
-    private final SharedPreferences settings;
-
     public CredentialsPreferenceService(Context context) {
         super(context);
-        settings = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public void saveCredentials(Credentials credentials) {
-        Resources resources = context.getResources();
-        String usernameKey = resources.getString(R.string.preference_username);
-        String passwordKey = resources.getString(R.string.preference_password);
-        String serverKey = resources.getString(R.string.preference_server);
+        try {
+            Resources resources = context.getResources();
+            String usernameKey = resources.getString(R.string.preference_username);
+            String passwordKey = resources.getString(R.string.preference_password);
+            String serverKey = resources.getString(R.string.preference_server);
 
-        settings.edit()
-                .putString(usernameKey, credentials.getUserName())
-                .putString(passwordKey, credentials.getPassword())
-                .putString(serverKey, credentials.getServerUrl())
-                .commit();
+            MuzimaPreferences.getSecureSharedPreferences(context).edit()
+                    .putString(usernameKey, credentials.getUserName())
+                    .putString(passwordKey, credentials.getPassword())
+                    .putString(serverKey, credentials.getServerUrl())
+                    .commit();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error getting secure shared preferences");
+        }
     }
 
-    public void deleteUserData(com.muzima.api.context.Context muzimaContext){
+    public void deleteUserData(MuzimaContext muzimaContext){
         try {
             UserService userService = muzimaContext.getUserService();
             userService.deleteAllUsers();

@@ -87,7 +87,7 @@ public class ObservationParserUtilityTest {
         String userSystemId = "userSystemId";
 
         final EncounterType encounterType = new EncounterType(){{
-            setUuid("encounterTypeForObservationsCreatedOnPhone");
+            setEncounterTypeUuid("encounterTypeForObservationsCreatedOnPhone");
         }};
         Form form = new Form(){{
             setUuid(formUuid);
@@ -96,7 +96,7 @@ public class ObservationParserUtilityTest {
 
         List<Provider> providers = new ArrayList<Provider>() {{
             add(new Provider() {{
-                setUuid("provider1");
+                setProviderUuid("provider1");
             }});
         }};
 
@@ -104,8 +104,8 @@ public class ObservationParserUtilityTest {
         when(providerController.getAllProviders()).thenReturn(providers);
         when(formController.getFormByUuid(formUuid)).thenReturn(form);
         Encounter encounter = observationParserUtility.getEncounterEntity(encounterDateTime, formUuid,providerId, locationId, userSystemId, formDataUuid, patient,false);
-        assertTrue(encounter.getUuid().startsWith("encounterUuid"));
-        assertThat(encounter.getEncounterType().getUuid(), is(form.getEncounterType().getUuid()));
+        assertTrue(encounter.getEncounterUuid().startsWith("encounterUuid"));
+        assertThat(encounter.getEncounterType().getEncounterTypeUuid(), is(form.getEncounterType().getEncounterTypeUuid()));
         assertThat(encounter.getProvider().getUuid(), is("providerForObservationsCreatedOnPhone"));
         assertThat(encounter.getEncounterDatetime(), is(encounterDateTime));
     }
@@ -117,7 +117,7 @@ public class ObservationParserUtilityTest {
         when(conceptController.getConceptByName("ConceptName")).thenReturn(null);
         Concept concept = observationParserUtility.getConceptEntity("1^ConceptName^mm",false,true);
         assertThat(concept.getName(), is("ConceptName"));
-        assertThat(concept.getConceptType().getName(), is("ConceptTypeCreatedOnThePhone"));
+        assertThat(concept.getConceptType().getConceptTypeName(), is("ConceptTypeCreatedOnThePhone"));
         assertThat(concept.isCreatedOnDevice(), is(true));
         assertThat(observationParserUtility.getNewConceptList().size(), is(1));
     }
@@ -167,7 +167,7 @@ public class ObservationParserUtilityTest {
         when(concept.isCoded()).thenReturn(false);
         Observation observation = observationParserUtility.getObservationEntity(concept, "20.0");
         assertThat(observation.getValueNumeric(), is(20.0));
-        assertTrue(observation.getUuid().startsWith("observationFromPhoneUuid"));
+        assertTrue(observation.getObsUuid().startsWith("observationFromPhoneUuid"));
     }
 
     @Test

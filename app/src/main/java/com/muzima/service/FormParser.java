@@ -95,7 +95,7 @@ public class FormParser {
             observation.setPerson(patient);
             observation.setEncounter(encounter);
             observation.setObservationDatetime(encounter.getEncounterDatetime());
-            observation.setUuid(observationParserUtility.getObservationUuid());
+            observation.setObsUuid(observationParserUtility.getObservationUuid());
         }
 
         try {

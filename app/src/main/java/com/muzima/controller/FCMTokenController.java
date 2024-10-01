@@ -12,15 +12,14 @@ package com.muzima.controller;
 
 import static com.muzima.utils.DeviceDetailsUtil.generatePseudoDeviceId;
 
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.api.service.NotificationTokenService;
+import com.muzima.utils.MuzimaPreferences;
 
 import java.io.IOException;
 
@@ -36,14 +35,12 @@ public class FCMTokenController {
     public void sendTokenToServer() throws IOException {
         android.content.Context context = muzimaApplication.getApplicationContext();
         boolean notificationSetting = muzimaApplication.getMuzimaSettingController().isPushNotificationsEnabled();
-        SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(context);
         String appTokenKeySynced = context.getResources().getString(R.string.preference_app_token_synced);
-        boolean tokenSynced = sharedPreference.getBoolean(appTokenKeySynced, false);
+        boolean tokenSynced = MuzimaPreferences.getBooleanPreference(context, appTokenKeySynced, false);
 
         if (notificationSetting && !tokenSynced) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
             String appTokenKey = context.getResources().getString(R.string.preference_app_token);
-            String token = sharedPreferences.getString(appTokenKey, null);
+            String token = MuzimaPreferences.getStringPreference(context, appTokenKey, null);
 
             String pseudoDeviceId = generatePseudoDeviceId();
             String serial = "UNKNOWN";
@@ -54,10 +51,7 @@ public class FCMTokenController {
                 if (tokenSynced) {
                     Resources resources = context.getResources();
                     String key = resources.getString(R.string.preference_app_token_synced);
-                    SharedPreferences sharedPreferences1 = PreferenceManager.getDefaultSharedPreferences(context);
-                    sharedPreferences1.edit()
-                            .putBoolean(key, true)
-                            .apply();
+                    MuzimaPreferences.setBooleanPreference(context, key, true);
                 }
             } catch (IOException e) {
                 Log.e(getClass().getSimpleName(), "Exception thrown while sending token to server", e);

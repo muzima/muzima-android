@@ -40,10 +40,10 @@ public class ObservationControllerGetEncountersTest {
         ArrayList<Observation> observations = new ArrayList<>();
         Observation observation = new Observation(){{
             setConcept(new Concept(){{
-                setUuid(conceptUuid);
+                setConceptUuid(conceptUuid);
             }});
             setEncounter(new Encounter(){{
-                setUuid(encounterUuid);
+                setEncounterUuid(encounterUuid);
             }});
         }};
         observations.add(observation);

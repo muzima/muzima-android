@@ -16,6 +16,7 @@ import com.muzima.api.model.PersonName;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import static junit.framework.Assert.assertTrue;
@@ -56,10 +57,10 @@ public class PatientComparatorTest {
         personName.setFamilyName(familyName);
         personName.setMiddleName(middleName);
         personName.setGivenName(givenName);
-        patient.setNames(Collections.singletonList(personName));
+        patient.setNames(new ArrayList(Collections.singletonList(personName)));
         PatientIdentifier personId = new PatientIdentifier();
         personId.setIdentifier(identifier);
-        patient.setIdentifiers(Collections.singletonList(personId));
+        patient.setIdentifiers(new ArrayList(Collections.singletonList(personId)));
         return patient;
     }
 }

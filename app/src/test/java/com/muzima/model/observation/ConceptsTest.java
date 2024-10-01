@@ -71,7 +71,7 @@ public class ConceptsTest {
 
     private Observation createObservation(final Concept concept, final String uuid, final Date date) {
         return new Observation() {{
-            setUuid(uuid);
+            setObsUuid(uuid);
             setConcept(concept);
             setObservationDatetime(date);
         }};
@@ -87,7 +87,7 @@ public class ConceptsTest {
 
     private Concept createConcept(final String uuid) {
         return new Concept() {{
-            setUuid(uuid);
+            setConceptUuid(uuid);
         }};
     }
 

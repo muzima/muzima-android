@@ -41,15 +41,6 @@ public class LocationController {
         }
     }
 
-    private List<Location> downloadLocationsFromServerByName(List<String> names) throws LocationDownloadException {
-        HashSet<Location> result = new HashSet<>();
-        for (String name : names) {
-            List<Location> locations = downloadLocationFromServerByName(name);
-            result.addAll(locations);
-        }
-        return new ArrayList<>(result);
-    }
-
     public Location downloadLocationFromServerByUuid(String uuid) throws LocationDownloadException {
         try {
             return locationService.downloadLocationByUuid(uuid);
@@ -122,6 +113,7 @@ public class LocationController {
                 if(locationAttribute != null && StringUtils.equalsIgnoreCase(locationAttribute.getAttribute(),attribute)){
                     return location;
                 }
+
                 locationAttribute = location.getAttribute(attributeType.getUuid());
                 if(locationAttribute != null && StringUtils.equalsIgnoreCase(locationAttribute.getAttribute(),attribute)){
                     return location;

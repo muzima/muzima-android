@@ -100,14 +100,14 @@ public class EncountersTest {
 
     private Encounter createEncounter(final String uuid, final Date date) {
         return new Encounter(){{
-            setUuid(uuid);
+            setEncounterUuid(uuid);
             setEncounterDatetime(date);
         }};
     }
 
     private Observation createObservation(final Encounter encounter, final String uuid, final Date date) {
         return new Observation() {{
-            setUuid(uuid);
+            setObsUuid(uuid);
             setEncounter(encounter);
             setObservationDatetime(date);
         }};
@@ -123,7 +123,7 @@ public class EncountersTest {
 
     private Encounter createEncounter(final String uuid) {
         return new Encounter() {{
-            setUuid(uuid);
+            setEncounterUuid(uuid);
         }};
     }
 

@@ -15,11 +15,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -29,9 +27,9 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.domain.Credentials;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.view.landing.SplashActivity;
 import com.muzima.view.login.LoginActivity;
-import com.muzima.view.preferences.SettingsActivity;
 
 import java.util.Map;
 
@@ -122,17 +120,11 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // FCM registration token to your app server.
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String appTokenKey = this.getResources().getString(R.string.preference_app_token);
-        settings.edit()
-                .putString(appTokenKey, token)
-                .commit();
+        MuzimaPreferences.setStringPreference(getApplicationContext(), appTokenKey, token);
 
-        SharedPreferences setting = PreferenceManager.getDefaultSharedPreferences(this);
         String appTokenKeySyncStatus = this.getResources().getString(R.string.preference_app_token_synced);
-        setting.edit()
-                .putBoolean(appTokenKeySyncStatus, false)
-                .commit();
+        MuzimaPreferences.setBooleanPreference(getApplicationContext(), appTokenKeySyncStatus, false);
 
     }
     // [END on_new_token]
@@ -150,7 +142,7 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
         ((MuzimaApplication)getApplicationContext()).clearApplicationData();
         new WizardFinishPreferenceService(getApplicationContext()).resetWizard();
         new CredentialsPreferenceService(getApplicationContext()).saveCredentials(new Credentials("", null, null));
-        com.muzima.api.context.Context muzimaContext = ((MuzimaApplication)getApplicationContext()).getMuzimaContext();
+        com.muzima.api.context.MuzimaContext muzimaContext = ((MuzimaApplication)getApplicationContext()).getMuzimaContext();
         new CredentialsPreferenceService(getApplicationContext()).deleteUserData(muzimaContext);
         ((MuzimaApplication)getApplicationContext()).logOut();
         launchLoginActivity(true);
@@ -189,7 +181,7 @@ public class MuzimaFirebaseMessagingService extends FirebaseMessagingService {
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
         String channelId = "10992";
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

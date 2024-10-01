@@ -60,10 +60,10 @@ public class EncounterWithObservationsTest {
 
     private Observation getObservation(String observationUuid, final String conceptUuid, final String conceptName, Date date) {
         Observation observation = new Observation();
-        observation.setUuid(observationUuid);
+        observation.setObsUuid(observationUuid);
         Concept concept = new Concept();
         concept.addName(new ConceptName(){{
-            setUuid(conceptUuid);
+            setConceptNameUuid(conceptUuid);
             setName(conceptName);
         }});
         observation.setObservationDatetime(date);

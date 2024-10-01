@@ -1,19 +1,24 @@
+/*
+ * Copyright (c) Vanderbilt University Medical Center and Lambda Informatics.
+ * All Rights Reserved.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
+ */
+
 package com.muzima.adapters.media;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.pdf.PdfRenderer;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.ParcelFileDescriptor;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,11 +36,11 @@ import com.muzima.R;
 import com.muzima.api.model.Media;
 import com.muzima.api.model.MediaCategory;
 import com.muzima.controller.MediaController;
+import com.muzima.utils.MuzimaPreferences;
 
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -140,8 +145,7 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
             Toast.makeText(context, context.getString(R.string.info_no_media_not_available), Toast.LENGTH_LONG).show();
         } else {
             String commaSeparatedMediaUuids = media.getUuid();
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-            String recentMedia = preferences.getString(context.getResources().getString(R.string.preference_recently_viewed_media), com.muzima.utils.StringUtils.EMPTY);
+            String recentMedia = MuzimaPreferences.getStringPreference(context, context.getResources().getString(R.string.preference_recently_viewed_media), com.muzima.utils.StringUtils.EMPTY);
             if(!com.muzima.utils.StringUtils.isEmpty(recentMedia)) {
                 String[] mediaUuids = recentMedia.split(",");
                 int j = 0;
@@ -165,9 +169,8 @@ public class MediaRecyclerViewAdapter extends RecyclerView.Adapter<MediaRecycler
                 }
             }
 
-            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
             String disclaimerKey = context.getResources().getString(R.string.preference_recently_viewed_media);
-            settings.edit().putString(disclaimerKey, commaSeparatedMediaUuids).commit();
+            MuzimaPreferences.setStringPreference(context, disclaimerKey, commaSeparatedMediaUuids);
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
             Uri fileUri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);

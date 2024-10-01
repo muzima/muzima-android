@@ -12,16 +12,11 @@ package com.muzima.view;
 
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.controller.SmartCardController;
 import com.muzima.domain.Credentials;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.MuzimaPreferences;
@@ -69,9 +64,8 @@ public class BaseAuthenticatedActivity extends AppCompatActivity {
     }
 
     private boolean checkDisclaimerOrCredentials() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
-        boolean disclaimerAccepted = settings.getBoolean(disclaimerKey, false);
+        boolean disclaimerAccepted = MuzimaPreferences.getBooleanPreference(getApplicationContext(), disclaimerKey, false);
         if (!MuzimaPreferences.getOnBoardingCompletedPreference(getApplicationContext())) {
             Intent intent = new Intent(this, OnboardScreenActivity.class);
             startActivity(intent);

@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.adapters.ListAdapter;
-import com.muzima.api.model.Tag;
 import com.muzima.controller.FormController;
 import com.muzima.controller.ObservationController;
 import com.muzima.model.BaseForm;

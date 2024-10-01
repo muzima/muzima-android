@@ -599,7 +599,7 @@ public class DashboardHomeFragment extends Fragment implements RecyclerAdapter.B
 
                 List personNames = new ArrayList<PersonName>();
                 personNames.add(name);
-                patient.setNames(personNames);
+                patient.setNames(new ArrayList<>(personNames));
 
                 patient.setBirthdate(birthDate[0]);
                 if(!StringUtils.isEmpty(ageEditText.getText().toString())) {

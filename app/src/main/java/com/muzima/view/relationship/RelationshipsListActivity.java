@@ -13,7 +13,6 @@ import static com.muzima.utils.RelationshipViewUtil.listOnClickListeners;
 import static com.muzima.view.patients.PatientSummaryActivity.CALLING_ACTIVITY;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;

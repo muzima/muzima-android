@@ -17,8 +17,6 @@ import static com.muzima.utils.Constants.FGH.FGH_INTERVENTIONS;
 import static com.muzima.utils.Constants.FGH.INDEX_CASE_FILTER_CONCEPT;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
@@ -37,6 +35,7 @@ import com.muzima.controller.MuzimaSettingController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.model.CohortWithFilter;
 import com.muzima.util.JsonUtils;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 
 import org.json.JSONArray;
@@ -108,8 +107,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                         if(interventions.contains(derivedConceptUuid)){
                                             DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
                                             if (derivedConcept != null) {
-                                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                                                String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+                                                String applicationLanguage = MuzimaPreferences.getStringPreference(context, context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
                                                 String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
                                                 cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName, StringUtils.EMPTY, StringUtils.EMPTY));
                                             }
@@ -126,8 +124,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                             } else {
                                                 DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
                                                 if (derivedConcept != null) {
-                                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                                                    String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+                                                    String applicationLanguage = MuzimaPreferences.getStringPreference(context, context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
                                                     String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
                                                     cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName, StringUtils.EMPTY, StringUtils.EMPTY));
                                                 }
@@ -143,8 +140,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                     if(interventions.contains(derivedConceptUuid)){
                                         DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
                                         if (derivedConcept != null) {
-                                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                                            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+                                            String applicationLanguage = MuzimaPreferences.getStringPreference(context, context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
                                             String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
                                             cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName, StringUtils.EMPTY, StringUtils.EMPTY));
                                         }
@@ -161,8 +157,7 @@ public class LoadDownloadedCohortsTask implements Runnable {
                                         } else {
                                             DerivedConcept derivedConcept = derivedConceptController.getDerivedConceptByUuid(derivedConceptUuid);
                                             if (derivedConcept != null) {
-                                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-                                                String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
+                                                String applicationLanguage = MuzimaPreferences.getStringPreference(context, context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
                                                 String derivedConceptName = getDerivedConceptNameFromConceptNamesByLocale(derivedConcept.getDerivedConceptName(), applicationLanguage);
                                                 cohortWithFilters.add(new CohortWithFilter(cohort, derivedConceptUuid, derivedConceptName,StringUtils.EMPTY ,StringUtils.EMPTY));
                                             }

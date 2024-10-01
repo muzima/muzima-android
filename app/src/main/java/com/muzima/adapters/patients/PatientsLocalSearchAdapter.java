@@ -22,7 +22,6 @@ import com.muzima.model.CohortFilter;
 import com.muzima.model.PatientFilterPageNumberMap;
 import com.muzima.model.location.MuzimaGPSLocation;
 import com.muzima.tasks.MuzimaAsyncTask;
-import com.muzima.utils.Constants;
 import com.muzima.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -201,7 +200,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                             pageCountForCohort = patientController.countPatients(cohortUuid);
                             patientCount += pageCountForCohort;
                             int pages = new Double(Math.ceil((float) pageCountForCohort / pageSize)).intValue();
-                            for (int page = 1; page <= pages; page++) {
+                            for (int page = 0; page < pages; page++) {
                                 PatientFilterPageNumberMap patientFilterPageNumberMap = new PatientFilterPageNumberMap();
                                 patientFilterPageNumberMap.setFilterObject(cohortUuid);
                                 patientFilterPageNumberMap.setPageNumber(page);
@@ -266,7 +265,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                                 patientCount += pageCountForFilter;
 
                                 int pages = new Double(Math.ceil((float) pageCountForFilter / pageSize)).intValue();
-                                for (int page = 1; page <= pages; page++) {
+                                for (int page = 0; page < pages; page++) {
 
                                     PatientFilterPageNumberMap patientFilterPageNumberMap = new PatientFilterPageNumberMap();
                                     patientFilterPageNumberMap.setFilterObject(filter);
@@ -351,7 +350,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                                 pageCountForCohort = patientController.countPatients(cohortUuid);
                                 patientCount += pageCountForCohort;
                                 int pages = new Double(Math.ceil((float) pageCountForCohort / pageSize)).intValue();
-                                for (int page = 1; page <= pages; page++) {
+                                for (int page = 0; page < pages; page++) {
                                     PatientFilterPageNumberMap patientFilterPageNumberMap = new PatientFilterPageNumberMap();
                                     patientFilterPageNumberMap.setFilterObject(cohortUuid);
                                     patientFilterPageNumberMap.setPageNumber(page);
@@ -361,6 +360,7 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                                 }
                             }
                         }
+
                         PatientFilterPageNumberMap patientFilterPageNumberMap = totalPageCountMap.get(nextPageToLoad);
                         if(patientFilterPageNumberMap != null) {
                             String cohortUuid = (String) patientFilterPageNumberMap.getFilterObject();
@@ -371,8 +371,6 @@ public class PatientsLocalSearchAdapter extends PatientAdapterHelper implements 
                             if (!isCancelled()) {
                                 if (patients == null) {
                                     patients = patientController.getPatients(cohortUuid, page, pageSize);
-                                    if (patients != null) {
-                                    }
                                 } else {
                                     temp = patientController.getPatients(cohortUuid, page, pageSize);
                                     if (temp != null) {

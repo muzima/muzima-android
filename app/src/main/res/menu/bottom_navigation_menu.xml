@@ -22,7 +22,7 @@
           android:icon="@drawable/description"/>
     <item android:id="@+id/action_reports"
         android:title="@string/general_reports"
-        android:visible="false"
+        android:visible="true"
         android:icon="@drawable/report"/>
     <item android:id="@+id/media"
         android:title="@string/general_media"

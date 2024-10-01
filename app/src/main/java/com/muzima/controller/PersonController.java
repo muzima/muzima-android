@@ -12,6 +12,7 @@ package com.muzima.controller;
 
 import android.util.Log;
 
+import com.muzima.api.model.CohortData;
 import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonTag;
 import com.muzima.api.service.PersonService;
@@ -21,6 +22,7 @@ import com.muzima.utils.CustomColor;
 import org.apache.lucene.queryParser.ParseException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +61,15 @@ public class PersonController {
             personService.savePerson(person);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the person : " + person.getUuid(), e);
+            throw new PersonSaveException(e);
+        }
+    }
+
+    public void savePersons(List<Person> persons) throws PersonSaveException {
+        try {
+            personService.saveOrUpdatePersons(persons);
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error while saving the persons", e);
             throw new PersonSaveException(e);
         }
     }

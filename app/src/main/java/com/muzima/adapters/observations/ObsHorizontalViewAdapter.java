@@ -90,11 +90,11 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
             holder.shrEnabledImage.setVisibility(View.INVISIBLE);
         }
 
-        if (shrConcepts.contains(observation.getConcept().getId())) {
+        if (shrConcepts.contains(observation.getConcept().getConceptid())) {
             holder.shrEnabledImage.setVisibility(View.VISIBLE);
         }
 
-        if (StringUtils.equals(observation.getConcept().getConceptType().getName(), "Complex")) {
+        if (StringUtils.equals(observation.getConcept().getConceptType().getConceptTypeName(), "Complex")) {
             holder.observationValue.setVisibility(View.GONE);
             holder.observationComplexHolder.setVisibility(View.VISIBLE);
         } else {
@@ -110,12 +110,12 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
                 holder.observationValue.setText(getConceptNameFromConceptNamesByLocale(observation.getValueCoded().getConceptNames(),applicationLanguage));
 
             if (!observation.getConcept().isNumeric() && !observation.getConcept().isDatetime() && !observation.getConcept().isCoded()){
-                if(shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
-                    Provider provider = providerController.getProviderBySystemId(observation.getValueAsString());
+                if(shouldReplaceProviderIdWithNames && observation.getConcept().getConceptid() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID){
+                    Provider provider = providerController.getProviderBySystemId(observation.getValueText());
                     if(provider != null){
                         holder.observationValue.setText(provider.getName());
                     }else {
-                        holder.observationValue.setText(observation.getValueAsString());
+                        holder.observationValue.setText(observation.getValueText());
                     }
                 }else {
                     holder.observationValue.setText(observation.getValueText());
@@ -158,7 +158,7 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
             if(!isSingleElementInput)
                 displayObservationDetailsDialog(obs, v);
             else
-                this.observationClickedListener.onObservationClicked(obs.getConcept().getId());
+                this.observationClickedListener.onObservationClicked(obs.getConcept().getConceptid());
         }
     }
 
@@ -180,7 +180,7 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
 
     public void displayObservationDetailsDialog(Observation observation, View view) {
         int conceptColor = observationController.getConceptColor(observation.getConcept().getUuid());
-        String observationConceptType = observation.getConcept().getConceptType().getName();
+        String observationConceptType = observation.getConcept().getConceptType().getConceptTypeName();
         String encounterDate = DateUtils.getMonthNameFormattedDate(observation.getObservationDatetime());
 
         /*
@@ -264,7 +264,7 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
         Encounter encounter = observation.getEncounter();
         Encounter enc;
         try {
-            enc = encounterController.getEncounterByUuid(encounter.getUuid());
+            enc = encounterController.getEncounterByUuid(encounter.getEncounterUuid());
             //ToDo: Delink Provider from Person, since Provider is not necessarily a Person OpenMRS
             providerIdentifierTextView.setVisibility(View.GONE);
             providerIdentifyType.setVisibility(View.GONE);
@@ -286,7 +286,7 @@ public class ObsHorizontalViewAdapter extends RecyclerView.Adapter<ObsHorizontal
                 }
 
                 if (enc.getEncounterType() != null){
-                    String encounterType = enc.getEncounterType().getName();
+                    String encounterType = enc.getEncounterType().getEncounterTypeName();
                     encounterTypeTextView.setText(encounterType);
                 } else {
                     encounterTypeTextView.setText(R.string.general_not_available_text);

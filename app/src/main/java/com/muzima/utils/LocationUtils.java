@@ -10,8 +10,6 @@
 
 package com.muzima.utils;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Location;
@@ -20,8 +18,6 @@ import com.muzima.api.model.LocationAttributeType;
 import com.muzima.controller.LocationController;
 import com.muzima.utils.Constants.Shr.KenyaEmr;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class LocationUtils {

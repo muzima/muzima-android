@@ -182,12 +182,12 @@ public class RelationshipJsonMapper {
 
     private JSONArray createAttributesJsonArray(Person person) throws JSONException {
         JSONArray attributesJSONArray = new JSONArray();
-        if(!person.getAtributes().isEmpty()){
-            List<PersonAttribute> attributes = person.getAtributes();
+        if(!person.getAttributes().isEmpty()){
+            List<PersonAttribute> attributes = person.getAttributes();
 
             for(PersonAttribute attribute : attributes){
                 JSONObject attributeJSONObject = new JSONObject();
-                attributeJSONObject.put("attribute_type_uuid",attribute.getAttributeType().getUuid());
+                attributeJSONObject.put("attribute_type_uuid",attribute.getAttributeType().getPersonAttributeTypeUuid());
                 attributeJSONObject.put("attribute_type_name",attribute.getAttributeType().getName());
                 attributeJSONObject.put("attribute_value",attribute.getAttribute());
                 attributesJSONArray.put(attributeJSONObject);
@@ -206,11 +206,11 @@ public class RelationshipJsonMapper {
             person.setGender(personJSON.getString("patient.sex"));
             List<PersonName> names = new ArrayList<>();
             names.add(createPersonName(personJSON));
-            person.setNames(names);
+            person.setNames(new ArrayList<PersonName>(names));
             person.setBirthdate(createBirthDate(personJSON));
             person.setBirthdateEstimated(createBirthDateEstimated(personJSON));
-            person.setAddresses(createPersonAddresses(personJSON));
-            person.setAttributes(createPersonAttributes(personJSON, muzimaApplication));
+            person.setAddresses(new ArrayList<>(createPersonAddresses(personJSON)));
+            person.setAttributes(new ArrayList<>(createPersonAttributes(personJSON, muzimaApplication)));
             return person;
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), "Could not create new person", e);

@@ -11,7 +11,7 @@
 package com.muzima.controller;
 
 import com.muzima.MuzimaApplication;
-import com.muzima.api.context.Context;
+import com.muzima.api.context.MuzimaContext;
 import com.muzima.api.model.Form;
 import com.muzima.api.model.FormData;
 import com.muzima.api.model.FormTemplate;
@@ -92,7 +92,7 @@ public class FormControllerTest {
         sntpService = mock(SntpService.class);
         ObservationService observationService = mock(ObservationService.class);
         EncounterService encounterService = mock(EncounterService.class);
-        Context context = mock(Context.class);
+        MuzimaContext context = mock(MuzimaContext.class);
         SetupConfigurationService setupConfigurationService = mock(SetupConfigurationService.class);
 
         when(muzimaApplication.getMuzimaContext()).thenReturn(context);

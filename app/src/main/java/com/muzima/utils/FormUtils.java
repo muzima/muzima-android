@@ -101,10 +101,10 @@ public class FormUtils {
 
         encounter.setEncounterDatetime(encounterDateTime);
         encounter.setEncounterType(encounterType);
-        encounter.setUuid(UUID.randomUUID().toString());
+        encounter.setEncounterUuid(UUID.randomUUID().toString());
 
         newObservation.setConcept(concept);
-        newObservation.setUuid(UUID.randomUUID().toString() + new Random().nextInt());
+        newObservation.setObsUuid(UUID.randomUUID().toString() + new Random().nextInt());
         newObservation.setEncounter(encounter);
         newObservation.setValueCoded(defaultValueCodedConcept());
         newObservation.setPerson(patient);
@@ -132,8 +132,8 @@ public class FormUtils {
 
     public static EncounterType getDummyEncounterType() {
         EncounterType encounterType = new EncounterType();
-        encounterType.setUuid("encounterTypeForObservationsCreatedOnPhone");
-        encounterType.setName("encounterTypeForObservationsCreatedOnPhone");
+        encounterType.setEncounterTypeUuid("encounterTypeForObservationsCreatedOnPhone");
+        encounterType.setEncounterTypeName("encounterTypeForObservationsCreatedOnPhone");
         return encounterType;
     }
 

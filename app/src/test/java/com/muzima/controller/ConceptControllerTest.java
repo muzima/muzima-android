@@ -10,6 +10,7 @@
 
 package com.muzima.controller;
 
+import com.muzima.MuzimaApplication;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.ConceptName;
 import com.muzima.api.service.ConceptService;
@@ -37,12 +38,15 @@ public class ConceptControllerTest {
     @Mock
     private ObservationService observationService;
 
+    @Mock
+    private MuzimaApplication muzimaApplication;
+
     private ConceptController controller;
 
     @Before
     public void setUp() {
         initMocks(this);
-        controller = new ConceptController(service,observationService);
+        controller = new ConceptController(service,observationService,muzimaApplication);
     }
 
     @Test
@@ -97,7 +101,7 @@ public class ConceptControllerTest {
         conceptName.setName(name);
         conceptName.setPreferred(true);
         List<ConceptName> conceptNames = Collections.singletonList(conceptName);
-        concept.setConceptNames(conceptNames);
+        concept.setConceptNames(new ArrayList(conceptNames));
         return concept;
     }
 }

@@ -117,14 +117,14 @@ public class GenericPatientRegistrationJSONMapper{
                 patientDetails.put("patient.otheridentifier", identifierJSONArray);
             }
 
-            if(!patient.getAtributes().isEmpty()){
-                List<PersonAttribute> attributes = patient.getAtributes();
+            if(!patient.getAttributes().isEmpty()){
+                List<PersonAttribute> attributes = patient.getAttributes();
 
                 JSONArray attributesJSONArray = new JSONArray();
 
                 for(PersonAttribute attribute : attributes){
                     JSONObject attributeJSONObject = new JSONObject();
-                    attributeJSONObject.put("attribute_type_uuid",attribute.getAttributeType().getUuid());
+                    attributeJSONObject.put("attribute_type_uuid",attribute.getAttributeType().getPersonAttributeTypeUuid());
                     attributeJSONObject.put("attribute_type_name",attribute.getAttributeType().getName());
                     attributeJSONObject.put("attribute_value",attribute.getAttribute());
                     attributesJSONArray.put(attributeJSONObject);
@@ -296,16 +296,16 @@ public class GenericPatientRegistrationJSONMapper{
         patient.setNames(person.getNames());
         patient.setGender(person.getGender());
         patient.setBirthdate(person.getBirthdate());
-        patient.setAddresses(person.getAddresses());
-        patient.setAttributes(person.getAtributes());
+        patient.setAddresses(new ArrayList<>(person.getAddresses()));
+        patient.setAttributes(new ArrayList<>(person.getAttributes()));
     }
 
     private void copyDemographicsUpdateFromPatient(Person person) throws JSONException {
         person.setNames(patient.getNames());
         person.setGender(patient.getGender());
         person.setBirthdate(patient.getBirthdate());
-        person.setAddresses(patient.getAddresses());
-        person.setAttributes(patient.getAtributes());
+        person.setAddresses(new ArrayList<>(patient.getAddresses()));
+        person.setAttributes(new ArrayList<>(patient.getAttributes()));
     }
 
     private void setPatientIdentifiers() throws JSONException {
@@ -314,7 +314,7 @@ public class GenericPatientRegistrationJSONMapper{
         for(PatientIdentifier identifier:identifiers){
             identifier.setLocation(location);
         }
-        patient.setIdentifiers(identifiers);
+        patient.setIdentifiers(new ArrayList<>(identifiers));
     }
 
     private void updatePatientIdentifiers() throws JSONException {
@@ -337,7 +337,7 @@ public class GenericPatientRegistrationJSONMapper{
     private void setPatientNames() throws JSONException {
         List<PersonName> names = new ArrayList<>();
         names.add(createPersonName(patientJSON));
-        patient.setNames(names);
+        patient.setNames(new ArrayList<>(names));
     }
 
     private void updatePatientNames() throws JSONException {
@@ -621,7 +621,7 @@ public class GenericPatientRegistrationJSONMapper{
     private void setPersonAddresses() throws JSONException {
         List<PersonAddress> addresses = createPersonAddresses(patientJSON);
         if(!addresses.isEmpty()){
-            patient.setAddresses(addresses);
+            patient.setAddresses(new ArrayList<>(addresses));
         }
     }
     private void updatePersonAddresses() throws JSONException {
@@ -656,7 +656,7 @@ public class GenericPatientRegistrationJSONMapper{
         List<PersonAttribute> attributes = createPersonAttributes(patientJSON,muzimaApplication);
 
         if(!attributes.isEmpty()) {
-            patient.setAttributes(attributes);
+            patient.setAttributes(new ArrayList<>(attributes));
         }
     }
 
@@ -669,9 +669,9 @@ public class GenericPatientRegistrationJSONMapper{
             PersonAttribute demographicsUpdateAttribute = demographicsUpdateAttributesIterator.next();
             PersonAttributeType demographicsUpdateAttributeType = demographicsUpdateAttribute.getAttributeType();
 
-            for (PersonAttribute preExistingAttribute:patient.getAtributes()) {
+            for (PersonAttribute preExistingAttribute:patient.getAttributes()) {
                 PersonAttributeType preExistingAttributeType = preExistingAttribute.getAttributeType();
-                if(StringUtils.equals(preExistingAttributeType.getUuid(), demographicsUpdateAttributeType.getUuid()) ||
+                if(StringUtils.equals(preExistingAttributeType.getPersonAttributeTypeUuid(), demographicsUpdateAttributeType.getPersonAttributeTypeUuid()) ||
                         StringUtils.equals(preExistingAttributeType.getName(), demographicsUpdateAttributeType.getName())) {
                     preExistingAttributeFound = true;
                     preExistingAttribute.setAttribute(demographicsUpdateAttribute.getAttribute());

@@ -30,6 +30,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.annotation.Config;
 //import org.robolectric.shadows.ShadowLooper;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -88,10 +89,10 @@ public class CompleteFormsAdapterTest {
         personName.setFamilyName("familyName");
         personName.setMiddleName("middleName");
         personName.setGivenName("givenName");
-        patient.setNames(Collections.singletonList(personName));
+        patient.setNames(new ArrayList(Collections.singletonList(personName)));
         PatientIdentifier personId = new PatientIdentifier();
         personId.setIdentifier(identifier);
-        patient.setIdentifiers(Collections.singletonList(personId));
+        patient.setIdentifiers(new ArrayList(Collections.singletonList(personName)));
         return patient;
     }
 }

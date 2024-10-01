@@ -125,7 +125,7 @@ public class ObservationController {
 
         for (Observation observation : observationsByPatient) {
             Encounter encounter = observation.getEncounter();
-            String encounterUuid = encounter.getUuid();
+            String encounterUuid = encounter.getEncounterUuid();
             if (!encounterCache.containsKey(encounterUuid)) {
                 Encounter fullEncounter = encounterService.getEncounterByUuid(encounterUuid);
                 encounterCache.put(encounterUuid, fullEncounter);

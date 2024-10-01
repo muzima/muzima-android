@@ -11,8 +11,8 @@
 package com.muzima.domain;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 
 public class Credentials {
@@ -22,13 +22,11 @@ public class Credentials {
     private final String password;
 
     public Credentials(Context context) {
-        this(PreferenceManager.getDefaultSharedPreferences(context));
-    }
-
-    private Credentials(SharedPreferences preferences) {
-        this(preferences.getString("serverPreference", StringUtils.EMPTY),
-                preferences.getString("usernamePreference", StringUtils.EMPTY),
-                preferences.getString("passwordPreference", StringUtils.EMPTY));
+        this(
+                MuzimaPreferences.getStringPreference(context, "serverPreference", StringUtils.EMPTY),
+                MuzimaPreferences.getStringPreference(context, "usernamePreference", StringUtils.EMPTY),
+                MuzimaPreferences.getStringPreference(context, "passwordPreference", StringUtils.EMPTY)
+        );
     }
 
     public Credentials(String serverUrl, String userName, String password) {

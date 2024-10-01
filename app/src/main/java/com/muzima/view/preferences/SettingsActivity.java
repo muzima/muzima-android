@@ -13,24 +13,25 @@ package com.muzima.view.preferences;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.util.Log;
 import android.view.Menu;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
 import com.muzima.service.MuzimaLoggerService;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.login.LoginActivity;
 import com.muzima.view.preferences.settings.SettingsPreferenceFragment;
 
-public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private AppCompatDelegate delegate;
     private final LanguageUtil languageUtil = new LanguageUtil();
@@ -49,7 +50,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         setTitle(R.string.general_settings);
-        getFragmentManager().beginTransaction()
+        getSupportFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsPreferenceFragment()).commit();
         setupActionBar();
         logEvent("VIEW_SETTINGS");
@@ -59,13 +60,22 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
     protected void onResume() {
         super.onResume();
         languageUtil.onResume(this);
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+
+        try {
+            MuzimaPreferences.getSecureSharedPreferences(this).registerOnSharedPreferenceChangeListener(this);
+        } catch (Exception e){
+            Log.e(getClass().getSimpleName(), "Error getting secure shared preferences");
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+        try {
+            MuzimaPreferences.getSecureSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+        } catch (Exception e){
+            Log.e(getClass().getSimpleName(), "Error getting secure shared preferences");
+        }
     }
 
     /**
@@ -75,13 +85,6 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         if (getDelegate().getSupportActionBar() != null) {
             getDelegate().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    private AppCompatDelegate getDelegate() {
-        if (delegate == null) {
-            delegate = AppCompatDelegate.create(this, null);
-        }
-        return delegate;
     }
 
     @Override

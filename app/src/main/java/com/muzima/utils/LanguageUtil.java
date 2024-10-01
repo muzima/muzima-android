@@ -14,8 +14,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
-import android.preference.PreferenceManager;
 
 import com.muzima.R;
 
@@ -55,7 +53,7 @@ public class LanguageUtil {
     public Locale getSelectedLocale(Context context) {
         String languageKey = context.getResources().getString(R.string.preference_app_language);
         String defaultLanguage = context.getString(R.string.language_english);
-        String preferredLocale = PreferenceManager.getDefaultSharedPreferences(context).getString(languageKey,defaultLanguage);
+        String preferredLocale = MuzimaPreferences.getStringPreference(context, languageKey, defaultLanguage);
         return new Locale(preferredLocale);
     }
 

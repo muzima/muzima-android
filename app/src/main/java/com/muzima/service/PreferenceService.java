@@ -11,8 +11,8 @@
 package com.muzima.service;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import org.json.JSONArray;
 
@@ -55,8 +55,11 @@ abstract class PreferenceService {
         return cohortsList;
     }
 
-    void putStringSet(Set<String> values, SharedPreferences.Editor editor) {
-        editor.putString(com.muzima.utils.Constants.FORM_TAG_PREF_KEY, serialize(values));
-        editor.commit();
+    void putStringSet(String prefKey, Set<String> values) {
+        MuzimaPreferences.setStringPreference(context, prefKey, serialize(values));
+    }
+
+    String getStringSet(String prefKey) {
+        return MuzimaPreferences.getStringPreference(context, prefKey, "[]");
     }
 }

@@ -29,6 +29,7 @@ import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.MuzimaSetting;
 import com.muzima.api.model.Patient;
 import com.muzima.api.model.PatientIdentifier;
+import com.muzima.api.model.Person;
 import com.muzima.api.model.PersonAddress;
 import com.muzima.api.model.PatientTag;
 import com.muzima.api.model.PersonAttribute;
@@ -137,7 +138,7 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
         holder.identifier.setText(patient.getIdentifier());
         holder.distanceToClientAddress.setText(getDistanceToClientAddress(patient));
         holder.name.setText(getPatientFullName(patient));
-        if(patient.getGender() != null) {
+        if(patient != null && patient.getGender() != null) {
             holder.genderImg.setImageResource(getGenderImage(patient.getGender()));
         }
         addTags(holder,patient);
@@ -242,6 +243,9 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
     }
 
     private void addTags(ViewHolder holder, Patient patient) {
+        if(patient == null){
+            return;
+        }
         PatientTag[] tags = patient.getTags();
         if(tags!=null) {
             if (tags.length > 0) {
@@ -421,7 +425,7 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
                     if(jsonObject.has("attribute")){
                         object = jsonObject.get("attribute");
                         String uuid = null;
-                        List<PersonAttribute> personAttributes = patient.getAtributes();
+                        List<PersonAttribute> personAttributes = patient.getAttributes();;
                         if (object != null && object instanceof JSONArray) {
                             JSONArray jsonArray = (JSONArray) object;
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -430,7 +434,7 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
                             }
 
                             for(PersonAttribute personAttribute : personAttributes){
-                                if(attributeTypeUuids.contains(personAttribute.getAttributeType().getUuid())) {
+                                if(attributeTypeUuids.contains(personAttribute.getAttributeType().getPersonAttributeTypeUuid())) {
                                     RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     TextView textViews = new TextView(context);
                                     textViews.setText(personAttribute.getAttributeType().getName().concat(" : ").concat(personAttribute.getAttribute()));
@@ -444,7 +448,7 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
                             uuid = object.toString();
                             attributeTypeUuids.add(uuid);
                             for(PersonAttribute personAttribute : personAttributes){
-                                if(attributeTypeUuids.contains(personAttribute.getAttributeType().getUuid())) {
+                                if(attributeTypeUuids.contains(personAttribute.getAttributeType().getPersonAttributeTypeUuid())) {
                                     RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                                     TextView textViews = new TextView(context);
                                     textViews.setText(personAttribute.getAttributeType().getName().concat(" : ").concat(personAttribute.getAttribute()));
@@ -550,6 +554,9 @@ public abstract class PatientAdapterHelper extends RecyclerAdapter<PatientAdapte
     }
 
     private String getPatientFullName(Patient patient) {
+        if(patient == null){
+            return "Null patient person";
+        }
         StringBuilder patientFullName = new StringBuilder();
         if (!StringUtils.isEmpty(patient.getFamilyName())) {
             patientFullName.append(patient.getFamilyName());

@@ -86,14 +86,14 @@ public class HTMLPatientJSONMapper {
                 prepopulateJSON.put("other_identifier_value", identifierValue);
             }
 
-            if(!patient.getAtributes().isEmpty()){
-                List<PersonAttribute> attributes = patient.getAtributes();
+            if(!patient.getAttributes().isEmpty()){
+                List<PersonAttribute> attributes = patient.getAttributes();
 
                 JSONArray attributesJSONArray = new JSONArray();
 
                 for(PersonAttribute attribute : attributes){
                     JSONObject attributeJSONObject = new JSONObject();
-                    attributeJSONObject.put("attribute_type_uuid",attribute.getAttributeType().getUuid());
+                    attributeJSONObject.put("attribute_type_uuid",attribute.getAttributeType().getPersonAttributeTypeUuid());
                     attributeJSONObject.put("attribute_type_name",attribute.getAttributeType().getName());
                     attributeJSONObject.put("attribute_value",attribute.getAttribute());
                     attributesJSONArray.put(attributeJSONObject);
@@ -190,13 +190,13 @@ public class HTMLPatientJSONMapper {
 
     private void setPatientIdentifiers() throws JSONException {
         List<PatientIdentifier> identifiers = getPatientIdentifiers();
-        patient.setIdentifiers(identifiers);
+        patient.setIdentifiers(new ArrayList<>(identifiers));
     }
 
     private void setPatientNames() throws JSONException {
         List<PersonName> names = new ArrayList<>();
         names.add(getPersonName());
-        patient.setNames(names);
+        patient.setNames(new ArrayList<>(names));
     }
 
     private void setPatientGender() throws JSONException {

@@ -10,9 +10,7 @@
 package com.muzima.view.initialwizard;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -22,8 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import com.muzima.R;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.view.login.LoginActivity;
 
 public class TermsAndPolicyActivity extends AppCompatActivity {
@@ -210,9 +208,8 @@ public class TermsAndPolicyActivity extends AppCompatActivity {
 
     private void navigateToNextActivity() {
         // write the setting to mark the user have accepted the disclaimer
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
-        settings.edit().putBoolean(disclaimerKey, true).commit();
+        MuzimaPreferences.setBooleanPreference(getApplicationContext(),disclaimerKey, true);
         // transition to the login activity
         Intent intent = new Intent(this, LoginActivity.class);
         intent.putExtra(LoginActivity.isFirstLaunch, true);

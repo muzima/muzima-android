@@ -12,11 +12,10 @@ package com.muzima.view.progressdialog;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
 import com.muzima.R;
+import com.muzima.utils.MuzimaPreferences;
 
 public class MuzimaProgressDialog {
     private final ProgressDialog dialog;
@@ -26,9 +25,8 @@ public class MuzimaProgressDialog {
     }
 
     private static int getStyle(Activity activity) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        String lightModeKey = activity.getResources().getString(R.string.preference_light_mode);
-        boolean lightMode = preferences.getBoolean(lightModeKey, false);
+        boolean lightMode = MuzimaPreferences.getBooleanPreference(activity, activity.getResources().getString(R.string.preference_light_mode), false);
+
         if (lightMode) {
             return R.style.alertDialogThemeLight;
         } else {

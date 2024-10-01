@@ -129,7 +129,7 @@ class ObservationsByTypeBackgroundTask extends AsyncTask<Void, Concepts, Concept
             List<Concept> concepts = conceptAction.getConcepts();
 
             for (Concept concept : concepts) {
-                if (!isCancelled() && SHRConcepts.contains(concept.getId())) {
+                if (!isCancelled() && SHRConcepts.contains(concept.getConceptid())) {
                     temp = conceptAction.get(concept);
                     if (temp != null) {
                         temp.sortByDate();
@@ -153,7 +153,7 @@ class ObservationsByTypeBackgroundTask extends AsyncTask<Void, Concepts, Concept
         try {
             List<Concept> concepts = conceptAction.getConcepts();
             for (Concept concept : concepts) {
-                if (!concept.getConceptType().getName().equals(Concept.CODED_TYPE)) {
+                if (!concept.getConceptType().getConceptTypeName().equals(Concept.CODED_TYPE)) {
                     temp = conceptAction.get(concept);
                     if (temp != null) {
                         if (temp.size() > 0) {

@@ -38,7 +38,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -70,6 +69,7 @@ import com.muzima.utils.DownloadAndDeleteConceptAndObservationBasedOnConfigChang
 import com.muzima.utils.DownloadAndDeleteDerivedConceptAndObservationBasedOnConfigChangesIntent;
 import com.muzima.utils.DownloadAndDeleteLocationBasedOnConfigChangesIntent;
 import com.muzima.utils.DownloadAndDeleteProvidersBasedOnConfigChangesIntent;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.ProcessedTemporaryFormDataCleanUpIntent;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.SyncCohortsAndPatientFullDataIntent;
@@ -442,10 +442,7 @@ public class MuzimaJobScheduler extends JobService {
 
                     Resources resources = context.getResources();
                     String key = resources.getString(R.string.preference_encounter_provider_key);
-                    SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-                    settings.edit()
-                            .putBoolean(key, isDefaultLoggedInUserAsEncounterProvider)
-                            .apply();
+                    MuzimaPreferences.setBooleanPreference(context, key, isDefaultLoggedInUserAsEncounterProvider);
                 } else if(muzimaSetting.getProperty().equals(DEFAULT_ENCOUNTER_LOCATION_SETTING)){
                     MuzimaSetting encounterLocationIdSetting = null;
                     try {
@@ -454,13 +451,10 @@ public class MuzimaJobScheduler extends JobService {
                             Location defaultEncounterLocation = ((MuzimaApplication) context).getLocationController().getLocationById(Integer.valueOf(encounterLocationIdSetting.getValueString()));
                             if(defaultEncounterLocation != null){
                                 Context context = getApplicationContext();
-                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                                 Resources resources = context.getResources();
                                 String key = resources.getString(R.string.preference_default_encounter_location);
 
-                                preferences.edit()
-                                        .putString(key, String.valueOf(defaultEncounterLocation.getId()))
-                                        .apply();
+                                MuzimaPreferences.setStringPreference(getApplicationContext(), key, String.valueOf(defaultEncounterLocation.getId()));
                             }
                         }
                     } catch (MuzimaSettingController.MuzimaSettingFetchException e) {
@@ -497,10 +491,7 @@ public class MuzimaJobScheduler extends JobService {
 
                 Resources resources = context.getResources();
                 String key = resources.getString(R.string.preference_encounter_provider_key);
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-                settings.edit()
-                        .putBoolean(key, isDefaultLoggedInUserAsEncounterProvider)
-                        .apply();
+                MuzimaPreferences.setBooleanPreference(context, key, isDefaultLoggedInUserAsEncounterProvider);
             } else if(settingProperty.equals(DEFAULT_ENCOUNTER_LOCATION_SETTING)){
                 MuzimaSetting encounterLocationIdSetting = null;
                 try {
@@ -508,14 +499,9 @@ public class MuzimaJobScheduler extends JobService {
                     if(encounterLocationIdSetting != null && !StringUtils.isEmpty(encounterLocationIdSetting.getValueString())) {
                         Location defaultEncounterLocation = ((MuzimaApplication) context).getLocationController().getLocationById(Integer.valueOf(encounterLocationIdSetting.getValueString()));
                         if(defaultEncounterLocation != null){
-                            Context context = getApplicationContext();
-                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
                             Resources resources = context.getResources();
                             String key = resources.getString(R.string.preference_default_encounter_location);
-
-                            preferences.edit()
-                                    .putString(key, String.valueOf(defaultEncounterLocation.getId()))
-                                    .apply();
+                            MuzimaPreferences.setStringPreference(context, key, String.valueOf(defaultEncounterLocation.getId()));
                         }
                     }
                 } catch (MuzimaSettingController.MuzimaSettingFetchException e) {

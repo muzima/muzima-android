@@ -64,7 +64,8 @@
         </provider>
         <activity
             android:name=".view.landing.SplashActivity"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -350,7 +351,8 @@
             android:configChanges="orientation|screenSize"
             android:label="@string/general_about_muzima" />
 
-        <receiver android:name=".utils.ConnectivityChangeReceiver">
+        <receiver android:name=".utils.ConnectivityChangeReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -358,10 +360,10 @@
 
         <service
             android:name=".service.DataSyncService"
-            android:exported="false" />
+            android:exported="true" />
         <service
             android:name=".view.progressdialog.ProgressDialogUpdateIntentService"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity android:name=".view.SHRObservationsDataActivity" />
 

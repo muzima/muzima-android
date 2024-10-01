@@ -529,7 +529,7 @@ public class DataSyncService extends IntentService {
     private void showNotification(String title, String msg) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(), 0))
+                        .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(), PendingIntent.FLAG_IMMUTABLE))
                         .setSmallIcon(R.drawable.ic_launcher_logo)
                         .setContentTitle(title)
                         .setContentText(msg)

@@ -66,7 +66,8 @@ public class PatientController {
 
     public void replacePatients(List<Patient> patients) throws PatientSaveException {
         try {
-            patientService.updatePatients(patients);
+            if(!patients.isEmpty())
+                patientService.updatePatients(patients);
         } catch (IOException e) {
             throw new PatientSaveException(e);
         }
@@ -147,7 +148,6 @@ public class PatientController {
             throw new PatientLoadException(e);
         }
     }
-
 
     public List<Patient> getPatientsForCohorts(String[] cohortUuids) throws PatientLoadException {
         List<Patient> allPatients = new ArrayList<>();
@@ -231,7 +231,7 @@ public class PatientController {
 
     public void deletePatient(Patient localPatient) {
         try {
-            deleteOrMarkAsPendingDeletion(localPatient);
+            deleteOrMarkAsPendingDeletion(localPatient.getUuid());
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while deleting local patient : " + localPatient.getUuid(), e);
         }
@@ -240,7 +240,7 @@ public class PatientController {
     public void deletePatient(List<Patient> localPatients) throws PatientDeleteException {
         try {
             for(Patient patient:localPatients){
-                deleteOrMarkAsPendingDeletion(patient);
+                deleteOrMarkAsPendingDeletion(patient.getUuid());
             }
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while deleting local patients ", e);
@@ -453,25 +453,24 @@ public class PatientController {
 
     public void deletePatientByCohortMembership(List<CohortMember> cohortMembers){
         for(CohortMember cohortMember:cohortMembers){
-            Patient patient = cohortMember.getPatient();
             try {
-                deleteOrMarkAsPendingDeletion(patient);
+                deleteOrMarkAsPendingDeletion(cohortMember.getPatientUuid());
             } catch (IOException e) {
                 Log.e(getClass().getSimpleName(), "An IOException was encountered : ", e);
             }
         }
     }
 
-    public void deleteOrMarkAsPendingDeletion(Patient patient) throws IOException {
-        int formCount = getFormDataCount(patient.getUuid());
+    public void deleteOrMarkAsPendingDeletion(String patientUuid) throws IOException {
+        int formCount = getFormDataCount(patientUuid);
         if(formCount == 0 ){
-            patientService.deletePatient(patient);
-            List<Observation> observations = observationService.getObservationsByPatient(patient);
+            patientService.deletePatient(patientUuid);
+            List<Observation> observations = observationService.getObservationsByPatient(patientUuid);
             if(observations.size()>0) {
                 observationService.deleteObservations(observations);
             }
         }else{
-            Patient pat = patientService.getPatientByUuid(patient.getUuid());
+            Patient pat = patientService.getPatientByUuid(patientUuid);
             pat.setDeletionStatus(PATIENT_DELETION_PENDING_STATUS);
             patientService.updatePatient(pat);
         }

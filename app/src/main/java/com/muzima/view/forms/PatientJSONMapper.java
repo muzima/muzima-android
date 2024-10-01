@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,8 +64,8 @@ public class PatientJSONMapper {
     private Patient patient(Map<String, String> paramsMap) {
         Patient patient = new Patient();
         patient.setUuid(paramsMap.get("patient.uuid"));
-        patient.setIdentifiers(asList(patientIdentifier(patient.getUuid()), preferredIdentifier(paramsMap)));
-        patient.setNames(Collections.singletonList(personName(paramsMap)));
+        patient.setIdentifiers(new ArrayList<>(asList(patientIdentifier(patient.getUuid()), preferredIdentifier(paramsMap))));
+        patient.setNames(new ArrayList<>(Collections.singletonList(personName(paramsMap))));
         patient.setGender(paramsMap.get("patient.sex"));
         patient.setBirthdate(getDate(paramsMap));
         return patient;

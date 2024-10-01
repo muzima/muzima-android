@@ -18,12 +18,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,6 +83,7 @@ import com.muzima.service.WizardFinishPreferenceService;
 import com.muzima.tasks.LoadDownloadedCohortsTask;
 import com.muzima.utils.Constants;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 import com.muzima.utils.smartcard.KenyaEmrShrMapper;
@@ -145,6 +145,7 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
         super.onCreate(savedInstanceState);
         mainLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.activity_main, null);
         setContentView(mainLayout);
+        if (android.os.Build.VERSION.SDK_INT > 9) { StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy); }
         loadBottomNavigation();
         RealTimeFormUploader.getInstance().uploadAllCompletedForms(getApplicationContext(), false);
         initializeResources();
@@ -690,9 +691,8 @@ public class MainDashboardActivity extends ActivityWithBottomNavigation implemen
     }
 
     private boolean checkIfDisclaimerIsAccepted() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         String disclaimerKey = getResources().getString(R.string.preference_disclaimer);
-        return settings.getBoolean(disclaimerKey, false);
+        return MuzimaPreferences.getBooleanPreference(getApplicationContext(), disclaimerKey, false);
     }
 
     @Override

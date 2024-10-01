@@ -18,13 +18,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.preference.SwitchPreference;
+
+import androidx.preference.EditTextPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+
+import androidx.annotation.Nullable;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.SwitchPreference;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -39,6 +42,7 @@ import com.muzima.service.MuzimaSyncService;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.tasks.ValidateURLTask;
 import com.muzima.util.Constants;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
@@ -55,7 +59,7 @@ import java.util.Map;
 import static com.muzima.utils.Constants.DataSyncServiceConstants.SyncStatusConstants.SUCCESS;
 
 //ToDO: android.preference.PreferenceFragment was depreciated in API 29 - the current target SDK version. There's need to migrate to androidx.preference
-public class SettingsPreferenceFragment extends PreferenceFragment  implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsPreferenceFragment extends PreferenceFragmentCompat  implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final Integer SESSION_TIMEOUT_MINIMUM = 0;
     private static final Integer SESSION_TIMEOUT_MAXIMUM = 500;
@@ -75,11 +79,14 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     private EditTextPreference serverPreferences;
     private final Map<String, SettingsPreferenceFragment.PreferenceChangeHandler> actions = new HashMap<>();
 
+
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey)
     {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preference);
+        PreferenceManager preferenceManager = getPreferenceManager();
+        preferenceManager.setPreferenceDataStore(MuzimaPreferences.getInstance(getActivity().getApplicationContext()));
+
+        setPreferencesFromResource(R.xml.preference, rootKey);
 
         setUpServerPreference();
         setUpUsernamePreference();
@@ -100,20 +107,21 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         final EditTextPreference serverPreference = (EditTextPreference) getPreferenceScreen().findPreference(serverPreferenceKey);
         serverPreferences = serverPreference;
         serverPreference.setSummary(serverPreference.getText());
-        serverPreference.getEditText().setSingleLine();
+//        serverPreference.getEditText().setSingleLine();
+
         serverPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-              @Override
-              public boolean onPreferenceClick(Preference preference) {
-                  AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                  builder
-                          .setCancelable(true)
-                          .setIcon(getIconWarning())
-                          .setTitle(getResources().getString(R.string.title_qrcode))
-                          .setMessage(getResources().getString(R.string.info_scan_qrcode))
-                          .setPositiveButton(R.string.general_yes, positiveBarcodeClickListener())
-                          .setNegativeButton(R.string.general_no, null).create().show();
-                  return true;
-              }
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder
+                        .setCancelable(true)
+                        .setIcon(getIconWarning())
+                        .setTitle(getResources().getString(R.string.title_qrcode))
+                        .setMessage(getResources().getString(R.string.info_scan_qrcode))
+                        .setPositiveButton(R.string.general_yes, positiveBarcodeClickListener())
+                        .setNegativeButton(R.string.general_no, null).create().show();
+                return true;
+            }
         });
 
 
@@ -289,15 +297,18 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
 
     private void setUpDefaultEncounterLocationPreference(){
         ListPreference listPreferenceCategory = (ListPreference) findPreference(getResources().getString(R.string.preference_default_encounter_location));
+
+        List<Location> locations = new ArrayList<>();
+        try {
+            LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
+            locations = locationController.getAllLocations();
+        } catch (Throwable e) {
+            Log.e(getClass().getSimpleName(),"Error while setting default location",e);
+        }
+
         if (listPreferenceCategory != null) {
 
-            LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
-            List<Location> locations = new ArrayList<>();
-            try {
-                locations = locationController.getAllLocations();
-            } catch (LocationController.LocationLoadException e) {
-                Log.e(getClass().getSimpleName(),e.getMessage());
-            }
+
             CharSequence entries[] = new String[locations.size()+1];
             CharSequence entryValues[] = new String[locations.size()+1];
 
@@ -316,12 +327,6 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
         String defaultEncounterLocationkey = getResources().getString(R.string.preference_default_encounter_location);
         ListPreference defaultEncounterLocationPreference = (ListPreference) getPreferenceScreen().findPreference(defaultEncounterLocationkey);
         LocationController locationController = ((MuzimaApplication) getActivity().getApplication()).getLocationController();
-        List<Location> locations = new ArrayList<>();
-        try {
-            locations = locationController.getAllLocations();
-        } catch (LocationController.LocationLoadException e) {
-            Log.e(getClass().getSimpleName(),e.getMessage());
-        }
 
         String locationName = getResources().getString(R.string.no_default_encounter_location);
         for (Location location : locations) {
@@ -362,7 +367,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     @Override
     public void onResume() {
         super.onResume();
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        MuzimaPreferences.getSecureSharedPreferences(mActivity).registerOnSharedPreferenceChangeListener(this);
         resetEncounterProviderPreference();
     }
 
@@ -472,7 +477,7 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
-                    serverPreferences.getEditText().setText(barcode.displayValue);
+                    serverPreferences.setText(barcode.displayValue);
                 } else {
                     Log.d(getClass().getSimpleName(), "No barcode captured, intent data is null");
                 }
@@ -486,15 +491,19 @@ public class SettingsPreferenceFragment extends PreferenceFragment  implements S
     }
 
     private void resetEncounterProviderPreference() {
-        if(encounterProviderPreference.isChecked()){
-            if(((MuzimaApplication) getActivity().getApplication()).getAuthenticatedUser() == null){
-                encounterProviderPreference.setChecked(false);
-            }else {
-                String loggedInUserSystemId = ((MuzimaApplication) getActivity().getApplication()).getAuthenticatedUser().getSystemId();
-                if (((MuzimaApplication) getActivity().getApplication()).getProviderController().getProviderBySystemId(loggedInUserSystemId) == null) {
+        try {
+            if (encounterProviderPreference.isChecked()) {
+                if (((MuzimaApplication) getActivity().getApplication()).getAuthenticatedUser() == null) {
                     encounterProviderPreference.setChecked(false);
+                } else {
+                    String loggedInUserSystemId = ((MuzimaApplication) getActivity().getApplication()).getAuthenticatedUser().getSystemId();
+                    if (((MuzimaApplication) getActivity().getApplication()).getProviderController().getProviderBySystemId(loggedInUserSystemId) == null) {
+                        encounterProviderPreference.setChecked(false);
+                    }
                 }
             }
+        } catch (Exception e){
+            Log.e(getClass().getSimpleName(), "Error while setting encounter provider preference", e);
         }
     }
 

@@ -12,7 +12,7 @@ package com.muzima.service;
 
 import android.content.SharedPreferences;
 import com.muzima.MuzimaApplication;
-import com.muzima.api.context.Context;
+import com.muzima.api.context.MuzimaContext;
 import com.muzima.api.model.Cohort;
 import com.muzima.api.model.CohortData;
 import com.muzima.api.model.CohortMember;
@@ -75,7 +75,7 @@ public class MuzimaSyncServiceTest {
 
     private MuzimaSyncService muzimaSyncService;
     private MuzimaApplication muzimaApplication;
-    private Context muzimaContext;
+    private MuzimaContext muzimaContext;
     private FormController formController;
     private CohortController cohortController;
     private SharedPreferences sharedPref;
@@ -88,7 +88,7 @@ public class MuzimaSyncServiceTest {
     @Before
     public void setUp() {
         muzimaApplication = mock(MuzimaApplication.class);
-        muzimaContext = mock(Context.class);
+        muzimaContext = mock(MuzimaContext.class);
         formController = mock(FormController.class);
         cohortController = mock(CohortController.class);
         patientController = mock(PatientController.class);
@@ -505,9 +505,9 @@ public class MuzimaSyncServiceTest {
         when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(patientUuids, conceptUuids,activeSetupConfigUuid))
                 .thenReturn(allObservations);
         Concept conceptWeight = new Concept();
-        conceptWeight.setUuid("weight");
+        conceptWeight.setConceptUuid("weight");
         Concept conceptTemp = new Concept();
-        conceptTemp.setUuid("temp");
+        conceptTemp.setConceptUuid("temp");
         when(conceptController.getConcepts()).thenReturn(asList(conceptWeight, conceptTemp));
         when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
 
@@ -544,7 +544,7 @@ public class MuzimaSyncServiceTest {
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
         List<String> conceptUuids = Collections.singletonList("weight");
         Concept conceptWeight = new Concept();
-        conceptWeight.setUuid("weight");
+        conceptWeight.setConceptUuid("weight");
         when(conceptController.getConcepts()).thenReturn(Collections.singletonList(conceptWeight));
         when(setupConfigurationController.getActiveSetupConfigurationTemplate()).thenReturn(setupConfigurationTemplate);
         when(observationController.downloadObservationsByPatientUuidsAndConceptUuids(Collections.singletonList("patient1"), conceptUuids,activeSetupConfigUuid))
@@ -582,7 +582,7 @@ public class MuzimaSyncServiceTest {
 
         List<Concept> conceptList = new ArrayList<Concept>() {{
             add(new Concept() {{
-                setUuid("concept1");
+                setConceptUuid("concept1");
             }});
         }};
         Set<String> concepts = new HashSet<String>() {{
@@ -611,7 +611,7 @@ public class MuzimaSyncServiceTest {
 
         List<Concept> concepts = new ArrayList<>();
         concepts.add(new Concept(){{
-            setUuid("concept1");
+            setConceptUuid("concept1");
         }});
 
         when(patientController.getPatientsForCohorts(cohortUuids)).thenReturn(patients);
@@ -715,7 +715,7 @@ public class MuzimaSyncServiceTest {
 
         List<Concept> conceptList = new ArrayList<Concept>() {{
             add(new Concept() {{
-                setUuid("concept1");
+                setConceptUuid("concept1");
             }});
         }};
         when(conceptController.getConcepts()).thenReturn(conceptList);

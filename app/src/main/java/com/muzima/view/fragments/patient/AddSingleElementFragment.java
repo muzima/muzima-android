@@ -104,7 +104,7 @@ public class AddSingleElementFragment extends Fragment implements ObservationsBy
     @Override
     public void onConceptInputLabelClicked(int position) {
         ConceptWithObservations conceptWithObservations = observationsByTypeAdapter.getItem(position);
-        if (conceptWithObservations.getConcept().getConceptType().getName().equals(Concept.CODED_TYPE)) {
+        if (conceptWithObservations.getConcept().getConceptType().getConceptTypeName().equals(Concept.CODED_TYPE)) {
             Toast.makeText(requireActivity().getApplicationContext(), getResources().getString(R.string.erro_coded_concepts_not_supported), Toast.LENGTH_LONG).show();
         } else {
             EventBus.getDefault().post(new ClientSummaryObservationSelectedEvent(conceptWithObservations));

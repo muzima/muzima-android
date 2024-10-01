@@ -13,11 +13,10 @@ package com.muzima.adapters.forms;
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +32,7 @@ import com.muzima.R;
 import com.muzima.model.SingleObsForm;
 import com.muzima.model.events.CloseSingleFormEvent;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.MuzimaPreferences;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -61,12 +61,10 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
 
     @Override
     public void onBindViewHolder(@NonNull final ClientDynamicObsFormsAdapter.ViewHolder holder, int position) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
-
+        String applicationLanguage = MuzimaPreferences.getStringPreference(context, context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
         final SingleObsForm form = singleObsFormList.get(position);
         holder.readingCountTextView.setText(String.format(Locale.getDefault(), "%s %d", context.getResources().getString(R.string.general_reading), form.getReadingCount()));
-        holder.valueEditText.setHint(String.format(Locale.getDefault(), "%s %s", getConceptNameFromConceptNamesByLocale(form.getConcept().getConceptNames(),applicationLanguage), form.getConcept().getConceptType().getName()));
+        holder.valueEditText.setHint(String.format(Locale.getDefault(), "%s %s", getConceptNameFromConceptNamesByLocale(form.getConcept().getConceptNames(),applicationLanguage), form.getConcept().getConceptType().getConceptTypeName()));
         if(form.getConcept().isNumeric()) {
             holder.valueEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
             holder.valueEditText.setVisibility(View.VISIBLE);
@@ -74,7 +72,7 @@ public class ClientDynamicObsFormsAdapter extends RecyclerView.Adapter<ClientDyn
         }else if(form.getConcept().isDatetime()){
             holder.valueEditText.setVisibility(View.GONE);
             holder.valueDateText.setVisibility(View.VISIBLE);
-            holder.valueDateText.setHint(String.format(Locale.getDefault(), "%s %s", getConceptNameFromConceptNamesByLocale(form.getConcept().getConceptNames(),applicationLanguage), form.getConcept().getConceptType().getName()));
+            holder.valueDateText.setHint(String.format(Locale.getDefault(), "%s %s", getConceptNameFromConceptNamesByLocale(form.getConcept().getConceptNames(),applicationLanguage), form.getConcept().getConceptType().getConceptTypeName()));
             holder.valueDateText.setText(form.getInputDateValue());
             holder.valueEditText.setText(form.getInputDateValue());
         } else{

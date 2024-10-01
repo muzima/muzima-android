@@ -1,3 +1,13 @@
+/*
+ * Copyright (c) Vanderbilt University Medical Center and Lambda Informatics.
+ * All Rights Reserved.
+ *
+ * This version of the code is licensed under the MPL 2.0 Open Source license
+ * with additional health care disclaimer.
+ * If the user is an entity intending to commercialize any application that uses
+ *  this code in a for-profit venture,please contact the copyright holder.
+ */
+
 package com.muzima.adapters.observations;
 
 import static com.muzima.utils.ConceptUtils.getConceptNameFromConceptNamesByLocale;
@@ -49,7 +59,7 @@ public class ObsListAdapter extends RecyclerView.Adapter<ObsListAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Observation observation = observations.get(position);
         String value = "";
-        if (shouldReplaceProviderIdWithNames && observation.getConcept().getId() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
+        if (shouldReplaceProviderIdWithNames && observation.getConcept().getConceptid() == HEALTHWORKER_ASSIGNMENT_CONCEPT_ID) {
             Provider provider = app.getProviderController().getProviderBySystemId(observation.getValueText());
             if (provider != null) {
                 value = provider.getName();

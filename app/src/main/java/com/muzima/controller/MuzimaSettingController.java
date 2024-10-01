@@ -14,9 +14,7 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.muzima.MuzimaApplication;
@@ -30,6 +28,7 @@ import com.muzima.api.service.MuzimaSettingService;
 
 import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.service.SntpService;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainDashboardActivity;
 
@@ -209,53 +208,52 @@ public class MuzimaSettingController {
     }
 
     public void saveOrUpdateSetting(MuzimaSetting setting) throws MuzimaSettingSaveException {
-        try {
-            MuzimaSetting preExistingSetting = settingService.getSettingByProperty(setting.getProperty());
-            if (preExistingSetting != null) {
-                settingService.updateSetting(setting);
-                if(setting.getProperty().equals(ONLINE_ONLY_MODE_ENABLED_SETTING) &&
-                preExistingSetting.getValueBoolean() != setting.getValueBoolean()){
-                    toggleTheme();
-                    if(!setting.getValueBoolean()) {
-                        ActivityManager am = (ActivityManager) muzimaApplication.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
-                        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-                        Intent intent = new Intent();
-                        intent.setComponent(cn);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if(setting!=null) {
+            try {
+                MuzimaSetting preExistingSetting = settingService.getSettingByProperty(setting.getProperty());
+                if (preExistingSetting != null) {
+                    settingService.updateSetting(setting);
+                    if (setting.getProperty().equals(ONLINE_ONLY_MODE_ENABLED_SETTING) &&
+                            preExistingSetting.getValueBoolean() != setting.getValueBoolean()) {
+                        toggleTheme();
+                        if (!setting.getValueBoolean()) {
+                            ActivityManager am = (ActivityManager) muzimaApplication.getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+                            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+                            Intent intent = new Intent();
+                            intent.setComponent(cn);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            }
+                            muzimaApplication.getApplicationContext().startActivity(intent);
+                        } else {
+                            Intent intent;
+                            intent = new Intent(muzimaApplication, MainDashboardActivity.class);
+                            intent.putExtra("OnlineMode", setting.getValueBoolean());
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            }
+                            muzimaApplication.startActivity(intent);
                         }
-                        muzimaApplication.getApplicationContext().startActivity(intent);
-                    }else {
-                        Intent intent;
-                        intent = new Intent(muzimaApplication, MainDashboardActivity.class);
-                        intent.putExtra("OnlineMode", setting.getValueBoolean());
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        }
-                        muzimaApplication.startActivity(intent);
                     }
+                } else {
+                    settingService.saveSetting(setting);
                 }
-            } else {
-                settingService.saveSetting(setting);
-            }
 
-            if(setting.getProperty().equals(NOTIFICATION_FEATURE_ENABLED_SETTING) && getSettingByProperty(NOTIFICATION_FEATURE_ENABLED_SETTING).getValueBoolean()){
-                muzimaApplication.getFCMTokenController().sendTokenToServer();
-            }
+                if (setting.getProperty().equals(NOTIFICATION_FEATURE_ENABLED_SETTING) && getSettingByProperty(NOTIFICATION_FEATURE_ENABLED_SETTING).getValueBoolean()) {
+                    muzimaApplication.getFCMTokenController().sendTokenToServer();
+                }
 
-        } catch (IOException | NullPointerException | ParseException | MuzimaSettingFetchException e) {
-            throw new MuzimaSettingSaveException(e);
+            } catch (IOException | NullPointerException | ParseException | MuzimaSettingFetchException e) {
+                throw new MuzimaSettingSaveException(e);
+            }
         }
     }
 
     public void toggleTheme(){
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(muzimaApplication.getApplicationContext());
         String lightModeKey = muzimaApplication.getApplicationContext().getResources().getString(R.string.preference_light_mode);
-        boolean isLightThemeEnabled = preferences.getBoolean(lightModeKey, false);
+        boolean isLightThemeEnabled = MuzimaPreferences.getBooleanPreference(muzimaApplication.getApplicationContext(), lightModeKey, false);
 
-        preferences.edit()
-                .putBoolean(lightModeKey, !isLightThemeEnabled)
-                .apply();
+        MuzimaPreferences.setBooleanPreference(muzimaApplication.getApplicationContext(), lightModeKey, !isLightThemeEnabled);
     }
 
     public List<MuzimaSetting> downloadChangedSettingsSinceLastSync() throws MuzimaSettingDownloadException {
@@ -430,7 +428,7 @@ public class MuzimaSettingController {
             if (muzimaSetting != null)
                 return muzimaSetting.getValueBoolean();
             else
-                Log.e(getClass().getSimpleName(), "muzima single element entry setting is missing on this server");
+                Log.d(getClass().getSimpleName(), "muzima single element entry setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "muzima single element entry setting is missing on this server");
         }
@@ -446,7 +444,7 @@ public class MuzimaSettingController {
             else
                 Log.e(getClass().getSimpleName(), "muzima online only mode setting is missing");
         } catch (MuzimaSettingFetchException e) {
-            Log.e(getClass().getSimpleName(), "There was an error while loading muzima online only mode setting",e);
+            Log.d(getClass().getSimpleName(), "There was an error while loading muzima online only mode setting",e);
         }
         return false;
     }
@@ -597,9 +595,9 @@ public class MuzimaSettingController {
     public Boolean isBottomNavigationFormEnabled() {
         try {
             MuzimaSetting muzimaSetting = getSettingByProperty(BOTTOM_NAVIGATION_FORM_ENABLED_SETTING);
-            if (muzimaSetting != null)
+            if (muzimaSetting != null) {
                 return muzimaSetting.getValueBoolean();
-            else
+            } else
                 Log.e(getClass().getSimpleName(), "Bottom nav form setting is missing on this server");
         } catch (MuzimaSettingFetchException e) {
             Log.e(getClass().getSimpleName(), "Bottom nav form setting is missing on this server");

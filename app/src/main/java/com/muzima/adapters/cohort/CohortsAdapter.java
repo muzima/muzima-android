@@ -222,7 +222,7 @@ public class CohortsAdapter extends RecyclerAdapter<CohortsAdapter.ViewHolder> i
 
         @Override
         protected List<Cohort> doInBackground(Void... voids) {
-            List<Cohort> loadedCohorts = null;
+            List<Cohort> loadedCohorts = new ArrayList<>();
             try {
                 if (cohortType == Constants.COHORT_LIST_TYPE.ALL) {
                     loadedCohorts = cohortController.getAllCohorts();

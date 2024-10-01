@@ -16,6 +16,8 @@ import com.muzima.api.model.Provider;
 import com.muzima.api.service.ProviderService;
 import com.muzima.service.HTMLProviderParser;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -112,10 +114,12 @@ public class ProviderController {
 
     private Provider downloadProviderBySystemId(String systemId) throws ProviderLoadException {
         try {
-            return providerService.downloadProvidersBySystemId(systemId);
+            if(StringUtils.isNotEmpty(systemId))
+                return providerService.downloadProvidersBySystemId(systemId);
         } catch (IOException e) {
             throw new ProviderLoadException(e);
         }
+        return null;
     }
 
     public Provider getProviderBySystemId(String systemId) {

@@ -43,6 +43,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.service.TagPreferenceService;
 import com.muzima.utils.DateUtils;
 import com.muzima.utils.LanguageUtil;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.NetworkUtils;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.TagsUtil;
@@ -201,8 +202,7 @@ public class FormsWithDataActivity extends FormsActivityBase {
                 }
                 break;
             case DataSyncServiceConstants.SYNC_REAL_TIME_UPLOAD_FORMS:
-                SharedPreferences sp = getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", MODE_PRIVATE);
-                if (sp.getBoolean("active", false)) {
+                if (MuzimaPreferences.getBooleanPreference(getApplicationContext(), "COMPLETED_FORM_AREA_IN_FOREGROUND", false)) {
                     if (syncStatus == SyncStatusConstants.SUCCESS) {
                         ((FormsPagerAdapter) formsPagerAdapter).onFormUploadFinish();
                     }

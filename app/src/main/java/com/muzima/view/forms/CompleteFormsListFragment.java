@@ -39,6 +39,7 @@ import com.muzima.model.FormWithData;
 import com.muzima.utils.Constants;
 import com.muzima.utils.CustomColor;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.utils.ThemeUtils;
 
@@ -75,20 +76,14 @@ public class CompleteFormsListFragment extends FormsWithDataListFragment impleme
     public void onResume() {
         super.onResume();
         // Store our shared preference
-        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", Context.MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putBoolean("active", true);
-        ed.commit();
+        MuzimaPreferences.setBooleanPreference(getActivity(), "COMPLETED_FORM_AREA_IN_FOREGROUND", true);
         reloadData();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        SharedPreferences sp = getActivity().getSharedPreferences("COMPLETED_FORM_AREA_IN_FOREGROUND", Context.MODE_PRIVATE);
-        SharedPreferences.Editor ed = sp.edit();
-        ed.putBoolean("active", false);
-        ed.commit();
+        MuzimaPreferences.setBooleanPreference(getActivity(), "COMPLETED_FORM_AREA_IN_FOREGROUND", false);
     }
 
     @Override

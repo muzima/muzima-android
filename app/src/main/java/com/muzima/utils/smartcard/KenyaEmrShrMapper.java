@@ -113,12 +113,12 @@ public class KenyaEmrShrMapper {
             Patient patient = new Patient();
             PatientIdentification identification = SHRModel.getPatientIdentification();
             List<PersonName> names = extractPatientNamesFromSHRModel(SHRModel);
-            patient.setNames(names);
+            patient.setNames(new ArrayList<>(names));
 
             //set Identifiers
             List<PatientIdentifier> identifiers = extractPatientIdentifiersFromSHRModel(muzimaApplication, SHRModel);
             if(!identifiers.isEmpty()) {
-                patient.setIdentifiers(identifiers);
+                patient.setIdentifiers(new ArrayList<>(identifiers));
             }
 
             //date of birth
@@ -635,12 +635,12 @@ public class KenyaEmrShrMapper {
         for(Observation observation:observations){
             Concept answerConcept;
             String shrAnswer = null;
-            switch(observation.getConcept().getId()){
+            switch(observation.getConcept().getConceptid()){
                 case CONCEPTS.HIV_TESTS.TEST_RESULT.concept_id:
                     isHivEncounter = true;
                     answerConcept = observation.getValueCoded();
                     if(answerConcept!= null) {
-                        switch (answerConcept.getId()) {
+                        switch (answerConcept.getConceptid()) {
                             case CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.POSITIVE.concept_id:
                                 shrAnswer = CONCEPTS.HIV_TESTS.TEST_RESULT.ANSWERS.POSITIVE.name;
                                 break;
@@ -661,7 +661,7 @@ public class KenyaEmrShrMapper {
                     isHivEncounter = true;
                     answerConcept = observation.getValueCoded();
                     if(answerConcept!= null) {
-                        switch (answerConcept.getId()) {
+                        switch (answerConcept.getConceptid()) {
                             case CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.CONFIRMATORY.concept_id:
                                 shrAnswer = CONCEPTS.HIV_TESTS.TEST_TYPE.ANSWERS.CONFIRMATORY.name;
                                 break;
@@ -679,7 +679,7 @@ public class KenyaEmrShrMapper {
                     isHivEncounter = true;
                     answerConcept = observation.getValueCoded();
                     if(answerConcept!= null) {
-                        switch (answerConcept.getId()) {
+                        switch (answerConcept.getConceptid()) {
                             case CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.NP.concept_id:
                                 shrAnswer = CONCEPTS.HIV_TESTS.TEST_STRATEGY.ANSWERS.NP.name;
                                 break;
@@ -774,9 +774,9 @@ public class KenyaEmrShrMapper {
             String answer = null;
             Concept concept = observation.getConcept();
             Concept valueCoded = observation.getValueCoded();
-            if(concept.getId() == CONCEPTS.IMMUNIZATION.VACCINE.concept_id && valueCoded!= null) {
+            if(concept.getConceptid() == CONCEPTS.IMMUNIZATION.VACCINE.concept_id && valueCoded!= null) {
                 isImmunizationEncounter = true;
-                switch (valueCoded.getId()) {
+                switch (valueCoded.getConceptid()) {
                     case CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.concept_id:
                         answer = CONCEPTS.IMMUNIZATION.VACCINE.ANSWERS.BCG.name;
                         break;

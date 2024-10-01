@@ -199,6 +199,9 @@ public class HTMLFormObservationCreator {
                     createObservationsForConceptsNotAvailableLocally);
             if(concept != null) {
                 Observation observation = observationParserUtility.getObservationEntity(concept, value);
+                observation.setObsPersonUuid(person.getUuid());
+                observation.setObsConceptId(concept.getConceptid());
+                observation.setObsConceptUuid(concept.getConceptUuid());
                 observation.setPerson(person);
                 observation.setEncounter(encounter);
                 observation.setObservationDatetime(encounter.getEncounterDatetime());
@@ -271,6 +274,9 @@ public class HTMLFormObservationCreator {
             if(derivedConcept != null) {
                 DerivedObservation derivedObservation = observationParserUtility.getDerivedObservationEntity(derivedConcept, value);
                 derivedObservation.setPerson(person);
+                derivedObservation.setDerivedObsConceptId(derivedConcept.getDerivedConceptId());
+                derivedObservation.setDerivedObsConceptUuid(derivedConcept.getDerivedConceptUuid());
+                derivedObservation.setDerivedObsPersonUuid(person.getUuid());
                 derivedObservation.setDateCreated(encounter.getEncounterDatetime());
                 return derivedObservation;
             }

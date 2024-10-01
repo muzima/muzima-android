@@ -194,9 +194,12 @@ public class RelationshipController {
     }
 
     public void saveRelationships(List<Relationship> relationships) throws SaveRelationshipException, SearchRelationshipException {
+        if (relationships == null)
+            return;
+
         try {
-            relationshipService.saveRelationships(relationships);
             saveRelationshipTypesAndPersonsFromRelationships(relationships);
+            relationshipService.saveRelationships(relationships);
         } catch (IOException e) {
             Log.e(getClass().getSimpleName(), "Error while saving the relationships list", e);
             throw new SaveRelationshipException(e);

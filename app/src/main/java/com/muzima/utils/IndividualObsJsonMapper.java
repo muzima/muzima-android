@@ -81,11 +81,11 @@ public class IndividualObsJsonMapper {
             JSONObject jsonObjectInner = jsonObject.getJSONObject("encounter");
             if(!(jsonObjectInner.has("encounter.encounter_datetime"))) {
                 jsonObjectInner.put("encounter.encounter_datetime", DateUtils.getFormattedDateTime(formData.getEncounterDate()));
-                jsonObject.put("encounter.encounter_uuid",encounter.getUuid());
+                jsonObject.put("encounter.encounter_uuid",encounter.getEncounterUuid());
                 jsonObject.put("encounter", jsonObjectInner);
             }
             if(!(jsonObjectInner.has("encounter.encounter_uuid"))){
-                jsonObjectInner.put("encounter.encounter_uuid",encounter.getUuid());
+                jsonObjectInner.put("encounter.encounter_uuid",encounter.getEncounterUuid());
                 jsonObject.put("encounter", jsonObjectInner);
             }
             discriminatorObject.put("discriminator", Constants.FORM_JSON_DISCRIMINATOR_INDIVIDUAL_OBS);
@@ -103,7 +103,7 @@ public class IndividualObsJsonMapper {
     private String createJsonPayloadFromObs(Observation observation) throws JSONException {
         Concept concept = observation.getConcept();
         String conceptName = concept.getName();
-        String conceptId = Integer.toString(concept.getId());
+        String conceptId = Integer.toString(concept.getConceptid());
 
 
         JSONObject obsNodeJSonJsonObject = new JSONObject();

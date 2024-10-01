@@ -13,8 +13,6 @@ import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +25,6 @@ import android.widget.Toast;
 
 import com.muzima.MuzimaApplication;
 import com.muzima.R;
-import com.muzima.adapters.ListAdapter;
 import com.muzima.adapters.RecyclerAdapter;
 import com.muzima.api.model.Concept;
 import com.muzima.api.model.Observation;
@@ -42,6 +39,7 @@ import com.muzima.controller.PersonController;
 import com.muzima.controller.RelationshipController;
 import com.muzima.tasks.MuzimaAsyncTask;
 import com.muzima.utils.DateUtils;
+import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
@@ -181,9 +179,7 @@ public class RelationshipsAdapter extends RecyclerAdapter<Relationship> {
             holder.hivTestDetails.setVisibility(View.GONE);
             holder.hivCareDetails.setVisibility(View.GONE);
         }else {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            String applicationLanguage = preferences.getString(context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
-
+            String applicationLanguage = MuzimaPreferences.getStringPreference(context, context.getResources().getString(R.string.preference_app_language), context.getResources().getString(R.string.language_english));
             try {
                 holder.testDate.setText(getObsDateTimeByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
                 holder.results.setText(getObsByPatientUuidAndConceptId(relatedPersonUuid, 23779, observationController, conceptController, applicationLanguage));
