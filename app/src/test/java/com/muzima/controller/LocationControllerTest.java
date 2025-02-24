@@ -12,7 +12,7 @@ package com.muzima.controller;
 
 import com.muzima.api.model.Location;
 import com.muzima.api.service.LocationService;
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -86,7 +86,7 @@ import com.muzima.view.forms.SyncFormTemplateIntent;
 import com.muzima.view.patients.SyncPatientDataIntent;
 import com.muzima.view.progressdialog.ProgressDialogUpdateIntentService;
 
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 
 import java.io.File;
 import java.io.IOException;

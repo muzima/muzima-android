@@ -100,7 +100,7 @@ class ObservationParserUtility {
         }
 
         Concept observedConcept;
-        boolean isConceptIdNumeric = org.apache.commons.lang.StringUtils.isNumeric(conceptIdOrUuid);
+        boolean isConceptIdNumeric = org.apache.commons.lang3.StringUtils.isNumeric(conceptIdOrUuid);
 
         if(isConceptIdNumeric) {
             int intConceptId = Integer.parseInt(conceptIdOrUuid);
@@ -339,7 +339,7 @@ class ObservationParserUtility {
         }
 
         DerivedConcept observedDerivedConcept;
-        boolean isConceptIdNumeric = org.apache.commons.lang.StringUtils.isNumeric(conceptIdOrUuid);
+        boolean isConceptIdNumeric = org.apache.commons.lang3.StringUtils.isNumeric(conceptIdOrUuid);
 
         if(isConceptIdNumeric) {
             int intConceptId = Integer.parseInt(conceptIdOrUuid);

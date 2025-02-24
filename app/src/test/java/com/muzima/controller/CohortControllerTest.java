@@ -21,7 +21,7 @@ import com.muzima.api.service.MuzimaSettingService;
 import com.muzima.api.service.SetupConfigurationService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.StringUtils;
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;

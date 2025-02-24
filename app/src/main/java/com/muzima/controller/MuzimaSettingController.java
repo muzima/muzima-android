@@ -32,7 +32,7 @@ import com.muzima.utils.MuzimaPreferences;
 import com.muzima.utils.StringUtils;
 import com.muzima.view.MainDashboardActivity;
 
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

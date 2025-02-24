@@ -97,7 +97,7 @@ import static com.muzima.utils.Constants.STATUS_COMPLETE;
 import static com.muzima.utils.Constants.STATUS_INCOMPLETE;
 import static com.muzima.view.preferences.MuzimaTimer.getTimer;
 
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 
 public class MuzimaApplication extends MultiDexApplication {
 

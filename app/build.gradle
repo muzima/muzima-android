@@ -85,7 +85,6 @@ repositories {
     mavenCentral()
     maven { url "https://repo.maven.apache.org/maven2" }
     maven { url "https://raw.github.com/muzima/muzima-maven/master/releases" }
-    maven { url "https://raw.github.com/muzima/muzima-maven/search-api" }
     maven { url "https://raw.github.com/muzima/muzima-maven/muzima-api" }
     maven { url 'https://jitpack.io' }
 }
@@ -145,10 +144,9 @@ dependencies {
     implementation group: 'net.minidev', name: 'json-smart', version: '1.1.1'
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
     implementation group: 'commons-io', name: 'commons-io', version: '2.16.1'
-    implementation (group: 'com.muzima', name: 'search-api', version: '1.1.7-SNAPSHOT'){
-        exclude(module: 'guice')
-    }
     implementation group: 'com.google.inject', name: 'guice', version: '4.2.3', classifier: 'no_aop'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.5'
+    implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '0.8.1'
 
     implementation ("androidx.security:security-crypto:1.0.0")
     implementation ("net.zetetic:sqlcipher-android:4.6.1")

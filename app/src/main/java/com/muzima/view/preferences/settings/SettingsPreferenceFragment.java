@@ -49,7 +49,7 @@ import com.muzima.utils.ThemeUtils;
 import com.muzima.view.barcode.BarcodeCaptureActivity;
 import com.muzima.view.preferences.SettingsActivity;
 
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
