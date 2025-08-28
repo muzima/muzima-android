@@ -82,7 +82,7 @@ import com.muzima.view.login.ActiveConfigSelectionActivity;
 
 import net.minidev.json.JSONObject;
 
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 
 import java.io.File;
 import java.io.IOException;

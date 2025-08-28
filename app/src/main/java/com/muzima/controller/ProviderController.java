@@ -15,8 +15,7 @@ import com.muzima.api.model.FormTemplate;
 import com.muzima.api.model.Provider;
 import com.muzima.api.service.ProviderService;
 import com.muzima.service.HTMLProviderParser;
-
-import org.apache.commons.lang.StringUtils;
+import com.muzima.util.StringUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -114,7 +113,7 @@ public class ProviderController {
 
     private Provider downloadProviderBySystemId(String systemId) throws ProviderLoadException {
         try {
-            if(StringUtils.isNotEmpty(systemId))
+            if(!StringUtil.isEmpty(systemId))
                 return providerService.downloadProvidersBySystemId(systemId);
         } catch (IOException e) {
             throw new ProviderLoadException(e);

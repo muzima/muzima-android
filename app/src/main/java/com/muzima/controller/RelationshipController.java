@@ -22,7 +22,7 @@ import com.muzima.api.service.PersonService;
 import com.muzima.api.service.RelationshipService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.StringUtils;
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 
 import java.io.IOException;
 import java.util.ArrayList;

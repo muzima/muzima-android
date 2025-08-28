@@ -10,6 +10,8 @@
 
 package com.muzima.view.reports;
 
+import static com.muzima.utils.StringUtils.EMPTY;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -59,7 +61,9 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
     private FormTemplate reportTemplate;
     private List<ProviderReportStatistic> allProviderReportStatistics = new ArrayList<>();
     private List<ProviderReportStatistic> individualProviderStatistics = new ArrayList<>();
-    private String leaderboardStatisticKey;
+    private String activeStatisticHeader = null;
+    private String statisticHeaderHelpInfo = EMPTY;
+    private List<String> uniqueStatisticHeaders = new ArrayList<>();
     private LeaderboardAdapter leaderboardAdapter;
     private SummaryStatisticAdapter summaryStatisticAdapter;
     private PerformanceComparisonAdapter performanceComparisonAdapter;
@@ -85,6 +89,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
             Log.e(getClass().getSimpleName(),"Could not obtain report template");
         }
 
+        uniqueStatisticHeaders = new ArrayList<>();
         extractProviderReportStatistics(); // Consider doing this after syncing from server and storing in db
         initializeIndividualPerformanceView();
         initializeLeaderboardView();
@@ -108,9 +113,9 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
         String reportDefinition = reportTemplate.getHtml();
         JSONArray reportTemplateDefinitions = (JSONArray) JsonUtils.readAsObject(reportDefinition,"reportTemplate");
         int templatesCount = reportTemplateDefinitions.size();
-        for (int i=0; i<templatesCount; i++){
+        for (int templateIndex=0; templateIndex<templatesCount; templateIndex++){
             try {
-                final JSONObject template = (JSONObject)reportTemplateDefinitions.get(i);
+                final JSONObject template = (JSONObject)reportTemplateDefinitions.get(templateIndex);
                 String achievementKey = (String)template.get("achievementKey");
                 String expectedAchievementKey = (String) template.get("expectedAchievementKey");
                 JSONArray datasetJsonArray = null;
@@ -149,7 +154,7 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                     reportStatistic.setAchievementGroupAverage(getAchievementAverage(datasetJsonArray, achievementKey, expectedAchievementKey));
 
                     int leaderboardScore = reportStatistic.getExpectedAchievement() == 0 ? 0 : reportStatistic.getAchievement()*100/reportStatistic.getExpectedAchievement();
-                    reportStatistic.setScore(leaderboardScore);
+                    reportStatistic.getScoreMap().put(template.get("abbreviation").toString(), leaderboardScore);
 
                     reportStatistic.setStatisticTitle(template.get("title").toString());
                     reportStatistic.setStatisticHint(template.get("hint").toString());
@@ -164,11 +169,19 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
                     reportStatistic.setLeaderboardColor(color);
 
                     allProviderReportStatistics.add(reportStatistic);
+
+                    activeStatisticHeader = template.get("abbreviation").toString();
+                    if(!uniqueStatisticHeaders.contains(template.get("abbreviation").toString())) {
+                        uniqueStatisticHeaders.add(template.get("abbreviation").toString());
+                        if(StringUtils.isEmpty(statisticHeaderHelpInfo))
+                            statisticHeaderHelpInfo = template.get("abbreviation").toString()
+                                    + " = " + template.get("title").toString();
+                        else
+                            statisticHeaderHelpInfo += ",  " +  template.get("abbreviation").toString()
+                                    + " = " + template.get("title").toString();
+                    }
                 }
 
-                if(template.containsKey("leaderboardStatisticKey")){
-                    leaderboardStatisticKey = template.get("leaderboardStatisticKey").toString();
-                }
             } catch (Exception e) {
                 Log.e(getClass().getSimpleName(), "Could not parse details of summary statistic",e);
             } catch (ReportDatasetController.ReportDatasetFetchException e) {
@@ -239,10 +252,20 @@ public class ProviderPerformanceReportViewActivity extends ProviderReportViewAct
 
     private LeaderboardAdapter getLeaderboardAdapter(){
         if (leaderboardAdapter == null) {
-            List<ProviderReportStatistic> leaderboardStatistics = allProviderReportStatistics.stream()
-                    .filter(statistic -> statistic.getAchievementId().equals(leaderboardStatisticKey)).collect(Collectors.toList());
-            Collections.sort(leaderboardStatistics, Collections.reverseOrder());
-            leaderboardAdapter = new LeaderboardAdapter(leaderboardStatistics, this, getApplicationContext());
+            Collections.sort(allProviderReportStatistics, Collections.reverseOrder());
+            ProviderReportStatistic previous = null;
+            List<ProviderReportStatistic> collapsed = new ArrayList<>();
+            for (ProviderReportStatistic s:allProviderReportStatistics){
+                if (previous == null || !StringUtils.equals(s.getProviderId(), previous.getProviderId())) {
+                    collapsed.add(s);
+                    previous = s;
+                } else if(StringUtils.equals(s.getProviderId(), previous.getProviderId())){
+                    previous.getScoreMap().putAll(s.getScoreMap());
+                }
+            }
+            Collections.reverse(uniqueStatisticHeaders);
+            leaderboardAdapter = new LeaderboardAdapter(collapsed, this, getApplicationContext(),
+                    uniqueStatisticHeaders, activeStatisticHeader, statisticHeaderHelpInfo);
         }
         return leaderboardAdapter;
     }

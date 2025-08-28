@@ -28,7 +28,7 @@ import com.muzima.model.SetupActionLogModel;
 import com.muzima.utils.Constants;
 import com.muzima.utils.ThemeUtils;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Locale;
 

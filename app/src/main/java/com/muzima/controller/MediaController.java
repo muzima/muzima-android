@@ -21,7 +21,7 @@ import com.muzima.api.service.MediaService;
 import com.muzima.service.SntpService;
 import com.muzima.utils.MemoryUtil;
 
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 
 import java.io.File;
 import java.io.IOException;

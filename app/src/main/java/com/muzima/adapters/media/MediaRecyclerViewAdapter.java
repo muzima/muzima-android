@@ -38,7 +38,7 @@ import com.muzima.api.model.MediaCategory;
 import com.muzima.controller.MediaController;
 import com.muzima.utils.MuzimaPreferences;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.HashMap;

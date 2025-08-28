@@ -15,7 +15,7 @@ import android.util.Log;
 import com.muzima.api.model.AppUsageLogs;
 import com.muzima.api.service.AppUsageLogsService;
 
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 
 import java.io.IOException;
 import java.util.List;

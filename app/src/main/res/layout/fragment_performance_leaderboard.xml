@@ -13,9 +13,162 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/login_layout_background_light">
-    <androidx.recyclerview.widget.RecyclerView
+    android:background="@color/white">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="3dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="@color/primary_white">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/provider_search_input_layout"
+            android:layout_width="match_parent"
+            android:textColorHint="@color/primary_black"
+            android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/provider_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:fontFamily="@font/montserrat_regular"
+            android:padding="12dp"
+            android:hint="@string/hint_search_provider_by_name"
+            android:textColor="@color/primary_black"
+            android:background="@color/transparent"
+            android:drawableEnd="@drawable/ic_search"
+            android:drawableTint="@color/primary_black"
+            android:maxLines="1"
+            android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:background="#efefef"
+        android:layout_gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/statistic_header_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_action_info"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_toLeftOf="@+id/points_headers_layout"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:id="@+id/name_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/primary_black"
+                android:textSize="16sp"
+                android:drawableTint="@color/primary_black"
+                android:text="Sort list by: "/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/points_headers_layout"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/statistic_header_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:background="#efefef"
+        android:visibility="gone"
+        android:layout_gravity="center_vertical">
+
+
+        <ImageView
+            android:id="@+id/details_hider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_marginBottom="3dp"
+            android:visibility="visible"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_ction_info_hide"/>
+
+        <TextView
+            android:id="@+id/statistic_header_details_txt"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_toRightOf="@+id/details_hider"
+            android:textColor="@color/primary_blue"
+            android:textSize="16sp"
+            android:drawableTint="@color/primary_black"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:singleLine="true"
+            android:text="PV : Patients Visited,   PR = Patients Returned,  PV : Patients Visited,   PR = Patients Returned"/>
+    </RelativeLayout>
+
+    <com.muzima.view.custom.MuzimaRecyclerView
         android:id="@+id/leaderboard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
+
+
+    <LinearLayout
+        android:id="@+id/no_data_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible"
+        style="@style/NoDataView">
+
+        <ImageView android:id="@+id/no_data_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/empty_view"
+            android:contentDescription="Reports Unavailable"/>
+
+        <TextView android:id="@+id/no_data_msg"
+            style="@style/NoDataMsg"
+            android:textColor="@color/primary_black"/>
+
+        <TextView android:id="@+id/no_data_tip"
+            style="@style/NoDataTip"
+            android:textColor="@color/primary_black"/>
+    </LinearLayout>
 </LinearLayout>

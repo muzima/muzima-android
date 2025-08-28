@@ -31,6 +31,7 @@ import com.muzima.adapters.reports.PerformanceComparisonAdapter;
 import com.muzima.adapters.reports.SummaryStatisticAdapter;
 import com.muzima.model.ProviderReportStatistic;
 import com.muzima.utils.StringUtils;
+import com.muzima.view.custom.MuzimaRecyclerView;
 
 public class PerformanceSummaryFragment extends Fragment {
     private SummaryStatisticAdapter summaryStatisticAdapter;

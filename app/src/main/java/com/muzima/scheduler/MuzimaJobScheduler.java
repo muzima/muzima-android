@@ -82,7 +82,7 @@ import com.muzima.view.MainDashboardActivity;
 import com.muzima.view.forms.SyncFormIntent;
 import com.muzima.view.reports.SyncAllPatientReports;
 
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

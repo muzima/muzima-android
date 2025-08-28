@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,21 +28,38 @@ import com.muzima.R;
 import com.muzima.model.ProviderReportStatistic;
 import com.muzima.utils.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder>{
     private List<ProviderReportStatistic> reportStatistics;
+    private List<ProviderReportStatistic> visibleReportStatistics;
     private LeaderboardItemClickListener leaderboardItemClickListener;
     private Context context;
     private String loggedInUserSystemId;
+    private String activeStatisticHeader;
+    private boolean wasPreviouslyAscending;
+    private List<String> statisticHeaderList;
+    private String statisticHeaderHelpInfo;
 
    public LeaderboardAdapter(List<ProviderReportStatistic> reportStatistics,
-                             LeaderboardItemClickListener leaderboardItemClickListener, Context context){
+                             LeaderboardItemClickListener leaderboardItemClickListener, Context context,
+                             List<String> statisticHeaderList, String activeStatisticHeader,
+                             String statisticHeaderHelpInfo){
         this.reportStatistics = reportStatistics;
+        visibleReportStatistics = new ArrayList<>();
+        visibleReportStatistics.addAll(reportStatistics);
         this.leaderboardItemClickListener = leaderboardItemClickListener;
         this.context = context;
         loggedInUserSystemId = ((MuzimaApplication)context.getApplicationContext()).getAuthenticatedUser().getSystemId();
+        this.activeStatisticHeader = activeStatisticHeader;
+        this.statisticHeaderList = statisticHeaderList;
+        this.statisticHeaderHelpInfo = statisticHeaderHelpInfo;
     }
     @NonNull
     @Override
@@ -52,35 +70,69 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-       ProviderReportStatistic statistic = reportStatistics.get(position);
-        holder.rankTextView.setText(String.format(Locale.getDefault(), "%d", position+1));
+       ProviderReportStatistic statistic = visibleReportStatistics.get(position);
+        holder.pointsTextViewLayout.removeAllViews();
 
-        if(!StringUtils.isEmpty(statistic.getProviderName())) {
-            String providerName = statistic.getProviderName().trim();
-            holder.usernameTextView.setText(providerName);
-            holder.avatarTextView.setText(""+providerName.charAt(0));
-        }
+       holder.container.setVisibility(View.VISIBLE);
+       holder.rankTextView.setText(String.format(Locale.getDefault(), "%d", position + 1));
 
-        holder.avatarImageView.setImageTintList(ColorStateList.valueOf(statistic.getLeaderboardColor()));
+       if (!StringUtils.isEmpty(statistic.getProviderName())) {
+           String providerName = statistic.getProviderName().trim();
+           holder.usernameTextView.setText(providerName);
+           holder.avatarTextView.setText("" + providerName.charAt(0));
+       }
 
-        holder.pointsTextView.setText(String.format(Locale.getDefault(),"%d ",statistic.getScore()));
-        holder.container.setOnClickListener(view -> leaderboardItemClickListener.onLeaderboardItemClick(view, holder.getAdapterPosition()));
+       holder.avatarImageView.setImageTintList(ColorStateList.valueOf(statistic.getLeaderboardColor()));
 
-        if(StringUtils.equals(loggedInUserSystemId,statistic.getProviderId())){
-            holder.container.setBackgroundColor(Color.parseColor("#F6F0FA"));
-        }
+       for (String key : statistic.getScoreMap().keySet()) {
+           View scoreView = LayoutInflater.from(context).inflate(R.layout.item_leaderboard_score,null);
+
+           TextView tv = scoreView.findViewById(R.id.score_text_view);
+           tv.setText(String.format(Locale.getDefault(), "%d ",statistic.getScoreMap().get(key)));
+           if(StringUtils.equals(key, activeStatisticHeader)){
+               tv.setTextColor(context.getResources().getColor(R.color.primary_blue));
+           }
+           holder.pointsTextViewLayout.addView(scoreView);
+           TextView divider = new TextView(context);
+           divider.setText("  ");
+           holder.pointsTextViewLayout.addView(divider);
+       }
+       holder.container.setOnClickListener(view -> leaderboardItemClickListener.onLeaderboardItemClick(view, holder.getAdapterPosition()));
+
+       if (StringUtils.equals(loggedInUserSystemId, statistic.getProviderId())) {
+           holder.container.setBackgroundColor(Color.parseColor("#F6F0FA"));
+       } else {
+           holder.container.setBackgroundColor(Color.parseColor("#FFFFFF"));
+       }
     }
 
     public ProviderReportStatistic getReportStatistic(int position){
         if(position < 0 || position >= getItemCount()){
             return null;
         }
-       return reportStatistics.get(position);
+       return visibleReportStatistics.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return reportStatistics.size();
+        return visibleReportStatistics.size();
+    }
+
+    public void filterByText(CharSequence charSequence){
+       String searchText = charSequence.toString().toLowerCase(Locale.ROOT);
+       reportStatistics.stream().forEach(s ->{
+           if(s.getProviderName().toLowerCase(Locale.ROOT).contains(searchText)){
+               s.setVisible(true);
+           } else
+               s.setVisible(false);
+       });
+       visibleReportStatistics.clear();
+       visibleReportStatistics.addAll(reportStatistics.stream().filter(statistic -> statistic.isVisible()).collect(Collectors.toList()));
+       notifyDataSetChanged();
+    }
+
+    public void sortVisibleList(){
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -88,7 +140,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         private final ImageView avatarImageView;
         private final TextView usernameTextView;
         private final TextView rankTextView;
-        private final TextView pointsTextView;
+        private final LinearLayout pointsTextViewLayout;
         private final View container;
 
         public ViewHolder(@NonNull View itemView) {
@@ -98,12 +150,42 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
             avatarTextView = itemView.findViewById(R.id.avatar_text_view);
             usernameTextView = itemView.findViewById(R.id.name_text_view);
             rankTextView = itemView.findViewById(R.id.item_leaderboard_main_position_text_view);
-            pointsTextView = itemView.findViewById(R.id.points_text_view);
+            pointsTextViewLayout = itemView.findViewById(R.id.points_text_view_layout);
             container = itemView.findViewById(R.id.leaderboard_item_container);
         }
     }
 
     public interface LeaderboardItemClickListener{
         void onLeaderboardItemClick(View view, int position);
+    }
+
+    public void setActiveStatisticHeader(String statisticAbbreviation){
+       activeStatisticHeader = statisticAbbreviation;
+    }
+
+    public String getActiveStatisticHeader() {
+        return activeStatisticHeader;
+    }
+
+    public List<String> getStatisticHeaderList() {
+        return statisticHeaderList;
+    }
+
+    public boolean sortListBySelectedStatistic(String selectedAbb){
+       visibleReportStatistics = visibleReportStatistics.stream()
+               .sorted(Comparator.comparing(s1->s1.getScoreMap().get(selectedAbb)))
+               .collect(Collectors.toList());
+       boolean isAscending = StringUtils.equals(activeStatisticHeader, selectedAbb) ?
+               !wasPreviouslyAscending : true;
+       if(!isAscending)
+           Collections.reverse(visibleReportStatistics);
+       setActiveStatisticHeader(selectedAbb);
+       notifyDataSetChanged();
+       wasPreviouslyAscending = isAscending;
+       return isAscending;
+    }
+
+    public String getStatisticHeaderHelpInfo() {
+        return statisticHeaderHelpInfo;
     }
 }

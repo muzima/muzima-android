@@ -21,7 +21,7 @@ import com.muzima.api.model.PersonName;
 import com.muzima.api.model.Relationship;
 import com.muzima.api.model.User;
 import com.muzima.controller.PatientController;
-import com.muzima.search.api.util.StringUtil;
+import com.muzima.util.StringUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;

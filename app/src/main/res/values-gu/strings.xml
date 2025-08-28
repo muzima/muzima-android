@@ -801,4 +801,7 @@
     <string name="error_media_category_save">મીડિયા કેટેગરી સાચવતી વખતે એક ભૂલ આવી</string>
     <string name="general_program_selection">પ્રોગ્રામ પસંદગી</string>
     <string name="general_switch_program">પ્રોગ્રામ સ્વિચ કરો</string>
+    <string name="info_no_provider_reports_found">Nenhum relatório de fornecedor disponível</string>
+    <string name="hint_no_provider_reports_available">Nenhum relatório de fornecedor corresponde aos seus critérios de pesquisa</string>
+    <string name="hint_search_provider_by_name">Pesquisar fornecedor por nome</string>
 </resources>

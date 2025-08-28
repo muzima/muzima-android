@@ -34,7 +34,7 @@ import com.muzima.controller.PatientController;
 import com.muzima.controller.ProviderController;
 import com.muzima.controller.SetupConfigurationController;
 import com.muzima.utils.Constants;
-import org.apache.lucene.queryParser.ParseException;
+import android.net.ParseException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
